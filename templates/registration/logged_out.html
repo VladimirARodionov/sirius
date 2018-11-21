@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+<p>{% trans "Logged out"%}</p>
+
+<a href="{% url 'login'%}">{% trans "Click here to login again"%}</a>
+{% endblock %}
