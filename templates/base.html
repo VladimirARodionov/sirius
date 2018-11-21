@@ -28,7 +28,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
        {% if user.is_authenticated %}
-          <li><p class="navbar-text">{% trans "User" %}: {{ user.get_username }}</p></li>
+          <li><p class="navbar-text">{% trans "User" %}: {{ user.get_full_name }}</p></li>
           <li>
               <a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-user"></span>{% trans "Logout" %}</a>
           </li>
