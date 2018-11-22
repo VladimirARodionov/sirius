@@ -9,14 +9,41 @@ from django.utils.translation import ugettext_lazy as _
 from SiriusCRM.managers.UserManager import UserManager
 
 
+class Country(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, null=False, blank=False)
+
+
+class Region(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, null=False, blank=False)
+
+
+class City(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, null=False, blank=False)
+
+
 class Address(models.Model):
     id = models.AutoField(primary_key=True)
-    country = models.CharField(max_length=255, null=True, blank=True)
-    region = models.CharField(max_length=255, null=True, blank=True)
-    city = models.CharField(max_length=255, null=True, blank=True)
+    country = models.ForeignKey(Country, null=True, on_delete=models.CASCADE)
+    region = models.ForeignKey(Region, null=True, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, null=True, on_delete=models.CASCADE)
     street = models.CharField(max_length=255, null=True, blank=True)
     house = models.CharField(max_length=30, null=True, blank=True)
     apartment = models.CharField(max_length=10, null=True, blank=True)
+
+
+class SocialName(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, blank=False)
+    address = models.CharField(max_length=255, blank=False)
+
+
+class Social(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.ForeignKey(SocialName, null=False, on_delete=models.CASCADE)
+    account = models.CharField(max_length=255, blank=False)
 
 
 class Organization(models.Model):
@@ -75,11 +102,20 @@ class Currency(models.Model):
     name = models.CharField(max_length=255, blank=False)
 
 
+class Contact(models.Model):
+    id = models.AutoField(primary_key=True)
+    email = models.EmailField(_('email address'), unique=True)
+    first_name = models.CharField(_('first name'), max_length=50, blank=True)
+    last_name = models.CharField(_('last name'), max_length=50, blank=True)
+    middle_name = models.CharField(_('last name'), max_length=50, blank=True)
+    socials = models.ManyToManyField(Social, through='ContactSocial')
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(_('first name'), max_length=30, blank=False)
-    last_name = models.CharField(_('last name'), max_length=30, blank=False)
-    middle_name = models.CharField(_('last name'), max_length=30, blank=True)
+    first_name = models.CharField(_('first name'), max_length=50, blank=False)
+    last_name = models.CharField(_('last name'), max_length=50, blank=False)
+    middle_name = models.CharField(_('last name'), max_length=50, blank=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     date_left = models.DateTimeField(_('date left'),null=True, blank=True)
     is_active = models.BooleanField(_('active'), default=True)
@@ -90,6 +126,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text=_('Designates whether the user can log into this admin site.'),
     )
     birthday = models.DateField(_('birthday'), null=True, blank=True)
+    mobile = models.CharField(max_length=20, null=True, blank=True)
+    phone = models.CharField(max_length=20, null=True, blank=True)
     salary = models.FloatField(null=True, blank=True)
     characteristic = models.TextField(null=True, blank=True)
     address = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
@@ -97,6 +135,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     unit = models.ForeignKey(Unit, null=True, on_delete=models.CASCADE)
     positions = models.ManyToManyField(Position, through='UserPosition')
     categories = models.ManyToManyField(Category, through='UserCategory')
+    socials = models.ManyToManyField(Social, through='UserSocial')
 
     objects = UserManager()
 
@@ -187,3 +226,13 @@ class OrganizationPayment(models.Model):
     date = models.DateField(null=False, blank=False)
     value = models.FloatField(null=False, blank=False)
     note = models.CharField(max_length=255, null=True, blank=True)
+
+
+class UserSocial(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    social = models.ForeignKey(Social, on_delete=models.CASCADE)
+
+
+class ContactSocial(models.Model):
+    contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
+    social = models.ForeignKey(Social, on_delete=models.CASCADE)
