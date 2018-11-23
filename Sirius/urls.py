@@ -22,6 +22,7 @@ from SiriusCRM import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('people', views.PeopleView.as_view(), name='people'),
     path('admin/', admin.site.urls),
     path('accounts/login/', LoginView.as_view(template_name='registration/login.html'), name="login"),
     path('accounts/logout/', LogoutView.as_view(template_name='registration/logged_out.html'), name="logout"),

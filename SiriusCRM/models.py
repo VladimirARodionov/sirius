@@ -29,6 +29,7 @@ class Address(models.Model):
     country = models.ForeignKey(Country, null=True, on_delete=models.CASCADE)
     region = models.ForeignKey(Region, null=True, on_delete=models.CASCADE)
     city = models.ForeignKey(City, null=True, on_delete=models.CASCADE)
+    village = models.CharField(max_length=255, null=True, blank=True)
     street = models.CharField(max_length=255, null=True, blank=True)
     house = models.CharField(max_length=30, null=True, blank=True)
     apartment = models.CharField(max_length=10, null=True, blank=True)

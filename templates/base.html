@@ -19,10 +19,10 @@
  <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">{% trans "Sirius" %}</a>
+      <a class="navbar-brand" href="{% url 'index'%}">{% trans "Sirius" %}</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="">{% trans "People" %}</a></li>
+      <li class="active"><a href="{% url 'people'%}">{% trans "People" %}</a></li>
       <li><a href="">{% trans "Reports" %}</a></li>
       <li><a href="">{% trans "Actions" %}</a></li>
     </ul>
