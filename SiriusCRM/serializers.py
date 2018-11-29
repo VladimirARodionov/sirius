@@ -9,7 +9,7 @@ class UserListSerializer(ModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'email')
 
 
-class UserEditSerializer(ModelSerializer):
+class UserDetailSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email')
+        fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday')

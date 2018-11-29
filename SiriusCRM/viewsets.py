@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
 
 from SiriusCRM.models import User
-from SiriusCRM.serializers import UserListSerializer, UserEditSerializer
+from SiriusCRM.serializers import UserListSerializer, UserDetailSerializer
 
 
 class UserListViewSet(LoginRequiredMixin, viewsets.ReadOnlyModelViewSet):
@@ -10,6 +10,6 @@ class UserListViewSet(LoginRequiredMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = UserListSerializer
 
 
-class UserEditViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
+class UserDetailViewSet(LoginRequiredMixin, viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserEditSerializer
+    serializer_class = UserDetailSerializer

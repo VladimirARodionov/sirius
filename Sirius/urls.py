@@ -20,11 +20,11 @@ from django.contrib.auth.views import LoginView, PasswordResetView, PasswordRese
 from rest_framework.routers import DefaultRouter
 
 from SiriusCRM import views
-from SiriusCRM.viewsets import UserListViewSet, UserEditViewSet
+from SiriusCRM.viewsets import UserListViewSet, UserDetailViewSet
 
 router = DefaultRouter()
-router.register('api/userlist', UserListViewSet, basename='userlist')
-router.register('api/useredit', UserEditViewSet, basename='useredit')
+router.register('api/user', UserListViewSet, basename='user')
+router.register('api/userdetail', UserDetailViewSet, basename='userdetail')
 
 
 urlpatterns = [
