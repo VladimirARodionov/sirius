@@ -1,24 +1,165 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div id="starting">
+<h1>List of Users
+          <button class="btn btn-success" data-toggle="modal" data-target="#addUserModal">Add user</button>
+          </h1>
 <div class="table-responsive">
   <table class="table">
     <thead>
       <tr>
+        <th>id</th>
         <th>Firstname</th>
         <th>Lastname</th>
         <th>Email</th>
       </tr>
     </thead>
     <tbody>
-      {% for user in object_list %}
-      <tr>
+      <tr v-for="user in users">
+        <td>{{ user.id }}</td>
         <td>{{ user.first_name }}</td>
         <td>{{ user.last_name }}</td>
         <td>{{ user.email }}</td>
       </tr>
-      {% endfor %}
     </tbody>
   </table>
 </div>
+<div class="loading" v-if="loading===true">Loading&#8230;</div>
+<!-- Add People Modal -->
+          <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Add user</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form @submit.prevent="addPeople()">
+                    {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                      <label for="first_name">first name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="first_name"
+                        placeholder="Enter First name"
+                        v-model="newPeople.first_name"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="last_name">last name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="last_name"
+                        placeholder="Enter Last name"
+                        v-model="newPeople.last_name"
+                        required="required" >
+                    </div>
+                    <div class="form-group">
+                      <label for="email">email</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="email"
+                        placeholder="Enter email"
+                        v-model="newPeople.email"
+                        required="required" >
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+              </div>
+            </div>
+           <div class="loading" v-if="loading===true">Loading&#8230;</div>
+          </div>
+          <!-- End of people modal -->
+
+</div>
+<script type="text/javascript">
+ new Vue({
+   el: '#starting',
+   delimiters: ['${','}'],
+   data: {
+   users: [],
+   loading: false,
+   currentPeople: {},
+   message: null,
+   newPeople: { 'first_name': null, 'last_name': null, 'email': null},
+ },
+ mounted: function() {
+ this.getPeoples();
+},
+methods: {
+ getPeoples: function() {
+  this.loading = true;
+  this.$http.get("{% url 'userlist-list' %}")
+      .then((response) => {
+        this.users = response.data;
+        this.loading = false;
+      })
+      .catch((err) => {
+       this.loading = false;
+       console.log(err);
+      })
+ },
+ getPeople: function(id) {
+  this.loading = true;
+  this.$http.get("{% url 'userlist-list' %}"+'${id}/')
+      .then((response) => {
+        this.currentPeople = response.data;
+        this.loading = false;
+      })
+      .catch((err) => {
+        this.loading = false;
+        console.log(err);
+      })
+ },
+ addPeople: function() {
+  this.loading = true;
+  this.$http.post('/api/useredit/',this.newPeople)
+      .then((response) => {
+        this.loading = false;
+        this.getPeople();
+      })
+      .catch((err) => {
+        this.loading = false;
+        console.log(err);
+      })
+ },
+ updatePeople: function() {
+  this.loading = true;
+  this.$http.put('/api/useredit/${this.currentPeople.user_id}/', this.currentPeople)
+      .then((response) => {
+        this.loading = false;
+        this.currentPeople = response.data;
+        this.getPeople();
+      })
+      .catch((err) => {
+        this.loading = false;
+        console.log(err);
+      })
+ },
+ deletePeople: function(id) {
+  this.loading = true;
+  this.$http.delete('/api/useredit/${id}/' )
+      .then((response) => {
+        this.loading = false;
+        this.getPeople();
+      })
+      .catch((err) => {
+        this.loading = false;
+        console.log(err);
+      })
+ }
+ },});
+ </script>
+
 {% endblock %}
+
