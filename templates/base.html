@@ -19,16 +19,16 @@
  <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">{% trans "Sirius" %}</a>
+      <a class="navbar-brand" href="{% url 'index'%}">{% trans "Sirius" %}</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="">{% trans "People" %}</a></li>
+      <li class="active"><a href="{% url 'people'%}">{% trans "People" %}</a></li>
       <li><a href="">{% trans "Reports" %}</a></li>
       <li><a href="">{% trans "Actions" %}</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
        {% if user.is_authenticated %}
-          <li><p class="navbar-text">{% trans "User" %}: {{ user.get_username }}</p></li>
+          <li><p class="navbar-text">{% trans "User" %}: {{ user.get_full_name }}</p></li>
           <li>
               <a href="{% url 'logout'%}?next={{request.path}}"><span class="glyphicon glyphicon-user"></span>{% trans "Logout" %}</a>
           </li>

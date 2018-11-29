@@ -125,8 +125,6 @@ STATIC_URL = '/static/'
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-AUTHENTICATION_BACKENDS = [
-    'SiriusCRM.auth.DualModelBackend.DualModelBackend'
-]
 LOCALE_PATHS = (
     BASE_DIR + 'SiriusCRM/locale', )
+AUTH_USER_MODEL = 'SiriusCRM.User'
