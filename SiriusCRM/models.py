@@ -116,7 +116,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(_('first name'), max_length=50, blank=False)
     last_name = models.CharField(_('last name'), max_length=50, blank=False)
-    middle_name = models.CharField(_('last name'), max_length=50, blank=True)
+    middle_name = models.CharField(_('middle name'), max_length=50, blank=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     date_left = models.DateTimeField(_('date left'),null=True, blank=True)
     is_active = models.BooleanField(_('active'), default=True)
