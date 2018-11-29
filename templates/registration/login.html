@@ -3,64 +3,46 @@
 {% get_current_language as LANGUAGE_CODE %}
 {% block content %}
 
-{% if form.errors %}
-    {% for key, value in form.errors.items %}
-<p>
-    {% if key != '__all__' %}{{ key }} {% endif %}{{ value }}
-</p>
-    {% endfor %}
-{% endif %}
-
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>{% trans "Your account doesn't have access to this page. To proceed, please login with an account that has access" %}</p>
+    {% if form.errors %}
+        {% for key, value in form.errors.items %}
+            <p>
+                {% if key != '__all__' %}{{ key }} {% endif %}{{ value }}
+            </p>
+        {% endfor %}
     {% endif %}
-{% endif %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-lg-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            {% trans "Authorization" %}</h3>
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p>{% trans "Your account doesn't have access to this page. To proceed, please login with an account that has access" %}</p>
+        {% endif %}
+    {% endif %}
+
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-6 col-md-3">
+                <form class="form-container" method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <h2>{% trans "Login" %}</h2>
+                    <div class="form-group">
+
+                        <input type="email" name="username" id="id_username" class="form-control" placeholder="{% trans "Email" %}" required autofocus />
+
                     </div>
-                    <form role="form" method="post" action="{% url 'login' %}">
-                        {% csrf_token %}
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-6 login-box">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                                        <input type="text" name="username" id="id_username" class="form-control" placeholder="{% trans "Email" %}" required autofocus />
-                                    </div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                                        <input type="password" name="password" class="form-control" id="id_password" placeholder="{% trans "Password" %}" required>
-                                    </div>
-                                    <p><a href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="row">
-                                <!--<div class="col-xs-6 col-sm-6 col-md-6">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" value="Remember">
-                                            {# {% trans "Remember me" %} #}
-                                        </label>
-                                    </div>
-                                </div>-->
-                                <div class="col-xs-6 col-sm-6 col-md-6">
-                                    <input type="submit" class="btn btn-primary btn-lg" value="{% trans "Login" %}" />
-                                    <input type="hidden" name="next" value="{{ next }}" />
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+
+                    <div class="form-group">
+
+                        <input type="password" name="password" class="form-control" id="id_password" placeholder="{% trans "Password" %}" required>
+
+                    </div>
+                    <div class="forgot">
+                        <a href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
+                    </div>
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    <button type="submit" class="btn btn-primary btn-block">{% trans "Login" %}</button>
+
+                </form>
             </div>
+
         </div>
     </div>
 
