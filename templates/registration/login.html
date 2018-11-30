@@ -17,33 +17,49 @@
         {% endif %}
     {% endif %}
 
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12 col-sm-6 col-md-3">
-                <form class="form-container" method="post" action="{% url 'login' %}">
-                    {% csrf_token %}
-                    <h2>{% trans "Login" %}</h2>
-                    <div class="form-group">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6 mx-auto">
 
-                        <input type="email" name="username" id="id_username" class="form-control" placeholder="{% trans "Email" %}" required autofocus />
+                        <!-- form card login -->
+                        <div class="card rounded-0">
+                            <div class="card-header">
+                                <h3 class="mb-0">{% trans "Login" %}</h3>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-container" method="post" action="{% url 'login' %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
 
+                                        <input type="email" name="username" id="id_username" class="form-control" placeholder="{% trans "Email" %}" required autofocus />
+
+                                    </div>
+
+                                    <div class="form-group">
+
+                                        <input type="password" name="password" class="form-control" id="id_password" placeholder="{% trans "Password" %}" required>
+
+                                    </div>
+                                    <div class="forgot">
+                                        <a href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
+                                    </div>
+                                    <input type="hidden" name="next" value="{{ next }}" />
+                                    <button type="submit" class="btn btn-primary btn-block">{% trans "Login" %}</button>
+
+                                </form>
+                            </div>
+                            <!--/card-block-->
+                        </div>
+                        <!-- /form card login -->
                     </div>
-
-                    <div class="form-group">
-
-                        <input type="password" name="password" class="form-control" id="id_password" placeholder="{% trans "Password" %}" required>
-
-                    </div>
-                    <div class="forgot">
-                        <a href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
-                    </div>
-                    <input type="hidden" name="next" value="{{ next }}" />
-                    <button type="submit" class="btn btn-primary btn-block">{% trans "Login" %}</button>
-
-                </form>
+                </div>
+                <!--/row-->
             </div>
-
+            <!--/col-->
         </div>
+        <!--/row-->
     </div>
-
+    <!--/container-->
 {% endblock %}
