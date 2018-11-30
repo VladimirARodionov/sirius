@@ -42,10 +42,8 @@
                     <form @submit.prevent="addPeople()">
                         {% csrf_token %}
                         <div class="modal-body">
-                            <div v-if="errors">
-                                <div v-for="value of errors">
-                                  ${value}
-                                </div>
+                            <div v-if="error">
+                                  ${error}
                             </div>
                             <div class="form-group">
                                 <label for="first_name">first name</label>
@@ -100,10 +98,8 @@
                     <form @submit.prevent="updatePeople()">
                         {% csrf_token %}
                         <div class="modal-body">
-                            <div v-if="errors">
-                                <div v-for="value of errors">
-                                  ${value}
-                                </div>
+                            <div v-if="error">
+                                  ${error}
                             </div>
                             <div class="form-group">
                                 <label for="first_name">first name</label>
@@ -158,7 +154,7 @@
                 isSelected: false,
                 message: null,
                 newPeople: { 'first_name': null, 'last_name': null, 'email': null},
-                errors:[],
+                error: '',
             },
             mounted: function() {
                 this.getPeoples();
@@ -199,6 +195,7 @@
                 },
                 addPeople: function() {
                     this.loading = true;
+                    this.error = '';
                     var csrf = document.querySelector('[name="csrfmiddlewaretoken"]').value;
                     Vue.http.headers.common['X-CSRFTOKEN'] = csrf;
                     this.$http.post('/api/userdetail/',this.newPeople)
@@ -209,7 +206,10 @@
                         }, (err) => {
                                 console.log(err);
                                 if (err.bodyText) {
-                                    this.errors.push(err.bodyText);
+                                    var errors = JSON.parse(err.bodyText);
+                                    for (var value in errors) {
+                                        this.error = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
+                                    }
                                     console.log(err.bodyText);
                                 }
                             })
@@ -220,6 +220,7 @@
                 },
                 updatePeople: function() {
                     this.loading = true;
+                    this.error = '';
                     if (this.currentPeople !== '') {
                     var csrf = document.querySelector('[name="csrfmiddlewaretoken"]').value;
                     Vue.http.headers.common['X-CSRFTOKEN'] = csrf;
@@ -232,7 +233,10 @@
                             }, (err) => {
                                 console.log(err);
                                 if (err.bodyText) {
-                                    this.errors.push(err.bodyText);
+                                    var errors = JSON.parse(err.bodyText);
+                                    for (var value in errors) {
+                                        this.error = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
+                                    }
                                     console.log(err.bodyText);
                                 }
                             })
