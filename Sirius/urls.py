@@ -14,11 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetDoneView, PasswordResetCompleteView, \
     PasswordResetConfirmView, LogoutView
+from rest_framework.routers import DefaultRouter
 
 from SiriusCRM import views
+from SiriusCRM.viewsets import UserListViewSet, UserDetailViewSet
+
+router = DefaultRouter()
+router.register('api/user', UserListViewSet, basename='user')
+router.register('api/userdetail', UserDetailViewSet, basename='userdetail')
+
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -31,3 +38,4 @@ urlpatterns = [
     re_path('accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
     path('accounts/reset/done/', PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete'),
 ]
+urlpatterns += router.urls

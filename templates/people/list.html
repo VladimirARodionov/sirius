@@ -1,24 +1,271 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in object_list %}
-      <tr>
-        <td>{{ user.first_name }}</td>
-        <td>{{ user.last_name }}</td>
-        <td>{{ user.email }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+    <div id="starting">
+        <h1>List of Users</h1>
+        <div>
+            <button class="btn btn-success" data-toggle="modal" data-target="#addUserModal">Add</button>
+            <button class="btn btn-success" v-if="isSelected" data-toggle="modal" data-target="#editUserModal">Edit</button>
+            <button class="btn btn-danger" v-if="isSelected" v-on:click="deletePeople()">Delete</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>id</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="user in users" v-on:click="selectPeople(user)" v-bind:class="isActive(user)">
+                    <td >${user.id}</td>
+                    <td>${user.first_name}</td>
+                    <td>${user.last_name}</td>
+                    <td>${user.email}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--<div class="loading" v-if="loading===true">Loading&#8230;</div> -->
+        <!-- Add People Modal -->
+        <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add user</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form @submit.prevent="addPeople()">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div v-if="error">
+                                  ${error}
+                            </div>
+                            <div class="form-group">
+                                <label for="first_name">first name</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="first_name"
+                                        placeholder="Enter First name"
+                                        v-model="newPeople.first_name"
+                                        required="required" >
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">last name</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="last_name"
+                                        placeholder="Enter Last name"
+                                        v-model="newPeople.last_name"
+                                        required="required" >
+                            </div>
+                            <div class="form-group">
+                                <label for="email">email</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="email"
+                                        placeholder="Enter email"
+                                        v-model="newPeople.email"
+                                        required="required" >
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End of people modal -->
+        <!-- Edit People Modal -->
+        <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Edit user</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form @submit.prevent="updatePeople()">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div v-if="error">
+                                  ${error}
+                            </div>
+                            <div class="form-group">
+                                <label for="first_name">first name</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="first_name"
+                                        placeholder="Enter First name"
+                                        v-model="currentPeople.first_name"
+                                        required="required" >
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">last name</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="last_name"
+                                        placeholder="Enter Last name"
+                                        v-model="currentPeople.last_name"
+                                        required="required" >
+                            </div>
+                            <div class="form-group">
+                                <label for="email">email</label>
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="email"
+                                        placeholder="Enter email"
+                                        v-model="currentPeople.email"
+                                        required="required" >
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- End of people modal -->
+
+    </div>
+    <script type="text/javascript">
+        new Vue({
+            el: '#starting',
+            delimiters: ['${','}'],
+            data: {
+                users: [],
+                loading: false,
+                currentPeople: {},
+                isSelected: false,
+                message: null,
+                newPeople: { 'first_name': null, 'last_name': null, 'email': null},
+                error: '',
+            },
+            mounted: function() {
+                this.getPeoples();
+            },
+            methods: {
+                getPeoples: function() {
+                    this.loading = true;
+                    this.$http.get("{% url 'user-list' %}")
+                        .then((response) => {
+                            this.users = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                selectPeople: function(user) {
+                    this.currentPeople = user;
+                    this.isSelected = true;
+                },
+                isActive: function(user) {
+                    return {
+                        'table-primary': this.currentPeople === user && !this.error
+                    }
+                },
+                getPeople: function(id) {
+                    this.loading = true;
+                    this.$http.get("{% url 'user-list' %}"+'${id}/')
+                        .then((response) => {
+                            this.currentPeople = response.data;
+                            this.loading = false;
+                        })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                addPeople: function() {
+                    this.loading = true;
+                    this.error = '';
+                    var csrf = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+                    Vue.http.headers.common['X-CSRFTOKEN'] = csrf;
+                    this.$http.post('/api/userdetail/',this.newPeople)
+                        .then((response) => {
+                            this.loading = false;
+                            $("#addUserModal").modal('hide');
+                            this.getPeoples();
+                        }, (err) => {
+                                console.log(err);
+                                if (err.bodyText) {
+                                    var errors = JSON.parse(err.bodyText);
+                                    for (var value in errors) {
+                                        this.error = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
+                                    }
+                                    console.log(err.bodyText);
+                                }
+                            })
+                        .catch((err) => {
+                            this.loading = false;
+                            console.log(err);
+                        })
+                },
+                updatePeople: function() {
+                    this.loading = true;
+                    this.error = '';
+                    if (this.currentPeople !== '') {
+                    var csrf = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+                    Vue.http.headers.common['X-CSRFTOKEN'] = csrf;
+                    this.$http.put('/api/userdetail/'+this.currentPeople.id+'/', this.currentPeople)
+                            .then((response) => {
+                                this.loading = false;
+                                this.currentPeople = response.data;
+                                $("#editUserModal").modal('hide');
+                                this.getPeoples();
+                            }, (err) => {
+                                console.log(err);
+                                if (err.bodyText) {
+                                    var errors = JSON.parse(err.bodyText);
+                                    for (var value in errors) {
+                                        this.error = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
+                                    }
+                                    console.log(err.bodyText);
+                                }
+                            })
+                            .catch((err) => {
+                                this.loading = false;
+                                console.log(err);
+                            })
+                    }
+                },
+                deletePeople: function() {
+                    this.loading = true;
+                    if (this.currentPeople !== '') {
+                        var csrf = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+                        Vue.http.headers.common['X-CSRFTOKEN'] = csrf;
+                        this.$http.delete('/api/userdetail/'+this.currentPeople.id+'/' )
+                            .then((response) => {
+                                this.loading = false;
+                                this.currentPeople = '';
+                                this.isSelected = false;
+                                this.getPeoples();
+                            })
+                            .catch((err) => {
+                                this.loading = false;
+                                console.log(err);
+                            })
+                    }
+                }
+            },});
+    </script>
+
 {% endblock %}
+
