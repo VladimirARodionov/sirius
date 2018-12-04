@@ -30,6 +30,7 @@ router.register('api/userdetail', UserDetailViewSet, basename='userdetail')
 urlpatterns = [
     path('', views.index, name='index'),
     path('people', views.PeopleView.as_view(), name='people'),
+    path('actions', views.PeopleImportView.as_view(), name='actions'),
     path('admin/', admin.site.urls),
     path('accounts/login/', LoginView.as_view(template_name='registration/login.html'), name="login"),
     path('accounts/logout/', LogoutView.as_view(template_name='registration/logged_out.html'), name="logout"),
@@ -37,5 +38,6 @@ urlpatterns = [
     path('accounts/password_reset/done/', PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),
     re_path('accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
     path('accounts/reset/done/', PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name='password_reset_complete'),
+    path('api/userimport', views.PeopleImportView.as_view()),
 ]
 urlpatterns += router.urls

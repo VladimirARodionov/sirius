@@ -31,7 +31,7 @@
       <div class="navbar-nav d-lg-flex align-items-center">
       <a class="nav-item nav-link active" href="{% url 'people'%}">{% trans "People" %} <span class="sr-only">(current)</span></a>
       <a class="nav-item nav-link" href="">{% trans "Reports" %}</a>
-      <a class="nav-item nav-link" href="">{% trans "Actions" %}</a>
+      <a class="nav-item nav-link" href="{% url 'actions'%}">{% trans "Actions" %}</a>
     </div>
     <div class="navbar-nav ml-auto d-lg-flex align-items-center">
        {% if user.is_authenticated %}
