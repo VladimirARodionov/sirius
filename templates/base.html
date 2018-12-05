@@ -29,9 +29,9 @@
 
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav d-lg-flex align-items-center">
-      <a class="nav-item nav-link active" href="{% url 'people'%}">{% trans "People" %} <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link {% if 'people' in request.get_full_path %}active{% endif %}" href="{% url 'people' %}">{% trans "People" %}</a>
       <a class="nav-item nav-link" href="">{% trans "Reports" %}</a>
-      <a class="nav-item nav-link" href="{% url 'actions'%}">{% trans "Actions" %}</a>
+      <a class="nav-item nav-link {% if 'actions' in request.get_full_path %}active{% endif %}" href="{% url 'actions' %}">{% trans "Actions" %}</a>
     </div>
     <div class="navbar-nav ml-auto d-lg-flex align-items-center">
        {% if user.is_authenticated %}

@@ -5,7 +5,30 @@
 {% block content %}
     <div id="starting">
         <h1>{% trans "Import Users" %}</h1>
-        <form action="/api/userimport" method="post" enctype="multipart/form-data">
+        {% if result %}
+            <div container>
+                <div class="row">
+                    <div class="col col-lg-6">
+
+                        {% if result.success %}
+                            <div class="alert alert-success">
+                                <p>{% trans "Success" %}</p>
+                                <div>{% trans "Added records" %}: {{ result.num_success }} </div>
+                                <div>{% trans "Existing records" %}: {{ result.num_exists }} </div>
+                                <div>{% trans "Failed records" %}: {{ result.num_failed }} </div>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-danger">
+                                <p>{% trans "Failure" %}</p>
+                                <div>{{ result.error }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <form action="actions" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="file" id="myFile" name="filename">
 
