@@ -2,10 +2,10 @@ import csv
 import io
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, UpdateView
+from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import FileUploadParser
 
 from SiriusCRM.models import User
@@ -67,3 +67,13 @@ class PeopleImportView(LoginRequiredMixin, TemplateView):
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
             return render(request, self.template_name, context)
+
+
+class PeopleDetailsView(LoginRequiredMixin, UpdateView):
+    model = User
+    fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile')
+    template_name = 'people/details.html'
+
+    def get_object(self):
+        return get_object_or_404(User, pk=self.kwargs['number'])
+
