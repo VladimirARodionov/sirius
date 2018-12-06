@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-21 10:09+0300\n"
+"POT-Creation-Date: 2018-12-06 14:05+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,35 +20,220 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\templates\base.html:7 .\templates\base.html:22
+#: .\SiriusCRM\models.py:126 .\SiriusCRM\models.py:135
+msgid "email address"
+msgstr ""
+
+#: .\SiriusCRM\models.py:127 .\SiriusCRM\models.py:136
+msgid "first name"
+msgstr ""
+
+#: .\SiriusCRM\models.py:128 .\SiriusCRM\models.py:129
+#: .\SiriusCRM\models.py:137
+msgid "last name"
+msgstr ""
+
+#: .\SiriusCRM\models.py:138
+msgid "middle name"
+msgstr ""
+
+#: .\SiriusCRM\models.py:139
+msgid "date joined"
+msgstr ""
+
+#: .\SiriusCRM\models.py:140
+msgid "date left"
+msgstr ""
+
+#: .\SiriusCRM\models.py:141
+msgid "active"
+msgstr ""
+
+#: .\SiriusCRM\models.py:144
+msgid "staff status"
+msgstr ""
+
+#: .\SiriusCRM\models.py:146
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: .\SiriusCRM\models.py:148
+msgid "birthday"
+msgstr ""
+
+#: .\SiriusCRM\models.py:166
+msgid "user"
+msgstr ""
+
+#: .\SiriusCRM\models.py:167
+msgid "users"
+msgstr ""
+
+#: .\Sirius\settings.py:136
+msgid "English"
+msgstr ""
+
+#: .\Sirius\settings.py:136
+msgid "Russian"
+msgstr "Русский"
+
+#: .\templates\base.html:7 .\templates\base.html:25
 #: .\templates\base_generic.html:7
 msgid "Sirius"
 msgstr "Сириус"
 
-#: .\templates\base.html:25
+#: .\templates\base.html:32
 msgid "People"
 msgstr "Люди"
 
-#: .\templates\base.html:26
+#: .\templates\base.html:33
 msgid "Reports"
 msgstr "Отчеты"
 
-#: .\templates\base.html:27
+#: .\templates\base.html:34
 msgid "Actions"
 msgstr "Действия"
 
-#: .\templates\base.html:31
+#: .\templates\base.html:35
+msgid "Directories"
+msgstr "Справочники"
+
+#: .\templates\base.html:39
 msgid "User"
 msgstr "Пользователь"
 
-#: .\templates\base.html:33
+#: .\templates\base.html:42
 msgid "Logout"
 msgstr "Выйти"
 
-#: .\templates\base.html:37 .\templates\registration\login.html:56
+#: .\templates\base.html:46 .\templates\registration\login.html:29
+#: .\templates\registration\login.html:49
 #: .\templates\registration\password_reset_complete.html:8
 msgid "Login"
 msgstr "Войти"
+
+#: .\templates\people\details.html:7
+msgid "User details"
+msgstr "Детальная информация о пользователе"
+
+#: .\templates\people\details.html:12 .\templates\people\details.html:13
+#: .\templates\people\list.html:26 .\templates\people\list.html:68
+#: .\templates\people\list.html:123
+msgid "Last name"
+msgstr "Фамилия"
+
+#: .\templates\people\details.html:16 .\templates\people\details.html:17
+#: .\templates\people\list.html:25 .\templates\people\list.html:58
+#: .\templates\people\list.html:113
+msgid "First name"
+msgstr "Имя"
+
+#: .\templates\people\details.html:20 .\templates\people\details.html:21
+msgid "Middle name"
+msgstr "Отчество"
+
+#: .\templates\people\details.html:25 .\templates\people\details.html:26
+#: .\templates\people\list.html:27 .\templates\people\list.html:78
+#: .\templates\people\list.html:133 .\templates\registration\login.html:36
+#: .\templates\registration\password_reset_form.html:22
+msgid "Email"
+msgstr "Email"
+
+#: .\templates\people\details.html:29 .\templates\people\details.html:30
+msgid "Mobile"
+msgstr "Сотовый"
+
+#: .\templates\people\details.html:33 .\templates\people\details.html:34
+msgid "Birthday"
+msgstr "День рождения"
+
+#: .\templates\people\details.html:38 .\templates\people\list.html:89
+#: .\templates\people\list.html:144
+msgid "Save"
+msgstr "Сохранить"
+
+#: .\templates\people\details.html:39
+#, fuzzy
+#| msgid "New password"
+msgid "Change password"
+msgstr "Новый пароль"
+
+#: .\templates\people\import.html:7
+msgid "Import Users"
+msgstr "Импорт пользователей"
+
+#: .\templates\people\import.html:15
+msgid "Success"
+msgstr "Успешно"
+
+#: .\templates\people\import.html:16
+msgid "Added records"
+msgstr "Добавленных записей"
+
+#: .\templates\people\import.html:17
+msgid "Existing records"
+msgstr "Существующих записей"
+
+#: .\templates\people\import.html:18
+msgid "Failed records"
+msgstr "Записей с ошибкой"
+
+#: .\templates\people\import.html:22
+msgid "Failure"
+msgstr "Ошибка"
+
+#: .\templates\people\import.html:36
+msgid "Import"
+msgstr "Импорт"
+
+#: .\templates\people\list.html:7
+msgid "List of Users"
+msgstr "Список пользователей"
+
+#: .\templates\people\list.html:10
+msgid "Add"
+msgstr "Добавить"
+
+#: .\templates\people\list.html:11
+msgid "Details"
+msgstr "Детали"
+
+#: .\templates\people\list.html:12 .\templates\people\list.html:101
+msgid "Edit"
+msgstr "Редактировать"
+
+#: .\templates\people\list.html:13 .\templates\people\list.html:173
+msgid "Delete"
+msgstr "Удалить"
+
+#: .\templates\people\list.html:16 .\templates\people\list.html:17
+msgid "Search"
+msgstr "Поиск"
+
+#: .\templates\people\list.html:46
+msgid "Add user"
+msgstr "Добавить пользователя"
+
+#: .\templates\people\list.html:88 .\templates\people\list.html:143
+msgid "Close"
+msgstr "Закрыть"
+
+#: .\templates\people\list.html:156
+msgid "Delete confirm"
+msgstr "Подтверждение удаления"
+
+#: .\templates\people\list.html:168
+#, python-brace-format
+msgid ""
+"Delete user #${currentPeople.id}  ${currentPeople.first_name} "
+"${currentPeople.last_name} (${currentPeople.email})  ?"
+msgstr ""
+"Удалить пользователя #${currentPeople.id}  ${currentPeople.first_name} "
+"${currentPeople.last_name} (${currentPeople.email})  ?"
+
+#: .\templates\people\list.html:172
+msgid "No"
+msgstr "Нет"
 
 #: .\templates\registration\logged_out.html:6
 msgid "Logged out"
@@ -64,19 +249,11 @@ msgid ""
 "an account that has access"
 msgstr ""
 
-#: .\templates\registration\login.html:26
-msgid "Authorization"
-msgstr "Авторизация"
-
-#: .\templates\registration\login.html:35
-msgid "Username or email"
-msgstr "Имя пользователя или email"
-
-#: .\templates\registration\login.html:39
+#: .\templates\registration\login.html:42
 msgid "Password"
 msgstr "Пароль"
 
-#: .\templates\registration\login.html:41
+#: .\templates\registration\login.html:46
 msgid "Lost password?"
 msgstr "Забыли пароль?"
 
@@ -84,28 +261,28 @@ msgstr "Забыли пароль?"
 msgid "Password change successful"
 msgstr "Пароль успешно сменен"
 
-#: .\templates\registration\password_reset_confirm.html:14
-#: .\templates\registration\password_reset_form.html:12
+#: .\templates\registration\password_reset_confirm.html:17
+#: .\templates\registration\password_reset_form.html:15
 msgid "Password reset"
 msgstr "Сброс пароля"
 
-#: .\templates\registration\password_reset_confirm.html:23
+#: .\templates\registration\password_reset_confirm.html:24
 msgid "New password"
 msgstr "Новый пароль"
 
-#: .\templates\registration\password_reset_confirm.html:27
+#: .\templates\registration\password_reset_confirm.html:25
 msgid "Password confirmation"
 msgstr "Подтверждение пароля"
 
-#: .\templates\registration\password_reset_confirm.html:35
+#: .\templates\registration\password_reset_confirm.html:29
 msgid "Password change"
 msgstr "Смена пароля"
 
-#: .\templates\registration\password_reset_confirm.html:45
+#: .\templates\registration\password_reset_confirm.html:46
 msgid "Password reset unsuccessful"
 msgstr "Не удалось сбросить пароль"
 
-#: .\templates\registration\password_reset_confirm.html:46
+#: .\templates\registration\password_reset_confirm.html:47
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used. Please request a new password reset."
@@ -128,10 +305,9 @@ msgid ""
 "Someone asked for password reset for email %(email)s. Follow the link below:"
 msgstr ""
 
-#: .\templates\registration\password_reset_form.html:21
-msgid "Email"
-msgstr "Email"
-
-#: .\templates\registration\password_reset_form.html:29
+#: .\templates\registration\password_reset_form.html:26
 msgid "Reset password"
 msgstr "Сброс пароля"
+
+#~ msgid "Authorization"
+#~ msgstr "Авторизация"
