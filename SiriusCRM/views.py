@@ -45,8 +45,8 @@ class PeopleImportView(LoginRequiredMixin, TemplateView):
                 reader = csv.reader(f)
                 for row in reader:
                     fio = row[3].split()
-                    emailList = row[5].split()
-                    if (len(fio) == 3 and len(emailList) > 0 and '@' in emailList[0]):
+                    email_list = row[5].split()
+                    if (len(fio) == 3 and len(email_list) > 0 and '@' in email_list[0]):
                         try:
                             _, created = User.objects.get_or_create(
                                 # creates a tuple of the new object or
@@ -54,7 +54,7 @@ class PeopleImportView(LoginRequiredMixin, TemplateView):
                                 first_name=fio[1],
                                 last_name=fio[0],
                                 middle_name=fio[2],
-                                email=emailList[0],
+                                email=email_list[0],
                                 mobile=row[4],
                             )
                             if (created):
