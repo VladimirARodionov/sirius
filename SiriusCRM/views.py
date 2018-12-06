@@ -51,10 +51,11 @@ class PeopleImportView(LoginRequiredMixin, TemplateView):
                             _, created = User.objects.get_or_create(
                                 # creates a tuple of the new object or
                                 # current object and a boolean of if it was created
-                                first_name = fio[1],
-                                last_name = fio[0],
-                                middle_name = fio[2],
-                                email = emailList[0]
+                                first_name=fio[1],
+                                last_name=fio[0],
+                                middle_name=fio[2],
+                                email=emailList[0],
+                                mobile=row[4],
                             )
                             if (created):
                                 num_success += 1
