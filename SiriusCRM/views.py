@@ -1,9 +1,11 @@
 import csv
 import io
 
+from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.views.generic import TemplateView, UpdateView
 from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import FileUploadParser
@@ -69,11 +71,24 @@ class PeopleImportView(LoginRequiredMixin, TemplateView):
             return render(request, self.template_name, context)
 
 
+class PeopleDetailsForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile']
+
+
 class PeopleDetailsView(LoginRequiredMixin, UpdateView):
-    model = User
-    fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile')
+    form_class = PeopleDetailsForm
     template_name = 'people/details.html'
 
     def get_object(self):
         return get_object_or_404(User, pk=self.kwargs['number'])
 
+    def get_success_url(self):
+        self.success_url = reverse('peopleDetails', kwargs={'number':self.kwargs['number']})
+        return str(self.success_url)  # success_url may be lazy
+
+    def get_form(self, form_class=None):
+        form = super(PeopleDetailsView, self).get_form(form_class)
+        form.fields['email'].required = False
+        return form

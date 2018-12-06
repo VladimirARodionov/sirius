@@ -34,8 +34,8 @@
       <a class="nav-item nav-link {% if 'actions' in request.get_full_path %}active{% endif %}" href="{% url 'actions' %}">{% trans "Actions" %}</a>
     </div>
     <div class="navbar-nav ml-auto d-lg-flex align-items-center">
-       {% if user.is_authenticated %}
-          <div class="nav-item"><div class="navbar-text">{% trans "User" %}: {{ user.get_full_name }}</div>
+       {% if request.user.is_authenticated %}
+          <div class="nav-item"><div class="navbar-text">{% trans "User" %}: {{ request.user.get_full_name }}</div>
           </div>
           <div class="nav-item">
               <a class="nav-link" href="{% url 'logout'%}?next={{request.path}}"><span class="fa fa-user"></span>{% trans "Logout" %}</a>
