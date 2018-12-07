@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+{% block content %}
+    <div id="starting">
+        <h1>{% trans 'User details' %}</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="last_name">{% trans 'Last name' %}</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required placeholder="{% trans 'Last name' %}" value="{{ object.last_name }}">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="first_name">{% trans 'First name' %}</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required placeholder="{% trans 'First name' %}" value="{{ object.first_name }}">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="middle_name">{% trans 'Middle name' %}</label>
+                    <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="{% trans 'Middle name' %}" value="{{ object.middle_name }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email">{% trans 'Email' %}</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="{% trans 'Email' %}" value="{{ object.email|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label for="mobile">{% trans 'Mobile' %}</label>
+                <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="{% trans 'Mobile' %}" value="{{ object.mobile|default:"" }}">
+            </div>
+            <div class="form-group">
+                <label for="birthday">{% trans 'Birthday' %}</label>
+                <input type="date" class="form-control" id="birthday" name="birthday" placeholder="{% trans 'Birthday' %}" value="{{ object.birthday|default:"" }}">
+            </div>
+            <div class="btn-toolbar justify-content-between mb-3">
+                <div>
+                    <button type="submit" class="btn btn-primary">{% trans 'Save' %}</button>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#changePasswordModal">{% trans "Change password" %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

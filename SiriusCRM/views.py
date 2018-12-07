@@ -1,11 +1,13 @@
 import csv
 import io
 
+from django import forms
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
+from django.urls import reverse
+from django.views.generic import TemplateView, UpdateView
+from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import FileUploadParser
 
 from SiriusCRM.models import User
@@ -43,16 +45,17 @@ class PeopleImportView(LoginRequiredMixin, TemplateView):
                 reader = csv.reader(f)
                 for row in reader:
                     fio = row[3].split()
-                    emailList = row[5].split()
-                    if (len(fio) == 3 and len(emailList) > 0 and '@' in emailList[0]):
+                    email_list = row[5].split()
+                    if (len(fio) == 3 and len(email_list) > 0 and '@' in email_list[0]):
                         try:
                             _, created = User.objects.get_or_create(
                                 # creates a tuple of the new object or
                                 # current object and a boolean of if it was created
-                                first_name = fio[1],
-                                last_name = fio[0],
-                                middle_name = fio[2],
-                                email = emailList[0]
+                                first_name=fio[1],
+                                last_name=fio[0],
+                                middle_name=fio[2],
+                                email=email_list[0],
+                                mobile=row[4],
                             )
                             if (created):
                                 num_success += 1
@@ -67,3 +70,26 @@ class PeopleImportView(LoginRequiredMixin, TemplateView):
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
             return render(request, self.template_name, context)
+
+
+class PeopleDetailsForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile']
+
+
+class PeopleDetailsView(LoginRequiredMixin, UpdateView):
+    form_class = PeopleDetailsForm
+    template_name = 'people/details.html'
+
+    def get_object(self):
+        return get_object_or_404(User, pk=self.kwargs['number'])
+
+    def get_success_url(self):
+        self.success_url = reverse('peopleDetails', kwargs={'number':self.kwargs['number']})
+        return str(self.success_url)  # success_url may be lazy
+
+    def get_form(self, form_class=None):
+        form = super(PeopleDetailsView, self).get_form(form_class)
+        form.fields['email'].required = False
+        return form

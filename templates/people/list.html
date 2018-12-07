@@ -7,13 +7,14 @@
         <h1>{% trans "List of Users" %}</h1>
         <div class="btn-toolbar justify-content-between mb-3">
             <div>
-            <button class="btn btn-success" data-toggle="modal" data-target="#addUserModal">{% trans "Add" %}</button>
-            <button class="btn btn-success" v-if="isSelected" data-toggle="modal" data-target="#editUserModal">{% trans "Edit" %}</button>
-            <button class="btn btn-danger" v-if="isSelected" v-on:click="deletePeopleConfirm()">{% trans "Delete" %}</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#addUserModal">{% trans "Add" %}</button>
+                <button class="btn btn-success"  v-if="isSelected" v-on:click="goUserDetails()">{% trans "Details" %}</button>
+                <button class="btn btn-success" v-if="isSelected" data-toggle="modal" data-target="#editUserModal">{% trans "Edit" %}</button>
+                <button class="btn btn-danger" v-if="isSelected" v-on:click="deletePeopleConfirm()">{% trans "Delete" %}</button>
             </div>
             <div class="input-group">
-              <input class="form-control mr-sm-2" type="text" placeholder="{% trans "Search" %}" v-model="search_term" aria-label="{% trans "Search" %}">
-              <button class="btn btn-success my-2 my-sm-0" v-on:click.prevent="getPeoples()">{% trans "Search" %}</button>
+                <input class="form-control mr-sm-2" type="text" placeholder="{% trans "Search" %}" v-model="search_term" aria-label="{% trans "Search" %}">
+                <button class="btn btn-success my-2 my-sm-0" v-on:click.prevent="getPeoples()">{% trans "Search" %}</button>
             </div>
         </div>
         <div class="table-responsive">
@@ -51,7 +52,7 @@
                         {% csrf_token %}
                         <div class="modal-body">
                             <div class="alert alert-danger" v-if="errorMessage">
-                                  ${errorMessage}
+                                ${errorMessage}
                             </div>
                             <div class="form-group">
                                 <label for="first_name">{% trans "First name" %}</label>
@@ -106,7 +107,7 @@
                         {% csrf_token %}
                         <div class="modal-body">
                             <div class="alert alert-danger" v-if="errorMessage">
-                                  ${errorMessage}
+                                ${errorMessage}
                             </div>
                             <div class="form-group">
                                 <label for="first_name">{% trans "First name" %}</label>
@@ -161,7 +162,7 @@
                         {% csrf_token %}
                         <div class="modal-body">
                             <div class="alert alert-danger" v-if="errorMessage">
-                                  ${errorMessage}
+                                ${errorMessage}
                             </div>
                             <div class="form-group">
                                 <label> {% blocktrans %}Delete user #${currentPeople.id}  ${currentPeople.first_name} ${currentPeople.last_name} (${currentPeople.email})  ?{% endblocktrans %}</label>
@@ -200,14 +201,14 @@
                     this.loading = true;
                     let api_url = '/api/user/';
                     if(this.search_term !== '' || this.search_term !== null) {
-                      api_url = api_url + "?search=" + this.search_term;
+                        api_url = api_url + "?search=" + this.search_term;
                     }
                     this.$http.get(api_url)
                         .then((response) => {
                             this.users = response.data;
                             //if (this.users && this.users.length > 0 && this.currentPeople && this.isSelected && this.users.filter(x => x.id === this.currentPeople.id).length != 1) {
-                                this.currentPeople = {};
-                                this.isSelected = false;
+                            this.currentPeople = {};
+                            this.isSelected = false;
                             //}
                             this.loading = false;
                         })
@@ -237,6 +238,11 @@
                             console.log(err);
                         })
                 },
+                goUserDetails: function() {
+                    if (this.currentPeople !== '') {
+                        window.location.href = 'people/' + this.currentPeople.id + '/details';
+                    }
+                },
                 addPeople: function() {
                     this.loading = true;
                     this.errorMessage = '';
@@ -248,15 +254,15 @@
                             $("#addUserModal").modal('hide');
                             this.getPeoples();
                         }, (err) => {
-                                console.log(err);
-                                if (err.bodyText) {
-                                    var errors = JSON.parse(err.bodyText);
-                                    for (var value in errors) {
-                                        this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
-                                    }
-                                    console.log(err.bodyText);
+                            console.log(err);
+                            if (err.bodyText) {
+                                var errors = JSON.parse(err.bodyText);
+                                for (var value in errors) {
+                                    this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
                                 }
-                            })
+                                console.log(err.bodyText);
+                            }
+                        })
                         .catch((err) => {
                             this.loading = false;
                             console.log(err);
@@ -266,9 +272,9 @@
                     this.loading = true;
                     this.errorMessage = '';
                     if (this.currentPeople !== '') {
-                    var csrf = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-                    Vue.http.headers.common['X-CSRFTOKEN'] = csrf;
-                    this.$http.put('/api/userdetail/'+this.currentPeople.id+'/', this.currentPeople)
+                        var csrf = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+                        Vue.http.headers.common['X-CSRFTOKEN'] = csrf;
+                        this.$http.put('/api/userdetail/'+this.currentPeople.id+'/', this.currentPeople)
                             .then((response) => {
                                 this.loading = false;
                                 this.currentPeople = response.data;
