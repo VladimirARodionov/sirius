@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
     'SiriusCRM.apps.SiriuscrmConfig',
 
 ]
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'Sirius.urls'
@@ -135,3 +138,4 @@ AUTH_USER_MODEL = 'SiriusCRM.User'
 
 LANGUAGES = [('en', _('English')), ('ru', _('Russian')), ]
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'), 'templates' )
+CORS_ORIGIN_ALLOW_ALL = True
