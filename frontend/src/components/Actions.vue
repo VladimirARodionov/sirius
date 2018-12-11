@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <h1>This page is protected by auth</h1>
-  </div>
+  <div>actions</div>
 </template>
 
 <script>
 export default {
-  name: 'Secure'
+  name: 'Actions'
 }
 </script>
 
