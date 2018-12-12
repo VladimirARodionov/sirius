@@ -174,127 +174,126 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import router from '../router'
+import axios from 'axios'
+import router from '../router'
 
-  export default {
-    name: 'People',
-    data() {
-      return {
-        users: [],
-        loading: false,
-        currentPeople: {},
-        isSelected: false,
-        message: null,
-        newPeople: { 'first_name': null, 'last_name': null, 'email': null},
-        errorMessage: '',
-        search_term: '',
-      }},
-    mounted: function() {
-      this.getPeoples();
+export default {
+  name: 'People',
+  data () {
+    return {
+      users: [],
+      loading: false,
+      currentPeople: {},
+      isSelected: false,
+      message: null,
+      newPeople: {'first_name': null, 'last_name': null, 'email': null},
+      errorMessage: '',
+      search_term: ''
+    }
+  },
+  mounted: function () {
+    this.getPeoples()
+  },
+  methods: {
+    getPeoples: function () {
+      this.loading = true
+      let apiUrl = '/api/user/'
+      if (this.search_term !== '' || this.search_term !== null) {
+        apiUrl = apiUrl + '?search=' + this.search_term
+      }
+      axios.get(process.env.API_URL + apiUrl)
+        .then(resp => {
+          this.users = resp.data
+          this.currentPeople = {}
+          this.isSelected = false
+          this.loading = false
+        })
+        .catch(err => {
+          this.loading = false
+          console.log(err)
+        })
     },
-    methods: {
-      getPeoples: function () {
-        this.loading = true;
-        let api_url = '/api/user/';
-        if (this.search_term !== '' || this.search_term !== null) {
-          api_url = api_url + "?search=" + this.search_term;
-        }
-        axios.get(process.env.API_URL +api_url)
+    selectPeople: function (user) {
+      this.currentPeople = user
+      this.isSelected = true
+    },
+    isActive: function (user) {
+      return {
+        'table-primary': this.currentPeople === user
+      }
+    },
+    goUserDetails: function () {
+      if (this.currentPeople !== '') {
+        router.push({ name: 'peopleDetails', params: { id: this.currentPeople.id } })
+      }
+    },
+    addPeople: function () {
+      this.loading = true
+      this.errorMessage = ''
+      axios.post(process.env.API_URL + '/api/userdetail/', this.newPeople)
+        .then(resp => {
+          this.loading = false
+          $('#addUserModal').modal('hide')
+          this.getPeoples()
+        })
+        .catch(err => {
+          this.loading = false
+          console.log(err)
+          if (err.response.data) {
+            var errors = err.response.data
+            for (var value in errors) {
+              this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '')
+            }
+            console.log(err.response.data)
+          }})
+    },
+    updatePeople: function () {
+      this.loading = true
+      this.errorMessage = ''
+      if (this.currentPeople !== '') {
+        axios.put(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/', this.currentPeople)
           .then(resp => {
-            this.users = resp.data;
-            //if (this.users && this.users.length > 0 && this.currentPeople && this.isSelected && this.users.filter(x => x.id === this.currentPeople.id).length != 1) {
-            this.currentPeople = {};
-            this.isSelected = false;
-            //}
-            this.loading = false;
+            this.loading = false
+            this.currentPeople = resp.data
+            $('#editUserModal').modal('hide')
+            this.getPeoples()
           })
           .catch(err => {
             this.loading = false;
-            console.log(err);
-          })
-      },
-      selectPeople: function (user) {
-        this.currentPeople = user;
-        this.isSelected = true;
-      },
-      isActive: function (user) {
-        return {
-          'table-primary': this.currentPeople === user
-        }
-      },
-      goUserDetails: function () {
-        if (this.currentPeople !== '') {
-          router.push({ name: 'peopleDetails', params: { id: this.currentPeople.id } })
-        }
-      },
-      addPeople: function () {
-        this.loading = true;
-        this.errorMessage = '';
-        axios.post(process.env.API_URL +'/api/userdetail/', this.newPeople)
-          .then(resp => {
-            this.loading = false;
-            $("#addUserModal").modal('hide');
-            this.getPeoples();
-          })
-          .catch(err => {
-            this.loading = false;
-            console.log(err);
+            console.log(err)
             if (err.response.data) {
-              var errors = err.response.data;
+              var errors = err.response.data
               for (var value in errors) {
                 this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
               }
-              console.log(err.response.data);
-            }})
-      },
-      updatePeople: function () {
-        this.loading = true;
-        this.errorMessage = '';
-        if (this.currentPeople !== '') {
-          axios.put(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/', this.currentPeople)
-            .then(resp => {
-              this.loading = false;
-              this.currentPeople = resp.data;
-              $("#editUserModal").modal('hide');
-              this.getPeoples();
-            })
-            .catch(err => {
-              this.loading = false;
-              console.log(err);
-              if (err.response.data) {
-                var errors = err.response.data;
-                for (var value in errors) {
-                  this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
-                }
-                console.log(err.response.data);
-              }
-            })
-        }
-      },
-      deletePeopleConfirm: function () {
-        $("#deleteUserModal").modal('show');
-      },
-      deletePeople: function () {
-        this.loading = true;
-        $("#deleteUserModal").modal('hide');
-        if (this.currentPeople !== '') {
-          axios.delete(process.env.API_URL +'/api/userdetail/' + this.currentPeople.id + '/')
-            .then(resp => {
-              this.loading = false;
-              this.currentPeople = '';
-              this.isSelected = false;
-              this.getPeoples();
-            })
-            .catch(err => {
-              this.loading = false;
-              console.log(err);
-            })
-        }
+              console.log(err.response.data)
+            }
+          })
+      }
+    },
+    deletePeopleConfirm: function () {
+      $('#deleteUserModal').modal('show')
+    },
+    deletePeople: function () {
+      this.loading = true
+      $('#deleteUserModal').modal('hide')
+      if (this.currentPeople !== '') {
+        axios.delete(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/')
+          .then(resp => {
+            this.loading = false
+            this.currentPeople = ''
+            this.isSelected = false
+            this.getPeoples()
+          })
+          .catch(err => {
+            this.loading = false
+            console.log(err)
+          })
       }
     }
-
   }
+
+}
 </script>
 
 <style scoped>

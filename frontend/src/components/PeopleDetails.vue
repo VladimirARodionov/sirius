@@ -4,7 +4,7 @@
     <div class="alert alert-danger" v-if="errorMessage">
       {{errorMessage}}
     </div>
-    <form method="post" action="">
+    <form @submit.prevent="updatePeople()">
       <div class="form-row">
         <div class="form-group col-md-3">
           <label for="last_name">{{'Last name' | translate}}</label>
@@ -42,52 +42,53 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import route from '../router'
+import axios from 'axios'
+import router from '../router'
 
-  export default {
-    name: "PeopleDetails",
-    data() {
-      return {
-        currentPeople: {},
-        errorMessage: '',
-      }},
-    mounted: function() {
-      this.getPeople();
-    },
-    methods: {
-      getPeople: function () {
-        axios.get(process.env.API_URL + '/api/userdetail/' + this.$route.params.id + '/')
-          .then(resp => {
-            this.currentPeople = resp.data;
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      },
-      updatePeople: function () {
-        this.loading = true;
-        this.errorMessage = '';
-        axios.put(process.env.API_URL + '/api/userdetail/' + this.$route.params.id + '/', this.currentPeople)
-          .then(resp => {
-            this.currentPeople = resp.data;
-            this.getPeople();
-          })
-          .catch(err => {
-            this.loading = false;
-            console.log(err);
-            if (err.response.data) {
-              var errors = err.response.data;
-              for (var value in errors) {
-                this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
-              }
-              console.log(err.response.data);
-            }
-          })
-      },
+export default {
+  name: 'PeopleDetails',
+  data () {
+    return {
+      currentPeople: {},
+      errorMessage: ''
     }
-
+  },
+  mounted: function () {
+    this.getPeople()
+  },
+  methods: {
+    getPeople: function () {
+      axios.get(process.env.API_URL + '/api/userdetail/' + this.$route.params.id + '/')
+        .then(resp => {
+          this.currentPeople = resp.data
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    updatePeople: function () {
+      this.loading = true
+      this.errorMessage = ''
+      axios.put(process.env.API_URL + '/api/userdetail/' + this.$route.params.id + '/', this.currentPeople)
+        .then(resp => {
+          this.currentPeople = resp.data
+          this.getPeople()
+        })
+        .catch(err => {
+          this.loading = false
+          console.log(err)
+          if (err.response.data) {
+            var errors = err.response.data
+            for (var value in errors) {
+              this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '')
+            }
+            console.log(err.response.data)
+          }
+        })
+    }
   }
+
+}
 </script>
 
 <style scoped>
