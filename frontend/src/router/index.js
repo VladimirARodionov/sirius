@@ -7,6 +7,7 @@ import People from '../components/People.vue'
 import Actions from '../components/Actions.vue'
 import Reports from '../components/Reports.vue'
 import Directories from '../components/Directories.vue'
+import PeopleDetails from '../components/PeopleDetails.vue'
 
 Vue.use(Router)
 
@@ -57,7 +58,15 @@ let router = new Router({
       meta: {
         requiresAuth: true
       }
-    }
+    },
+    {
+      path: '/people/:id/details',
+      name: 'peopleDetails',
+      component: PeopleDetails,
+      meta: {
+        requiresAuth: true
+      }
+    },
   ]
 })
 

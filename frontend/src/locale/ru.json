@@ -4,5 +4,20 @@
 	"Reports": "Отчёты",
 	"Actions": "Действия",
 	"Directories": "Справочники",
-	"Logout": "Выйти"
+	"Logout": "Выйти",
+  "List of Users": "Список пользователей",
+  "Add": "Добавить",
+  "Search": "Найти",
+  "First name": "Имя",
+  "Last name": "Фамилия",
+  "Middle name": "Отчество",
+  "Email": "Email",
+  "Add user": "Добавление пользователя",
+  "Close": "Закрыть",
+  "Save": "Сохранить",
+  "Delete": "Удалить",
+  "No": "Нет",
+  "Edit": "Изменить",
+  "Delete confirm": "Подтверждение удаления",
+  "Details": "Детали"
 }
