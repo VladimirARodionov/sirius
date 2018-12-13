@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import Axios from 'axios'
 import vuexI18n from 'vuex-i18n'
+import 'bootstrap'
 
 Vue.prototype.$http = Axios
 

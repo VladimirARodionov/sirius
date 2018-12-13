@@ -69,5 +69,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import url('../node_modules/@fortawesome/fontawesome-free/css/all.css');
 </style>
