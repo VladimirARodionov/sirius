@@ -8,7 +8,7 @@
             <!-- form card login -->
             <div class="card rounded-0">
               <div class="card-header">
-                <h3 class="mb-0">Login</h3>
+                <h3 class="mb-0">{{'Login' | translate}}</h3>
               </div>
               <div class="card-body">
                 <form class="form-container" method="post" @submit.prevent="login">
@@ -26,10 +26,10 @@
 
                   </div>
                   <div class="forgot">
-                    <a href="">Lost password?</a>
+                    <a href="">{{'Lost password?' | translate}}</a>
                   </div>
                   <input type="hidden" name="next" value=""/>
-                  <button type="submit" class="btn btn-primary btn-block">Login</button>
+                  <button type="submit" class="btn btn-primary btn-block">{{'Login' | translate}}</button>
 
                 </form>
               </div>

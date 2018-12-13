@@ -30,5 +30,7 @@
   "Failure": "Ошибка",
   "Added records": "Добавлено записей",
   "Existing records": "Существующих записей",
-  "Failed records": "Записей с ошибками"
+  "Failed records": "Записей с ошибками",
+  "Login": "Войти",
+  "Lost password?": "Забыли пароль?"
 }
