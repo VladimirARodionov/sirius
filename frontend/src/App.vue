@@ -16,7 +16,7 @@
         </div>
         <div class="navbar-nav ml-auto d-lg-flex align-items-center">
           <div class="nav-item">
-            <a class="nav-link" @click="logout"><font-awesome-icon icon="user" />{{'Logout' | translate}}</a>
+            <a class="nav-link" style="cursor: pointer;" @click="logout"><font-awesome-icon icon="user" />{{'Logout' | translate}}</a>
           </div>
         </div>
       </div>
