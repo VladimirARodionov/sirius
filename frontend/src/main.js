@@ -10,7 +10,7 @@ Vue.prototype.$http = Axios
 const token = localStorage.getItem('user-token')
 if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = token
-  Vue.prototype.$http.defaults.headers.common['crossDomain'] = true
+//  Vue.prototype.$http.defaults.headers.common['crossDomain'] = true
 }
 
 Vue.config.productionTip = false
