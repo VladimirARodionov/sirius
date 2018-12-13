@@ -4,9 +4,11 @@ import router from './router'
 import store from './store'
 import Axios from 'axios'
 import vuexI18n from 'vuex-i18n'
+import 'bootstrap'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 
 library.add(faUser)
 
