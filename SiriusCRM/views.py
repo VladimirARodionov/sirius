@@ -4,11 +4,13 @@ import io
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, UpdateView
+from django.views.generic.base import View, ContextMixin
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import get_object_or_404
@@ -52,8 +54,7 @@ class PeopleView(LoginRequiredMixin, TemplateView):
     template_name = 'people/list.html'
 
 
-class PeopleImportView(LoginRequiredMixin, TemplateView):
-    template_name = 'people/import.html'
+class PeopleImportView(View):
     parser_classes = (FileUploadParser,)
 
     def post(self, request):
@@ -61,7 +62,7 @@ class PeopleImportView(LoginRequiredMixin, TemplateView):
         num_exists = 0
         num_failed = 0
         num_skipped = 0
-        context = super(PeopleImportView, self).get_context_data()
+        context = {} #super(PeopleImportView, self).get_context_data()
         try:
             file_obj = request.FILES['filename']
             decoded_file = file_obj.read().decode('utf-8')
@@ -91,10 +92,10 @@ class PeopleImportView(LoginRequiredMixin, TemplateView):
                     else:
                         num_skipped += 1
             context['result'] = {'success': True, 'num_success': num_success, 'num_exists': num_exists, 'num_failed': num_failed}
-            return render(request, self.template_name, context)
+            return JsonResponse(context)
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
-            return render(request, self.template_name, context)
+            return JsonResponse(context)
 
 
 class PeopleDetailsForm(forms.ModelForm):

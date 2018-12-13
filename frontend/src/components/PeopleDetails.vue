@@ -8,28 +8,28 @@
       <div class="form-row">
         <div class="form-group col-md-3">
           <label for="last_name">{{'Last name' | translate}}</label>
-          <input type="text" class="form-control" id="last_name" name="last_name" required placeholder="Last name" v-model="currentPeople.last_name">
+          <input type="text" class="form-control" id="last_name" name="last_name" required v-model="currentPeople.last_name">
         </div>
         <div class="form-group col-md-3">
           <label for="first_name">{{'First name' | translate}}</label>
-          <input type="text" class="form-control" id="first_name" name="first_name" required placeholder="First name" v-model="currentPeople.first_name">
+          <input type="text" class="form-control" id="first_name" name="first_name" required v-model="currentPeople.first_name">
         </div>
         <div class="form-group col-md-3">
           <label for="middle_name">{{'Middle name' | translate}}</label>
-          <input type="text" class="form-control" id="middle_name" name="middle_name" placeholder="Middle name" v-model="currentPeople.middle_name">
+          <input type="text" class="form-control" id="middle_name" name="middle_name" v-model="currentPeople.middle_name">
         </div>
       </div>
       <div class="form-group">
         <label for="email">{{'Email' | translate}}</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Email" v-model="currentPeople.email">
+        <input type="email" class="form-control" id="email" name="email" v-model="currentPeople.email">
       </div>
       <div class="form-group">
         <label for="mobile">{{'Mobile' | translate}}</label>
-        <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="Mobile" v-model="currentPeople.mobile">
+        <input type="tel" class="form-control" id="mobile" name="mobile" v-model="currentPeople.mobile">
       </div>
       <div class="form-group">
         <label for="birthday">{{'Birthday' | translate}}</label>
-        <input type="date" class="form-control" id="birthday" name="birthday" placeholder="Birthday" v-model="currentPeople.birthday">
+        <input type="date" class="form-control" id="birthday" name="birthday" v-model="currentPeople.birthday">
       </div>
       <div class="btn-toolbar justify-content-between mb-3">
         <div>

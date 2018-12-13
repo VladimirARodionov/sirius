@@ -4,10 +4,11 @@ import store from '../store'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import People from '../components/People.vue'
-import Actions from '../components/Actions.vue'
+// import Actions from '../components/Actions.vue'
 import Reports from '../components/Reports.vue'
 import Directories from '../components/Directories.vue'
 import PeopleDetails from '../components/PeopleDetails.vue'
+import ImportUsers from '../components/ImportUsers.vue'
 
 Vue.use(Router)
 
@@ -46,7 +47,7 @@ let router = new Router({
     {
       path: '/actions',
       name: 'actions',
-      component: Actions,
+      component: ImportUsers,
       meta: {
         requiresAuth: true
       }

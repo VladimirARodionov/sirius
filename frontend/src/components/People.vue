@@ -245,7 +245,8 @@ export default {
               this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '')
             }
             console.log(err.response.data)
-          }})
+          }
+        })
     },
     updatePeople: function () {
       this.loading = true
@@ -259,12 +260,12 @@ export default {
             this.getPeoples()
           })
           .catch(err => {
-            this.loading = false;
+            this.loading = false
             console.log(err)
             if (err.response.data) {
               var errors = err.response.data
               for (var value in errors) {
-                this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '');
+                this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '')
               }
               console.log(err.response.data)
             }
