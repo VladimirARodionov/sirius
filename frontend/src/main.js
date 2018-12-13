@@ -4,7 +4,13 @@ import router from './router'
 import store from './store'
 import Axios from 'axios'
 import vuexI18n from 'vuex-i18n'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+library.add(faUser)
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.prototype.$http = Axios
 
 const token = localStorage.getItem('user-token')

@@ -16,7 +16,7 @@
         </div>
         <div class="navbar-nav ml-auto d-lg-flex align-items-center">
           <div class="nav-item">
-            <a class="nav-link" @click="logout"><span class="fa fa-user"></span>{{'Logout' | translate}}</a>
+            <a class="nav-link" @click="logout"><font-awesome-icon icon="user" />{{'Logout' | translate}}</a>
           </div>
         </div>
       </div>
@@ -71,5 +71,4 @@ export default {
 
 <style lang="scss">
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
-@import url('../node_modules/@fortawesome/fontawesome-free/css/all.css');
 </style>
