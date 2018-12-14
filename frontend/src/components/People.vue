@@ -6,7 +6,7 @@
         <button class="btn btn-success" data-toggle="modal" data-target="#addUserModal">{{'Add' | translate}}</button>
         <button class="btn btn-success"  v-if="isSelected" v-on:click="goUserDetails()">{{'Details' | translate}}</button>
         <button class="btn btn-success" v-if="isSelected" data-toggle="modal" data-target="#editUserModal">{{'Edit' | translate}}</button>
-        <button class="btn btn-danger" v-if="isSelected" v-on:click="deletePeopleConfirm()">{{'Delete' | translate}}</button>
+        <button class="btn btn-danger" v-if="isSelected" v-on:click="deleteDialog = true">{{'Delete' | translate}}</button>
       </div>
       <div class="input-group">
         <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term" aria-label="Search">
@@ -14,24 +14,25 @@
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
-        <thead class="thead-dark">
-        <tr>
-          <th class="th-sm">#</th>
-          <th>{{'First name' | translate}}</th>
-          <th>{{'Last name' | translate}}</th>
-          <th>{{'Email' | translate}}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="user in users" v-on:click="selectPeople(user)" v-bind:class="isActive(user)">
-          <td >{{user.id}}</td>
-          <td>{{user.first_name}}</td>
-          <td>{{user.last_name}}</td>
-          <td>{{user.email}}</td>
-        </tr>
-        </tbody>
-      </table>
+      <v-data-table
+        :headers="headers"
+        :items="users"
+        :loading="loading"
+        :total-items="totalUsers"
+        :pagination.sync="pagination"
+        :rows-per-page-items="[10, 20, 50, 100]"
+        class="elevation-1"
+      >
+        <template slot="items" slot-scope="props">
+          <tr v-on:click="selectPeople(props.item)" v-bind:class="isActive(props.item)">
+            <td>{{ props.item.id }}</td>
+            <td>{{ props.item.first_name }}</td>
+            <td>{{ props.item.last_name }}</td>
+            <td>{{ props.item.email }}</td>
+          </tr>
+        </template>
+      </v-data-table>
+
     </div>
     <!--<div class="loading" v-if="loading===true">Loading&#8230;</div> -->
     <!-- Add People Modal -->
@@ -143,33 +144,17 @@
     </div>
     <!-- End of people modal -->
     <!-- Delete People Modal -->
-    <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">{{'Delete confirm' | translate}}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <form @submit.prevent="deletePeople()">
-            <div class="modal-body">
-              <div class="alert alert-danger" v-if="errorMessage">
-                {{errorMessage}}
-              </div>
-              <div class="form-group">
-                <label>Delete user #{{currentPeople.id}}  {{currentPeople.first_name}} {{currentPeople.last_name}} ({{currentPeople.email}}) ?</label>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'No' | translate}}</button>
-              <button type="submit" class="btn btn-danger btn-primary">{{'Delete' | translate}}</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <!-- End of people modal -->
+    <v-dialog v-model="deleteDialog" max-width="500">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>{{'Delete confirm' | translate}}</v-card-title>
+        <v-card-text>Delete user #{{currentPeople.id}}  {{currentPeople.first_name}} {{currentPeople.last_name}} ({{currentPeople.email}}) ?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" flat @click="deleteDialog = false">{{'No' | translate}}</v-btn>
+          <v-btn color="red darken-1" flat @click="deletePeople()">{{'Delete' | translate}}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -181,29 +166,52 @@ export default {
   name: 'People',
   data () {
     return {
+      headers: [
+        { text: '#', value: 'id' },
+        { text: this.$i18n.translate('First name'), value: 'first_name' },
+        { text: this.$i18n.translate('Last name'), value: 'last_name' },
+        { text: this.$i18n.translate('Email'), value: 'email' }
+      ],
       users: [],
+      totalUsers: 0,
       loading: false,
       currentPeople: {},
       isSelected: false,
       message: null,
       newPeople: {'first_name': null, 'last_name': null, 'email': null},
       errorMessage: '',
-      search_term: ''
+      search_term: '',
+      pagination: {},
+      deleteDialog: false
     }
   },
+  watch: {
+    pagination: {
+      handler () {
+        this.getPeoples()
+      },
+      deep: true
+    }
+  },
+
   mounted: function () {
     this.getPeoples()
   },
   methods: {
     getPeoples: function () {
       this.loading = true
-      let apiUrl = '/api/user/'
-      if (this.search_term !== '' || this.search_term !== null) {
-        apiUrl = apiUrl + '?search=' + this.search_term
+      let apiUrl = '/api/user/' + '?page=' + this.pagination.page + '&page_size=' + this.pagination.rowsPerPage
+      if (this.search_term) {
+        apiUrl = apiUrl + '&search=' + this.search_term
+      }
+      if (this.pagination.sortBy) {
+        const direction = this.pagination.descending ? '-' : '';
+        apiUrl = apiUrl + '&ordering=' + direction + this.pagination.sortBy
       }
       axios.get(process.env.API_URL + apiUrl)
         .then(resp => {
-          this.users = resp.data
+          this.users = resp.data.results
+          this.totalUsers = resp.data.count
           this.currentPeople = {}
           this.isSelected = false
           this.loading = false
@@ -276,18 +284,15 @@ export default {
       $('#deleteUserModal').modal('show')
     },
     deletePeople: function () {
-      this.loading = true
-      $('#deleteUserModal').modal('hide')
+      this.deleteDialog = false
       if (this.currentPeople !== '') {
         axios.delete(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/')
           .then(resp => {
-            this.loading = false
             this.currentPeople = ''
             this.isSelected = false
             this.getPeoples()
           })
           .catch(err => {
-            this.loading = false
             console.log(err)
           })
       }

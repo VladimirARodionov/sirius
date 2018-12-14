@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+  <v-app>
     <span v-if="isLoggedIn">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <router-link class="navbar-brand" active-class="active" to="/">{{'Sirius' | translate}}</router-link>
@@ -37,6 +38,7 @@
     <span v-else>
           <router-view></router-view>
       </span>
+  </v-app>
   </div>
 </template>
 

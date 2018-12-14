@@ -8,7 +8,16 @@ import 'bootstrap'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import 'vuetify/dist/vuetify.min.css'
+import Vuetify from 'vuetify'
+import ru from 'vuetify/lib/locale/ru'
 
+Vue.use(Vuetify,{
+  lang: {
+    locales: { ru },
+    current: 'ru'
+  }
+})
 library.add(faUser)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
