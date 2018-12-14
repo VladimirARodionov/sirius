@@ -43,7 +43,6 @@
 
 <script>
 import axios from 'axios'
-import router from '../router'
 
 export default {
   name: 'PeopleDetails',
