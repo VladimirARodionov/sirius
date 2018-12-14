@@ -12,7 +12,7 @@ import 'vuetify/dist/vuetify.min.css'
 import Vuetify from 'vuetify'
 import ru from 'vuetify/lib/locale/ru'
 
-Vue.use(Vuetify,{
+Vue.use(Vuetify, {
   lang: {
     locales: { ru },
     current: 'ru'

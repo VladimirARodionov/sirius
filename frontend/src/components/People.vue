@@ -3,9 +3,9 @@
     <h1>{{'List of Users' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" data-toggle="modal" data-target="#addUserModal">{{'Add' | translate}}</button>
+        <button class="btn btn-success" v-on:click="addDialog = true">{{'Add' | translate}}</button>
         <button class="btn btn-success"  v-if="isSelected" v-on:click="goUserDetails()">{{'Details' | translate}}</button>
-        <button class="btn btn-success" v-if="isSelected" data-toggle="modal" data-target="#editUserModal">{{'Edit' | translate}}</button>
+        <button class="btn btn-success" v-if="isSelected" v-on:click="editDialog = true">{{'Edit' | translate}}</button>
         <button class="btn btn-danger" v-if="isSelected" v-on:click="deleteDialog = true">{{'Delete' | translate}}</button>
       </div>
       <div class="input-group">
@@ -34,124 +34,110 @@
       </v-data-table>
 
     </div>
-    <!--<div class="loading" v-if="loading===true">Loading&#8230;</div> -->
     <!-- Add People Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">{{'Add user' | translate}}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <form @submit.prevent="addPeople()">
-            <div class="modal-body">
+    <v-dialog v-model="addDialog" persistent max-width="800">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>{{'Add user' | translate}}</v-card-title>
+          <v-form>
+            <v-card-text>
+
               <div class="alert alert-danger" v-if="errorMessage">
                 {{errorMessage}}
               </div>
               <div class="form-group">
-                <label for="first_name">{{'First name' | translate}}</label>
+                <label for="add_first_name">{{'First name' | translate}}</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="first_name"
-                  placeholder="Enter First name"
+                  id="add_first_name"
                   v-model="newPeople.first_name"
                   required="required" >
               </div>
               <div class="form-group">
-                <label for="last_name">{{'Last name' | translate}}</label>
+                <label for="add_last_name">{{'Last name' | translate}}</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="last_name"
-                  placeholder="Enter Last name"
+                  id="add_last_name"
                   v-model="newPeople.last_name"
                   required="required" >
               </div>
               <div class="form-group">
-                <label for="email">{{'Email' | translate}}</label>
+                <label for="add_email">{{'Email' | translate}}</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="email"
-                  placeholder="Enter email"
+                  id="add_email"
                   v-model="newPeople.email">
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
-              <button type="submit" class="btn btn-primary">{{'Save' | translate}}</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+            </v-card-text>
+            <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="gray darken-1" @click="addDialog = false">{{'Close' | translate}}</v-btn>
+          <v-btn color="green darken-1" @click="addPeople()">{{'Save' | translate}}</v-btn>
+        </v-card-actions>
+          </v-form>
+      </v-card>
+    </v-dialog>
     <!-- End of people modal -->
     <!-- Edit People Modal -->
-    <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">{{'Edit' | translate}}</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <form @submit.prevent="updatePeople()">
-            <div class="modal-body">
+    <v-dialog v-model="editDialog" persistent max-width="800">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>{{'Edit' | translate}}</v-card-title>
+          <v-form>
+            <v-card-text>
+
               <div class="alert alert-danger" v-if="errorMessage">
                 {{errorMessage}}
               </div>
               <div class="form-group">
-                <label for="first_name">{{'First name' | translate}}</label>
+                <label for="edit_first_name">{{'First name' | translate}}</label>
                 <input
                   type="text"
                   class="form-control"
                   id="edit_first_name"
-                  placeholder="Enter First name"
                   v-model="currentPeople.first_name"
                   required="required" >
               </div>
               <div class="form-group">
-                <label for="last_name">{{'Last name' | translate}}</label>
+                <label for="edit_last_name">{{'Last name' | translate}}</label>
                 <input
                   type="text"
                   class="form-control"
                   id="edit_last_name"
-                  placeholder="Enter Last name"
                   v-model="currentPeople.last_name"
                   required="required" >
               </div>
               <div class="form-group">
-                <label for="email">{{'Email' | translate}}</label>
+                <label for="edit_email">{{'Email' | translate}}</label>
                 <input
                   type="text"
                   class="form-control"
                   id="edit_email"
-                  placeholder="Enter email"
                   v-model="currentPeople.email">
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'Close' | translate}}</button>
-              <button type="submit" class="btn btn-primary">{{'Save' | translate}}</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+            </v-card-text>
+            <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
+          <v-btn color="green darken-1" @click="updatePeople()">{{'Save' | translate}}</v-btn>
+        </v-card-actions>
+          </v-form>
+      </v-card>
+    </v-dialog>
     <!-- End of people modal -->
     <!-- Delete People Modal -->
     <v-dialog v-model="deleteDialog" max-width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Delete confirm' | translate}}</v-card-title>
-        <v-card-text>Delete user #{{currentPeople.id}}  {{currentPeople.first_name}} {{currentPeople.last_name}} ({{currentPeople.email}}) ?</v-card-text>
+        <v-card-text>{{'Delete user' | translate}} #{{currentPeople.id}} {{currentPeople.first_name}} {{currentPeople.last_name}} ({{currentPeople.email}}) ?</v-card-text>
+        <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" flat @click="deleteDialog = false">{{'No' | translate}}</v-btn>
-          <v-btn color="red darken-1" flat @click="deletePeople()">{{'Delete' | translate}}</v-btn>
+          <v-btn color="gray darken-1" @click="deleteDialog = false">{{'No' | translate}}</v-btn>
+          <v-btn color="red darken-1" @click="deletePeople()">{{'Delete' | translate}}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -182,7 +168,10 @@ export default {
       errorMessage: '',
       search_term: '',
       pagination: {},
-      deleteDialog: false
+      deleteDialog: false,
+      editDialog: false,
+      addDialog: false,
+      errors: []
     }
   },
   watch: {
@@ -193,10 +182,6 @@ export default {
       deep: true
     }
   },
-
-  mounted: function () {
-    this.getPeoples()
-  },
   methods: {
     getPeoples: function () {
       this.loading = true
@@ -205,7 +190,7 @@ export default {
         apiUrl = apiUrl + '&search=' + this.search_term
       }
       if (this.pagination.sortBy) {
-        const direction = this.pagination.descending ? '-' : '';
+        const direction = this.pagination.descending ? '-' : ''
         apiUrl = apiUrl + '&ordering=' + direction + this.pagination.sortBy
       }
       axios.get(process.env.API_URL + apiUrl)
@@ -236,52 +221,46 @@ export default {
       }
     },
     addPeople: function () {
-      this.loading = true
       this.errorMessage = ''
       axios.post(process.env.API_URL + '/api/userdetail/', this.newPeople)
         .then(resp => {
           this.loading = false
-          $('#addUserModal').modal('hide')
+          this.addDialog = false
           this.getPeoples()
         })
         .catch(err => {
-          this.loading = false
           console.log(err)
           if (err.response.data) {
             var errors = err.response.data
             for (var value in errors) {
-              this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '')
+              this.errorMessage = errors[value][0]
             }
             console.log(err.response.data)
           }
         })
     },
     updatePeople: function () {
-      this.loading = true
       this.errorMessage = ''
       if (this.currentPeople !== '') {
         axios.put(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/', this.currentPeople)
           .then(resp => {
             this.loading = false
             this.currentPeople = resp.data
-            $('#editUserModal').modal('hide')
+            this.editDialog = false
             this.getPeoples()
           })
           .catch(err => {
-            this.loading = false
             console.log(err)
             if (err.response.data) {
               var errors = err.response.data
               for (var value in errors) {
-                this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '')
+                this.errorMessage = errors[value][0]
               }
               console.log(err.response.data)
+              this.getPeoples()
             }
           })
       }
-    },
-    deletePeopleConfirm: function () {
-      $('#deleteUserModal').modal('show')
     },
     deletePeople: function () {
       this.deleteDialog = false

@@ -79,7 +79,7 @@ export default {
           if (err.response.data) {
             var errors = err.response.data
             for (var value in errors) {
-              this.errorMessage = JSON.stringify(errors[value]).replace(/[\[\]"]+/g, '')
+              this.errorMessage = errors[value][0]
             }
             console.log(err.response.data)
           }

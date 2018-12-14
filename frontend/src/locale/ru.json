@@ -32,5 +32,6 @@
   "Existing records": "Существующих записей",
   "Failed records": "Записей с ошибками",
   "Login": "Войти",
-  "Lost password?": "Забыли пароль?"
+  "Lost password?": "Забыли пароль?",
+  "Delete user": "Удалить пользователя"
 }
