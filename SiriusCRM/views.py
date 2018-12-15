@@ -4,13 +4,16 @@ import io
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.contrib.auth import password_validation
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, UpdateView
-from django.views.generic.base import View, ContextMixin
+from django.views.generic.base import View
+from django.views.generic.edit import FormMixin, ProcessFormView
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import get_object_or_404
@@ -18,6 +21,7 @@ from rest_framework.parsers import FileUploadParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
+from rest_framework.utils import json
 
 from SiriusCRM.models import User
 
@@ -62,7 +66,7 @@ class PeopleImportView(View):
         num_exists = 0
         num_failed = 0
         num_skipped = 0
-        context = {} #super(PeopleImportView, self).get_context_data()
+        context = {}
         try:
             file_obj = request.FILES['filename']
             decoded_file = file_obj.read().decode('utf-8')
@@ -119,3 +123,29 @@ class PeopleDetailsView(LoginRequiredMixin, UpdateView):
         form = super(PeopleDetailsView, self).get_form(form_class)
         form.fields['email'].required = False
         return form
+
+
+class PasswordChangeView(ProcessFormView):
+
+    def get_object(self):
+        return get_object_or_404(User, pk=self.kwargs['number'])
+
+    def clean_new_password2(self, password1, password2):
+        if password1 and password2:
+            if password1 != password2:
+                raise forms.ValidationError('Password mismatch')
+        password_validation.validate_password(password2, self.get_object())
+        return password2
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+        try:
+            user = self.get_object()
+            body = json.loads(request.body)
+            user.set_password(self.clean_new_password2(body['new_password1'], body['new_password2']))
+            user.save()
+            context['result'] = {'success': True}
+            return JsonResponse(context)
+        except Exception as e:
+            context['result'] = {'success': False, 'error': str(e)}
+            return JsonResponse(context)
