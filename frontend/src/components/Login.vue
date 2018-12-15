@@ -26,7 +26,7 @@
 
                   </div>
                   <div class="forgot">
-                    <a href="">{{'Lost password?' | translate}}</a>
+                    <a v-on:click="goResetPassword()">{{'Lost password?' | translate}}</a>
                   </div>
                   <input type="hidden" name="next" value=""/>
                   <button type="submit" class="btn btn-primary btn-block">{{'Login' | translate}}</button>
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import router from '../router'
+
 export default {
   data () {
     return {
@@ -62,6 +64,9 @@ export default {
       this.$store.dispatch('login', {username, password})
         .then(() => this.$router.push('/'))
         .catch(err => console.log(err))
+    },
+    goResetPassword: function () {
+      router.push({name: 'resetPassword'})
     }
   },
   name: 'Login'

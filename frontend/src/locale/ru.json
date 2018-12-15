@@ -38,5 +38,8 @@
   "New password": "Новый пароль",
   "Password confirmation": "Подтверждение пароля",
   "Change": "Изменить",
-  "Password changed successfully": "Пароль успешно изменён"
+  "Password changed successfully": "Пароль успешно изменён",
+  "Password reset": "Сброс пароля",
+  "Reset password": "Сбросить пароль",
+  "Password reset link was sent to your email": "Ссылка на сброс пароля была отправлена на ваш email"
 }

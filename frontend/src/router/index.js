@@ -9,6 +9,7 @@ import Reports from '../components/Reports.vue'
 import Directories from '../components/Directories.vue'
 import PeopleDetails from '../components/PeopleDetails.vue'
 import ImportUsers from '../components/ImportUsers.vue'
+import ResetPasswordEmail from '../components/ResetPasswordEmail'
 
 Vue.use(Router)
 
@@ -19,6 +20,11 @@ let router = new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/login/reset',
+      name: 'resetPassword',
+      component: ResetPasswordEmail
     },
     {
       path: '/',

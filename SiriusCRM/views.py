@@ -4,16 +4,18 @@ import io
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import PasswordContextMixin
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView, UpdateView
 from django.views.generic.base import View
-from django.views.generic.edit import FormMixin, ProcessFormView
+from django.views.generic.edit import FormMixin, ProcessFormView, FormView
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import get_object_or_404
@@ -22,6 +24,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
 from rest_framework.utils import json
+from django.utils.translation import gettext_lazy as _
+
 
 from SiriusCRM.models import User
 
@@ -149,3 +153,41 @@ class PasswordChangeView(ProcessFormView):
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
             return JsonResponse(context)
+
+
+class PasswordResetView(PasswordContextMixin, FormView):
+    email_template_name = 'registration/password_reset_email.html'
+    extra_email_context = None
+    form_class = PasswordResetForm
+    from_email = None
+    html_email_template_name = None
+    subject_template_name = 'registration/password_reset_subject.txt'
+    success_url = reverse_lazy('password_reset_done')
+    template_name = 'registration/password_reset_form.html'
+    title = _('Password reset')
+    token_generator = default_token_generator
+
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        opts = {
+            'use_https': self.request.is_secure(),
+            'token_generator': self.token_generator,
+            'from_email': self.from_email,
+            'email_template_name': self.email_template_name,
+            'subject_template_name': self.subject_template_name,
+            'request': self.request,
+            'html_email_template_name': self.html_email_template_name,
+            'extra_email_context': self.extra_email_context,
+        }
+        form.save(**opts)
+        context = {}
+        context['result'] = {'success': True}
+        return JsonResponse(context)
+
+    def form_invalid(self, form):
+        context = {}
+        context['result'] = {'success': False, 'error': dict(form.errors.items())}
+        return JsonResponse(context)
+
