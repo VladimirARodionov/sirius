@@ -10,6 +10,7 @@ import Directories from '../components/Directories.vue'
 import PeopleDetails from '../components/PeopleDetails.vue'
 import ImportUsers from '../components/ImportUsers.vue'
 import ResetPasswordEmail from '../components/ResetPasswordEmail'
+import ResetPasswordConfirm from '../components/ResetPasswordConfirm'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ let router = new Router({
       path: '/login/reset',
       name: 'resetPassword',
       component: ResetPasswordEmail
+    },
+    {
+      path: '/login/:uidb64/:token/reset',
+      name: 'resetPasswordConfirm',
+      component: ResetPasswordConfirm
     },
     {
       path: '/',
