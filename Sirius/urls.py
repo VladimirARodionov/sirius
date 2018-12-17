@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views as authviews
+from rest_framework_jwt.views import obtain_jwt_token
 
 from SiriusCRM import views
 from SiriusCRM.views import PasswordResetView, PasswordResetConfirmView
@@ -32,7 +33,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/accounts/password_reset/', PasswordResetView.as_view(), name='password_reset'),
     re_path('api/accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('api/login/', authviews.obtain_auth_token),
+    path('api/login/', obtain_jwt_token),
     path('api/people/<int:number>/password_change', views.PasswordChangeView.as_view(), name='peoplePasswordChange'),
 
 ]

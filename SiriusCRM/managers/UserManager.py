@@ -1,4 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
+from rolepermissions.roles import assign_role
+
+from Sirius.roles import AdminRole
 
 
 class UserManager(BaseUserManager):
@@ -28,4 +31,6 @@ class UserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self._create_user(email, password, **extra_fields)
+        user = self._create_user(email, password, **extra_fields)
+        assign_role(user, AdminRole)
+        return user

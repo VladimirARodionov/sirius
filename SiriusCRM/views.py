@@ -1,70 +1,48 @@
 import csv
 import io
 
+from casl_django.casl.casl import django_permissions_to_casl_rules
 from django import forms
-from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import get_user_model
+from django.contrib.auth import password_validation
+from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
+from django.contrib.auth.models import Permission
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordContextMixin, INTERNAL_RESET_URL_TOKEN, INTERNAL_RESET_SESSION_TOKEN
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from django.shortcuts import render
-from django.contrib.auth import password_validation
-from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.http import urlsafe_base64_decode
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.debug import sensitive_post_parameters
-from django.views.generic import TemplateView, UpdateView
 from django.views.generic.base import View
-from django.views.generic.edit import FormMixin, ProcessFormView, FormView
-from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
+from django.views.generic.edit import ProcessFormView, FormView
 from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import FileUploadParser
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
 from rest_framework.utils import json
-from django.utils.translation import gettext_lazy as _
-
+from rolepermissions.roles import get_user_roles
 
 from SiriusCRM.models import User
 
 
-@csrf_exempt
-@api_view(["POST"])
-@permission_classes((AllowAny,))
-def login(request):
-    username = request.data.get("email")
-    password = request.data.get("password")
-    if username is None or password is None:
-        return Response({'error': 'Please provide both username and password'},
-                        status=HTTP_400_BAD_REQUEST)
-    user = authenticate(username=username, password=password)
-    if not user:
-        return Response({'error': 'Invalid Credentials'},
-                        status=HTTP_404_NOT_FOUND)
-    token, _ = Token.objects.get_or_create(user=user)
-    return Response({'token': token.key},
-                    status=HTTP_200_OK)
-
-
-@login_required
-def index(request):
-    """
-    Функция отображения для домашней страницы сайта.
-    """
-    # Отрисовка HTML-шаблона index.html с данными внутри
-    # переменной контекста context
-    return render(request, 'index.html',)
-
-
-class PeopleView(LoginRequiredMixin, TemplateView):
-    template_name = 'people/list.html'
+def jwt_response_payload_handler(token, user=None, request=None):
+    roles = []
+    permissions = []
+    if (user):
+        roles = get_user_roles(user)
+        user_roles = [role.get_name() for role in roles]
+        if (user.is_superuser):
+            perms = Permission.objects.all()
+        else:
+            perms = user.user_permissions.all() | Permission.objects.filter(group__user=user)
+        permissions = django_permissions_to_casl_rules(perms)
+    return {
+        'token': token,
+        'roles': user_roles,
+        'permissions': permissions
+    }
 
 
 class PeopleImportView(View):
@@ -115,23 +93,6 @@ class PeopleDetailsForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile']
-
-
-class PeopleDetailsView(LoginRequiredMixin, UpdateView):
-    form_class = PeopleDetailsForm
-    template_name = 'people/details.html'
-
-    def get_object(self):
-        return get_object_or_404(User, pk=self.kwargs['number'])
-
-    def get_success_url(self):
-        self.success_url = reverse('peopleDetails', kwargs={'number':self.kwargs['number']})
-        return str(self.success_url)  # success_url may be lazy
-
-    def get_form(self, form_class=None):
-        form = super(PeopleDetailsView, self).get_form(form_class)
-        form.fields['email'].required = False
-        return form
 
 
 class PasswordChangeView(ProcessFormView):
