@@ -139,6 +139,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     date_left = models.DateTimeField(_('date left'),null=True, blank=True)
     is_active = models.BooleanField(_('active'), default=True)
+    is_superuser = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     is_staff = models.BooleanField(
         _('staff status'),

@@ -34,10 +34,15 @@ export default new Vuex.Store({
         axios({url: process.env.API_URL + '/api/login/', data: user, method: 'POST'})
           .then(resp => {
             const token = resp.data.token
-            const user = resp.data.user
+            const roles = resp.data.roles
+            const permissions = resp.data.permissions
             localStorage.setItem('token', token)
+            localStorage.setItem('roles', roles)
+            Vue.prototype.$vrm.setRoles(roles)
+            localStorage.setItem('permissions', permissions)
+            Vue.prototype.$vrm.setPermissions(permissions)
             // Add the following line:
-            axios.defaults.headers.common['Authorization'] = token
+            axios.defaults.headers.common['Authorization'] = 'JWT ' + token
             commit('auth_success', token, user)
             resolve(resp)
           })
@@ -72,6 +77,8 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         commit('logout')
         localStorage.removeItem('token')
+        localStorage.removeItem('roles')
+        localStorage.removeItem('permissions')
         delete axios.defaults.headers.common['Authorization']
         resolve()
       })

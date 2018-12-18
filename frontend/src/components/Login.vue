@@ -14,7 +14,7 @@
                 <form class="form-container" method="post" @submit.prevent="login">
                   <div class="form-group">
 
-                    <input v-model="username" type="email" name="username" id="id_username" class="form-control" placeholder="Email"
+                    <input v-model="email" type="email" name="email" id="id_username" class="form-control" placeholder="Email"
                            required autofocus/>
 
                   </div>
@@ -53,15 +53,15 @@ import router from '../router'
 export default {
   data () {
     return {
-      username: '',
+      email: '',
       password: ''
     }
   },
   methods: {
     login: function () {
-      let username = this.username
+      let email = this.email
       let password = this.password
-      this.$store.dispatch('login', {username, password})
+      this.$store.dispatch('login', {email, password})
         .then(() => this.$router.push('/'))
         .catch(err => console.log(err))
     },
