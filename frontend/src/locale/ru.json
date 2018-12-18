@@ -41,5 +41,10 @@
   "Password changed successfully": "Пароль успешно изменён",
   "Password reset": "Сброс пароля",
   "Reset password": "Сбросить пароль",
-  "Password reset link was sent to your email": "Ссылка на сброс пароля была отправлена на ваш email"
+  "Password reset link was sent to your email": "Ссылка на сброс пароля была отправлена на ваш email",
+  "Organizations": "Организации",
+  "Units": "Подразделения",
+  "Name": "Имя",
+  "Add organization": "Добавление организации",
+  "Delete organization": "Удалить организацию"
 }

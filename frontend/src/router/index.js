@@ -11,6 +11,8 @@ import PeopleDetails from '../components/PeopleDetails.vue'
 import ImportUsers from '../components/ImportUsers.vue'
 import ResetPasswordEmail from '../components/ResetPasswordEmail'
 import ResetPasswordConfirm from '../components/ResetPasswordConfirm'
+import Organizations from '../components/Organizations'
+import Units from '../components/Units'
 
 Vue.use(Router)
 
@@ -68,6 +70,22 @@ let router = new Router({
       path: '/directories',
       name: 'directories',
       component: Directories,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/organizations',
+      name: 'organizations',
+      component: Organizations,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/units',
+      name: 'units',
+      component: Units,
       meta: {
         requiresAuth: true
       }

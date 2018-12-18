@@ -5,8 +5,8 @@ from rest_framework.exceptions import NotFound
 from rest_framework.pagination import PageNumberPagination
 
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User
-from SiriusCRM.serializers import UserListSerializer, UserDetailSerializer
+from SiriusCRM.models import User, Organization
+from SiriusCRM.serializers import UserListSerializer, UserDetailSerializer, OrganizationSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -52,7 +52,7 @@ class UserListViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
     allowed_roles = ['admin_role', 'user_role', 'user_list_role']
     queryset = User.objects.all()
     serializer_class = UserListSerializer
-    filter_backends = (filters.SearchFilter,filters.OrderingFilter,)
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
     search_fields = ('first_name', 'last_name', 'email')
     ordering_fields = ('id', 'first_name', 'last_name', 'email')
@@ -62,4 +62,14 @@ class UserDetailViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_roles = ['admin_role', 'user_list_role', 'user_detail_role']
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
+
+
+class OrganizationViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
 

@@ -65,7 +65,7 @@ export default {
         return response
       },
       (err) => {
-        if (err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
+        if (err.response && err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch('logout')
         }
         throw err
