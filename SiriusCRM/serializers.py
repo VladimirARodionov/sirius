@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from SiriusCRM.models import User, Organization
+from SiriusCRM.models import User, Organization, Unit
 
 
 class UserListSerializer(ModelSerializer):
@@ -19,4 +19,16 @@ class OrganizationSerializer(ModelSerializer):
     class Meta:
         model = Organization
         fields = ('id', 'name')
+
+
+class UnitSerializer(ModelSerializer):
+    class Meta:
+        model = Unit
+        fields = ('id', 'organization_id', 'name', 'parent', 'children')
+
+
+class UnitAddSerializer(ModelSerializer):
+    class Meta:
+        model = Unit
+        fields = ('id', 'organization_id', 'name')
 

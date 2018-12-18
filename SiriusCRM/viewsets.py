@@ -2,11 +2,14 @@ from django.core.paginator import InvalidPage, PageNotAnInteger
 from django.utils import six
 from rest_framework import viewsets, filters
 from rest_framework.exceptions import NotFound
+from rest_framework.mixins import CreateModelMixin
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.viewsets import GenericViewSet
 
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Organization
-from SiriusCRM.serializers import UserListSerializer, UserDetailSerializer, OrganizationSerializer
+from SiriusCRM.models import User, Organization, Unit
+from SiriusCRM.serializers import UserListSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
+    UnitAddSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -72,4 +75,16 @@ class OrganizationViewSet(HasRoleMixin, viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
     search_fields = ('name',)
     ordering_fields = ('id', 'name')
+
+
+class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Unit.objects.all()
+    serializer_class = UnitSerializer
+
+
+class UnitAddViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Unit.objects.all()
+    serializer_class = UnitAddSerializer
 

@@ -20,12 +20,14 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from SiriusCRM import views
 from SiriusCRM.views import PasswordResetView, PasswordResetConfirmView
-from SiriusCRM.viewsets import UserListViewSet, UserDetailViewSet, OrganizationViewSet
+from SiriusCRM.viewsets import UserListViewSet, UserDetailViewSet, OrganizationViewSet, UnitViewSet, UnitAddViewSet
 
 router = DefaultRouter()
 router.register('api/user', UserListViewSet, basename='user')
 router.register('api/userdetail', UserDetailViewSet, basename='userdetail')
 router.register('api/organization', OrganizationViewSet, basename='organization')
+router.register('api/unit', UnitViewSet, basename='unit')
+router.register('api/add/unit', UnitAddViewSet, basename='unit_add')
 
 
 urlpatterns = [

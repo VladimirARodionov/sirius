@@ -185,7 +185,7 @@ export default {
         })
         .catch(err => {
           console.log(err)
-          if (err.response.data) {
+          if (err.response && err.response.data) {
             var errors = err.response.data
             for (var value in errors) {
               this.errorMessage = errors[value][0]
@@ -206,7 +206,7 @@ export default {
           })
           .catch(err => {
             console.log(err)
-            if (err.response.data) {
+            if (err.response && err.response.data) {
               var errors = err.response.data
               for (var value in errors) {
                 this.errorMessage = errors[value][0]
