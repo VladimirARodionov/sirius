@@ -15,6 +15,7 @@ import os
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_jwt',
     'rest_framework.authtoken',
     'corsheaders',
     'rolepermissions',
@@ -120,6 +122,7 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'SiriusCRM.views.jwt_response_payload_handler',
+    'JWT_VERIFY_EXPIRATION': False,
 }
 
 ROLEPERMISSIONS_MODULE = 'Sirius.roles'
@@ -147,6 +150,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# AUTHENTICATION_BACKENDS = ( 'rest_framework_jwt.authentication.JSONWebTokenAuthentication', )
 LOCALE_PATHS = (BASE_DIR + '/SiriusCRM/locale', )
 AUTH_USER_MODEL = 'SiriusCRM.User'
 

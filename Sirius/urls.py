@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from rest_framework.routers import DefaultRouter
-from rest_framework.authtoken import views as authviews
 from rest_framework_jwt.views import obtain_jwt_token
 
 from SiriusCRM import views

@@ -11,6 +11,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import 'vuetify/dist/vuetify.min.css'
 import Vuetify from 'vuetify'
 import ru from 'vuetify/lib/locale/ru'
+import VRM from './vue-role-manager'
+
+Vue.use(VRM, {router: router, debug: true})
 
 Vue.use(Vuetify, {
   lang: {
@@ -24,10 +27,13 @@ library.add(faUser)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.prototype.$http = Axios
 
-const token = localStorage.getItem('user-token')
+const token = localStorage.getItem('token')
 if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = 'JWT ' + token
-//  Vue.prototype.$http.defaults.headers.common['crossDomain'] = true
+  const roles = localStorage.getItem('roles')
+  Vue.prototype.$vrm.setRoles(roles)
+  const permissions = localStorage.getItem('permissions')
+  Vue.prototype.$vrm.setPermissions(permissions)
 }
 
 Vue.config.productionTip = false

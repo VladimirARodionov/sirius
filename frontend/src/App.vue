@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-  <v-app>
+    <v-app>
     <span v-if="isLoggedIn">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <router-link class="navbar-brand" active-class="active" to="/">{{'Sirius' | translate}}</router-link>
@@ -35,14 +35,16 @@
     </div>
 
     </span>
-    <span v-else>
+      <span v-else>
           <router-view></router-view>
       </span>
-  </v-app>
+    </v-app>
   </div>
 </template>
 
 <script>
+const axios = require('axios')
+
 export default {
   computed: {
     isLoggedIn: function () {
@@ -58,19 +60,21 @@ export default {
     }
   },
   created: function () {
-    this.$http.interceptors.response.use(undefined, function (err) {
-      return new Promise(function (resolve, reject) {
-        if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
+    axios.interceptors.response.use(
+      (response) => {
+        return response
+      },
+      (err) => {
+        if (err.response.status === 401 && err.config && !err.config.__isRetryRequest) {
           this.$store.dispatch('logout')
         }
         throw err
       })
-    })
   },
   name: 'App'
 }
 </script>
 
 <style lang="scss">
-@import '../node_modules/bootstrap/scss/bootstrap.scss';
+  @import '../node_modules/bootstrap/scss/bootstrap.scss';
 </style>
