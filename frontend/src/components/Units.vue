@@ -99,7 +99,6 @@ export default {
         { text: this.$i18n.translate('Name'), value: 'name' }
       ],
       objects: [],
-      totalObjects: 0,
       loading: false,
       currentObject: {},
       isSelected: false,
@@ -122,8 +121,7 @@ export default {
       this.loading = true
       axios.get(process.env.API_URL + '/api/unit/')
         .then(resp => {
-          this.objects = resp.data.results
-          this.totalObjects = resp.data.count
+          this.objects = resp.data
           this.currentObject = {}
           this.isSelected = false
           this.loading = false

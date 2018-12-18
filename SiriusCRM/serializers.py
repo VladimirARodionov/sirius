@@ -24,11 +24,11 @@ class OrganizationSerializer(ModelSerializer):
 class UnitSerializer(ModelSerializer):
     class Meta:
         model = Unit
-        fields = ('id', 'organization_id', 'name', 'parent', 'children')
+        fields = ('id', 'name', 'parent', 'children')
 
 
 class UnitAddSerializer(ModelSerializer):
     class Meta:
         model = Unit
-        fields = ('id', 'organization_id', 'name')
+        fields = ('id', 'name')
 

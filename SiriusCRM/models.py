@@ -84,7 +84,7 @@ class Organization(models.Model):
 # Справочник подразделений организации. Если parent != null то это подразделение вложено в parent
 class Unit(models.Model):
     id = models.AutoField(primary_key=True)
-    organization = models.ForeignKey(Organization, null=False, on_delete=models.CASCADE, related_name="unit_organization")
+    #organization = models.ForeignKey(Organization, null=False, on_delete=models.CASCADE, related_name="unit_organization")
     name = models.CharField(max_length=255, blank=False)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
 
