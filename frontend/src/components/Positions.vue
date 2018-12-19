@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{'Organizations' | translate}}</h1>
+    <h1>{{'Positions' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
         <button class="btn btn-success" v-on:click="addDialog = true">{{'Add' | translate}}</button>
@@ -34,7 +34,7 @@
     <!-- Add People Modal -->
     <v-dialog v-model="addDialog" persistent max-width="800">
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>{{'Add organization' | translate}}</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>{{'Add position' | translate}}</v-card-title>
           <v-form>
             <v-card-text>
 
@@ -95,7 +95,7 @@
     <v-dialog v-model="deleteDialog" max-width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Delete confirm' | translate}}</v-card-title>
-        <v-card-text>{{'Delete organization' | translate}} #{{currentObject.id}} {{currentObject.name}} ?</v-card-text>
+        <v-card-text>{{'Delete position' | translate}} #{{currentObject.id}} {{currentObject.name}} ?</v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -111,7 +111,7 @@
 import axios from 'axios'
 
 export default {
-  name: 'Organizations',
+  name: 'Positions',
   data () {
     return {
       headers: [
@@ -145,7 +145,7 @@ export default {
   methods: {
     getObjects: function () {
       this.loading = true
-      let apiUrl = '/api/organization/' + '?page=' + this.pagination.page + '&page_size=' + this.pagination.rowsPerPage
+      let apiUrl = '/api/position/' + '?page=' + this.pagination.page + '&page_size=' + this.pagination.rowsPerPage
       if (this.search_term) {
         apiUrl = apiUrl + '&search=' + this.search_term
       }
@@ -177,7 +177,7 @@ export default {
     },
     addObject: function () {
       this.errorMessage = ''
-      axios.post(process.env.API_URL + '/api/edit/organization/', this.newObject)
+      axios.post(process.env.API_URL + '/api/edit/position/', this.newObject)
         .then(resp => {
           this.loading = false
           this.addDialog = false
@@ -197,7 +197,7 @@ export default {
     updateObject: function () {
       this.errorMessage = ''
       if (this.currentPeople !== '') {
-        axios.put(process.env.API_URL + '/api/edit/organization/' + this.currentObject.id + '/', this.currentObject)
+        axios.put(process.env.API_URL + '/api/edit/position/' + this.currentObject.id + '/', this.currentObject)
           .then(resp => {
             this.loading = false
             this.currentObject = resp.data
@@ -220,7 +220,7 @@ export default {
     deleteObject: function () {
       this.deleteDialog = false
       if (this.currentObject !== '') {
-        axios.delete(process.env.API_URL + '/api/edit/organization/' + this.currentObject.id + '/')
+        axios.delete(process.env.API_URL + '/api/edit/position/' + this.currentObject.id + '/')
           .then(resp => {
             this.currentObject = ''
             this.isSelected = false

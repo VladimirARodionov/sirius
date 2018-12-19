@@ -1,17 +1,14 @@
-from django.core.paginator import InvalidPage, PageNotAnInteger
+from django.core.paginator import InvalidPage
 from django.utils import six
 from rest_framework import viewsets, filters
-from rest_framework.decorators import list_route, action
 from rest_framework.exceptions import NotFound
-from rest_framework.mixins import CreateModelMixin
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
 
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Organization, Unit
+from SiriusCRM.models import User, Organization, Unit, Position
 from SiriusCRM.serializers import UserListSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
-    UnitAddSerializer
+    UnitChangeSerializer, PositionSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -64,12 +61,12 @@ class UserListViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
 
 
 class UserDetailViewSet(HasRoleMixin, viewsets.ModelViewSet):
-    allowed_roles = ['admin_role', 'user_list_role', 'user_detail_role']
+    allowed_roles = ['admin_role', 'edit_role', 'user_list_role', 'user_detail_role']
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
 
-class OrganizationViewSet(HasRoleMixin, viewsets.ModelViewSet):
+class OrganizationViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
     allowed_roles = ['admin_role', 'user_role']
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
@@ -79,7 +76,17 @@ class OrganizationViewSet(HasRoleMixin, viewsets.ModelViewSet):
     ordering_fields = ('id', 'name')
 
 
-class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
+class OrganizationEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    allowed_roles = ['admin_role', 'edit_role']
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class UnitViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
     allowed_roles = ['admin_role', 'user_role']
     queryset = Unit.objects.all()
     serializer_class = UnitSerializer
@@ -96,13 +103,33 @@ class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
         return Response(data)
 
     def retrieve(self, request, pk=None):
-        self.object = self.get_object()
-        data = self.serialize_tree([self.object])
+        data = self.serialize_tree([self.get_object()])
         return Response(data)
 
 
-class UnitAddViewSet(HasRoleMixin, viewsets.ModelViewSet):
-    allowed_roles = ['admin_role', 'user_role']
+class UnitEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    allowed_roles = ['admin_role', 'edit_role']
     queryset = Unit.objects.all()
-    serializer_class = UnitAddSerializer
+    serializer_class = UnitChangeSerializer
+
+
+class PositionViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Position.objects.all()
+    serializer_class = PositionSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class PositionEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    allowed_roles = ['admin_role', 'edit_role']
+    queryset = Position.objects.all()
+    serializer_class = PositionSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
 

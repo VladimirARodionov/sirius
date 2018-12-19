@@ -46,5 +46,8 @@
   "Units": "Подразделения",
   "Name": "Имя",
   "Add organization": "Добавление организации",
-  "Delete organization": "Удалить организацию"
+  "Delete organization": "Удалить организацию",
+  "Positions": "Должности",
+  "Add position": "Добавление должности",
+  "Delete position": "Удалить должность"
 }

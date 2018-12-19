@@ -10,6 +10,11 @@ class UserRole(AbstractUserRole):
     }
 
 
+class EditRole(AbstractUserRole):
+    available_permissions = {
+    }
+
+
 class ReportsRole(AbstractUserRole):
     available_permissions = {
     }

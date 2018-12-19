@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-    <span v-if="isLoggedIn">
+      <span v-if="isLoggedIn">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <router-link class="navbar-brand" active-class="active" to="/">{{'Sirius' | translate}}</router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,9 +25,7 @@
     <div class="container-fluid">
 
       <div class="row">
-        <div class="col-sm-2">
-        </div>
-        <div class="col-sm-10 ">
+        <div class="col-sm-12">
           <router-view></router-view>
         </div>
       </div>
@@ -36,7 +34,7 @@
 
     </span>
       <span v-else>
-          <router-view></router-view>
+        <router-view></router-view>
       </span>
     </v-app>
   </div>

@@ -13,6 +13,7 @@ import ResetPasswordEmail from '../components/ResetPasswordEmail'
 import ResetPasswordConfirm from '../components/ResetPasswordConfirm'
 import Organizations from '../components/Organizations'
 import Units from '../components/Units'
+import Positions from '../components/Positions'
 
 Vue.use(Router)
 
@@ -86,6 +87,14 @@ let router = new Router({
       path: '/directories/units',
       name: 'units',
       component: Units,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/positions',
+      name: 'positions',
+      component: Positions,
       meta: {
         requiresAuth: true
       }

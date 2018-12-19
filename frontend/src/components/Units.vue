@@ -103,7 +103,7 @@ export default {
       currentObject: {},
       isSelected: false,
       message: null,
-      newObject: {'text': null, 'parent': null},
+      newObject: {'text': null, parent: null},
       errorMessage: '',
       search_term: '',
       pagination: {},
@@ -123,9 +123,13 @@ export default {
       axios.get(process.env.API_URL + '/api/unit/')
         .then(resp => {
           self.objects = resp.data
-          window.$('#tree').treeview({data: self.objects, preventUnselect: true, levels: 5}).on({'nodeSelected': function(event, data) {
-              self.selectObject(data)
-            }})
+          window.$('#tree').treeview({data: self.objects, levels: 5}).on({'nodeSelected': function (event, data) {
+            self.selectObject(data)
+          }}).on({'nodeUnselected': function (event, data) {
+            self.currentObject = {}
+            self.isSelected = false
+          }
+          })
           window.$('#tree').treeview('expandAll', {})
           self.currentObject = {}
           self.isSelected = false
@@ -150,7 +154,7 @@ export default {
       if (this.currentObject) {
         this.newObject.parent = this.currentObject.id
       }
-      axios.post(process.env.API_URL + '/api/add/unit/', this.newObject)
+      axios.post(process.env.API_URL + '/api/edit/unit/', this.newObject)
         .then(resp => {
           this.loading = false
           this.addDialog = false
@@ -170,7 +174,7 @@ export default {
     updateObject: function () {
       this.errorMessage = ''
       if (this.currentPeople !== '') {
-        axios.put(process.env.API_URL + '/api/unit/' + this.currentObject.id + '/', this.currentObject)
+        axios.put(process.env.API_URL + '/api/edit/unit/' + this.currentObject.id + '/', this.currentObject)
           .then(resp => {
             this.loading = false
             this.currentObject = resp.data
@@ -193,7 +197,7 @@ export default {
     deleteObject: function () {
       this.deleteDialog = false
       if (this.currentObject !== '') {
-        axios.delete(process.env.API_URL + '/api/unit/' + this.currentObject.id + '/')
+        axios.delete(process.env.API_URL + '/api/edit/unit/' + this.currentObject.id + '/')
           .then(resp => {
             this.currentObject = ''
             this.isSelected = false
