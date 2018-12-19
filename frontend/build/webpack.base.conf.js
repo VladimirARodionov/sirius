@@ -91,6 +91,20 @@ module.exports = {
             loader: 'sass-loader'
           }
         ]
+      },
+      {
+        test: require.resolve('jquery'),
+        use: [{
+            loader: 'expose-loader',
+            options: 'jQuery'
+        }]
+      },
+      {
+        test: require.resolve('jquery'),
+        use: [{
+            loader: 'expose-loader',
+            options: '$'
+        }]
       }
     ]
   },

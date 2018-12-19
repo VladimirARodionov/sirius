@@ -1,4 +1,6 @@
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
+from rest_framework_recursive.fields import RecursiveField
 
 from SiriusCRM.models import User, Organization, Unit
 
@@ -22,13 +24,16 @@ class OrganizationSerializer(ModelSerializer):
 
 
 class UnitSerializer(ModelSerializer):
+    # parent = serializers.PrimaryKeyRelatedField()
+    # parent = RecursiveField(required=False, allow_null=True, many=True)
+
     class Meta:
         model = Unit
-        fields = ('id', 'name', 'parent', 'children')
+        fields = ('id', 'text', 'parent', 'nodes')
 
 
 class UnitAddSerializer(ModelSerializer):
     class Meta:
         model = Unit
-        fields = ('id', 'name')
+        fields = ('id', 'text', 'parent')
 

@@ -8,35 +8,35 @@
         <button class="btn btn-danger" v-if="isSelected" v-on:click="deleteDialog = true">{{'Delete' | translate}}</button>
       </div>
     </div>
-    <v-treeview :items="objects"></v-treeview>
+    <div id="tree"></div>
 
-        <!-- Add People Modal -->
+    <!-- Add People Modal -->
     <v-dialog v-model="addDialog" persistent max-width="800">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Add organization' | translate}}</v-card-title>
-          <v-form>
-            <v-card-text>
+        <v-form>
+          <v-card-text>
 
-              <div class="alert alert-danger" v-if="errorMessage">
-                {{errorMessage}}
-              </div>
-              <div class="form-group">
-                <label for="add_name">{{'Name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="add_name"
-                  v-model="newObject.name"
-                  required="required" >
-              </div>
-            </v-card-text>
-            <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="gray darken-1" @click="addDialog = false">{{'Close' | translate}}</v-btn>
-          <v-btn color="green darken-1" @click="addObject()">{{'Save' | translate}}</v-btn>
-        </v-card-actions>
-          </v-form>
+            <div class="alert alert-danger" v-if="errorMessage">
+              {{errorMessage}}
+            </div>
+            <div class="form-group">
+              <label for="add_name">{{'Name' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="add_name"
+                v-model="newObject.text"
+                required="required" >
+            </div>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="gray darken-1" @click="addDialog = false">{{'Close' | translate}}</v-btn>
+            <v-btn color="green darken-1" @click="addObject()">{{'Save' | translate}}</v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <!-- End of people modal -->
@@ -44,29 +44,29 @@
     <v-dialog v-model="editDialog" persistent max-width="800">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Edit' | translate}}</v-card-title>
-          <v-form>
-            <v-card-text>
+        <v-form>
+          <v-card-text>
 
-              <div class="alert alert-danger" v-if="errorMessage">
-                {{errorMessage}}
-              </div>
-              <div class="form-group">
-                <label for="edit_name">{{'Name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="edit_name"
-                  v-model="currentObject.name"
-                  required="required" >
-              </div>
-            </v-card-text>
-            <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
-          <v-btn color="green darken-1" @click="updateObject()">{{'Save' | translate}}</v-btn>
-        </v-card-actions>
-          </v-form>
+            <div class="alert alert-danger" v-if="errorMessage">
+              {{errorMessage}}
+            </div>
+            <div class="form-group">
+              <label for="edit_name">{{'Name' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit_name"
+                v-model="currentObject.text"
+                required="required" >
+            </div>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
+            <v-btn color="green darken-1" @click="updateObject()">{{'Save' | translate}}</v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <!-- End of people modal -->
@@ -74,7 +74,7 @@
     <v-dialog v-model="deleteDialog" max-width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Delete confirm' | translate}}</v-card-title>
-        <v-card-text>{{'Delete organization' | translate}} #{{currentObject.id}} {{currentObject.name}} ?</v-card-text>
+        <v-card-text>{{'Delete organization' | translate}} #{{currentObject.id}} {{currentObject.text}} ?</v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -103,7 +103,7 @@ export default {
       currentObject: {},
       isSelected: false,
       message: null,
-      newObject: {'name': null, 'organization_id': 1},
+      newObject: {'text': null, 'parent': null},
       errorMessage: '',
       search_term: '',
       pagination: {},
@@ -119,12 +119,17 @@ export default {
   methods: {
     getObjects: function () {
       this.loading = true
+      var self = this
       axios.get(process.env.API_URL + '/api/unit/')
         .then(resp => {
-          this.objects = resp.data
-          this.currentObject = {}
-          this.isSelected = false
-          this.loading = false
+          self.objects = resp.data
+          window.$('#tree').treeview({data: self.objects, preventUnselect: true, levels: 5}).on({'nodeSelected': function(event, data) {
+              self.selectObject(data)
+            }})
+          window.$('#tree').treeview('expandAll', {})
+          self.currentObject = {}
+          self.isSelected = false
+          self.loading = false
         })
         .catch(err => {
           this.loading = false
@@ -142,6 +147,9 @@ export default {
     },
     addObject: function () {
       this.errorMessage = ''
+      if (this.currentObject) {
+        this.newObject.parent = this.currentObject.id
+      }
       axios.post(process.env.API_URL + '/api/add/unit/', this.newObject)
         .then(resp => {
           this.loading = false
@@ -177,7 +185,7 @@ export default {
                 this.errorMessage = errors[value][0]
               }
               console.log(err.response.data)
-              this.getPeoples()
+              this.getObjects()
             }
           })
       }
@@ -189,7 +197,7 @@ export default {
           .then(resp => {
             this.currentObject = ''
             this.isSelected = false
-            this.getPeoples()
+            this.getObjects()
           })
           .catch(err => {
             console.log(err)

@@ -212,7 +212,7 @@ export default {
                 this.errorMessage = errors[value][0]
               }
               console.log(err.response.data)
-              this.getPeoples()
+              this.getObjects()
             }
           })
       }
@@ -224,7 +224,7 @@ export default {
           .then(resp => {
             this.currentObject = ''
             this.isSelected = false
-            this.getPeoples()
+            this.getObjects()
           })
           .catch(err => {
             console.log(err)

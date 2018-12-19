@@ -1,9 +1,11 @@
 from django.core.paginator import InvalidPage, PageNotAnInteger
 from django.utils import six
 from rest_framework import viewsets, filters
+from rest_framework.decorators import list_route, action
 from rest_framework.exceptions import NotFound
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from SiriusCRM.mixins import HasRoleMixin
@@ -81,6 +83,22 @@ class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_roles = ['admin_role', 'user_role']
     queryset = Unit.objects.all()
     serializer_class = UnitSerializer
+
+    def serialize_tree(self, queryset):
+        for obj in queryset:
+            data = self.get_serializer(obj).data
+            data['nodes'] = self.serialize_tree(obj.nodes.all())
+            yield data
+
+    def list(self, request):
+        queryset = self.get_queryset().filter(parent=None)
+        data = self.serialize_tree(queryset)
+        return Response(data)
+
+    def retrieve(self, request, pk=None):
+        self.object = self.get_object()
+        data = self.serialize_tree([self.object])
+        return Response(data)
 
 
 class UnitAddViewSet(HasRoleMixin, viewsets.ModelViewSet):
