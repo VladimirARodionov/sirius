@@ -52,7 +52,8 @@ router.register('api/edit/payment', PaymentEditViewSet, basename='payment_edit')
 
 
 urlpatterns = [
-    path('api/actions/', views.PeopleImportView.as_view(), name='actions'),
+    path('api/import/user/', views.PeopleImportView.as_view(), name='import_user'),
+    path('api/export/user/', views.UserExportView.as_view(), name='export_user'),
     path('admin/', admin.site.urls),
     path('api/accounts/password_reset/', PasswordResetView.as_view(), name='password_reset'),
     re_path('api/accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

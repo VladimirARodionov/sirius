@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rolepermissions',
     'casl_django',
+    'import_export',
     'SiriusCRM.apps.SiriuscrmConfig',
 
 ]
@@ -150,10 +151,10 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# AUTHENTICATION_BACKENDS = ( 'rest_framework_jwt.authentication.JSONWebTokenAuthentication', )
 LOCALE_PATHS = (BASE_DIR + '/SiriusCRM/locale', )
 AUTH_USER_MODEL = 'SiriusCRM.User'
 
 LANGUAGES = [('en', _('English')), ('ru', _('Russian')), ]
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'), 'templates' )
 CORS_ORIGIN_ALLOW_ALL = True
+IMPORT_EXPORT_USE_TRANSACTIONS = True

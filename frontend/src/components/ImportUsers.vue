@@ -44,7 +44,7 @@ export default {
       var formData = new FormData()
       var filename = document.querySelector('#filename')
       formData.append('filename', filename.files[0])
-      axios.post(process.env.API_URL + '/api/actions/', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+      axios.post(process.env.API_URL + '/api/import/user/', formData, {headers: {'Content-Type': 'multipart/form-data'}})
         .then(resp => {
           if (resp.data.result) {
             this.result = resp.data.result
