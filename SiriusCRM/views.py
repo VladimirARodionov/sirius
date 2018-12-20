@@ -19,7 +19,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic.edit import ProcessFormView, FormView
 from rest_framework.generics import get_object_or_404
-from rest_framework.parsers import FileUploadParser
+from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.utils import json
 from rest_framework.views import APIView
@@ -79,10 +79,10 @@ class UserRolesView(HasRoleMixin, APIView):
             return JsonResponse(context)
 
 
-
-class PeopleImportView(APIView):
+class PeopleImportView(HasRoleMixin, APIView):
     permission_classes = (IsAuthenticated,)
-    parser_classes = (FileUploadParser,)
+    allowed_roles = ['admin_role', 'edit_role']
+    parser_classes = (MultiPartParser,)
 
     def post(self, request):
         num_success = 0
