@@ -8,11 +8,12 @@ from django.contrib.auth.views import redirect_to_login as dj_redirect_to_login
 from django.conf import settings
 from functools import wraps
 
+
 def authenticate(request, **credentials):
     backend = load_backend('rest_framework_jwt.authentication.JSONWebTokenAuthentication')
     try:
         (user, payload) = backend.authenticate(request, **credentials)
-    except PermissionDenied:
+    except Exception:
         # This backend says to stop in our tracks - this user should not be allowed in at all.
         return None
     return user
