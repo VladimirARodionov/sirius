@@ -34,7 +34,7 @@
       <div class="btn-toolbar justify-content-between mb-3">
         <div>
           <button type="submit" class="btn btn-primary">{{'Save' | translate}}</button>
-          <button class="btn btn-danger" v-roles="['admin_role']" v-on:click="changePasswordDialog = true">{{'Change password' | translate}}</button>
+          <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-on:click="changePasswordDialog = true">{{'Change password' | translate}}</button>
         </div>
       </div>
     </form>

@@ -17,13 +17,15 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
-from django.views.generic.base import View
 from django.views.generic.edit import ProcessFormView, FormView
 from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import FileUploadParser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.utils import json
-from rolepermissions.roles import get_user_roles
+from rest_framework.views import APIView
+from rolepermissions.roles import get_user_roles, RolesManager, assign_role, retrieve_role, remove_role
 
+from SiriusCRM.mixins import HasRoleMixin
 from SiriusCRM.models import User
 
 
@@ -45,7 +47,41 @@ def jwt_response_payload_handler(token, user=None, request=None):
     }
 
 
-class PeopleImportView(View):
+class UserRolesView(HasRoleMixin, APIView):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'edit_role']
+
+    def get(self, request):
+        return JsonResponse(list(RolesManager.get_roles_names()), safe=False)
+
+    def post(self, request):
+        context = {}
+        try:
+            body = json.loads(request.body)
+            user = get_object_or_404(User, pk=body['user_id'])
+            assign_role(user, retrieve_role(body['role_name']))
+            context['result'] = {'success': True}
+            return JsonResponse(context)
+        except Exception as e:
+            context['result'] = {'success': False, 'error': str(e)}
+            return JsonResponse(context)
+
+    def delete(self, request):
+        context = {}
+        try:
+            body = json.loads(request.body)
+            user = get_object_or_404(User, pk=body['user_id'])
+            remove_role(user, retrieve_role(body['role_name']))
+            context['result'] = {'success': True}
+            return JsonResponse(context)
+        except Exception as e:
+            context['result'] = {'success': False, 'error': str(e)}
+            return JsonResponse(context)
+
+
+
+class PeopleImportView(APIView):
+    permission_classes = (IsAuthenticated,)
     parser_classes = (FileUploadParser,)
 
     def post(self, request):

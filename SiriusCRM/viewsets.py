@@ -3,12 +3,15 @@ from django.utils import six
 from rest_framework import viewsets, filters
 from rest_framework.exceptions import NotFound
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Organization, Unit, Position
+from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
+    Payment
 from SiriusCRM.serializers import UserListSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
-    UnitChangeSerializer, PositionSerializer
+    UnitChangeSerializer, PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
+    CompetencySerializer, CourseSerializer, PaymentSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -51,6 +54,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class UserListViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
     allowed_roles = ['admin_role', 'user_role', 'user_list_role']
     queryset = User.objects.all()
     serializer_class = UserListSerializer
@@ -61,12 +65,14 @@ class UserListViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
 
 
 class UserDetailViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     allowed_roles = ['admin_role', 'edit_role', 'user_list_role', 'user_detail_role']
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
 
 class OrganizationViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
     allowed_roles = ['admin_role', 'user_role']
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
@@ -77,6 +83,7 @@ class OrganizationViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
 
 
 class OrganizationEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     allowed_roles = ['admin_role', 'edit_role']
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
@@ -87,6 +94,7 @@ class OrganizationEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 
 class UnitViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
     allowed_roles = ['admin_role', 'user_role']
     queryset = Unit.objects.all()
     serializer_class = UnitSerializer
@@ -108,12 +116,14 @@ class UnitViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
 
 
 class UnitEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     allowed_roles = ['admin_role', 'edit_role']
     queryset = Unit.objects.all()
     serializer_class = UnitChangeSerializer
 
 
 class PositionViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
     allowed_roles = ['admin_role', 'user_role']
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
@@ -124,9 +134,164 @@ class PositionViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
 
 
 class PositionEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     allowed_roles = ['admin_role', 'edit_role']
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CategoryViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CategoryEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'edit_role']
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CountryViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CountryEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'edit_role']
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class RegionViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Region.objects.all()
+    serializer_class = RegionSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class RegionEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'edit_role']
+    queryset = Region.objects.all()
+    serializer_class = RegionSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CityViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CityEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'edit_role']
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CompetencyViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Competency.objects.all()
+    serializer_class = CompetencySerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CompetencyEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'edit_role']
+    queryset = Competency.objects.all()
+    serializer_class = CompetencySerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CourseViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class CourseEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'edit_role']
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class PaymentViewSet(HasRoleMixin, viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'user_role']
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
+
+class PaymentEditViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'edit_role']
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
     search_fields = ('name',)

@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-        <form @submit.prevent="importUsers()">
+        <form v-roles="['admin_role', 'edit_role']"  @submit.prevent="importUsers()">
             <input type="file" id="filename" name="filename">
 
             <div class="mt-3">

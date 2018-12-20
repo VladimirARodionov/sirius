@@ -1,43 +1,40 @@
 <template>
   <div>
-    <h1>{{'List of Users' | translate}}</h1>
+    <h1>{{'Cities' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
         <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' | translate}}</button>
-        <button class="btn btn-success"  v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="goUserDetails()">{{'Details' | translate}}</button>
         <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="editDialog = true">{{'Edit' | translate}}</button>
         <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="deleteDialog = true">{{'Delete' | translate}}</button>
       </div>
       <div class="input-group">
         <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term" aria-label="Search">
-        <button class="btn btn-success my-2 my-sm-0" v-on:click.prevent="getPeoples()">{{'Search' | translate}}</button>
+        <button class="btn btn-success my-2 my-sm-0" v-on:click.prevent="getObjects()">{{'Search' | translate}}</button>
       </div>
     </div>
     <div class="table-responsive">
       <v-data-table
         :headers="headers"
-        :items="users"
+        :items="objects"
         :loading="loading"
-        :total-items="totalUsers"
+        :total-items="totalObjects"
         :pagination.sync="pagination"
         :rows-per-page-items="[10, 20, 50, 100]"
         class="elevation-1"
       >
         <template slot="items" slot-scope="props">
-          <tr v-on:click="selectPeople(props.item)" v-bind:class="isActive(props.item)">
+          <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
             <td>{{ props.item.id }}</td>
-            <td>{{ props.item.first_name }}</td>
-            <td>{{ props.item.last_name }}</td>
-            <td>{{ props.item.email }}</td>
+            <td>{{ props.item.name }}</td>
           </tr>
         </template>
       </v-data-table>
 
     </div>
-    <!-- Add People Modal -->
+    <!-- Add Modal -->
     <v-dialog v-model="addDialog" persistent max-width="800">
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>{{'Add user' | translate}}</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>{{'Add city' | translate}}</v-card-title>
           <v-form>
             <v-card-text>
 
@@ -45,43 +42,26 @@
                 {{errorMessage}}
               </div>
               <div class="form-group">
-                <label for="add_first_name">{{'First name' | translate}}</label>
+                <label for="add_name">{{'Name' | translate}}</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="add_first_name"
-                  v-model="newPeople.first_name"
+                  id="add_name"
+                  v-model="newObject.name"
                   required="required" >
-              </div>
-              <div class="form-group">
-                <label for="add_last_name">{{'Last name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="add_last_name"
-                  v-model="newPeople.last_name"
-                  required="required" >
-              </div>
-              <div class="form-group">
-                <label for="add_email">{{'Email' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="add_email"
-                  v-model="newPeople.email">
               </div>
             </v-card-text>
             <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="gray darken-1" @click="addDialog = false">{{'Close' | translate}}</v-btn>
-          <v-btn color="green darken-1" @click="addPeople()">{{'Save' | translate}}</v-btn>
+          <v-btn color="green darken-1" @click="addObject()">{{'Save' | translate}}</v-btn>
         </v-card-actions>
           </v-form>
       </v-card>
     </v-dialog>
-    <!-- End of people modal -->
-    <!-- Edit People Modal -->
+    <!-- End of add modal -->
+    <!-- Edit Modal -->
     <v-dialog v-model="editDialog" persistent max-width="800">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Edit' | translate}}</v-card-title>
@@ -92,52 +72,35 @@
                 {{errorMessage}}
               </div>
               <div class="form-group">
-                <label for="edit_first_name">{{'First name' | translate}}</label>
+                <label for="edit_name">{{'Name' | translate}}</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="edit_first_name"
-                  v-model="currentPeople.first_name"
+                  id="edit_name"
+                  v-model="currentObject.name"
                   required="required" >
-              </div>
-              <div class="form-group">
-                <label for="edit_last_name">{{'Last name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="edit_last_name"
-                  v-model="currentPeople.last_name"
-                  required="required" >
-              </div>
-              <div class="form-group">
-                <label for="edit_email">{{'Email' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="edit_email"
-                  v-model="currentPeople.email">
               </div>
             </v-card-text>
             <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
-          <v-btn color="green darken-1" @click="updatePeople()">{{'Save' | translate}}</v-btn>
+          <v-btn color="green darken-1" @click="updateObject()">{{'Save' | translate}}</v-btn>
         </v-card-actions>
           </v-form>
       </v-card>
     </v-dialog>
-    <!-- End of people modal -->
-    <!-- Delete People Modal -->
+    <!-- End of edit modal -->
+    <!-- Delete Modal -->
     <v-dialog v-model="deleteDialog" max-width="500">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Delete confirm' | translate}}</v-card-title>
-        <v-card-text>{{'Delete user' | translate}} #{{currentPeople.id}} {{currentPeople.first_name}} {{currentPeople.last_name}} ({{currentPeople.email}}) ?</v-card-text>
+        <v-card-text>{{'Delete city' | translate}} #{{currentObject.id}} {{currentObject.name}} ?</v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="gray darken-1" @click="deleteDialog = false">{{'No' | translate}}</v-btn>
-          <v-btn color="red darken-1" @click="deletePeople()">{{'Delete' | translate}}</v-btn>
+          <v-btn color="red darken-1" @click="deleteObject()">{{'Delete' | translate}}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -146,25 +109,22 @@
 
 <script>
 import axios from 'axios'
-import router from '../router'
 
 export default {
-  name: 'People',
+  name: 'Cities',
   data () {
     return {
       headers: [
         { text: '#', value: 'id' },
-        { text: this.$i18n.translate('First name'), value: 'first_name' },
-        { text: this.$i18n.translate('Last name'), value: 'last_name' },
-        { text: this.$i18n.translate('Email'), value: 'email' }
+        { text: this.$i18n.translate('Name'), value: 'name' }
       ],
-      users: [],
-      totalUsers: 0,
+      objects: [],
+      totalObjects: 0,
       loading: false,
-      currentPeople: {},
+      currentObject: {},
       isSelected: false,
       message: null,
-      newPeople: {'first_name': null, 'last_name': null, 'email': null},
+      newObject: {'name': null},
       errorMessage: '',
       search_term: '',
       pagination: {},
@@ -177,15 +137,15 @@ export default {
   watch: {
     pagination: {
       handler () {
-        this.getPeoples()
+        this.getObjects()
       },
       deep: true
     }
   },
   methods: {
-    getPeoples: function () {
+    getObjects: function () {
       this.loading = true
-      let apiUrl = '/api/user/' + '?page=' + this.pagination.page + '&page_size=' + this.pagination.rowsPerPage
+      let apiUrl = '/api/city/' + '?page=' + this.pagination.page + '&page_size=' + this.pagination.rowsPerPage
       if (this.search_term) {
         apiUrl = apiUrl + '&search=' + this.search_term
       }
@@ -195,9 +155,9 @@ export default {
       }
       axios.get(process.env.API_URL + apiUrl)
         .then(resp => {
-          this.users = resp.data.results
-          this.totalUsers = resp.data.count
-          this.currentPeople = {}
+          this.objects = resp.data.results
+          this.totalObjects = resp.data.count
+          this.currentObject = {}
           this.isSelected = false
           this.loading = false
         })
@@ -206,27 +166,22 @@ export default {
           console.log(err)
         })
     },
-    selectPeople: function (user) {
-      this.currentPeople = user
+    selectObject: function (obj) {
+      this.currentObject = obj
       this.isSelected = true
     },
-    isActive: function (user) {
+    isActive: function (obj) {
       return {
-        'table-primary': this.currentPeople === user
+        'table-primary': this.currentObject === obj
       }
     },
-    goUserDetails: function () {
-      if (this.currentPeople !== '') {
-        router.push({ name: 'peopleDetails', params: { id: this.currentPeople.id } })
-      }
-    },
-    addPeople: function () {
+    addObject: function () {
       this.errorMessage = ''
-      axios.post(process.env.API_URL + '/api/userdetail/', this.newPeople)
+      axios.post(process.env.API_URL + '/api/edit/city/', this.newObject)
         .then(resp => {
           this.loading = false
           this.addDialog = false
-          this.getPeoples()
+          this.getObjects()
         })
         .catch(err => {
           console.log(err)
@@ -239,15 +194,15 @@ export default {
           }
         })
     },
-    updatePeople: function () {
+    updateObject: function () {
       this.errorMessage = ''
       if (this.currentPeople !== '') {
-        axios.put(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/', this.currentPeople)
+        axios.put(process.env.API_URL + '/api/edit/city/' + this.currentObject.id + '/', this.currentObject)
           .then(resp => {
             this.loading = false
-            this.currentPeople = resp.data
+            this.currentObject = resp.data
             this.editDialog = false
-            this.getPeoples()
+            this.getObjects()
           })
           .catch(err => {
             console.log(err)
@@ -257,19 +212,19 @@ export default {
                 this.errorMessage = errors[value][0]
               }
               console.log(err.response.data)
-              this.getPeoples()
+              this.getObjects()
             }
           })
       }
     },
-    deletePeople: function () {
+    deleteObject: function () {
       this.deleteDialog = false
-      if (this.currentPeople !== '') {
-        axios.delete(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/')
+      if (this.currentObject !== '') {
+        axios.delete(process.env.API_URL + '/api/edit/city/' + this.currentObject.id + '/')
           .then(resp => {
-            this.currentPeople = ''
+            this.currentObject = ''
             this.isSelected = false
-            this.getPeoples()
+            this.getObjects()
           })
           .catch(err => {
             console.log(err)
