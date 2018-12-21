@@ -10,7 +10,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordContextMixin, INTERNAL_RESET_URL_TOKEN, INTERNAL_RESET_SESSION_TOKEN
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.http import urlsafe_base64_decode
@@ -27,6 +27,7 @@ from rolepermissions.roles import get_user_roles, RolesManager, assign_role, ret
 
 from SiriusCRM.mixins import HasRoleMixin
 from SiriusCRM.models import User
+from SiriusCRM.resources import UserResource
 
 
 def jwt_response_payload_handler(token, user=None, request=None):
@@ -123,6 +124,21 @@ class PeopleImportView(HasRoleMixin, APIView):
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
             return JsonResponse(context)
+
+
+class UserExportView(HasRoleMixin, APIView):
+    permission_classes = (IsAuthenticated,)
+    allowed_roles = ['admin_role', 'user_role',]
+
+    def export(self, request):
+        person_resource = UserResource()
+        dataset = person_resource.export()
+        response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="users.xls"'
+        return response
+
+    def get(self, request):
+        return self.export(request)
 
 
 class PeopleDetailsForm(forms.ModelForm):

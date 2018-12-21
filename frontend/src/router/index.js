@@ -4,7 +4,7 @@ import store from '../store'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import People from '../components/People.vue'
-// import Actions from '../components/Actions.vue'
+import Actions from '../components/Actions.vue'
 import Reports from '../components/Reports.vue'
 import Directories from '../components/directories/Directories.vue'
 import PeopleDetails from '../components/PeopleDetails.vue'
@@ -21,6 +21,7 @@ import Cities from '../components/directories/Cities'
 import Competencies from '../components/directories/Competencies'
 import Courses from '../components/directories/Courses'
 import Payments from '../components/directories/Payments'
+import ExportUsers from '../components/ExportUsers'
 
 Vue.use(Router)
 
@@ -69,7 +70,23 @@ let router = new Router({
     {
       path: '/actions',
       name: 'actions',
+      component: Actions,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/actions/import/users',
+      name: 'importUsers',
       component: ImportUsers,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/actions/export/users',
+      name: 'exportUsers',
+      component: ExportUsers,
       meta: {
         requiresAuth: true
       }
