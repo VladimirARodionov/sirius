@@ -1,7 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from rolepermissions.roles import assign_role
 
-from Sirius.roles import AdminRole, UserRole
+from Sirius.roles import AdminRole
 
 
 class UserManager(BaseUserManager):
@@ -23,7 +23,6 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', False)
         extra_fields.setdefault('is_staff', False)
         user = self._create_user(email, password, **extra_fields)
-        assign_role(user, UserRole)
         return user
 
     def create_superuser(self, email, password, **extra_fields):

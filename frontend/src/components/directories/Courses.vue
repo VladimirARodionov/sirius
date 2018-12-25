@@ -9,7 +9,9 @@
       </div>
       <div class="input-group">
         <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term" aria-label="Search">
-        <button class="btn btn-success my-2 my-sm-0" v-on:click.prevent="getObjects()">{{'Search' | translate}}</button>
+        <span class="input-group-btn">
+          <button class="btn btn-success" v-on:click.prevent="getObjects()">{{'Search' | translate}}</button>
+        </span>
       </div>
     </div>
     <div class="table-responsive">
