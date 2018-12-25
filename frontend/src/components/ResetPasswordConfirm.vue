@@ -100,31 +100,30 @@ export default {
     },
     goLogin: function () {
       router.push({name: 'login'})
-    }
-  },
-  changePassword: function () {
-    this.errorMessage = ''
-    var formData = new FormData()
-    formData.append('new_password1', this.passwords.new_password1)
-    formData.append('new_password2', this.passwords.new_password2)
-    axios.post(process.env.API_URL + '/api/accounts/reset/' + this.$route.params.uidb64 + '/' + this.$route.params.token + '/', formData)
-      .then(resp => {
-        if (resp.data.result) {
-          this.result = resp.data.result
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        if (err.response.data) {
-          var errors = err.response.data
-          for (var value in errors) {
-            this.errorMessage = errors[value][0]
+    },
+    changePassword: function () {
+      this.errorMessage = ''
+      var formData = new FormData()
+      formData.append('new_password1', this.passwords.new_password1)
+      formData.append('new_password2', this.passwords.new_password2)
+      axios.post(process.env.API_URL + '/api/accounts/reset/' + this.$route.params.uidb64 + '/' + this.$route.params.token + '/', formData)
+        .then(resp => {
+          if (resp.data.result) {
+            this.result = resp.data.result
           }
-          console.log(err.response.data)
-        }
-      })
+        })
+        .catch(err => {
+          console.log(err)
+          if (err.response.data) {
+            var errors = err.response.data
+            for (var value in errors) {
+              this.errorMessage = errors[value][0]
+            }
+            console.log(err.response.data)
+          }
+        })
+    }
   }
-
 }
 </script>
 
