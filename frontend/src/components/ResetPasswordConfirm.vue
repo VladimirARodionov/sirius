@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Default>
     <div container>
       <div class="row">
         <div class="col col-lg-6">
@@ -37,7 +37,7 @@
                 name="new_password1"
                 id="id_new_password1"
                 v-model="passwords.new_password1"
-                required >
+                required>
             </div>
             <div class="form-group">
               <label for="id_new_password2">{{'Password confirmation' | translate}}</label>
@@ -47,7 +47,7 @@
                 name="new_password2"
                 id="id_new_password2"
                 v-model="passwords.new_password2"
-                required >
+                required>
             </div>
           </v-card-text>
           <v-divider></v-divider>
@@ -60,12 +60,13 @@
       </v-card>
     </v-dialog>
     <!-- End of change password -->
-  </div>
+  </Default>
 </template>
 
 <script>
 import axios from 'axios'
 import router from '../router'
+import Default from './layouts/Default'
 
 export default {
   name: 'ResetPasswordConfirm',
@@ -73,7 +74,7 @@ export default {
     return {
       errorMessage: '',
       changePasswordDialog: false,
-      passwords: {new_password1: '', new_password2: ''},
+      passwords: { new_password1: '', new_password2: '' },
       result: {}
     }
   },
@@ -99,7 +100,7 @@ export default {
         })
     },
     goLogin: function () {
-      router.push({name: 'login'})
+      router.push({ name: 'login' })
     },
     changePassword: function () {
       this.errorMessage = ''
@@ -123,7 +124,11 @@ export default {
           }
         })
     }
+  },
+  components: {
+    Default
   }
+
 }
 </script>
 

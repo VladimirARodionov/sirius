@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Menu>
     <h1>{{ 'Export users' | translate}}</h1>
     <div container v-if="result">
       <div class="row">
@@ -16,16 +16,17 @@
       </div>
     </div>
 
-    <form v-roles="['admin_role', 'user_role']"  @submit.prevent="exportUsers()">
+    <form v-roles="['admin_role', 'user_role']" @submit.prevent="exportUsers()">
       <div class="mt-3">
         <button type="submit" class="btn btn-primary">{{ 'Export' | translate}}</button>
       </div>
     </form>
-  </div>
+  </Menu>
 </template>
 
 <script>
 import axios from 'axios'
+import Menu from './layouts/Menu'
 
 export default {
   name: 'ExportUsers',
@@ -36,7 +37,7 @@ export default {
   },
   methods: {
     exportUsers: function () {
-      axios.get(process.env.API_URL + '/api/export/user/', {responseType: 'blob'})
+      axios.get(process.env.API_URL + '/api/export/user/', { responseType: 'blob' })
         .then(resp => {
           const url = window.URL.createObjectURL(new Blob([resp.data]))
           const link = document.createElement('a')
@@ -49,6 +50,9 @@ export default {
           console.log(err)
         })
     }
+  },
+  components: {
+    Menu
   }
 }
 </script>

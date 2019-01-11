@@ -1,10 +1,17 @@
 <template>
-  <div>reports</div>
+  <Menu>
+    <div>reports</div>
+  </Menu>
 </template>
 
 <script>
+import Menu from './layouts/Menu'
+
 export default {
-  name: 'Reports'
+  name: 'Reports',
+  components: {
+    Menu
+  }
 }
 </script>
 

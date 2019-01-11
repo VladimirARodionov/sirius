@@ -13,8 +13,9 @@ import Vuetify from 'vuetify'
 import ru from 'vuetify/lib/locale/ru'
 import VRM from './vue-role-manager'
 import 'patternfly-bootstrap-treeview'
+import 'bootstrap/dist/css/bootstrap.css'
 
-Vue.use(VRM, {router: router, debug: true})
+Vue.use(VRM, { router: router, debug: true })
 
 Vue.use(Vuetify, {
   lang: {

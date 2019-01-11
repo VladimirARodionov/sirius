@@ -1,12 +1,20 @@
 <template>
-  <div>
+  <Menu>
     <h1>{{'List of Users' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' | translate}}</button>
-        <button class="btn btn-success"  v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="goUserDetails()">{{'Details' | translate}}</button>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="editDialog = true">{{'Edit' | translate}}</button>
-        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="deleteDialog = true">{{'Delete' | translate}}</button>
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' |
+          translate}}
+        </button>
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+                v-on:click="goUserDetails()">{{'Details' | translate}}
+        </button>
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+                v-on:click="editDialog = true">{{'Edit' | translate}}
+        </button>
+        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+                v-on:click="deleteDialog = true">{{'Delete' | translate}}
+        </button>
       </div>
       <div class="input-group">
         <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term" aria-label="Search">
@@ -40,46 +48,46 @@
     <v-dialog v-model="addDialog" persistent max-width="800">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Add user' | translate}}</v-card-title>
-          <v-form>
-            <v-card-text>
+        <v-form>
+          <v-card-text>
 
-              <div class="alert alert-danger" v-if="errorMessage">
-                {{errorMessage}}
-              </div>
-              <div class="form-group">
-                <label for="add_first_name">{{'First name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="add_first_name"
-                  v-model="newPeople.first_name"
-                  required="required" >
-              </div>
-              <div class="form-group">
-                <label for="add_last_name">{{'Last name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="add_last_name"
-                  v-model="newPeople.last_name"
-                  required="required" >
-              </div>
-              <div class="form-group">
-                <label for="add_email">{{'Email' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="add_email"
-                  v-model="newPeople.email">
-              </div>
-            </v-card-text>
-            <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="gray darken-1" @click="addDialog = false">{{'Close' | translate}}</v-btn>
-          <v-btn color="green darken-1" @click="addPeople()">{{'Save' | translate}}</v-btn>
-        </v-card-actions>
-          </v-form>
+            <div class="alert alert-danger" v-if="errorMessage">
+              {{errorMessage}}
+            </div>
+            <div class="form-group">
+              <label for="add_first_name">{{'First name' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="add_first_name"
+                v-model="newPeople.first_name"
+                required="required">
+            </div>
+            <div class="form-group">
+              <label for="add_last_name">{{'Last name' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="add_last_name"
+                v-model="newPeople.last_name"
+                required="required">
+            </div>
+            <div class="form-group">
+              <label for="add_email">{{'Email' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="add_email"
+                v-model="newPeople.email">
+            </div>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="gray darken-1" @click="addDialog = false">{{'Close' | translate}}</v-btn>
+            <v-btn color="green darken-1" @click="addPeople()">{{'Save' | translate}}</v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <!-- End of people modal -->
@@ -87,68 +95,59 @@
     <v-dialog v-model="editDialog" persistent max-width="800">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Edit' | translate}}</v-card-title>
-          <v-form>
-            <v-card-text>
+        <v-form>
+          <v-card-text>
 
-              <div class="alert alert-danger" v-if="errorMessage">
-                {{errorMessage}}
-              </div>
-              <div class="form-group">
-                <label for="edit_first_name">{{'First name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="edit_first_name"
-                  v-model="currentPeople.first_name"
-                  required="required" >
-              </div>
-              <div class="form-group">
-                <label for="edit_last_name">{{'Last name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="edit_last_name"
-                  v-model="currentPeople.last_name"
-                  required="required" >
-              </div>
-              <div class="form-group">
-                <label for="edit_email">{{'Email' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="edit_email"
-                  v-model="currentPeople.email">
-              </div>
-            </v-card-text>
-            <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
-          <v-btn color="green darken-1" @click="updatePeople()">{{'Save' | translate}}</v-btn>
-        </v-card-actions>
-          </v-form>
+            <div class="alert alert-danger" v-if="errorMessage">
+              {{errorMessage}}
+            </div>
+            <div class="form-group">
+              <label for="edit_first_name">{{'First name' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit_first_name"
+                v-model="currentPeople.first_name"
+                required="required">
+            </div>
+            <div class="form-group">
+              <label for="edit_last_name">{{'Last name' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit_last_name"
+                v-model="currentPeople.last_name"
+                required="required">
+            </div>
+            <div class="form-group">
+              <label for="edit_email">{{'Email' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit_email"
+                v-model="currentPeople.email">
+            </div>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
+            <v-btn color="green darken-1" @click="updatePeople()">{{'Save' | translate}}</v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <!-- End of people modal -->
     <!-- Delete People Modal -->
-    <v-dialog v-model="deleteDialog" max-width="500">
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>{{'Delete confirm' | translate}}</v-card-title>
-        <v-card-text>{{'Delete user' | translate}} #{{currentPeople.id}} {{currentPeople.first_name}} {{currentPeople.last_name}} ({{currentPeople.email}}) ?</v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="gray darken-1" @click="deleteDialog = false">{{'No' | translate}}</v-btn>
-          <v-btn color="red darken-1" @click="deletePeople()">{{'Delete' | translate}}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+      <DeleteDialog :dialog.sync="deleteDialog" :message="getDeleteMessage()" :on-clicked="deletePeople"/>
+  </Menu>
 </template>
 
 <script>
 import axios from 'axios'
 import router from '../router'
+import Menu from './layouts/Menu'
+import DeleteDialog from './dialogs/DeleteDialog'
 
 export default {
   name: 'People',
@@ -166,7 +165,7 @@ export default {
       currentPeople: {},
       isSelected: false,
       message: null,
-      newPeople: {'first_name': null, 'last_name': null, 'email': null},
+      newPeople: { 'first_name': null, 'last_name': null, 'email': null },
       errorMessage: '',
       search_term: '',
       pagination: {},
@@ -277,9 +276,15 @@ export default {
             console.log(err)
           })
       }
+    },
+    getDeleteMessage: function () {
+      return this.$t('Delete user') + '' + this.currentPeople.id + ' ' + this.currentPeople.first_name + ' ' + this.currentPeople.last_name + '(' + this.currentPeople.email + ') ?'
     }
+  },
+  components: {
+    DeleteDialog,
+    Menu
   }
-
 }
 </script>
 

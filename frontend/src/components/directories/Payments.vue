@@ -1,11 +1,17 @@
 <template>
-  <div>
+  <Menu>
     <h1>{{'Payments' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' | translate}}</button>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="editDialog = true">{{'Edit' | translate}}</button>
-        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="deleteDialog = true">{{'Delete' | translate}}</button>
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' |
+          translate}}
+        </button>
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+                v-on:click="editDialog = true">{{'Edit' | translate}}
+        </button>
+        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+                v-on:click="deleteDialog = true">{{'Delete' | translate}}
+        </button>
       </div>
       <div class="input-group">
         <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term" aria-label="Search">
@@ -37,29 +43,29 @@
     <v-dialog v-model="addDialog" persistent max-width="800">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Add payment' | translate}}</v-card-title>
-          <v-form>
-            <v-card-text>
+        <v-form>
+          <v-card-text>
 
-              <div class="alert alert-danger" v-if="errorMessage">
-                {{errorMessage}}
-              </div>
-              <div class="form-group">
-                <label for="add_name">{{'Name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="add_name"
-                  v-model="newObject.name"
-                  required="required" >
-              </div>
-            </v-card-text>
-            <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="gray darken-1" @click="addDialog = false">{{'Close' | translate}}</v-btn>
-          <v-btn color="green darken-1" @click="addObject()">{{'Save' | translate}}</v-btn>
-        </v-card-actions>
-          </v-form>
+            <div class="alert alert-danger" v-if="errorMessage">
+              {{errorMessage}}
+            </div>
+            <div class="form-group">
+              <label for="add_name">{{'Name' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="add_name"
+                v-model="newObject.name"
+                required="required">
+            </div>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="gray darken-1" @click="addDialog = false">{{'Close' | translate}}</v-btn>
+            <v-btn color="green darken-1" @click="addObject()">{{'Save' | translate}}</v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <!-- End of add modal -->
@@ -67,29 +73,29 @@
     <v-dialog v-model="editDialog" persistent max-width="800">
       <v-card>
         <v-card-title class="headline grey lighten-2" primary-title>{{'Edit' | translate}}</v-card-title>
-          <v-form>
-            <v-card-text>
+        <v-form>
+          <v-card-text>
 
-              <div class="alert alert-danger" v-if="errorMessage">
-                {{errorMessage}}
-              </div>
-              <div class="form-group">
-                <label for="edit_name">{{'Name' | translate}}</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="edit_name"
-                  v-model="currentObject.name"
-                  required="required" >
-              </div>
-            </v-card-text>
-            <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
-          <v-btn color="green darken-1" @click="updateObject()">{{'Save' | translate}}</v-btn>
-        </v-card-actions>
-          </v-form>
+            <div class="alert alert-danger" v-if="errorMessage">
+              {{errorMessage}}
+            </div>
+            <div class="form-group">
+              <label for="edit_name">{{'Name' | translate}}</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit_name"
+                v-model="currentObject.name"
+                required="required">
+            </div>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
+            <v-btn color="green darken-1" @click="updateObject()">{{'Save' | translate}}</v-btn>
+          </v-card-actions>
+        </v-form>
       </v-card>
     </v-dialog>
     <!-- End of edit modal -->
@@ -106,11 +112,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </div>
+  </Menu>
 </template>
 
 <script>
 import axios from 'axios'
+import Menu from '../layouts/Menu'
 
 export default {
   name: 'Payments',
@@ -126,7 +133,7 @@ export default {
       currentObject: {},
       isSelected: false,
       message: null,
-      newObject: {'name': null},
+      newObject: { 'name': null },
       errorMessage: '',
       search_term: '',
       pagination: {},
@@ -233,8 +240,10 @@ export default {
           })
       }
     }
+  },
+  components: {
+    Menu
   }
-
 }
 </script>
 

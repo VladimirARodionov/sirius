@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -24,6 +25,11 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -38,6 +44,9 @@ module.exports = {
       '@': resolve('src'),
     }
   },
+  plugins: [
+    new VueLoaderPlugin()
+  ],
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
@@ -83,14 +92,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'sass-loader'
-          }
-        ]
+        loader: 'css-loader!sass-loader?indentedSyntax=false'
       },
       {
         test: require.resolve('jquery'),

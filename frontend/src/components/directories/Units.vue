@@ -1,11 +1,17 @@
 <template>
-  <div>
+  <Menu>
     <h1>{{'Units' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' | translate}}</button>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="editDialog = true">{{'Edit' | translate}}</button>
-        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="deleteDialog = true">{{'Delete' | translate}}</button>
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' |
+          translate}}
+        </button>
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+                v-on:click="editDialog = true">{{'Edit' | translate}}
+        </button>
+        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+                v-on:click="deleteDialog = true">{{'Delete' | translate}}
+        </button>
       </div>
     </div>
     <div id="tree"></div>
@@ -27,7 +33,7 @@
                 class="form-control"
                 id="add_name"
                 v-model="newObject.text"
-                required="required" >
+                required="required">
             </div>
           </v-card-text>
           <v-divider></v-divider>
@@ -57,7 +63,7 @@
                 class="form-control"
                 id="edit_name"
                 v-model="currentObject.text"
-                required="required" >
+                required="required">
             </div>
           </v-card-text>
           <v-divider></v-divider>
@@ -84,11 +90,12 @@
       </v-card>
     </v-dialog>
 
-  </div>
+  </Menu>
 </template>
 
 <script>
 import axios from 'axios'
+import Menu from '../layouts/Menu'
 
 export default {
   name: 'Units',
@@ -103,7 +110,7 @@ export default {
       currentObject: {},
       isSelected: false,
       message: null,
-      newObject: {'text': null, parent: null},
+      newObject: { 'text': null, parent: null },
       errorMessage: '',
       search_term: '',
       pagination: {},
@@ -123,12 +130,15 @@ export default {
       axios.get(process.env.API_URL + '/api/unit/')
         .then(resp => {
           self.objects = resp.data
-          window.$('#tree').treeview({data: self.objects, levels: 5}).on({'nodeSelected': function (event, data) {
-            self.selectObject(data)
-          }}).on({'nodeUnselected': function (event, data) {
-            self.currentObject = {}
-            self.isSelected = false
-          }
+          window.$('#tree').treeview({ data: self.objects, levels: 5 }).on({
+            'nodeSelected': function (event, data) {
+              self.selectObject(data)
+            }
+          }).on({
+            'nodeUnselected': function (event, data) {
+              self.currentObject = {}
+              self.isSelected = false
+            }
           })
           window.$('#tree').treeview('expandAll', {})
           self.currentObject = {}
@@ -208,8 +218,10 @@ export default {
           })
       }
     }
+  },
+  components: {
+    Menu
   }
-
 }
 </script>
 

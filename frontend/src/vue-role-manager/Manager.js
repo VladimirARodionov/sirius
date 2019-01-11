@@ -290,7 +290,8 @@ export default class Manager {
   _isJson (obj) {
     try {
       return obj.constructor === {}.constructor
-    } catch (err) {}
+    } catch (err) {
+    }
     return false
   }
 }
