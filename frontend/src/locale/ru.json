@@ -72,5 +72,7 @@
   "Delete course": "Удалить курс",
   "Payments": "Выплаты",
   "Add payment": "Добавление выплаты",
-  "Delete payment": "Удалить выплату"
+  "Delete payment": "Удалить выплату",
+  "Add unit": "Добавление подразделения",
+  "Delete unit": "Удалить подразделение"
 }

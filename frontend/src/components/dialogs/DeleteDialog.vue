@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500">
+  <v-dialog v-model="dialog" persistent max-width="500">
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title>{{'Delete confirm' | translate}}</v-card-title>
       <div class="alert alert-danger" v-if="errorMessage">
@@ -10,7 +10,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="gray darken-1" @click.native="close">{{'No' | translate}}</v-btn>
-        <v-btn color="red darken-1" @click="clicked()">{{'Delete' | translate}}</v-btn>
+        <v-btn color="red darken-1" @click.native="clicked()">{{'Delete' | translate}}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -27,22 +27,22 @@ export default {
   methods: {
     clicked () {
       this.errorMessage = ''
-      this.onClicked()
-        .then(this.close())
-        .catch(err => {
-          console.log(err)
-          if (err.response && err.response.data) {
-            var errors = err.response.data
-            for (var value in errors) {
-              if (value instanceof Array) {
-                this.errorMessage = errors[value][0]
-              } else {
-                this.errorMessage = errors[value]
-              }
+      try {
+        this.onClicked()
+      } catch (err) {
+        console.log(err)
+        if (err.response && err.response.data) {
+          var errors = err.response.data
+          for (var value in errors) {
+            if (value instanceof Array) {
+              this.errorMessage = errors[value][0]
+            } else {
+              this.errorMessage = errors[value]
             }
-            console.log(err.response.data)
           }
-        })
+          console.log(err.response.data)
+        }
+      }
     },
     close () {
       this.$emit('update:dialog', false)

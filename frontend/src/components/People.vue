@@ -139,7 +139,7 @@
     </v-dialog>
     <!-- End of people modal -->
     <!-- Delete People Modal -->
-      <DeleteDialog :dialog.sync="deleteDialog" :message="getDeleteMessage()" :on-clicked="deletePeople"/>
+    <DeleteDialog :dialog.sync="deleteDialog" :message="getDeleteMessage()" :on-clicked="deletePeople"/>
   </Menu>
 </template>
 
@@ -278,7 +278,7 @@ export default {
       }
     },
     getDeleteMessage: function () {
-      return this.$t('Delete user') + '' + this.currentPeople.id + ' ' + this.currentPeople.first_name + ' ' + this.currentPeople.last_name + '(' + this.currentPeople.email + ') ?'
+      return this.$t('Delete user') + ' ' + this.currentPeople.id + ' ' + this.currentPeople.first_name + ' ' + this.currentPeople.last_name + ((this.currentPeople.email) ? '(' + this.currentPeople.email + ') ?' : ' ?')
     }
   },
   components: {
