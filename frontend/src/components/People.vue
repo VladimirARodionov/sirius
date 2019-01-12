@@ -45,54 +45,9 @@
 
     </div>
     <!-- Add People Modal -->
-    <AddPeopleDialog ref="addPeopleDialog" :dialog.sync="addDialog" :newPeople="this.newPeople" :title="this.$t('Add user')" :on-clicked="addPeople"/>
+    <AddPeopleDialog :errorMessage="addPeopleDialogErrorMessage" :dialog.sync="addDialog" :newPeople="this.newPeople" :title="this.$t('Add user')" :on-clicked="addPeople"/>
     <!-- Edit People Modal -->
-    <v-dialog v-model="editDialog" persistent max-width="800">
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>{{'Edit' | translate}}</v-card-title>
-        <v-form>
-          <v-card-text>
-
-            <div class="alert alert-danger" v-if="errorMessage">
-              {{errorMessage}}
-            </div>
-            <div class="form-group">
-              <label for="edit_first_name">{{'First name' | translate}}</label>
-              <input
-                type="text"
-                class="form-control"
-                id="edit_first_name"
-                v-model="currentPeople.first_name"
-                required="required">
-            </div>
-            <div class="form-group">
-              <label for="edit_last_name">{{'Last name' | translate}}</label>
-              <input
-                type="text"
-                class="form-control"
-                id="edit_last_name"
-                v-model="currentPeople.last_name"
-                required="required">
-            </div>
-            <div class="form-group">
-              <label for="edit_email">{{'Email' | translate}}</label>
-              <input
-                type="text"
-                class="form-control"
-                id="edit_email"
-                v-model="currentPeople.email">
-            </div>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
-            <v-btn color="green darken-1" @click="updatePeople()">{{'Save' | translate}}</v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
-    <!-- End of people modal -->
+    <EditPeopleDialog :errorMessage="editPeopleDialogErrorMessage" :dialog.sync="editDialog" :currentPeople="this.currentPeople" :title="this.$t('Edit')" :on-clicked="updatePeople"/>
     <!-- Delete People Modal -->
     <DeleteDialog :dialog.sync="deleteDialog" :message="getDeleteMessage()" :on-clicked="deletePeople"/>
   </Menu>
@@ -104,6 +59,7 @@ import router from '../router'
 import Menu from './layouts/Menu'
 import DeleteDialog from './dialogs/DeleteDialog'
 import AddPeopleDialog from './dialogs/AddPeopleDialog'
+import EditPeopleDialog from './dialogs/EditPeopleDialog'
 
 export default {
   name: 'People',
@@ -122,7 +78,8 @@ export default {
       isSelected: false,
       message: null,
       newPeople: { 'first_name': null, 'last_name': null, 'email': null },
-      errorMessage: '',
+      editPeopleDialogErrorMessage: '',
+      addPeopleDialogErrorMessage: '',
       search_term: '',
       pagination: {},
       deleteDialog: false,
@@ -178,7 +135,7 @@ export default {
       }
     },
     addPeople: function () {
-      this.errorMessage = ''
+      this.addPeopleDialogErrorMessage = ''
       axios.post(process.env.API_URL + '/api/userdetail/', this.newPeople)
         .then(resp => {
           this.loading = false
@@ -190,9 +147,9 @@ export default {
             var errors = err.response.data
             for (var value in errors) {
               if (errors[value] instanceof Array) {
-                this.$refs.addPeopleDialog.errorMessage = errors[value][0]
+                this.addPeopleDialogErrorMessage = errors[value][0]
               } else {
-                this.$refs.addPeopleDialog.errorMessage = errors[value]
+                this.addPeopleDialogErrorMessage = errors[value]
               }
             }
             console.log(err.response.data)
@@ -200,7 +157,7 @@ export default {
         })
     },
     updatePeople: function () {
-      this.errorMessage = ''
+      this.editPeopleDialogErrorMessage = ''
       if (this.currentPeople !== '') {
         axios.put(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/', this.currentPeople)
           .then(resp => {
@@ -214,10 +171,13 @@ export default {
             if (err.response && err.response.data) {
               var errors = err.response.data
               for (var value in errors) {
-                this.errorMessage = errors[value][0]
+                if (errors[value] instanceof Array) {
+                  this.editPeopleDialogErrorMessage = errors[value][0]
+                } else {
+                  this.editPeopleDialogErrorMessage = errors[value]
+                }
+                console.log(err.response.data)
               }
-              console.log(err.response.data)
-              this.getPeoples()
             }
           })
       }
@@ -243,6 +203,7 @@ export default {
   components: {
     DeleteDialog,
     AddPeopleDialog,
+    EditPeopleDialog,
     Menu
   }
 }

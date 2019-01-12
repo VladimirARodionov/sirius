@@ -9,30 +9,30 @@
             {{errorMessage}}
           </div>
           <div class="form-group">
-            <label for="add_first_name">{{'First name' | translate}}</label>
+            <label for="edit_first_name">{{'First name' | translate}}</label>
             <input
               type="text"
               class="form-control"
-              id="add_first_name"
-              v-model="newPeople.first_name"
+              id="edit_first_name"
+              v-model="currentPeople.first_name"
               required="required">
           </div>
           <div class="form-group">
-            <label for="add_last_name">{{'Last name' | translate}}</label>
+            <label for="edit_last_name">{{'Last name' | translate}}</label>
             <input
               type="text"
               class="form-control"
-              id="add_last_name"
-              v-model="newPeople.last_name"
+              id="edit_last_name"
+              v-model="currentPeople.last_name"
               required="required">
           </div>
           <div class="form-group">
-            <label for="add_email">{{'Email' | translate}}</label>
+            <label for="edit_email">{{'Email' | translate}}</label>
             <input
               type="text"
               class="form-control"
-              id="add_email"
-              v-model="newPeople.email">
+              id="edit_email"
+              v-model="currentPeople.email">
           </div>
         </v-card-text>
         <v-divider></v-divider>
@@ -49,7 +49,7 @@
 
 <script>
 export default {
-  name: 'AddPeopleDialog',
+  name: 'EditPeopleDialog',
   methods: {
     clicked () {
       this.onClicked()
@@ -66,7 +66,7 @@ export default {
       default: ''
     },
     title: String,
-    newPeople: Object,
+    currentPeople: Object,
     onClicked: Function
   }
 }
