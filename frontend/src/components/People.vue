@@ -3,17 +3,17 @@
     <h1>{{'List of Users' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' |
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="data.addDialog = true">{{'Add' |
           translate}}
         </button>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
                 v-on:click="goUserDetails()">{{'Details' | translate}}
         </button>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
-                v-on:click="editDialog = true">{{'Edit' | translate}}
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
+                v-on:click="data.editDialog = true">{{'Edit' | translate}}
         </button>
-        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
-                v-on:click="deleteDialog = true">{{'Delete' | translate}}
+        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
+                v-on:click="data.deleteDialog = true">{{'Delete' | translate}}
         </button>
       </div>
       <div class="input-group">
@@ -26,9 +26,9 @@
     <div class="table-responsive">
       <v-data-table
         :headers="headers"
-        :items="users"
-        :loading="loading"
-        :total-items="totalUsers"
+        :items="data.objects"
+        :loading="data.loading"
+        :total-items="data.totalObjects"
         :pagination.sync="pagination"
         :rows-per-page-items="[10, 20, 50, 100]"
         class="elevation-1"
@@ -45,21 +45,21 @@
 
     </div>
     <!-- Add People Modal -->
-    <AddPeopleDialog :errorMessage="addPeopleDialogErrorMessage" :dialog.sync="addDialog" :newPeople="this.newPeople" :title="this.$t('Add user')" :on-clicked="addPeople"/>
+    <AddPeopleDialog :errorMessage="data.addDialogErrorMessage" :dialog.sync="data.addDialog" :newPeople="data.newObject" :title="this.$t('Add user')" :on-clicked="addPeople"/>
     <!-- Edit People Modal -->
-    <EditPeopleDialog :errorMessage="editPeopleDialogErrorMessage" :dialog.sync="editDialog" :currentPeople="this.currentPeople" :title="this.$t('Edit')" :on-clicked="updatePeople"/>
+    <EditPeopleDialog :errorMessage="data.editDialogErrorMessage" :dialog.sync="data.editDialog" :currentPeople="data.currentObject" :title="this.$t('Edit')" :on-clicked="updatePeople"/>
     <!-- Delete People Modal -->
-    <DeleteDialog :dialog.sync="deleteDialog" :message="getDeleteMessage()" :on-clicked="deletePeople"/>
+    <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deletePeople"/>
   </Menu>
 </template>
 
 <script>
-import axios from 'axios'
 import router from '../router'
 import Menu from './layouts/Menu'
 import DeleteDialog from './dialogs/DeleteDialog'
 import AddPeopleDialog from './dialogs/AddPeopleDialog'
 import EditPeopleDialog from './dialogs/EditPeopleDialog'
+import { onGet, onPost, onPut, onDelete } from '../api/requests'
 
 export default {
   name: 'People',
@@ -71,20 +71,23 @@ export default {
         { text: this.$i18n.translate('Last name'), value: 'last_name' },
         { text: this.$i18n.translate('Email'), value: 'email' }
       ],
-      users: [],
-      totalUsers: 0,
-      loading: false,
-      currentPeople: {},
-      isSelected: false,
+      data: {
+        objects: [],
+        loading: false,
+        totalObjects: 0,
+        newObject: {},
+        currentObject: {},
+        isSelected: false,
+        addDialog: false,
+        editDialog: false,
+        deleteDialog: false,
+        addDialogErrorMessage: '',
+        ediDialogErrorMessage: '',
+        deleteDialogErrorMessage: ''
+      },
       message: null,
-      newPeople: { 'first_name': null, 'last_name': null, 'email': null },
-      editPeopleDialogErrorMessage: '',
-      addPeopleDialogErrorMessage: '',
       search_term: '',
       pagination: {},
-      deleteDialog: false,
-      editDialog: false,
-      addDialog: false,
       errors: []
     }
   },
@@ -98,106 +101,33 @@ export default {
   },
   methods: {
     getPeoples: function () {
-      this.loading = true
-      let apiUrl = '/api/user/' + '?page=' + this.pagination.page + '&page_size=' + this.pagination.rowsPerPage
-      if (this.search_term) {
-        apiUrl = apiUrl + '&search=' + this.search_term
-      }
-      if (this.pagination.sortBy) {
-        const direction = this.pagination.descending ? '-' : ''
-        apiUrl = apiUrl + '&ordering=' + direction + this.pagination.sortBy
-      }
-      axios.get(process.env.API_URL + apiUrl)
-        .then(resp => {
-          this.users = resp.data.results
-          this.totalUsers = resp.data.count
-          this.currentPeople = {}
-          this.isSelected = false
-          this.loading = false
-        })
-        .catch(err => {
-          this.loading = false
-          console.log(err)
-        })
+      onGet('/api/user/', this.data, this.pagination, this.search_term)
     },
     selectPeople: function (user) {
-      this.currentPeople = user
-      this.isSelected = true
+      this.data.currentObject = user
+      this.data.isSelected = true
     },
     isActive: function (user) {
       return {
-        'table-primary': this.currentPeople === user
+        'table-primary': this.data.currentObject === user
       }
     },
     goUserDetails: function () {
-      if (this.currentPeople !== '') {
-        router.push({ name: 'peopleDetails', params: { id: this.currentPeople.id } })
+      if (this.data.currentPeople !== '') {
+        router.push({ name: 'peopleDetails', params: { id: this.data.currentObject.id } })
       }
     },
     addPeople: function () {
-      this.addPeopleDialogErrorMessage = ''
-      axios.post(process.env.API_URL + '/api/userdetail/', this.newPeople)
-        .then(resp => {
-          this.loading = false
-          this.addDialog = false
-          this.getPeoples()
-        })
-        .catch(err => {
-          if (err.response && err.response.data) {
-            var errors = err.response.data
-            for (var value in errors) {
-              if (errors[value] instanceof Array) {
-                this.addPeopleDialogErrorMessage = errors[value][0]
-              } else {
-                this.addPeopleDialogErrorMessage = errors[value]
-              }
-            }
-            console.log(err.response.data)
-          }
-        })
+      onPost('/api/user/', this.data, this.getPeoples)
     },
     updatePeople: function () {
-      this.editPeopleDialogErrorMessage = ''
-      if (this.currentPeople !== '') {
-        axios.put(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/', this.currentPeople)
-          .then(resp => {
-            this.loading = false
-            this.currentPeople = resp.data
-            this.editDialog = false
-            this.getPeoples()
-          })
-          .catch(err => {
-            console.log(err)
-            if (err.response && err.response.data) {
-              var errors = err.response.data
-              for (var value in errors) {
-                if (errors[value] instanceof Array) {
-                  this.editPeopleDialogErrorMessage = errors[value][0]
-                } else {
-                  this.editPeopleDialogErrorMessage = errors[value]
-                }
-                console.log(err.response.data)
-              }
-            }
-          })
-      }
+      onPut('/api/user/', this.data, this.getPeoples)
     },
     deletePeople: function () {
-      this.deleteDialog = false
-      if (this.currentPeople !== '') {
-        axios.delete(process.env.API_URL + '/api/userdetail/' + this.currentPeople.id + '/')
-          .then(resp => {
-            this.currentPeople = ''
-            this.isSelected = false
-            this.getPeoples()
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
+      onDelete('/api/user/', this.data, this.getPeoples)
     },
     getDeleteMessage: function () {
-      return this.$t('Delete user') + ' ' + this.currentPeople.id + ' ' + this.currentPeople.first_name + ' ' + this.currentPeople.last_name + ((this.currentPeople.email) ? '(' + this.currentPeople.email + ') ?' : ' ?')
+      return this.$t('Delete user') + ' ' + this.data.currentObject.id + ' ' + this.data.currentObject.first_name + ' ' + this.data.currentObject.last_name + ((this.data.currentObject.email) ? '(' + this.data.currentObject.email + ') ?' : ' ?')
     }
   },
   components: {

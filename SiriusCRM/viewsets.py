@@ -55,7 +55,10 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 class UserViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_get_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_post_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_put_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_delete_roles = ['admin_role', 'user_role', 'user_list_role']
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
@@ -66,14 +69,20 @@ class UserViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class UserDetailViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'edit_role', 'user_list_role', 'user_detail_role']
+    allowed_get_roles = ['admin_role', 'edit_role', 'user_list_role', 'user_detail_role']
+    allowed_post_roles = ['admin_role', 'edit_role', 'user_list_role', 'user_detail_role']
+    allowed_put_roles = ['admin_role', 'edit_role', 'user_list_role', 'user_detail_role']
+    allowed_delete_roles = ['admin_role', 'edit_role', 'user_list_role', 'user_detail_role']
     queryset = User.objects.all()
     serializer_class = UserDetailSerializer
 
 
 class OrganizationViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = Organization.objects.all()
     serializer_class = OrganizationSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
@@ -84,7 +93,10 @@ class OrganizationViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = Unit.objects.all()
     serializer_class = UnitSerializer
 
@@ -106,7 +118,10 @@ class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class PositionViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = Position.objects.all()
     serializer_class = PositionSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
@@ -117,7 +132,10 @@ class PositionViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class CategoryViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
@@ -128,7 +146,10 @@ class CategoryViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class CountryViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
@@ -139,7 +160,10 @@ class CountryViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class RegionViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = Region.objects.all()
     serializer_class = RegionSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
@@ -150,7 +174,10 @@ class RegionViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class CityViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = City.objects.all()
     serializer_class = CitySerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
@@ -161,7 +188,10 @@ class CityViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class CompetencyViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = Competency.objects.all()
     serializer_class = CompetencySerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
@@ -172,7 +202,10 @@ class CompetencyViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class CourseViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
@@ -183,7 +216,10 @@ class CourseViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
 class PaymentViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role']
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
