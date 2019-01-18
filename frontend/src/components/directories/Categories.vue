@@ -3,14 +3,14 @@
     <h1>{{'Categories' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' |
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="data.addDialog = true">{{'Add' |
           translate}}
         </button>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
-                v-on:click="editDialog = true">{{'Edit' | translate}}
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
+                v-on:click="data.editDialog = true">{{'Edit' | translate}}
         </button>
-        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
-                v-on:click="deleteDialog = true">{{'Delete' | translate}}
+        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
+                v-on:click="data.deleteDialog = true">{{'Delete' | translate}}
         </button>
       </div>
       <div class="input-group">
@@ -23,9 +23,9 @@
     <div class="table-responsive">
       <v-data-table
         :headers="headers"
-        :items="objects"
-        :loading="loading"
-        :total-items="totalObjects"
+        :items="data.objects"
+        :loading="data.loading"
+        :total-items="data.totalObjects"
         :pagination.sync="pagination"
         :rows-per-page-items="[10, 20, 50, 100]"
         class="elevation-1"
@@ -39,75 +39,21 @@
       </v-data-table>
 
     </div>
-    <!-- Add Modal -->
-    <v-dialog v-model="addDialog" persistent max-width="800">
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>{{'Add category' | translate}}</v-card-title>
-        <v-form>
-          <v-card-text>
-
-            <div class="alert alert-danger" v-if="errorMessage">
-              {{errorMessage}}
-            </div>
-            <div class="form-group">
-              <label for="add_name">{{'Name' | translate}}</label>
-              <input
-                type="text"
-                class="form-control"
-                id="add_name"
-                v-model="newObject.name"
-                required="required">
-            </div>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="gray darken-1" @click="addDialog = false">{{'Close' | translate}}</v-btn>
-            <v-btn color="green darken-1" @click="addObject()">{{'Save' | translate}}</v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
-    <!-- End of add modal -->
-    <!-- Edit Modal -->
-    <v-dialog v-model="editDialog" persistent max-width="800">
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>{{'Edit' | translate}}</v-card-title>
-        <v-form>
-          <v-card-text>
-
-            <div class="alert alert-danger" v-if="errorMessage">
-              {{errorMessage}}
-            </div>
-            <div class="form-group">
-              <label for="edit_name">{{'Name' | translate}}</label>
-              <input
-                type="text"
-                class="form-control"
-                id="edit_name"
-                v-model="currentObject.name"
-                required="required">
-            </div>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="gray darken-1" @click="editDialog = false">{{'Close' | translate}}</v-btn>
-            <v-btn color="green darken-1" @click="updateObject()">{{'Save' | translate}}</v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card>
-    </v-dialog>
-    <!-- End of edit modal -->
+    <!-- Add People Modal -->
+    <AddNameDialog :errorMessage="data.addDialogErrorMessage" :dialog.sync="data.addDialog" :newObject="data.newObject" :title="this.$t('Add category')" :on-clicked="addObject"/>
+    <!-- Edit People Modal -->
+    <EditNameDialog :errorMessage="data.editDialogErrorMessage" :dialog.sync="data.editDialog" :currentObject="data.currentObject" :title="this.$t('Edit')" :on-clicked="updateObject"/>
     <!-- Delete Modal -->
-    <DeleteDialog :dialog.sync="deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
+    <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
   </Menu>
 </template>
 
 <script>
-import axios from 'axios'
 import Menu from '../layouts/Menu'
 import DeleteDialog from '../dialogs/DeleteDialog'
+import AddNameDialog from '../dialogs/AddNameDialog'
+import EditNameDialog from '../dialogs/EditNameDialog'
+import { onGet, onPost, onPut, onDelete } from '../../api/requests'
 
 export default {
   name: 'Categories',
@@ -117,19 +63,25 @@ export default {
         { text: '#', value: 'id' },
         { text: this.$i18n.translate('Name'), value: 'name' }
       ],
-      objects: [],
-      totalObjects: 0,
-      loading: false,
-      currentObject: {},
-      isSelected: false,
+      data: {
+        objects: [],
+        loading: false,
+        totalObjects: 0,
+        newObject: {},
+        currentObject: {},
+        isSelected: false,
+        addDialog: false,
+        editDialog: false,
+        deleteDialog: false,
+        addDialogErrorMessage: '',
+        ediDialogErrorMessage: '',
+        deleteDialogErrorMessage: ''
+      },
       message: null,
       newObject: { 'name': null },
       errorMessage: '',
       search_term: '',
       pagination: {},
-      deleteDialog: false,
-      editDialog: false,
-      addDialog: false,
       errors: []
     }
   },
@@ -143,100 +95,35 @@ export default {
   },
   methods: {
     getObjects: function () {
-      this.loading = true
-      let apiUrl = '/api/category/' + '?page=' + this.pagination.page + '&page_size=' + this.pagination.rowsPerPage
-      if (this.search_term) {
-        apiUrl = apiUrl + '&search=' + this.search_term
-      }
-      if (this.pagination.sortBy) {
-        const direction = this.pagination.descending ? '-' : ''
-        apiUrl = apiUrl + '&ordering=' + direction + this.pagination.sortBy
-      }
-      axios.get(process.env.API_URL + apiUrl)
-        .then(resp => {
-          this.objects = resp.data.results
-          this.totalObjects = resp.data.count
-          this.currentObject = {}
-          this.isSelected = false
-          this.loading = false
-        })
-        .catch(err => {
-          this.loading = false
-          console.log(err)
-        })
+      onGet('/api/category/', this.data, this.pagination, this.search_term)
     },
     selectObject: function (obj) {
-      this.currentObject = obj
-      this.isSelected = true
+      this.data.currentObject = obj
+      this.data.isSelected = true
     },
     isActive: function (obj) {
       return {
-        'table-primary': this.currentObject === obj
+        'table-primary': this.data.currentObject === obj
       }
     },
     addObject: function () {
-      this.errorMessage = ''
-      axios.post(process.env.API_URL + '/api/edit/category/', this.newObject)
-        .then(resp => {
-          this.loading = false
-          this.addDialog = false
-          this.getObjects()
-        })
-        .catch(err => {
-          console.log(err)
-          if (err.response && err.response.data) {
-            var errors = err.response.data
-            for (var value in errors) {
-              this.errorMessage = errors[value][0]
-            }
-            console.log(err.response.data)
-          }
-        })
+      onPost('/api/category/', this.data, this.getObjects)
     },
     updateObject: function () {
-      this.errorMessage = ''
-      if (this.currentPeople !== '') {
-        axios.put(process.env.API_URL + '/api/edit/category/' + this.currentObject.id + '/', this.currentObject)
-          .then(resp => {
-            this.loading = false
-            this.currentObject = resp.data
-            this.editDialog = false
-            this.getObjects()
-          })
-          .catch(err => {
-            console.log(err)
-            if (err.response && err.response.data) {
-              var errors = err.response.data
-              for (var value in errors) {
-                this.errorMessage = errors[value][0]
-              }
-              console.log(err.response.data)
-              this.getObjects()
-            }
-          })
-      }
+      onPut('/api/category/', this.data, this.getObjects)
     },
     deleteObject: function () {
-      this.deleteDialog = false
-      if (this.currentObject !== '') {
-        axios.delete(process.env.API_URL + '/api/edit/category/' + this.currentObject.id + '/')
-          .then(resp => {
-            this.currentObject = ''
-            this.isSelected = false
-            this.getObjects()
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      }
+      onDelete('/api/category/', this.data, this.getObjects)
     },
     getDeleteMessage: function () {
-      return this.$t('Delete category') + ' #' + this.currentObject.id + ' ' + this.currentObject.name + ' ?'
+      return this.$t('Delete category') + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
     }
   },
   components: {
     Menu,
-    DeleteDialog
+    DeleteDialog,
+    AddNameDialog,
+    EditNameDialog
   }
 }
 </script>
