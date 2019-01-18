@@ -1,11 +1,17 @@
 <template>
-  <div>
+  <Menu>
     <h1>{{'Units' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' | translate}}</button>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="editDialog = true">{{'Edit' | translate}}</button>
-        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected" v-on:click="deleteDialog = true">{{'Delete' | translate}}</button>
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' |
+          translate}}
+        </button>
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+                v-on:click="editDialog = true">{{'Edit' | translate}}
+        </button>
+        <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="isSelected"
+                v-on:click="deleteDialog = true">{{'Delete' | translate}}
+        </button>
       </div>
     </div>
     <div id="tree"></div>
@@ -13,7 +19,7 @@
     <!-- Add People Modal -->
     <v-dialog v-model="addDialog" persistent max-width="800">
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>{{'Add organization' | translate}}</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>{{'Add unit' | translate}}</v-card-title>
         <v-form>
           <v-card-text>
 
@@ -27,7 +33,7 @@
                 class="form-control"
                 id="add_name"
                 v-model="newObject.text"
-                required="required" >
+                required="required">
             </div>
           </v-card-text>
           <v-divider></v-divider>
@@ -57,7 +63,7 @@
                 class="form-control"
                 id="edit_name"
                 v-model="currentObject.text"
-                required="required" >
+                required="required">
             </div>
           </v-card-text>
           <v-divider></v-divider>
@@ -70,25 +76,15 @@
       </v-card>
     </v-dialog>
     <!-- End of people modal -->
-    <!-- Delete People Modal -->
-    <v-dialog v-model="deleteDialog" max-width="500">
-      <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>{{'Delete confirm' | translate}}</v-card-title>
-        <v-card-text>{{'Delete organization' | translate}} #{{currentObject.id}} {{currentObject.text}} ?</v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="gray darken-1" @click="deleteDialog = false">{{'No' | translate}}</v-btn>
-          <v-btn color="red darken-1" @click="deleteObject()">{{'Delete' | translate}}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-  </div>
+    <!-- Delete Modal -->
+    <DeleteDialog :dialog.sync="deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
+  </Menu>
 </template>
 
 <script>
 import axios from 'axios'
+import Menu from '../layouts/Menu'
+import DeleteDialog from '../dialogs/DeleteDialog'
 
 export default {
   name: 'Units',
@@ -103,7 +99,7 @@ export default {
       currentObject: {},
       isSelected: false,
       message: null,
-      newObject: {'text': null, parent: null},
+      newObject: { 'text': null, parent: null },
       errorMessage: '',
       search_term: '',
       pagination: {},
@@ -123,12 +119,15 @@ export default {
       axios.get(process.env.API_URL + '/api/unit/')
         .then(resp => {
           self.objects = resp.data
-          window.$('#tree').treeview({data: self.objects, levels: 5}).on({'nodeSelected': function (event, data) {
-            self.selectObject(data)
-          }}).on({'nodeUnselected': function (event, data) {
-            self.currentObject = {}
-            self.isSelected = false
-          }
+          window.$('#tree').treeview({ data: self.objects, levels: 5 }).on({
+            'nodeSelected': function (event, data) {
+              self.selectObject(data)
+            }
+          }).on({
+            'nodeUnselected': function (event, data) {
+              self.currentObject = {}
+              self.isSelected = false
+            }
           })
           window.$('#tree').treeview('expandAll', {})
           self.currentObject = {}
@@ -154,7 +153,7 @@ export default {
       if (this.currentObject) {
         this.newObject.parent = this.currentObject.id
       }
-      axios.post(process.env.API_URL + '/api/edit/unit/', this.newObject)
+      axios.post(process.env.API_URL + '/api/unit/', this.newObject)
         .then(resp => {
           this.loading = false
           this.addDialog = false
@@ -174,7 +173,7 @@ export default {
     updateObject: function () {
       this.errorMessage = ''
       if (this.currentPeople !== '') {
-        axios.put(process.env.API_URL + '/api/edit/unit/' + this.currentObject.id + '/', this.currentObject)
+        axios.put(process.env.API_URL + '/api/unit/' + this.currentObject.id + '/', this.currentObject)
           .then(resp => {
             this.loading = false
             this.currentObject = resp.data
@@ -197,19 +196,22 @@ export default {
     deleteObject: function () {
       this.deleteDialog = false
       if (this.currentObject !== '') {
-        axios.delete(process.env.API_URL + '/api/edit/unit/' + this.currentObject.id + '/')
+        axios.delete(process.env.API_URL + '/api/unit/' + this.currentObject.id + '/')
           .then(resp => {
             this.currentObject = ''
             this.isSelected = false
             this.getObjects()
           })
-          .catch(err => {
-            console.log(err)
-          })
       }
+    },
+    getDeleteMessage: function () {
+      return this.$t('Delete unit') + ' #' + this.currentObject.id + ' ' + this.currentObject.text + ' ?'
     }
+  },
+  components: {
+    Menu,
+    DeleteDialog
   }
-
 }
 </script>
 

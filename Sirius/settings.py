@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'rolepermissions',
     'casl_django',
     'import_export',
+    'drf_yasg',
     'SiriusCRM.apps.SiriuscrmConfig',
 
 ]

@@ -1,58 +1,62 @@
 <template>
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="row">
-          <div class="col-md-6 mx-auto">
+  <Default>
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6 mx-auto">
 
-            <!-- form card login -->
-            <div class="card rounded-0">
-              <div class="card-header">
-                <h3 class="mb-0">{{'Password reset' | translate}} </h3>
-              </div>
-              <div container v-if="result">
-                <div class="row">
-                  <div class="col col-lg-6">
-                    <div class="alert alert-success" v-if="result.success">
-                      <p>{{ 'Password reset link was sent to your email' | translate}}</p>
-                    </div>
-                    <div class="alert alert-danger" v-else-if="result.error">
-                      <p>{{ 'Failure' | translate}}</p>
-                      <div>{{ result.error }}</div>
+              <!-- form card login -->
+              <div class="card rounded-0">
+                <div class="card-header">
+                  <h3 class="mb-0">{{'Password reset' | translate}} </h3>
+                </div>
+                <div container v-if="result">
+                  <div class="row">
+                    <div class="col col-lg-6">
+                      <div class="alert alert-success" v-if="result.success">
+                        <p>{{ 'Password reset link was sent to your email' | translate}}</p>
+                      </div>
+                      <div class="alert alert-danger" v-else-if="result.error">
+                        <p>{{ 'Failure' | translate}}</p>
+                        <div>{{ result.error }}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
+
+                <div class="card-body">
+                  <form class="form-container" @submit.prevent="resetPassword">
+                    <div class="form-group">
+
+                      <input v-model="email" type="email" name="email" id="id_email" class="form-control"
+                             placeholder="Email" required autofocus/>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">{{'Reset password' | translate}}</button>
+
+                  </form>
+                </div>
+                <!--/card-block-->
               </div>
-
-              <div class="card-body">
-                <form class="form-container" @submit.prevent="resetPassword">
-                  <div class="form-group">
-
-                    <input v-model="email" type="email" name="email" id="id_email" class="form-control" placeholder="Email" required autofocus />
-
-                  </div>
-
-                  <button type="submit" class="btn btn-primary btn-block">{{'Reset password' | translate}}</button>
-
-                </form>
-              </div>
-              <!--/card-block-->
+              <!-- /form card login -->
             </div>
-            <!-- /form card login -->
           </div>
+          <!--/row-->
         </div>
-        <!--/row-->
+        <!--/col-->
       </div>
-      <!--/col-->
+      <!--/row-->
     </div>
-    <!--/row-->
-  </div>
-  <!--/container-->
+    <!--/container-->
+  </Default>
 
 </template>
 
 <script>
 import axios from 'axios'
+import Default from './layouts/Default'
 
 export default {
   data () {
@@ -77,7 +81,11 @@ export default {
         })
     }
   },
-  name: 'ResetPasswordEmail'
+  name: 'ResetPasswordEmail',
+  components: {
+    Default
+  }
+
 }
 </script>
 

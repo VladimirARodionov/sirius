@@ -6,7 +6,7 @@ function plugin (Vue, opts) {
 
   // router hook
   opts.router &&
-    opts.router.beforeEach((to, from, next) => manager.resolve(to, from, next))
+  opts.router.beforeEach((to, from, next) => manager.resolve(to, from, next))
 
   // prototype
   Vue.prototype.$vrm = manager

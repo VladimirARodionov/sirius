@@ -4,7 +4,7 @@ from SiriusCRM.models import User, Organization, Unit, Position, Category, Count
     Payment
 
 
-class UserListSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name', 'email')
@@ -29,12 +29,6 @@ class UnitSerializer(ModelSerializer):
     class Meta:
         model = Unit
         fields = ('id', 'text', 'parent', 'nodes')
-
-
-class UnitChangeSerializer(ModelSerializer):
-    class Meta:
-        model = Unit
-        fields = ('id', 'text', 'parent')
 
 
 class PositionSerializer(ModelSerializer):
