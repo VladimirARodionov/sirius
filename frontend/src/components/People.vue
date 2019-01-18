@@ -82,7 +82,7 @@ export default {
         editDialog: false,
         deleteDialog: false,
         addDialogErrorMessage: '',
-        ediDialogErrorMessage: '',
+        editDialogErrorMessage: '',
         deleteDialogErrorMessage: ''
       },
       message: null,

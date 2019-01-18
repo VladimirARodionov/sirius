@@ -34,8 +34,8 @@ export function onPost (api, data, getFunction) {
     })
     .catch(err => {
       if (err.response && err.response.data) {
-        var errors = err.response.data
-        for (var value in errors) {
+        const errors = err.response.data
+        for (const value in errors) {
           if (errors[value] instanceof Array) {
             data.addDialogErrorMessage = errors[value][0]
           } else {
@@ -60,8 +60,8 @@ export function onPut (api, data, getFunction) {
       .catch(err => {
         console.log(err)
         if (err.response && err.response.data) {
-          var errors = err.response.data
-          for (var value in errors) {
+          const errors = err.response.data
+          for (const value in errors) {
             if (errors[value] instanceof Array) {
               data.editDialogErrorMessage = errors[value][0]
             } else {
@@ -87,8 +87,8 @@ export function onDelete (api, data, getFunction) {
       .catch(err => {
         console.log(err)
         if (err.response && err.response.data) {
-          var errors = err.response.data
-          for (var value in errors) {
+          const errors = err.response.data
+          for (const value in errors) {
             if (errors[value] instanceof Array) {
               data.deleteDialogErrorMessage = errors[value][0]
             } else {
