@@ -96,12 +96,12 @@ export default {
       onGet(this.api, this.data, this.pagination, this.search_term)
     },
     selectObject: function (obj) {
-      this.data.currentObject = obj
+      this.data.currentObject = JSON.parse(JSON.stringify(obj))
       this.data.isSelected = true
     },
     isActive: function (obj) {
       return {
-        'table-primary': this.data.currentObject === obj
+        'table-primary': this.data.currentObject.id === obj.id
       }
     },
     addObject: function () {

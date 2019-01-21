@@ -104,23 +104,25 @@ export default {
       onGet('/api/user/', this.data, this.pagination, this.search_term)
     },
     selectPeople: function (user) {
-      this.data.currentObject = user
+      this.data.currentObject = JSON.parse(JSON.stringify(user))
       this.data.isSelected = true
     },
     isActive: function (user) {
       return {
-        'table-primary': this.data.currentObject === user
+        'table-primary': this.data.currentObject.id === user.id
       }
     },
     goUserDetails: function () {
-      if (this.data.currentPeople !== '') {
+      if (this.data.currentObject !== '') {
         router.push({ name: 'peopleDetails', params: { id: this.data.currentObject.id } })
       }
     },
     addPeople: function () {
+      this.data.newObject.email = this.data.newObject.email || null
       onPost('/api/user/', this.data, this.getPeoples)
     },
     updatePeople: function () {
+      this.data.currentObject.email = this.data.currentObject.email || null
       onPut('/api/user/', this.data, this.getPeoples)
     },
     deletePeople: function () {
