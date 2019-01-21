@@ -22,6 +22,7 @@ import Competencies from '../components/directories/Competencies'
 import Courses from '../components/directories/Courses'
 import Payments from '../components/directories/Payments'
 import ExportUsers from '../components/ExportUsers'
+import Addresses from '../components/directories/Addresses'
 
 Vue.use(Router)
 
@@ -160,6 +161,14 @@ let router = new Router({
       path: '/directories/cities',
       name: 'cities',
       component: Cities,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/addresses',
+      name: 'addresses',
+      component: Addresses,
       meta: {
         requiresAuth: true
       }

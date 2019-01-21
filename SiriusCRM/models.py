@@ -13,7 +13,6 @@ from SiriusCRM.managers.UserManager import UserManager
 class Country(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, null=False, unique=True, blank=False)
-    is_actual = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -27,7 +26,6 @@ class Region(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.ForeignKey(Country, null=True, on_delete=models.PROTECT, related_name="region_country")
     name = models.CharField(max_length=50, null=False, blank=False)
-    is_actual = models.BooleanField(default=True)
 
     def __str__(self):
         return '%s, %s' % (self.name, self.country.name)
@@ -43,7 +41,6 @@ class City(models.Model):
     id = models.AutoField(primary_key=True)
     region = models.ForeignKey(Region, null=True, on_delete=models.PROTECT, related_name="city_region")
     name = models.CharField(max_length=80, null=False, blank=False)
-    is_actual = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -56,9 +53,7 @@ class City(models.Model):
 # Справочник адресов
 class Address(models.Model):
     id = models.AutoField(primary_key=True)
-    country = models.ForeignKey(Country, null=True, on_delete=models.CASCADE, related_name="address_country")
-    region = models.ForeignKey(Region, null=True, on_delete=models.CASCADE, related_name="address_region")
-    city = models.ForeignKey(City, null=True, on_delete=models.CASCADE, related_name="address_city")
+    city = models.ForeignKey(City, null=True, on_delete=models.PROTECT, related_name="address_city")
     village = models.CharField(max_length=255, null=True, blank=True)
     street = models.CharField(max_length=255, null=True, blank=True)
     house = models.CharField(max_length=30, null=True, blank=True)

@@ -16,6 +16,7 @@
       <router-link class="navbar" active-class="active" to="/directories/regions">{{'Regions' | translate}}
       </router-link>
       <router-link class="navbar" active-class="active" to="/directories/cities">{{'Cities' | translate}}</router-link>
+      <router-link class="navbar" active-class="active" to="/directories/addresses">{{'Addresses' | translate}}</router-link>
       <router-link class="navbar" active-class="active" to="/directories/courses">{{'Courses' | translate}}
       </router-link>
       <router-link class="navbar" active-class="active" to="/directories/payments">{{'Payments' | translate}}
