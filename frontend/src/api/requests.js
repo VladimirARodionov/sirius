@@ -100,3 +100,16 @@ export function onDelete (api, data, getFunction) {
       })
   }
 }
+
+export function onGetCount (api, data) {
+  data.loading = true
+  axios.get(process.env.API_URL + api)
+    .then(resp => {
+      data.object = resp.data.count
+      data.loading = false
+    })
+    .catch(err => {
+      data.loading = false
+      console.log(err)
+    })
+}

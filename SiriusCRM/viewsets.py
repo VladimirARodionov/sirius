@@ -6,7 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from SiriusCRM.mixins import HasRoleMixin
+from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
     Payment
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
@@ -53,7 +53,7 @@ class StandardResultsSetPagination(PageNumberPagination):
         return list(self.page)
 
 
-class UserViewSet(HasRoleMixin, viewsets.ModelViewSet):
+class UserViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     allowed_get_roles = ['admin_role', 'user_role', 'user_list_role']
     allowed_post_roles = ['admin_role', 'user_role', 'user_list_role']
