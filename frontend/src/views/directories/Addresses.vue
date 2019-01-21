@@ -53,10 +53,10 @@
 </template>
 
 <script>
-import Menu from '../layouts/Menu'
-import DeleteDialog from '../dialogs/DeleteDialog'
-import AddAddressDialog from '../dialogs/AddAddressDialog'
-import EditAddressDialog from '../dialogs/EditAddressDialog'
+import Menu from '../../layouts/Menu'
+import DeleteDialog from '../../components/dialogs/DeleteDialog'
+import AddAddressDialog from '../../components/dialogs/AddAddressDialog'
+import EditAddressDialog from '../../components/dialogs/EditAddressDialog'
 import { onGet, onPost, onPut, onDelete } from '../../api/requests'
 
 export default {
@@ -87,7 +87,7 @@ export default {
       },
       city: {
         objects: [],
-        loading: false,
+        loading: false
       },
       message: null,
       search_term: '',

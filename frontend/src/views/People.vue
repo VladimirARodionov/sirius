@@ -55,10 +55,10 @@
 
 <script>
 import router from '../router'
-import Menu from './layouts/Menu'
-import DeleteDialog from './dialogs/DeleteDialog'
-import AddPeopleDialog from './dialogs/AddPeopleDialog'
-import EditPeopleDialog from './dialogs/EditPeopleDialog'
+import Menu from '../layouts/Menu'
+import DeleteDialog from '../components/dialogs/DeleteDialog'
+import AddPeopleDialog from '../components/dialogs/AddPeopleDialog'
+import EditPeopleDialog from '../components/dialogs/EditPeopleDialog'
 import { onGet, onPost, onPut, onDelete } from '../api/requests'
 
 export default {

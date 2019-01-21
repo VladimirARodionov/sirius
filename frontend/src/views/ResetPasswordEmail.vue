@@ -56,7 +56,7 @@
 
 <script>
 import axios from 'axios'
-import Default from './layouts/Default'
+import Default from '../layouts/Default'
 
 export default {
   data () {

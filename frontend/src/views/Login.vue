@@ -52,7 +52,7 @@
 
 <script>
 import router from '../router'
-import Default from './layouts/Default'
+import Default from '../layouts/Default'
 
 export default {
   data () {

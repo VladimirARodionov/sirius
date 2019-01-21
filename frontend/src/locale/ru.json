@@ -75,5 +75,13 @@
   "Delete payment": "Удалить выплату",
   "Add unit": "Добавление подразделения",
   "Delete unit": "Удалить подразделение",
-  "Total users": "Всего сотрудников"
+  "Total users": "Всего сотрудников",
+  "Addresses": "Адреса",
+  "Add address": "Добавление адреса",
+  "Delete address": "Удалить адрес",
+  "City": "Город",
+  "Village": "Деревня",
+  "Street": "Улица",
+  "House": "Дом",
+  "Apartment": "Квартира"
 }

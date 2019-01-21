@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Menu from '../layouts/Menu'
+import Menu from '../../layouts/Menu'
 
 export default {
   name: 'Directories',
