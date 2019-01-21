@@ -1,3 +1,6 @@
+from django.http import JsonResponse
+from rest_framework.decorators import action
+
 from SiriusCRM.decorators import has_role_decorator, has_permission_decorator
 
 
@@ -37,3 +40,14 @@ class HasPermissionsMixin(object):
         return (has_permission_decorator(permission, redirect_to_login=self.redirect_to_login)
                 (super(HasPermissionsMixin, self).dispatch)
                 (request, *args, **kwargs))
+
+
+class CountModelMixin(object):
+    """
+    Count a queryset.
+    """
+    @action(detail=False)
+    def count(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        content = {'count': queryset.count()}
+        return JsonResponse(content)
