@@ -78,10 +78,13 @@
   "Total users": "Всего сотрудников",
   "Addresses": "Адреса",
   "Add address": "Добавление адреса",
+  "Edit address": "Изменение адреса",
   "Delete address": "Удалить адрес",
   "City": "Город",
   "Village": "Деревня",
   "Street": "Улица",
   "House": "Дом",
-  "Apartment": "Квартира"
+  "Apartment": "Квартира",
+  "Find": "Найти",
+  "Back": "Назад"
 }

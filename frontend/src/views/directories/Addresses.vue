@@ -3,11 +3,11 @@
     <h1>{{'Addresses' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="data.addDialog = true">{{'Add' |
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="goAddAddress()">{{'Add' |
           translate}}
         </button>
         <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
-                v-on:click="data.editDialog = true">{{'Edit' | translate}}
+                v-on:click="goEditAddress()">{{'Edit' | translate}}
         </button>
         <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
                 v-on:click="data.deleteDialog = true">{{'Delete' | translate}}
@@ -33,7 +33,7 @@
         <template slot="items" slot-scope="props">
           <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
             <td>{{ props.item.id }}</td>
-            <td>{{ props.item.address_city.city }}</td>
+            <td>{{ props.item.city_id }}</td>
             <td>{{ props.item.village }}</td>
             <td>{{ props.item.street }}</td>
             <td>{{ props.item.house }}</td>
@@ -43,20 +43,15 @@
       </v-data-table>
 
     </div>
-    <!-- Add People Modal -->
-    <AddAddressDialog :errorMessage="data.addDialogErrorMessage" :dialog.sync="data.addDialog" :newObject="data.newObject" :title="this.$t('Add address')" :on-clicked="addObject"/>
-    <!-- Edit People Modal -->
-    <EditAddressDialog :errorMessage="data.editDialogErrorMessage" :dialog.sync="data.editDialog" :currentObject="data.currentObject" :title="this.$t('Edit')" :on-clicked="updateObject"/>
-    <!-- Delete People Modal -->
+    <!-- Delete Modal -->
     <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
   </Menu>
 </template>
 
 <script>
+import router from '../../router'
 import Menu from '../../layouts/Menu'
 import DeleteDialog from '../../components/dialogs/DeleteDialog'
-import AddAddressDialog from '../../components/dialogs/AddAddressDialog'
-import EditAddressDialog from '../../components/dialogs/EditAddressDialog'
 import { onGet, onPost, onPut, onDelete } from '../../api/requests'
 
 export default {
@@ -78,11 +73,7 @@ export default {
         newObject: {},
         currentObject: {},
         isSelected: false,
-        addDialog: false,
-        editDialog: false,
         deleteDialog: false,
-        addDialogErrorMessage: '',
-        editDialogErrorMessage: '',
         deleteDialogErrorMessage: ''
       },
       city: {
@@ -107,9 +98,6 @@ export default {
     getObjects: function () {
       onGet('/api/address/', this.data, this.pagination, this.search_term)
     },
-    getCities: function () {
-      onGet('/api/city/', this.data, this.pagination, this.search_term)
-    },
     selectObject: function (obj) {
       this.data.currentObject = JSON.parse(JSON.stringify(obj))
       this.data.isSelected = true
@@ -130,12 +118,18 @@ export default {
     },
     getDeleteMessage: function () {
       return this.$t('Delete address') + ' ' + this.data.currentObject.id + ' ?'
+    },
+    goAddAddress: function () {
+      router.push({ name: 'addAddress' })
+    },
+    goEditAddress: function () {
+      if (this.data.currentObject !== '') {
+        router.push({ name: 'editAddress', params: { id: this.data.currentObject.id } })
+      }
     }
   },
   components: {
     DeleteDialog,
-    AddAddressDialog,
-    EditAddressDialog,
     Menu
   }
 }

@@ -23,6 +23,8 @@ import Courses from '../views/directories/Courses'
 import Payments from '../views/directories/Payments'
 import ExportUsers from '../views/ExportUsers'
 import Addresses from '../views/directories/Addresses'
+import EditAddress from '../views/directories/EditAddress'
+import AddAddress from '../views/directories/AddAddress'
 
 Vue.use(Router)
 
@@ -169,6 +171,22 @@ let router = new Router({
       path: '/directories/addresses',
       name: 'addresses',
       component: Addresses,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/addresses/add',
+      name: 'addAddress',
+      component: AddAddress,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/addresses/edit/:id',
+      name: 'editAddress',
+      component: EditAddress,
       meta: {
         requiresAuth: true
       }
