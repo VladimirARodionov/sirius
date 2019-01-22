@@ -100,7 +100,7 @@
 
 <script>
 import axios from 'axios'
-import Menu from './layouts/Menu'
+import Menu from '../layouts/Menu'
 
 export default {
   name: 'PeopleDetails',

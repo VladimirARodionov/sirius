@@ -1,18 +1,16 @@
 <template>
   <Menu>
-    <Directory title="Courses" name="course" api="/api/course/"/>
+    <div>reports</div>
   </Menu>
 </template>
 
 <script>
 import Menu from '../layouts/Menu'
-import Directory from './Directory'
 
 export default {
-  name: 'Courses',
+  name: 'Reports',
   components: {
-    Menu,
-    Directory
+    Menu
   }
 }
 </script>

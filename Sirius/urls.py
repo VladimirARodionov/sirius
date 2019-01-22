@@ -27,7 +27,7 @@ from SiriusCRM.views import PasswordResetView, PasswordResetConfirmView
 from SiriusCRM.viewsets import UserViewSet, OrganizationViewSet, UnitViewSet, \
     PositionViewSet, CategoryViewSet, \
     CountryViewSet, RegionViewSet, CityViewSet, \
-    CompetencyViewSet, CourseViewSet, PaymentViewSet, UserDetailViewSet
+    CompetencyViewSet, CourseViewSet, PaymentViewSet, UserDetailViewSet, AddressViewSet
 
 router = SimpleRouter()
 router.register('api/user', UserViewSet, basename='user')
@@ -42,6 +42,7 @@ router.register('api/city', CityViewSet, basename='city')
 router.register('api/competency', CompetencyViewSet, basename='competency')
 router.register('api/course', CourseViewSet, basename='course')
 router.register('api/payment', PaymentViewSet, basename='payment')
+router.register('api/address', AddressViewSet, basename='address')
 
 schema_view = get_schema_view(
    openapi.Info(

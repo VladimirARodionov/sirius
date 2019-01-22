@@ -113,3 +113,77 @@ export function onGetCount (api, data) {
       console.log(err)
     })
 }
+
+export function onGetSingle (api, data) {
+  data.errorMessage = ''
+  if (data.currentObject.id) {
+    axios.get(process.env.API_URL + api + data.currentObject.id + '/')
+      .then(resp => {
+        data.loading = false
+        data.currentObject = resp.data
+      })
+      .catch(err => {
+        console.log(err)
+        if (err.response && err.response.data) {
+          const errors = err.response.data
+          for (const value in errors) {
+            if (errors[value] instanceof Array) {
+              data.errorMessage = errors[value][0]
+            } else {
+              data.errorMessage = errors[value]
+            }
+            console.log(err.response.data)
+          }
+        }
+      })
+  }
+}
+
+export function onPostSingle (api, data, getFunction) {
+  data.errorMessage = ''
+  axios.post(process.env.API_URL + api, data.currentObject)
+    .then(resp => {
+      data.loading = false
+      data.currentObject = resp.data
+      getFunction()
+    })
+    .catch(err => {
+      if (err.response && err.response.data) {
+        const errors = err.response.data
+        for (const value in errors) {
+          if (errors[value] instanceof Array) {
+            data.errorMessage = errors[value][0]
+          } else {
+            data.errorMessage = errors[value]
+          }
+        }
+        console.log(err.response.data)
+      }
+    })
+}
+
+export function onPutSingle (api, data, getFunction) {
+  data.errorMessage = ''
+  if (data.currentObject !== '') {
+    axios.put(process.env.API_URL + api + data.currentObject.id + '/', data.currentObject)
+      .then(resp => {
+        data.loading = false
+        data.currentObject = resp.data
+        getFunction()
+      })
+      .catch(err => {
+        console.log(err)
+        if (err.response && err.response.data) {
+          const errors = err.response.data
+          for (const value in errors) {
+            if (errors[value] instanceof Array) {
+              data.errorMessage = errors[value][0]
+            } else {
+              data.errorMessage = errors[value]
+            }
+            console.log(err.response.data)
+          }
+        }
+      })
+  }
+}

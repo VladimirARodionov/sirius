@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import Menu from './layouts/Menu'
-import InfoBox from './InfoBox'
+import Menu from '../layouts/Menu'
+import InfoBox from '../components/InfoBox'
 import { onGetCount } from '../api/requests'
 
 export default {

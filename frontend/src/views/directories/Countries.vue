@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import Menu from '../layouts/Menu'
-import Directory from './Directory'
+import Menu from '../../layouts/Menu'
+import Directory from '../../components/directories/Directory'
 
 export default {
   name: 'Countries',

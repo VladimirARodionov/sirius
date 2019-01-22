@@ -66,7 +66,7 @@
 <script>
 import axios from 'axios'
 import router from '../router'
-import Default from './layouts/Default'
+import Default from '../layouts/Default'
 
 export default {
   name: 'ResetPasswordConfirm',

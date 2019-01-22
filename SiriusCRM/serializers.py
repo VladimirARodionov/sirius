@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment
+    Payment, Address
 
 
 class UserSerializer(ModelSerializer):
@@ -77,5 +77,13 @@ class PaymentSerializer(ModelSerializer):
     class Meta:
         model = Payment
         fields = ('id', 'name')
+
+
+class AddressSerializer(ModelSerializer):
+    address_city = CitySerializer(source='city', read_only=True)
+
+    class Meta:
+        model = Address
+        fields = ('id', 'city', 'address_city', 'village', 'street', 'house', 'apartment')
 
 

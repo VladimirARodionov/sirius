@@ -1,18 +1,13 @@
 <template>
-  <div>
-    <h1> {{title | translate}} </h1>
-    <div class="btn-toolbar justify-content-between mb-3">
-        <button class="btn btn-success btn-block" v-roles="['admin_role', 'edit_role']" v-if="select"
-                v-on:click="onSelect()" :disabled="!data.isSelected">{{'Select' | translate}}
-        </button>
-    </div>
+  <Menu>
+    <h1>{{'Addresses' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="data.addDialog = true">{{'Add' |
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="goAddAddress()">{{'Add' |
           translate}}
         </button>
         <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
-                v-on:click="data.editDialog = true">{{'Edit' | translate}}
+                v-on:click="goEditAddress()">{{'Edit' | translate}}
         </button>
         <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
                 v-on:click="data.deleteDialog = true">{{'Delete' | translate}}
@@ -21,7 +16,7 @@
       <div class="input-group">
         <input class="form-control mr-sm-2" type="text" placeholder="Search" v-model="search_term" aria-label="Search">
         <span class="input-group-btn">
-            <button class="btn btn-success" v-on:click.prevent="getObjects()">{{'Search' | translate}}</button>
+          <button class="btn btn-success" v-on:click.prevent="getObjects()">{{'Search' | translate}}</button>
         </span>
       </div>
     </div>
@@ -38,34 +33,38 @@
         <template slot="items" slot-scope="props">
           <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
             <td>{{ props.item.id }}</td>
-            <td>{{ props.item.name }}</td>
+            <td>{{ props.item.address_city.name }}</td>
+            <td>{{ props.item.village }}</td>
+            <td>{{ props.item.street }}</td>
+            <td>{{ props.item.house }}</td>
+            <td>{{ props.item.apartment }}</td>
           </tr>
         </template>
       </v-data-table>
 
     </div>
-    <!-- Add Modal -->
-    <AddNameDialog :errorMessage="data.addDialogErrorMessage" :dialog.sync="data.addDialog" :newObject="data.newObject" :title="this.$t('Add ' + name)" :on-clicked="addObject"/>
-    <!-- Edit Modal -->
-    <EditNameDialog :errorMessage="data.editDialogErrorMessage" :dialog.sync="data.editDialog" :currentObject="data.currentObject" :title="this.$t('Edit')" :on-clicked="updateObject"/>
     <!-- Delete Modal -->
     <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
-  </div>
+  </Menu>
 </template>
 
 <script>
-import DeleteDialog from '../dialogs/DeleteDialog'
-import AddNameDialog from '../dialogs/AddNameDialog'
-import EditNameDialog from '../dialogs/EditNameDialog'
+import router from '../../router'
+import Menu from '../../layouts/Menu'
+import DeleteDialog from '../../components/dialogs/DeleteDialog'
 import { onGet, onPost, onPut, onDelete } from '../../api/requests'
 
 export default {
-  name: 'Directory',
+  name: 'Addresses',
   data () {
     return {
       headers: [
         { text: '#', value: 'id' },
-        { text: this.$i18n.translate('Name'), value: 'name' }
+        { text: this.$i18n.translate('City'), value: 'city' },
+        { text: this.$i18n.translate('Village'), value: 'village' },
+        { text: this.$i18n.translate('Street'), value: 'street' },
+        { text: this.$i18n.translate('House'), value: 'house' },
+        { text: this.$i18n.translate('Apartment'), value: 'apartment' }
       ],
       data: {
         objects: [],
@@ -74,15 +73,14 @@ export default {
         newObject: {},
         currentObject: {},
         isSelected: false,
-        addDialog: false,
-        editDialog: false,
         deleteDialog: false,
-        addDialogErrorMessage: '',
-        ediDialogErrorMessage: '',
         deleteDialogErrorMessage: ''
       },
+      city: {
+        objects: [],
+        loading: false
+      },
       message: null,
-      errorMessage: '',
       search_term: '',
       pagination: {},
       errors: []
@@ -98,7 +96,7 @@ export default {
   },
   methods: {
     getObjects: function () {
-      onGet(this.api, this.data, this.pagination, this.search_term)
+      onGet('/api/address/', this.data, this.pagination, this.search_term)
     },
     selectObject: function (obj) {
       this.data.currentObject = JSON.parse(JSON.stringify(obj))
@@ -110,35 +108,29 @@ export default {
       }
     },
     addObject: function () {
-      onPost(this.api, this.data, this.getObjects)
+      onPost('/api/address/', this.data, this.getObjects)
     },
     updateObject: function () {
-      onPut(this.api, this.data, this.getObjects)
+      onPut('/api/address/', this.data, this.getObjects)
     },
     deleteObject: function () {
-      onDelete(this.api, this.data, this.getObjects)
+      onDelete('/api/address/', this.data, this.getObjects)
     },
     getDeleteMessage: function () {
-      return this.$t('Delete ' + this.name) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
+      return this.$t('Delete address') + ' ' + this.data.currentObject.id + ' ?'
     },
-    onSelect: function () {
-      if (this.data.isSelected && this.data.currentObject.id) {
-        // store this.data.currentObject.id in vuex
-        this.$store.commit('setSelectedId', this.data.currentObject.id)
-        this.$router.go(-1)
+    goAddAddress: function () {
+      router.push({ name: 'addAddress' })
+    },
+    goEditAddress: function () {
+      if (this.data.currentObject !== '') {
+        router.push({ name: 'editAddress', params: { id: this.data.currentObject.id } })
       }
     }
   },
   components: {
     DeleteDialog,
-    AddNameDialog,
-    EditNameDialog
-  },
-  props: {
-    title: String,
-    name: String,
-    api: String,
-    select: Boolean
+    Menu
   }
 }
 </script>

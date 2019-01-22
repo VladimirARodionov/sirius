@@ -83,8 +83,8 @@
 
 <script>
 import axios from 'axios'
-import Menu from '../layouts/Menu'
-import DeleteDialog from '../dialogs/DeleteDialog'
+import Menu from '../../layouts/Menu'
+import DeleteDialog from '../../components/dialogs/DeleteDialog'
 
 export default {
   name: 'Units',
