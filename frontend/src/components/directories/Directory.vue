@@ -27,7 +27,7 @@
     </div>
     <div class="table-responsive">
       <v-data-table
-        :headers="headers"
+        :headers="getHeaders()"
         :items="data.objects"
         :loading="data.loading"
         :total-items="data.totalObjects"
@@ -37,8 +37,7 @@
       >
         <template slot="items" slot-scope="props">
           <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
-            <td>{{ props.item.id }}</td>
-            <td>{{ props.item.name }}</td>
+            <td v-for="fieldName in getNames()" :key="fieldName.name">{{ props.item[fieldName.name] }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -63,9 +62,13 @@ export default {
   name: 'Directory',
   data () {
     return {
-      headers: [
+      defaultHeaders: [
         { text: '#', value: 'id' },
         { text: this.$i18n.translate('Name'), value: 'name' }
+      ],
+      defaultNames: [
+        { name: 'id' },
+        { name: 'name' }
       ],
       data: {
         objects: [],
@@ -127,6 +130,20 @@ export default {
         this.$store.commit('setSelectedId', this.data.currentObject.id)
         this.$router.go(-1)
       }
+    },
+    getHeaders: function () {
+      if (this.headers) {
+        return this.headers
+      } else {
+        return this.defaultHeaders
+      }
+    },
+    getNames: function () {
+      if (this.names) {
+        return this.names
+      } else {
+        return this.defaultNames
+      }
     }
   },
   components: {
@@ -138,7 +155,9 @@ export default {
     title: String,
     name: String,
     api: String,
-    select: Boolean
+    select: Boolean,
+    headers: Array,
+    names: Array
   }
 }
 </script>

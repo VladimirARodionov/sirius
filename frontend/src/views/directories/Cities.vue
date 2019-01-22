@@ -1,6 +1,5 @@
 <template>
   <Menu>
-
     <Directory title="Cities" name="city" api="/api/city/" :select="select"/>
   </Menu>
 </template>

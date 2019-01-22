@@ -52,13 +52,13 @@ class CountrySerializer(ModelSerializer):
 class RegionSerializer(ModelSerializer):
     class Meta:
         model = Region
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'country')
 
 
 class CitySerializer(ModelSerializer):
     class Meta:
         model = City
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'region')
 
 
 class CompetencySerializer(ModelSerializer):

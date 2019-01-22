@@ -24,7 +24,7 @@ class Country(models.Model):
 # Справочник регионов
 class Region(models.Model):
     id = models.AutoField(primary_key=True)
-    country = models.ForeignKey(Country, null=True, on_delete=models.PROTECT, related_name="region_country")
+    country = models.ForeignKey(Country, null=False, on_delete=models.PROTECT, related_name="region_country")
     name = models.CharField(max_length=50, null=False, blank=False)
 
     def __str__(self):
@@ -39,7 +39,7 @@ class Region(models.Model):
 # Например: Арзамас; Городецкий р-н ???
 class City(models.Model):
     id = models.AutoField(primary_key=True)
-    region = models.ForeignKey(Region, null=True, on_delete=models.PROTECT, related_name="city_region")
+    region = models.ForeignKey(Region, null=False, on_delete=models.PROTECT, related_name="city_region")
     name = models.CharField(max_length=80, null=False, blank=False)
 
     def __str__(self):
