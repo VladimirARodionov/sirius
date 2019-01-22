@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <AddressDetail :object="data.currentObject" :title="this.$t('Edit address')" :errorMessage="data.errorMessage" :on-clicked="editObject"/>
+    <AddressDetail :object="data.currentObject" :title="this.$t('Edit address')" :errorMessage="data.errorMessage" :on-clicked="editObject" @onSelectCity="selectCity"/>
   </Menu>
 </template>
 
@@ -30,6 +30,9 @@ export default {
     },
     editObject: function () {
       onPutSingle('/api/address/', this.data, this.getObject)
+    },
+    selectCity: function (event) {
+      this.data.currentObject.city = event
     }
   },
   components: {

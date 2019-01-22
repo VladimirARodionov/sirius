@@ -9,15 +9,11 @@
             {{errorMessage}}
           </div>
           <div class="form-group">
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                id="city_id"
-                v-model="object.city_id"
-                required="required">
+            <div class="form-row align-items-center">
+              <label >{{'City' | translate}}</label>&nbsp;
+              <label >{{ this.getCityName()}}</label>
               <span class="input-group-btn">
-                <v-btn color="green darken-1" @click="clicked()">{{'Find' | translate}}</v-btn>
+                <v-btn color="green darken-1" @click="find()">{{'Find' | translate}}</v-btn>
               </span>
             </div>
 
@@ -67,11 +63,50 @@
 </template>
 
 <script>
+import { onGetSingle } from '../api/requests'
 export default {
   name: 'AddressDetail',
+  data () {
+    return {
+      data: {
+        currentObject: {},
+        loading: false,
+        errorMessage: ''
+      }
+    }
+  },
+  mounted: function () {
+    if (this.object.city) {
+      this.data.currentObject.id = this.object.city
+    } else {
+      this.data.currentObject.id = this.$store.getters.getSelectedId
+      this.$store.commit('clearSelectedId')
+    }
+    this.getCity()
+  },
+  updated: function () {
+    if (this.object.city && !this.data.currentObject.id) {
+      this.data.currentObject.id = this.object.city
+      this.getCity()
+    }
+  },
   methods: {
     clicked () {
+      this.$emit('onSelectCity', this.data.currentObject.id)
       this.onClicked()
+    },
+    find () {
+      this.$router.push({ name: 'cities', query: { select: true } })
+    },
+    getCity () {
+      onGetSingle('/api/city/', this.data)
+    },
+    getCityName () {
+      if (this.data.currentObject.id) {
+        return this.data.currentObject.name
+      } else {
+        return this.$t('Not selected')
+      }
     }
   },
   props: {
@@ -80,7 +115,8 @@ export default {
     },
     title: String,
     object: Object,
-    onClicked: Function
+    onClicked: Function,
+    select: Boolean
   }
 }
 </script>

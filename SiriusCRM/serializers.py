@@ -80,8 +80,10 @@ class PaymentSerializer(ModelSerializer):
 
 
 class AddressSerializer(ModelSerializer):
+    address_city = CitySerializer(source='city', read_only=True)
+
     class Meta:
         model = Address
-        fields = ('id', 'city_id', 'village', 'street', 'house', 'apartment')
+        fields = ('id', 'city', 'address_city', 'village', 'street', 'house', 'apartment')
 
 

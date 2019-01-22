@@ -33,7 +33,7 @@
         <template slot="items" slot-scope="props">
           <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
             <td>{{ props.item.id }}</td>
-            <td>{{ props.item.city_id }}</td>
+            <td>{{ props.item.address_city.name }}</td>
             <td>{{ props.item.village }}</td>
             <td>{{ props.item.street }}</td>
             <td>{{ props.item.house }}</td>
@@ -60,7 +60,7 @@ export default {
     return {
       headers: [
         { text: '#', value: 'id' },
-        { text: this.$i18n.translate('City'), value: 'city_id' },
+        { text: this.$i18n.translate('City'), value: 'city' },
         { text: this.$i18n.translate('Village'), value: 'village' },
         { text: this.$i18n.translate('Street'), value: 'street' },
         { text: this.$i18n.translate('House'), value: 'house' },

@@ -239,6 +239,6 @@ class AddressViewSet(HasRoleMixin, viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
     search_fields = ('village', 'street', 'house', 'apartment')
-    ordering_fields = ('id', 'city_id', 'village', 'street', 'house', 'apartment')
+    ordering_fields = ('id', 'city', 'village', 'street', 'house', 'apartment')
 
 

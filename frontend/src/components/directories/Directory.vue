@@ -2,6 +2,11 @@
   <div>
     <h1> {{title | translate}} </h1>
     <div class="btn-toolbar justify-content-between mb-3">
+        <button class="btn btn-success btn-block" v-roles="['admin_role', 'edit_role']" v-if="select"
+                v-on:click="onSelect()" :disabled="!data.isSelected">{{'Select' | translate}}
+        </button>
+    </div>
+    <div class="btn-toolbar justify-content-between mb-3">
       <div>
         <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="data.addDialog = true">{{'Add' |
           translate}}
@@ -115,6 +120,13 @@ export default {
     },
     getDeleteMessage: function () {
       return this.$t('Delete ' + this.name) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
+    },
+    onSelect: function () {
+      if (this.data.isSelected && this.data.currentObject.id) {
+        // store this.data.currentObject.id in vuex
+        this.$store.commit('setSelectedId', this.data.currentObject.id)
+        this.$router.go(-1)
+      }
     }
   },
   components: {
@@ -125,7 +137,8 @@ export default {
   props: {
     title: String,
     name: String,
-    api: String
+    api: String,
+    select: Boolean
   }
 }
 </script>

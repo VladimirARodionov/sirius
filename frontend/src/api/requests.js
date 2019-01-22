@@ -116,7 +116,7 @@ export function onGetCount (api, data) {
 
 export function onGetSingle (api, data) {
   data.errorMessage = ''
-  if (data.currentObject !== '') {
+  if (data.currentObject.id) {
     axios.get(process.env.API_URL + api + data.currentObject.id + '/')
       .then(resp => {
         data.loading = false
@@ -144,6 +144,7 @@ export function onPostSingle (api, data, getFunction) {
   axios.post(process.env.API_URL + api, data.currentObject)
     .then(resp => {
       data.loading = false
+      data.currentObject = resp.data
       getFunction()
     })
     .catch(err => {

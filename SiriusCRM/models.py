@@ -53,7 +53,7 @@ class City(models.Model):
 # Справочник адресов
 class Address(models.Model):
     id = models.AutoField(primary_key=True)
-    city = models.ForeignKey(City, null=True, on_delete=models.PROTECT, related_name="address_city")
+    city = models.ForeignKey(City, null=False, on_delete=models.PROTECT, related_name="address_city")
     village = models.CharField(max_length=255, null=True, blank=True)
     street = models.CharField(max_length=255, null=True, blank=True)
     house = models.CharField(max_length=30, null=True, blank=True)

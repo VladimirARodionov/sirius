@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('token') || '',
-    user: {}
+    user: {},
+    selectedId: 0
   },
   mutations: {
     auth_request (state) {
@@ -25,6 +26,12 @@ export default new Vuex.Store({
     logout (state) {
       state.status = ''
       state.token = ''
+    },
+    clearSelectedId (state) {
+      state.selectedId = 0
+    },
+    setSelectedId (state, id) {
+      state.selectedId = id
     }
   },
   actions: {
@@ -82,10 +89,17 @@ export default new Vuex.Store({
         delete axios.defaults.headers.common['Authorization']
         resolve()
       })
+    },
+    clearSelectedId ({ commit }) {
+      commit('clearSelectedId')
+    },
+    setSelectedId ({ commit }, id) {
+      commit('setSelectedId', id)
     }
   },
   getters: {
     isLoggedIn: state => !!state.token,
-    authStatus: state => state.status
+    authStatus: state => state.status,
+    getSelectedId: state => state.selectedId
   }
 })
