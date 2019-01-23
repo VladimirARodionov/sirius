@@ -123,7 +123,7 @@ export default {
       if (this.data.isSelected && this.data.currentObject.id) {
         // store this.data.currentObject.id in vuex
         console.log('from Directory onSelect ' + this.data.currentObject.id)
-        this.$store.commit('setSelectedObject', { name: this.name, id: this.data.currentObject.id })
+        this.$store.commit('setSelectedObject', { name: this.name, api: this.api, id: this.data.currentObject.id })
         this.$router.go(-1)
       }
     },

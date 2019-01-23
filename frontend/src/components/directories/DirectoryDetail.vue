@@ -55,9 +55,11 @@ export default {
   },
   mounted: function () {
     if (this.$store.getters.getSelectedObject) {
-      this.data[this.$store.getters.getSelectedObject.name] = {}
-      this.data[this.$store.getters.getSelectedObject.name].id = this.$store.getters.getSelectedObject.id
+      const selectedValue = JSON.parse(JSON.stringify(this.$store.getters.getSelectedObject))
       this.$store.commit('clearSelectedObject')
+      this.data[selectedValue.name] = {}
+      this.data[selectedValue.name].id = selectedValue.id
+      this.getSelectedObject(selectedValue.api, selectedValue.name)
     }
   },
   updated: function () {
