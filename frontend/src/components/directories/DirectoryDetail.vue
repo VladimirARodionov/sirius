@@ -18,7 +18,8 @@
           <div v-else-if="field_name.type === 'selector'">
             <div class="form-row align-items-center">
               <label >{{field_name.text | translate}}</label>&nbsp;
-              <label >{{ getSelector(field_name.name)}}</label>
+              <label v-if="data[field_name.name] && data[field_name.name].id">{{ data[field_name.name].name }}</label>
+              <label v-else>{{ 'Not selected' | translate}}</label>
               <span class="input-group-btn">
                 <v-btn color="green darken-1" @click="find(field_name.routerName)">{{'Find' | translate}}</v-btn>
               </span>
@@ -57,36 +58,16 @@ export default {
     if (this.$store.getters.getSelectedObject) {
       const selectedValue = JSON.parse(JSON.stringify(this.$store.getters.getSelectedObject))
       this.$store.commit('clearSelectedObject')
-      this.data[selectedValue.name] = {}
-      this.data[selectedValue.name].id = selectedValue.id
+      this.data[selectedValue.name] = { id: selectedValue.id }
       this.getSelectedObject(selectedValue.api, selectedValue.name)
     }
   },
-  updated: function () {
-    this.getNames().forEach(function (fieldName, i, arr) {
-      if (fieldName.type === 'selector') {
-        if (this.data[fieldName.name].id) {
-          // this.data[fieldName.name].id = this.object[fieldName.name].id
-          this.getSelectedObject(fieldName.api, fieldName.name)
-        } else {
-          if (this.$store.getters.getSelectedObject[fieldName.name]) {
-            this.data[fieldName.name].id = this.$store.getters.getSelectedObject.id
-            this.$store.commit('clearSelectedObject')
-            this.getSelectedObject(fieldName.api, fieldName.name)
-          }
-        }
-        if (this.object[fieldName.name] && (this.data[fieldName.name] && !this.data[fieldName.name].id)) {
-          this.data[fieldName.name].id = this.object[fieldName.name]
-          this.getSelectedObject(fieldName.api, fieldName.name)
-        }
-      }
-    })
-  },
   methods: {
     clicked () {
-      for (const fieldName in this.getNames()) {
-        if (fieldName.type === 'selector') {
-          this.$emit('onSelect_' + fieldName.name, this.data[fieldName.name].id) // Add onSelect_city method for updating city
+      const names = this.getNames()
+      for (const field in names) {
+        if (names[field].type === 'selector') {
+          this.onSelect({ name: names[field].name, id: this.data[names[field].name].id })
         }
       }
       this.onClicked() // TODO: show popup message depending on errorMessage set or not. Or this.$router.go(-1)
@@ -96,13 +77,6 @@ export default {
     },
     getSelectedObject (api, name) {
       onGetSingle(api, name, this.data)
-    },
-    getSelector (fieldName) {
-      if (this.data[fieldName] && this.data[fieldName].id) {
-        return this.data[fieldName].name // TODO: change name to provided JSON value
-      } else {
-        return this.$t('Not selected')
-      }
     },
     getNames: function () {
       if (this.names) {
@@ -119,7 +93,8 @@ export default {
     title: String,
     object: Object,
     onClicked: Function,
-    names: Array
+    names: Array,
+    onSelect: Function
   }
 }
 </script>

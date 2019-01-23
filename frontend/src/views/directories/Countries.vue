@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <Directory title="Countries" name="country" api="/api/country/" :select="select"/>
+    <Directory title="Countries" name="country" api="/api/country/" addRouter="addCountry" editRouter="editCountry" :select="select"/>
   </Menu>
 </template>
 

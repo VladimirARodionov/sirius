@@ -27,6 +27,10 @@ import EditAddress from '../views/directories/EditAddress'
 import AddAddress from '../views/directories/AddAddress'
 import AddCity from '../views/directories/AddCity'
 import EditCity from '../views/directories/EditCity'
+import AddRegion from '../views/directories/AddRegion'
+import EditRegion from '../views/directories/EditRegion'
+import AddCountry from '../views/directories/AddCountry'
+import EditCountry from '../views/directories/EditCountry'
 
 Vue.use(Router)
 
@@ -154,9 +158,41 @@ let router = new Router({
       }
     },
     {
+      path: '/directories/countries/add',
+      name: 'addCountry',
+      component: AddCountry,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/countries/edit/:id',
+      name: 'editCountry',
+      component: EditCountry,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/directories/regions',
       name: 'regions',
       component: Regions,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/regions/add',
+      name: 'addRegion',
+      component: AddRegion,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/regions/edit/:id',
+      name: 'editRegion',
+      component: EditRegion,
       meta: {
         requiresAuth: true
       }

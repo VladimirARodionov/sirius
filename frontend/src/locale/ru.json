@@ -88,5 +88,8 @@
   "Find": "Найти",
   "Back": "Назад",
   "Select": "Выбрать",
-  "Not selected": "Не выбрано"
+  "Not selected": "Не выбрано",
+  "Edit city": "Изменение города",
+  "Region": "Регион",
+  "Country": "Страна"
 }

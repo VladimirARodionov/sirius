@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <DirectoryDetail :object="data.currentObject" :title="this.$t('Edit city')" :errorMessage="data.errorMessage" :on-clicked="editObject" :names="names" :onSelect="onSelect"/>
+    <DirectoryDetail :object="data.currentObject" :title="this.$t('Edit Country')" :errorMessage="data.errorMessage" :on-clicked="editObject" :names="names" />
   </Menu>
 </template>
 
@@ -10,12 +10,11 @@ import DirectoryDetail from '../../components/directories/DirectoryDetail'
 import { onGetSingle, onPutSingle } from '../../api/requests'
 
 export default {
-  name: 'EditCity',
+  name: 'EditCountry',
   data () {
     return {
       names: [
-        { text: 'Name', type: 'input', name: 'name', required: true },
-        { text: 'Region', type: 'selector', name: 'region', routerName: 'regions', api: '/api/region/', required: true }
+        { text: 'Name', type: 'input', name: 'name', required: true }
       ],
       data: {
         currentObject: {},
@@ -30,15 +29,10 @@ export default {
   },
   methods: {
     getObject: function () {
-      onGetSingle('/api/city/', 'currentObject', this.data)
+      onGetSingle('/api/country/', 'currentObject', this.data)
     },
     editObject: function () {
-      onPutSingle('/api/city/', this.data, this.getObject)
-    },
-    onSelect: function (event) {
-      if (event.name === 'region') {
-        this.data.currentObject.region = event.id
-      }
+      onPutSingle('/api/country/', this.data, this.getObject)
     }
   },
   components: {
