@@ -25,6 +25,8 @@ import ExportUsers from '../views/ExportUsers'
 import Addresses from '../views/directories/Addresses'
 import EditAddress from '../views/directories/EditAddress'
 import AddAddress from '../views/directories/AddAddress'
+import AddCity from '../views/directories/AddCity'
+import EditCity from '../views/directories/EditCity'
 
 Vue.use(Router)
 
@@ -163,6 +165,22 @@ let router = new Router({
       path: '/directories/cities',
       name: 'cities',
       component: Cities,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/cities/add',
+      name: 'addCity',
+      component: AddCity,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/cities/edit/:id',
+      name: 'editCity',
+      component: EditCity,
       meta: {
         requiresAuth: true
       }

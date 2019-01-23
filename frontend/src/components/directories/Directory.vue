@@ -8,11 +8,11 @@
     </div>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="data.addDialog = true">{{'Add' |
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="goAdd">{{'Add' |
           translate}}
         </button>
         <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
-                v-on:click="data.editDialog = true">{{'Edit' | translate}}
+                v-on:click="goEdit">{{'Edit' | translate}}
         </button>
         <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
                 v-on:click="data.deleteDialog = true">{{'Delete' | translate}}
@@ -43,19 +43,14 @@
       </v-data-table>
 
     </div>
-    <!-- Add Modal -->
-    <AddNameDialog :errorMessage="data.addDialogErrorMessage" :dialog.sync="data.addDialog" :newObject="data.newObject" :title="this.$t('Add ' + name)" :on-clicked="addObject"/>
-    <!-- Edit Modal -->
-    <EditNameDialog :errorMessage="data.editDialogErrorMessage" :dialog.sync="data.editDialog" :currentObject="data.currentObject" :title="this.$t('Edit')" :on-clicked="updateObject"/>
     <!-- Delete Modal -->
     <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
   </div>
 </template>
 
 <script>
+import router from '../../router'
 import DeleteDialog from '../dialogs/DeleteDialog'
-import AddNameDialog from '../dialogs/AddNameDialog'
-import EditNameDialog from '../dialogs/EditNameDialog'
 import { onGet, onPost, onPut, onDelete } from '../../api/requests'
 
 export default {
@@ -127,8 +122,17 @@ export default {
     onSelect: function () {
       if (this.data.isSelected && this.data.currentObject.id) {
         // store this.data.currentObject.id in vuex
-        this.$store.commit('setSelectedId', this.data.currentObject.id)
+        console.log('from Directory onSelect ' + this.data.currentObject.id)
+        this.$store.commit('setSelectedObject', { name: this.name, id: this.data.currentObject.id })
         this.$router.go(-1)
+      }
+    },
+    goAdd: function () {
+      router.push({ name: this.addRouter })
+    },
+    goEdit: function () {
+      if (this.data.currentObject !== '') {
+        router.push({ name: this.editRouter, params: { id: this.data.currentObject.id } })
       }
     },
     getHeaders: function () {
@@ -147,9 +151,7 @@ export default {
     }
   },
   components: {
-    DeleteDialog,
-    AddNameDialog,
-    EditNameDialog
+    DeleteDialog
   },
   props: {
     title: String,
@@ -157,7 +159,9 @@ export default {
     api: String,
     select: Boolean,
     headers: Array,
-    names: Array
+    names: Array,
+    addRouter: String,
+    editRouter: String
   }
 }
 </script>

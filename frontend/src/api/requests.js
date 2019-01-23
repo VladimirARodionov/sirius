@@ -114,13 +114,13 @@ export function onGetCount (api, data) {
     })
 }
 
-export function onGetSingle (api, data) {
+export function onGetSingle (api, name, data) {
   data.errorMessage = ''
-  if (data.currentObject.id) {
-    axios.get(process.env.API_URL + api + data.currentObject.id + '/')
+  if (data[name] && data[name].id) {
+    axios.get(process.env.API_URL + api + data[name].id + '/')
       .then(resp => {
         data.loading = false
-        data.currentObject = resp.data
+        data[name] = resp.data
       })
       .catch(err => {
         console.log(err)

@@ -50,15 +50,19 @@ class CountrySerializer(ModelSerializer):
 
 
 class RegionSerializer(ModelSerializer):
+    region_country = CountrySerializer(source='country', read_only=True)
+
     class Meta:
         model = Region
-        fields = ('id', 'name', 'country')
+        fields = ('id', 'name', 'country', 'region_country')
 
 
 class CitySerializer(ModelSerializer):
+    city_region = RegionSerializer(source='region', read_only=True)
+
     class Meta:
         model = City
-        fields = ('id', 'name', 'region')
+        fields = ('id', 'name', 'region', 'city_region')
 
 
 class CompetencySerializer(ModelSerializer):
