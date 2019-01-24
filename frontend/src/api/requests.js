@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 
 export function onGet (api, data, pagination, searchTerm) {
   data.loading = true
@@ -120,7 +121,7 @@ export function onGetSingle (api, name, data) {
     axios.get(process.env.API_URL + api + data[name].id + '/')
       .then(resp => {
         data.loading = false
-        data[name] = resp.data
+        Vue.set(data, name, resp.data)
       })
       .catch(err => {
         console.log(err)

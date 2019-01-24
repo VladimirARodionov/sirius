@@ -18,7 +18,7 @@
           <div v-else-if="field_name.type === 'selector'">
             <div class="form-row align-items-center">
               <label >{{field_name.text | translate}}</label>&nbsp;
-              <label v-if="data[field_name.name] && data[field_name.name].id">{{ data[field_name.name].name }}</label>
+              <label v-if="data[field_name.name]">{{ data[field_name.name].name }}</label>
               <label v-else>{{ 'Not selected' | translate}}</label>
               <span class="input-group-btn">
                 <v-btn color="green darken-1" @click="find(field_name.routerName)">{{'Find' | translate}}</v-btn>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { onGetSingle } from '../../api/requests'
 export default {
   name: 'DirectoryDetail',
@@ -55,10 +56,17 @@ export default {
     }
   },
   mounted: function () {
+    const names = this.getNames()
+    for (const field in names) {
+      if (names[field].type === 'selector' && this.object[names[field].name]) {
+        Vue.set(this.data, names[field].name, { id: this.object[names[field].name] })
+        this.getSelectedObject(this.object[names[field].name].api, this.object[names[field].name].name)
+      }
+    }
     if (this.$store.getters.getSelectedObject) {
       const selectedValue = JSON.parse(JSON.stringify(this.$store.getters.getSelectedObject))
       this.$store.commit('clearSelectedObject')
-      this.data[selectedValue.name] = { id: selectedValue.id }
+      Vue.set(this.data, selectedValue.name, { id: selectedValue.id })
       this.getSelectedObject(selectedValue.api, selectedValue.name)
     }
   },
