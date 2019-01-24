@@ -70,18 +70,29 @@ export default {
       this.getSelectedObject(selectedValue.api, selectedValue.name)
     }
   },
+  updated: function () {
+    const names = this.getNames()
+    for (const field in names) {
+      if (names[field].type === 'selector' && !this.data[names[field].name] && this.object[names[field].name]) {
+        Vue.set(this.data, names[field].name, { id: this.object[names[field].name] })
+        this.getSelectedObject(names[field].api, names[field].name)
+      }
+    }
+  },
   methods: {
     clicked () {
       const names = this.getNames()
       for (const field in names) {
         if (names[field].type === 'selector') {
-          this.onSelect({ name: names[field].name, id: this.data[names[field].name].id })
+          if (this.data[names[field].name]) {
+            this.onSelect({ name: names[field].name, id: this.data[names[field].name].id })
+          }
         }
       }
-      this.onClicked() // TODO: show popup message depending on errorMessage set or not. Or this.$router.go(-1)
+      this.onClicked()
     },
     find (routerName) {
-      this.$router.push({ name: routerName, query: { select: true } })
+      this.$router.push({ name: routerName, query: { select: 'true' } })
     },
     getSelectedObject (api, name) {
       onGetSingle(api, name, this.data)

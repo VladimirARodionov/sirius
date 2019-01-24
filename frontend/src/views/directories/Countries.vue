@@ -12,7 +12,7 @@ export default {
   name: 'Countries',
   data () {
     return {
-      select: false
+      select: 'false'
     }
   },
   created () {

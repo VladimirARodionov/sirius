@@ -2,7 +2,7 @@
   <div>
     <h1> {{title | translate}} </h1>
     <div class="btn-toolbar justify-content-between mb-3">
-        <button class="btn btn-success btn-block" v-roles="['admin_role', 'edit_role']" v-if="select"
+        <button class="btn btn-success btn-block" v-roles="['admin_role', 'edit_role']" v-if="select === 'true'"
                 v-on:click="onSelect()" :disabled="!data.isSelected">{{'Select' | translate}}
         </button>
     </div>
@@ -37,7 +37,7 @@
       >
         <template slot="items" slot-scope="props">
           <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
-            <td v-for="fieldName in getNames()" :key="fieldName.name">{{ props.item[fieldName.name] }}</td>
+            <td v-for="fieldName in getNames()" :key="fieldName.name">{{ getTableValue(props.item, fieldName) }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -122,7 +122,6 @@ export default {
     onSelect: function () {
       if (this.data.isSelected && this.data.currentObject.id) {
         // store this.data.currentObject.id in vuex
-        console.log('from Directory onSelect ' + this.data.currentObject.id)
         this.$store.commit('setSelectedObject', { name: this.name, api: this.api, id: this.data.currentObject.id })
         this.$router.go(-1)
       }
@@ -133,6 +132,18 @@ export default {
     goEdit: function () {
       if (this.data.currentObject !== '') {
         router.push({ name: this.editRouter, params: { id: this.data.currentObject.id } })
+      }
+    },
+    getTableValue: function (property, jsonField) {
+      const arr = jsonField.name.split('.')
+      if (arr.length === 1) {
+        return property[jsonField.name]
+      } else {
+        var value = property
+        for (const item in arr) {
+          value = value[arr[item]]
+        }
+        return value
       }
     },
     getHeaders: function () {
@@ -157,7 +168,7 @@ export default {
     title: String,
     name: String,
     api: String,
-    select: Boolean,
+    select: String,
     headers: Array,
     names: Array,
     addRouter: String,

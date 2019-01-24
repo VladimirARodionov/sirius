@@ -169,7 +169,7 @@ class RegionViewSet(HasRoleMixin, viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
     search_fields = ('name',)
-    ordering_fields = ('id', 'name')
+    ordering_fields = ('id', 'name', 'country')
 
 
 class CityViewSet(HasRoleMixin, viewsets.ModelViewSet):
@@ -183,7 +183,7 @@ class CityViewSet(HasRoleMixin, viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
     search_fields = ('name',)
-    ordering_fields = ('id', 'name')
+    ordering_fields = ('id', 'name', 'region')
 
 
 class CompetencyViewSet(HasRoleMixin, viewsets.ModelViewSet):

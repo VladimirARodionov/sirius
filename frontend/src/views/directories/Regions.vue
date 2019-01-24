@@ -19,10 +19,10 @@ export default {
       ],
       names: [
         { name: 'id' },
-        { name: 'country' },
+        { name: 'region_country.name' },
         { name: 'name' }
       ],
-      select: false
+      select: 'false'
     }
   },
   created () {

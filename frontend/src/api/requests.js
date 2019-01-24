@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Vue from 'vue'
+import vuetifyToast from 'vuetify-toast'
 
 export function onGet (api, data, pagination, searchTerm) {
   data.loading = true
@@ -146,6 +147,7 @@ export function onPostSingle (api, data, getFunction) {
     .then(resp => {
       data.loading = false
       data.currentObject = resp.data
+      vuetifyToast.success(Vue.i18n.translate('Success'))
       getFunction()
     })
     .catch(err => {
@@ -170,6 +172,7 @@ export function onPutSingle (api, data, getFunction) {
       .then(resp => {
         data.loading = false
         data.currentObject = resp.data
+        vuetifyToast.success(Vue.i18n.translate('Success'))
         getFunction()
       })
       .catch(err => {

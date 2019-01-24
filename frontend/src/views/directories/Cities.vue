@@ -19,10 +19,10 @@ export default {
       ],
       names: [
         { name: 'id' },
-        { name: 'region' },
+        { name: 'city_region.name' },
         { name: 'name' }
       ],
-      select: false
+      select: 'false'
     }
   },
   created () {
