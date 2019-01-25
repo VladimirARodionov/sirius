@@ -14,8 +14,8 @@ export default {
   data () {
     return {
       names: [
-        { text: 'Name', type: 'input', name: 'name', required: true },
-        { text: 'Region', type: 'selector', name: 'region', routerName: 'regions', api: '/api/region/', required: true }
+        { text: 'Region', type: 'selector', name: 'region', routerName: 'regions', api: '/api/region/', required: true },
+        { text: 'Name', type: 'input', name: 'name', required: true }
       ],
       data: {
         currentObject: {},

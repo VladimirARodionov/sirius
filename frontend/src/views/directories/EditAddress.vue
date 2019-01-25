@@ -1,18 +1,25 @@
 <template>
   <Menu>
-    <AddressDetail :object="data.currentObject" :title="this.$t('Edit address')" :errorMessage="data.errorMessage" :on-clicked="editObject" @onSelectCity="selectCity"/>
+    <DirectoryDetail :object="data.currentObject" :title="this.$t('Edit address')" :errorMessage="data.errorMessage" :on-clicked="editObject" :names="names" :onSelect="onSelect"/>
   </Menu>
 </template>
 
 <script>
 import Menu from '../../layouts/Menu'
-import AddressDetail from '../../components/AddressDetail'
+import DirectoryDetail from '../../components/directories/DirectoryDetail'
 import { onGetSingle, onPutSingle } from '../../api/requests'
 
 export default {
   name: 'EditAddress',
   data () {
     return {
+      names: [
+        { text: 'City', type: 'selector', name: 'city', routerName: 'cities', api: '/api/city/', required: true },
+        { text: 'Village', type: 'input', name: 'village' },
+        { text: 'Street', type: 'input', name: 'street' },
+        { text: 'House', type: 'input', name: 'house' },
+        { text: 'Apartment', type: 'input', name: 'apartment' }
+      ],
       data: {
         currentObject: {},
         loading: false,
@@ -26,18 +33,20 @@ export default {
   },
   methods: {
     getObject: function () {
-      onGetSingle('/api/address/', this.data)
+      onGetSingle('/api/address/', 'currentObject', this.data)
     },
     editObject: function () {
       onPutSingle('/api/address/', this.data, this.getObject)
     },
-    selectCity: function (event) {
-      this.data.currentObject.city = event
+    onSelect: function (event) {
+      if (event.name === 'city') {
+        this.data.currentObject.city = event.id
+      }
     }
   },
   components: {
     Menu,
-    AddressDetail
+    DirectoryDetail
   }
 }
 </script>
