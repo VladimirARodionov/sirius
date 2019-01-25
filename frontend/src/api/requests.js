@@ -32,6 +32,7 @@ export function onPost (api, data, getFunction) {
     .then(resp => {
       data.loading = false
       data.addDialog = false
+      vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
       getFunction()
     })
     .catch(err => {
@@ -44,6 +45,7 @@ export function onPost (api, data, getFunction) {
             data.addDialogErrorMessage = errors[value]
           }
         }
+        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
         console.log(err.response.data)
       }
     })
@@ -57,6 +59,7 @@ export function onPut (api, data, getFunction) {
         data.loading = false
         data.currentObject = resp.data
         data.editDialog = false
+        vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
         getFunction()
       })
       .catch(err => {
@@ -69,6 +72,7 @@ export function onPut (api, data, getFunction) {
             } else {
               data.editDialogErrorMessage = errors[value]
             }
+            vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
             console.log(err.response.data)
           }
         }
@@ -147,7 +151,7 @@ export function onPostSingle (api, data, getFunction) {
     .then(resp => {
       data.loading = false
       data.currentObject = resp.data
-      vuetifyToast.success(Vue.i18n.translate('Success'))
+      vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
       getFunction()
     })
     .catch(err => {
@@ -160,6 +164,7 @@ export function onPostSingle (api, data, getFunction) {
             data.errorMessage = errors[value]
           }
         }
+        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
         console.log(err.response.data)
       }
     })
@@ -172,7 +177,7 @@ export function onPutSingle (api, data, getFunction) {
       .then(resp => {
         data.loading = false
         data.currentObject = resp.data
-        vuetifyToast.success(Vue.i18n.translate('Success'))
+        vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
         getFunction()
       })
       .catch(err => {
@@ -185,6 +190,7 @@ export function onPutSingle (api, data, getFunction) {
             } else {
               data.errorMessage = errors[value]
             }
+            vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
             console.log(err.response.data)
           }
         }

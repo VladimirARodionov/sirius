@@ -9,15 +9,17 @@
         <div class="form-group" v-for="field_name in getNames()" :key="field_name.name">
           <div v-if="field_name.type === 'input'">
             <label :for="field_name.name">{{field_name.text | translate}}</label>
+            <label v-if="field_name.required" class="text-danger">&nbsp;*&nbsp;</label>
             <input
               type="text"
               class="form-control"
               :id="field_name.name"
               v-model="object[field_name.name]">
           </div>
-          <div v-else-if="field_name.type === 'selector'">
-            <div class="form-row align-items-center">
-              <label >{{field_name.text | translate}}</label>&nbsp;
+          <div class="form-group" v-else-if="field_name.type === 'selector'">
+            <label >{{field_name.text | translate}}</label>&nbsp;
+            <label v-if="field_name.required" class="text-danger">&nbsp;*&nbsp;</label>
+            <div class="align-items-center">
               <label v-if="data[field_name.name]">{{ data[field_name.name].name }}</label>
               <label v-else>{{ 'Not selected' | translate}}</label>
               <span class="input-group-btn">

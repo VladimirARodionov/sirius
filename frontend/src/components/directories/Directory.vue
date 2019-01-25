@@ -141,7 +141,11 @@ export default {
       } else {
         var value = property
         for (const item in arr) {
-          value = value[arr[item]]
+          if (value[arr[item]]) {
+            value = value[arr[item]]
+          } else {
+            return ''
+          }
         }
         return value
       }
