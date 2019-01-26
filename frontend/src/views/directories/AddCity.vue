@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <DirectoryDetail :object="data.currentObject" :title="this.$t('Add city')" :errorMessage="data.errorMessage" :on-clicked="addObject" :names="names" :onSelect="onSelect"/>
+    <DirectoryDetail :object.sync="data.currentObject" :title="this.$t('Add city')" name="addCity" :errorMessage="data.errorMessage" :on-clicked="addObject" :names="names" :onSelect="onSelect"/>
   </Menu>
 </template>
 

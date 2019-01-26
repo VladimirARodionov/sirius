@@ -9,7 +9,8 @@ export default new Vuex.Store({
     status: '',
     token: localStorage.getItem('token') || '',
     user: {},
-    selectedObject: {}
+    selectedObject: {},
+    savedState: {}
   },
   mutations: {
     auth_request (state) {
@@ -32,6 +33,12 @@ export default new Vuex.Store({
     },
     setSelectedObject (state, obj) {
       state.selectedObject = obj
+    },
+    clearSavedState (state, name) {
+      state.savedState[name] = null
+    },
+    setSavedState (state, obj) {
+      state.savedState[obj.name] = obj.obj
     }
   },
   actions: {
@@ -95,11 +102,18 @@ export default new Vuex.Store({
     },
     setSelectedObject ({ commit }, obj) {
       commit('setSelectedObject', obj)
+    },
+    clearSavedState ({ commit }, name) {
+      commit('clearSavedState', name)
+    },
+    setSavedState ({ commit }, obj) {
+      commit('setSavedState', obj)
     }
   },
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
-    getSelectedObject: state => state.selectedObject
+    getSelectedObject: state => state.selectedObject,
+    getSavedState: state => state.savedState
   }
 })
