@@ -3,7 +3,7 @@
     <v-card-title class="headline lighten-2" primary-title> {{title}} </v-card-title>
     <v-form>
       <v-card-text>
-        <v-alert type="error" value="true" v-if="errorMessageText">
+        <v-alert outline type="error" value="true" v-if="errorMessageText">
           {{errorMessageText}}
         </v-alert>
         <v-item-group v-for="field_name in getNames" :key="field_name.name">
