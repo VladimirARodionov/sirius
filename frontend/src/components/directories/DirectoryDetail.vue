@@ -3,31 +3,28 @@
     <v-card-title class="headline lighten-2" primary-title> {{title}} </v-card-title>
     <v-form>
       <v-card-text>
-        <div class="alert alert-danger" v-if="errorMessage">
-          {{errorMessage}}
+        <div class="alert alert-danger" v-if="errorMessageText">
+          {{errorMessageText}}
         </div>
-        <div class="form-group" v-for="field_name in getNames" :key="field_name.name">
+        <v-item-group v-for="field_name in getNames" :key="field_name.name">
           <div v-if="field_name.type === 'input'">
             <label :for="field_name.name">{{field_name.text | translate}}</label>
             <label v-if="field_name.required" class="text-danger">&nbsp;*&nbsp;</label>
-            <input
-              type="text"
-              class="form-control"
+            <v-text-field solo
               :id="field_name.name"
-              v-model="getObject[field_name.name]">
+              :error-messages="errorMessage[field_name.name]"
+               v-model="getObject[field_name.name]">
+            </v-text-field>
           </div>
-          <div class="form-group" v-else-if="field_name.type === 'selector'">
+          <v-item-group v-else-if="field_name.type === 'selector'">
             <label >{{field_name.text | translate}}</label>&nbsp;
             <label v-if="field_name.required" class="text-danger">&nbsp;*&nbsp;</label>
-            <div class="align-items-center">
-              <label v-if="data[field_name.name]">{{ data[field_name.name].name }}</label>
-              <label v-else>{{ 'Not selected' | translate}}</label>
-              <span class="input-group-btn">
-                <v-btn color="green darken-1" @click="find(field_name.routerName)">{{'Find' | translate}}</v-btn>
-              </span>
-            </div>
-          </div>
-        </div>
+              <v-text-field box solo readonly type="text" :id="field_name.name" :error-messages="errorMessage[field_name.name]" v-if="data[field_name.name]" append-icon="search" @click:append="find(field_name.routerName)" v-model="data[field_name.name].name">
+              </v-text-field>
+              <v-text-field box solo readonly type="text" :id="field_name.name" :error-messages="errorMessage[field_name.name]" v-else  append-icon="search" @click="find(field_name.routerName)" :value="'Not selected' | translate">
+              </v-text-field>
+          </v-item-group>
+        </v-item-group>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -85,7 +82,9 @@ export default {
   },
   methods: {
     clicked () {
-      this.onUpdate(this.getObject)
+      if (this.onUpdate) {
+        this.onUpdate(this.getObject)
+      }
       const names = this.getNames
       for (const field in names) {
         if (names[field].type === 'selector') {
@@ -120,6 +119,23 @@ export default {
       } else {
         return this.object
       }
+    },
+    errorMessageText: function () {
+      const errors = this.errorMessage
+      for (const value in errors) {
+        if (errors[value] instanceof Array) {
+          const names = this.getNames
+          for (const field in names) {
+            if (names[field].name === value) {
+              return ''
+            }
+          }
+          return errors[value][0]
+        } else {
+          return errors[value]
+        }
+      }
+      return ''
     }
   },
   props: {

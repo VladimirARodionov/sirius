@@ -154,19 +154,27 @@ export function onPostSingle (api, data, getFunction) {
       vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
       getFunction()
     })
-    .catch(err => {
-      if (err.response && err.response.data) {
-        const errors = err.response.data
-        for (const value in errors) {
-          if (errors[value] instanceof Array) {
-            data.errorMessage = errors[value][0]
-          } else {
-            data.errorMessage = errors[value]
-          }
-        }
-        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
-        console.log(err.response.data)
+    .catch((error) => {
+      // Error
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        // console.log(error.response.data);
+        // console.log(error.response.status);
+        // console.log(error.response.headers);
+        data.errorMessage = error.response.data
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        data.errorMessage = error.request
+        console.log(error.request)
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        data.errorMessage = error.message
+        console.log('Error', error.message)
       }
+      vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
     })
 }
 
@@ -180,20 +188,27 @@ export function onPutSingle (api, data, getFunction) {
         vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
         getFunction()
       })
-      .catch(err => {
-        console.log(err)
-        if (err.response && err.response.data) {
-          const errors = err.response.data
-          for (const value in errors) {
-            if (errors[value] instanceof Array) {
-              data.errorMessage = errors[value][0]
-            } else {
-              data.errorMessage = errors[value]
-            }
-            vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
-            console.log(err.response.data)
-          }
+      .catch((error) => {
+        // Error
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          // console.log(error.response.data);
+          // console.log(error.response.status);
+          // console.log(error.response.headers);
+          data.errorMessage = error.response.data
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          data.errorMessage = error.request
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          data.errorMessage = error.message
+          console.log('Error', error.message)
         }
+        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
       })
   }
 }
