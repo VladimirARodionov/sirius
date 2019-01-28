@@ -21,7 +21,7 @@
             <label v-if="field_name.required" class="text-danger">&nbsp;*&nbsp;</label>
               <v-text-field box solo readonly type="text" :id="field_name.name" :error-messages="errorMessage[field_name.name]" v-if="data[field_name.name]" append-icon="search" @click:append="find(field_name.routerName)" v-model="data[field_name.name].name">
               </v-text-field>
-              <v-text-field box solo readonly type="text" :id="field_name.name" :error-messages="errorMessage[field_name.name]" v-else  append-icon="search" @click="find(field_name.routerName)" :value="'Not selected' | translate">
+              <v-text-field box solo readonly type="text" :id="field_name.name" :error-messages="errorMessage[field_name.name]" v-else  append-icon="search" @click:append="find(field_name.routerName)" :value="'Not selected' | translate">
               </v-text-field>
           </v-item-group>
         </v-item-group>
