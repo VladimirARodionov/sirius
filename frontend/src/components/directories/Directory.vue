@@ -116,14 +116,18 @@ export default {
     deleteObject: function () {
       onDelete(this.api, this.data, this.getObjects)
     },
-    getDeleteMessage: function () {
-      return this.$t('Delete ' + this.name) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
-    },
     onSelect: function () {
       if (this.data.isSelected && this.data.currentObject.id) {
         // store this.data.currentObject.id in vuex
         this.$store.commit('setSelectedObject', { name: this.name, api: this.api, id: this.data.currentObject.id })
         this.$router.go(-1)
+      }
+    },
+    getDeleteMessage: function (name, object) {
+      if (this.data.isSelected && this.deleteMessage) {
+        return this.deleteMessage(this.name, this.data.currentObject)
+      } else {
+        return this.$t('Delete ' + this.name) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
       }
     },
     goAdd: function () {
@@ -178,7 +182,8 @@ export default {
     headers: Array,
     names: Array,
     addRouter: String,
-    editRouter: String
+    editRouter: String,
+    deleteMessage: Function
   }
 }
 </script>

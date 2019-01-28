@@ -86,7 +86,7 @@ class Social(models.Model):
 # Справочник организаций
 class Organization(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=255, unique=True, blank=False)
     address = models.ForeignKey(Address, null=True, on_delete=models.CASCADE, related_name="organization_address")
 
     class Meta:
@@ -96,7 +96,7 @@ class Organization(models.Model):
 # Справочник подразделений организации. Если parent != null то это подразделение вложено в parent
 class Unit(models.Model):
     id = models.AutoField(primary_key=True)
-    #organization = models.ForeignKey(Organization, null=False, on_delete=models.CASCADE, related_name="unit_organization")
+    # organization = models.ForeignKey(Organization, null=False, on_delete=models.CASCADE, related_name="unit_organization")
     text = models.CharField(max_length=255, blank=False)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='nodes', on_delete=models.CASCADE)
 
@@ -107,7 +107,7 @@ class Unit(models.Model):
 # Справочник названий позиций человека (должность)
 class Position(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=255, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -116,7 +116,7 @@ class Position(models.Model):
 # Справочник названий категорий человека (ученик, сотрудник,...)
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=255, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -125,7 +125,7 @@ class Category(models.Model):
 # Справочник названий курсов
 class Course(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=255, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -143,7 +143,7 @@ class Essay(models.Model):
 # Справочник компетенций человека, что он умеет
 class Competency(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=255, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -164,7 +164,7 @@ class Offline(models.Model):
 # Справочник названий выплат
 class Payment(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=255, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -173,8 +173,8 @@ class Payment(models.Model):
 # Справочник валют
 class Currency(models.Model):
     id = models.AutoField(primary_key=True)
-    short_name = models.CharField(max_length=3, blank=False)
-    name = models.CharField(max_length=255, blank=False)
+    short_name = models.CharField(max_length=3, unique=True, blank=False)
+    name = models.CharField(max_length=255, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']

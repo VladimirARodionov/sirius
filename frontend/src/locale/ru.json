@@ -94,5 +94,14 @@
   "Edit region": "Изменение региона",
   "Country": "Страна",
   "Edit country": "Изменение страны",
-  "Error": "Ошибка"
+  "Error": "Ошибка",
+  "street": "улица",
+  "house": "дом",
+  "apartment": "квартира",
+  "Edit category": "Изменение категории",
+  "Edit competency": "Изменение компетенции",
+  "Edit course": "Изменение курса",
+  "Edit organization": "Изменение организации",
+  "Edit payment": "Изменение выплаты",
+  "Edit position": "Изменение должности"
 }

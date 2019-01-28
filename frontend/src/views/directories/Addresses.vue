@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <Directory title="Addresses" name="address" api="/api/address/" :headers="this.headers" :names="this.names" addRouter="addAddress" editRouter="editAddress" :select="select"/>
+    <Directory title="Addresses" name="address" api="/api/address/" :headers="this.headers" :names="this.names" addRouter="addAddress" editRouter="editAddress" :select="select" :deleteMessage="deleteMessage"/>
   </Menu>
 </template>
 
@@ -42,6 +42,22 @@ export default {
   created () {
     if (this.$route.query && this.$route.query.select) {
       this.select = this.$route.query.select
+    }
+  },
+  methods: {
+    deleteMessage: function (name, object) {
+      if (name && object) {
+        return this.$t('Delete ' + name) +
+        ' #' + object.id + ' ' +
+        ((object.address_city) ? object.address_city.name : '') + ' ' +
+        ((object.village) ? object.village : '') + ' ' +
+        ((object.street) ? (this.$t('street') + ' ' + object.street) : '') + ' ' +
+        ((object.house) ? (this.$t('house') + ' ' + object.house) : '') + ' ' +
+        ((object.apartment) ? (this.$t('apartment') + ' ' + object.apartment) : '') + ' ' +
+        ' ?'
+      } else {
+        return ''
+      }
     }
   },
   components: {
