@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <DirectoryDetail :object.sync="data.currentObject" :title="this.$t('Edit city')" name="editCity" :errorMessage="data.errorMessage" :on-clicked="editObject" :names="names" :onSelect="onSelect"/>
+    <DirectoryDetail :object="data.currentObject" :title="this.$t('Edit city')" name="editCity" :errorMessage="data.errorMessage" :on-clicked="editObject" :names="names" :onUpdate="onUpdate" :onSelect="onSelect"/>
   </Menu>
 </template>
 
@@ -39,6 +39,9 @@ export default {
       if (event.name === 'region') {
         this.data.currentObject.region = event.id
       }
+    },
+    onUpdate: function (event) {
+      this.data.currentObject = JSON.parse(JSON.stringify(event))
     }
   },
   components: {

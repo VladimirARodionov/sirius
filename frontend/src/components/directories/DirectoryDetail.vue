@@ -6,7 +6,7 @@
         <div class="alert alert-danger" v-if="errorMessage">
           {{errorMessage}}
         </div>
-        <div class="form-group" v-for="field_name in getNames()" :key="field_name.name">
+        <div class="form-group" v-for="field_name in getNames" :key="field_name.name">
           <div v-if="field_name.type === 'input'">
             <label :for="field_name.name">{{field_name.text | translate}}</label>
             <label v-if="field_name.required" class="text-danger">&nbsp;*&nbsp;</label>
@@ -14,7 +14,7 @@
               type="text"
               class="form-control"
               :id="field_name.name"
-              v-model="object[field_name.name]">
+              v-model="getObject[field_name.name]">
           </div>
           <div class="form-group" v-else-if="field_name.type === 'selector'">
             <label >{{field_name.text | translate}}</label>&nbsp;
@@ -33,7 +33,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="gray darken-1" @click="$router.go(-1)">{{'Back' | translate}}</v-btn>
-        <v-btn color="green darken-1" @click="clicked()">{{'Save' | translate}}</v-btn>
+        <v-btn color="green darken-1" @click.native="clicked()">{{'Save' | translate}}</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -58,7 +58,7 @@ export default {
     }
   },
   mounted: function () {
-    const names = this.getNames()
+    const names = this.getNames
     for (const field in names) {
       if (names[field].type === 'selector' && this.object[names[field].name]) {
         Vue.set(this.data, names[field].name, { id: this.object[names[field].name] })
@@ -72,8 +72,10 @@ export default {
       this.getSelectedObject(selectedValue.api, selectedValue.name)
     }
   },
+  beforeUpdate: function () {
+  },
   updated: function () {
-    const names = this.getNames()
+    const names = this.getNames
     for (const field in names) {
       if (names[field].type === 'selector' && !this.data[names[field].name] && this.object[names[field].name]) {
         Vue.set(this.data, names[field].name, { id: this.object[names[field].name] })
@@ -83,7 +85,8 @@ export default {
   },
   methods: {
     clicked () {
-      const names = this.getNames()
+      this.onUpdate(this.getObject)
+      const names = this.getNames
       for (const field in names) {
         if (names[field].type === 'selector') {
           if (this.data[names[field].name]) {
@@ -94,16 +97,28 @@ export default {
       this.onClicked()
     },
     find (routerName) {
+      this.$store.commit('setSavedState', { name: this.name, obj: this.object })
       this.$router.push({ name: routerName, query: { select: 'true' } })
     },
     getSelectedObject (api, name) {
       onGetSingle(api, name, this.data)
-    },
+    }
+  },
+  computed: {
     getNames: function () {
       if (this.names) {
         return this.names
       } else {
         return this.defaultNames
+      }
+    },
+    getObject: function () {
+      if (this.$store.getters.getSavedState[this.name]) {
+        let savedState = this.$store.getters.getSavedState[this.name]
+        this.$store.commit('clearSavedState', this.name)
+        return savedState
+      } else {
+        return this.object
       }
     }
   },
@@ -112,10 +127,12 @@ export default {
       default: ''
     },
     title: String,
+    name: String,
     object: Object,
     onClicked: Function,
     names: Array,
-    onSelect: Function
+    onSelect: Function,
+    onUpdate: Function
   }
 }
 </script>

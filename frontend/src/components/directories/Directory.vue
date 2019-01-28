@@ -27,7 +27,7 @@
     </div>
     <div class="table-responsive">
       <v-data-table
-        :headers="getHeaders()"
+        :headers="getHeaders"
         :items="data.objects"
         :loading="data.loading"
         :total-items="data.totalObjects"
@@ -37,7 +37,7 @@
       >
         <template slot="items" slot-scope="props">
           <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
-            <td v-for="fieldName in getNames()" :key="fieldName.name">{{ getTableValue(props.item, fieldName) }}</td>
+            <td v-for="fieldName in getNames" :key="fieldName.name">{{ getTableValue(props.item, fieldName) }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -149,19 +149,21 @@ export default {
         }
         return value
       }
+    }
+  },
+  computed: {
+    getNames: function () {
+      if (this.names) {
+        return this.names
+      } else {
+        return this.defaultNames
+      }
     },
     getHeaders: function () {
       if (this.headers) {
         return this.headers
       } else {
         return this.defaultHeaders
-      }
-    },
-    getNames: function () {
-      if (this.names) {
-        return this.names
-      } else {
-        return this.defaultNames
       }
     }
   },
