@@ -8,20 +8,17 @@
         </div>
         <v-item-group v-for="field_name in getNames" :key="field_name.name">
           <div v-if="field_name.type === 'input'">
-            <label :for="field_name.name">{{field_name.text | translate}}</label>
-            <label v-if="field_name.required" class="text-danger">&nbsp;*&nbsp;</label>
-            <v-text-field solo
+            <v-text-field
               :id="field_name.name"
+              :label="$t(field_name.text) + (field_name.required?' *':'')"
               :error-messages="errorMessage[field_name.name]"
                v-model="getObject[field_name.name]">
             </v-text-field>
           </div>
           <v-item-group v-else-if="field_name.type === 'selector'">
-            <label >{{field_name.text | translate}}</label>&nbsp;
-            <label v-if="field_name.required" class="text-danger">&nbsp;*&nbsp;</label>
-              <v-text-field box solo readonly type="text" :id="field_name.name" :error-messages="errorMessage[field_name.name]" v-if="data[field_name.name]" append-icon="search" @click:append="find(field_name.routerName)" v-model="data[field_name.name].name">
+              <v-text-field :label="$t(field_name.text) + (field_name.required?' *':'')" readonly type="text" :id="field_name.name" :error-messages="errorMessage[field_name.name]" v-if="data[field_name.name]" append-icon="search" @click:append="find(field_name.routerName)" v-model="data[field_name.name].name">
               </v-text-field>
-              <v-text-field box solo readonly type="text" :id="field_name.name" :error-messages="errorMessage[field_name.name]" v-else  append-icon="search" @click:append="find(field_name.routerName)" :value="'Not selected' | translate">
+              <v-text-field :label="$t(field_name.text) + (field_name.required?' *':'')" readonly type="text" :id="field_name.name" :error-messages="errorMessage[field_name.name]" v-else  append-icon="search" @click:append="find(field_name.routerName)" :value="'Not selected' | translate">
               </v-text-field>
           </v-item-group>
         </v-item-group>
