@@ -88,10 +88,12 @@ export function onDelete (api, data, getFunction) {
       .then(resp => {
         data.object = ''
         data.isSelected = false
+        vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
         getFunction()
       })
       .catch(err => {
         console.log(err)
+        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
         if (err.response && err.response.data) {
           const errors = err.response.data
           for (const value in errors) {
