@@ -83,10 +83,10 @@ export function onPut (api, data, getFunction) {
 export function onDelete (api, data, getFunction) {
   data.deleteDialogErrorMessage = ''
   data.deleteDialog = false
-  if (data.object !== '') {
+  if (data.currentObject !== '') {
     axios.delete(process.env.API_URL + api + data.currentObject.id + '/')
       .then(resp => {
-        data.object = ''
+        data.currentObject = ''
         data.isSelected = false
         vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
         getFunction()
@@ -106,6 +106,8 @@ export function onDelete (api, data, getFunction) {
           }
         }
       })
+  } else {
+    console.log('Empty object to delete')
   }
 }
 
