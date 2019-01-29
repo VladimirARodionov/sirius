@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <Directory title="Competencies" name="competency" api="/api/competency/"/>
+    <Directory title="Competencies" name="competency" api="/api/competency/" addRouter="addCompetency" editRouter="editCompetency" :select="select"/>
   </Menu>
 </template>
 
@@ -10,6 +10,16 @@ import Directory from '../../components/directories/Directory'
 
 export default {
   name: 'Competencies',
+  data () {
+    return {
+      select: 'false'
+    }
+  },
+  created () {
+    if (this.$route.query && this.$route.query.select) {
+      this.select = this.$route.query.select
+    }
+  },
   components: {
     Menu,
     Directory

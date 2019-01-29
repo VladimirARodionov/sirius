@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <Directory title="Categories" name="category" api="/api/category/"/>
+    <Directory title="Categories" name="category" api="/api/category/" addRouter="addCategory" editRouter="editCategory" :select="select"/>
   </Menu>
 </template>
 
@@ -10,6 +10,16 @@ import Directory from '../../components/directories/Directory'
 
 export default {
   name: 'Categories',
+  data () {
+    return {
+      select: 'false'
+    }
+  },
+  created () {
+    if (this.$route.query && this.$route.query.select) {
+      this.select = this.$route.query.select
+    }
+  },
   components: {
     Menu,
     Directory

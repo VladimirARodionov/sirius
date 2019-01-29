@@ -1,7 +1,6 @@
 <template>
   <Menu>
-
-    <Directory title="Cities" name="city" api="/api/city/" :select="select"/>
+    <Directory title="Cities" name="city" api="/api/city/" :headers="this.headers" :names="this.names" addRouter="addCity" editRouter="editCity" :select="select"/>
   </Menu>
 </template>
 
@@ -13,7 +12,17 @@ export default {
   name: 'Cities',
   data () {
     return {
-      select: false
+      headers: [
+        { text: '#', value: 'id' },
+        { text: this.$i18n.translate('Region'), value: 'region' },
+        { text: this.$i18n.translate('Name'), value: 'name' }
+      ],
+      names: [
+        { name: 'id' },
+        { name: 'city_region.name' },
+        { name: 'name' }
+      ],
+      select: 'false'
     }
   },
   created () {

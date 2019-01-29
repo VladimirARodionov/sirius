@@ -88,5 +88,20 @@
   "Find": "Найти",
   "Back": "Назад",
   "Select": "Выбрать",
-  "Not selected": "Не выбрано"
+  "Not selected": "Не выбрано",
+  "Edit city": "Изменение города",
+  "Region": "Регион",
+  "Edit region": "Изменение региона",
+  "Country": "Страна",
+  "Edit country": "Изменение страны",
+  "Error": "Ошибка",
+  "street": "улица",
+  "house": "дом",
+  "apartment": "квартира",
+  "Edit category": "Изменение категории",
+  "Edit competency": "Изменение компетенции",
+  "Edit course": "Изменение курса",
+  "Edit organization": "Изменение организации",
+  "Edit payment": "Изменение выплаты",
+  "Edit position": "Изменение должности"
 }

@@ -25,6 +25,24 @@ import ExportUsers from '../views/ExportUsers'
 import Addresses from '../views/directories/Addresses'
 import EditAddress from '../views/directories/EditAddress'
 import AddAddress from '../views/directories/AddAddress'
+import AddCity from '../views/directories/AddCity'
+import EditCity from '../views/directories/EditCity'
+import AddRegion from '../views/directories/AddRegion'
+import EditRegion from '../views/directories/EditRegion'
+import AddCountry from '../views/directories/AddCountry'
+import EditCountry from '../views/directories/EditCountry'
+import AddCategory from '../views/directories/AddCategory'
+import EditCategory from '../views/directories/EditCategory'
+import AddCompetency from '../views/directories/AddCompetency'
+import EditCompetency from '../views/directories/EditCompetency'
+import AddCourse from '../views/directories/AddCourse'
+import EditCourse from '../views/directories/EditCourse'
+import AddOrganization from '../views/directories/AddOrganization'
+import EditOrganization from '../views/directories/EditOrganization'
+import AddPayment from '../views/directories/AddPayment'
+import EditPayment from '../views/directories/EditPayment'
+import AddPosition from '../views/directories/AddPosition'
+import EditPosition from '../views/directories/EditPosition'
 
 Vue.use(Router)
 
@@ -112,6 +130,22 @@ let router = new Router({
       }
     },
     {
+      path: '/directories/organizations/add',
+      name: 'addOrganization',
+      component: AddOrganization,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/organizations/edit/:id',
+      name: 'editOrganization',
+      component: EditOrganization,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/directories/units',
       name: 'units',
       component: Units,
@@ -128,9 +162,41 @@ let router = new Router({
       }
     },
     {
+      path: '/directories/positions/add',
+      name: 'addPosition',
+      component: AddPosition,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/positions/edit/:id',
+      name: 'editPosition',
+      component: EditPosition,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/directories/categories',
       name: 'categories',
       component: Categories,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/categories/add',
+      name: 'addCategory',
+      component: AddCategory,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/categories/edit/:id',
+      name: 'editCategory',
+      component: EditCategory,
       meta: {
         requiresAuth: true
       }
@@ -144,9 +210,41 @@ let router = new Router({
       }
     },
     {
+      path: '/directories/competencies/add',
+      name: 'addCompetency',
+      component: AddCompetency,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/competencies/edit/:id',
+      name: 'editCompetency',
+      component: EditCompetency,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/directories/countries',
       name: 'countries',
       component: Countries,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/countries/add',
+      name: 'addCountry',
+      component: AddCountry,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/countries/edit/:id',
+      name: 'editCountry',
+      component: EditCountry,
       meta: {
         requiresAuth: true
       }
@@ -160,9 +258,41 @@ let router = new Router({
       }
     },
     {
+      path: '/directories/regions/add',
+      name: 'addRegion',
+      component: AddRegion,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/regions/edit/:id',
+      name: 'editRegion',
+      component: EditRegion,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/directories/cities',
       name: 'cities',
       component: Cities,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/cities/add',
+      name: 'addCity',
+      component: AddCity,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/cities/edit/:id',
+      name: 'editCity',
+      component: EditCity,
       meta: {
         requiresAuth: true
       }
@@ -200,9 +330,41 @@ let router = new Router({
       }
     },
     {
+      path: '/directories/courses/add',
+      name: 'addCourse',
+      component: AddCourse,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/courses/edit/:id',
+      name: 'editCourse',
+      component: EditCourse,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
       path: '/directories/payments',
       name: 'payments',
       component: Payments,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/payments/add',
+      name: 'addPayment',
+      component: AddPayment,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/payments/edit/:id',
+      name: 'editPayment',
+      component: EditPayment,
       meta: {
         requiresAuth: true
       }

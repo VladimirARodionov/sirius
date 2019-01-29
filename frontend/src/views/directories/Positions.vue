@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <Directory title="Positions" name="position" api="/api/position/"/>
+    <Directory title="Positions" name="position" api="/api/position/" addRouter="addPosition" editRouter="editPosition" :select="select"/>
   </Menu>
 </template>
 
@@ -10,6 +10,16 @@ import Directory from '../../components/directories/Directory'
 
 export default {
   name: 'Positions',
+  data () {
+    return {
+      select: 'false'
+    }
+  },
+  created () {
+    if (this.$route.query && this.$route.query.select) {
+      this.select = this.$route.query.select
+    }
+  },
   components: {
     Menu,
     Directory

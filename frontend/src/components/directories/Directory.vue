@@ -2,17 +2,17 @@
   <div>
     <h1> {{title | translate}} </h1>
     <div class="btn-toolbar justify-content-between mb-3">
-        <button class="btn btn-success btn-block" v-roles="['admin_role', 'edit_role']" v-if="select"
+        <button class="btn btn-success btn-block" v-roles="['admin_role', 'edit_role']" v-if="select === 'true'"
                 v-on:click="onSelect()" :disabled="!data.isSelected">{{'Select' | translate}}
         </button>
     </div>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
-        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="data.addDialog = true">{{'Add' |
+        <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="goAdd">{{'Add' |
           translate}}
         </button>
         <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
-                v-on:click="data.editDialog = true">{{'Edit' | translate}}
+                v-on:click="goEdit">{{'Edit' | translate}}
         </button>
         <button class="btn btn-danger" v-roles="['admin_role', 'edit_role']" v-if="data.isSelected"
                 v-on:click="data.deleteDialog = true">{{'Delete' | translate}}
@@ -27,7 +27,7 @@
     </div>
     <div class="table-responsive">
       <v-data-table
-        :headers="headers"
+        :headers="getHeaders"
         :items="data.objects"
         :loading="data.loading"
         :total-items="data.totalObjects"
@@ -37,35 +37,33 @@
       >
         <template slot="items" slot-scope="props">
           <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
-            <td>{{ props.item.id }}</td>
-            <td>{{ props.item.name }}</td>
+            <td v-for="fieldName in getNames" :key="fieldName.name">{{ getTableValue(props.item, fieldName) }}</td>
           </tr>
         </template>
       </v-data-table>
 
     </div>
-    <!-- Add Modal -->
-    <AddNameDialog :errorMessage="data.addDialogErrorMessage" :dialog.sync="data.addDialog" :newObject="data.newObject" :title="this.$t('Add ' + name)" :on-clicked="addObject"/>
-    <!-- Edit Modal -->
-    <EditNameDialog :errorMessage="data.editDialogErrorMessage" :dialog.sync="data.editDialog" :currentObject="data.currentObject" :title="this.$t('Edit')" :on-clicked="updateObject"/>
     <!-- Delete Modal -->
     <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
   </div>
 </template>
 
 <script>
+import router from '../../router'
 import DeleteDialog from '../dialogs/DeleteDialog'
-import AddNameDialog from '../dialogs/AddNameDialog'
-import EditNameDialog from '../dialogs/EditNameDialog'
 import { onGet, onPost, onPut, onDelete } from '../../api/requests'
 
 export default {
   name: 'Directory',
   data () {
     return {
-      headers: [
+      defaultHeaders: [
         { text: '#', value: 'id' },
         { text: this.$i18n.translate('Name'), value: 'name' }
+      ],
+      defaultNames: [
+        { name: 'id' },
+        { name: 'name' }
       ],
       data: {
         objects: [],
@@ -118,27 +116,74 @@ export default {
     deleteObject: function () {
       onDelete(this.api, this.data, this.getObjects)
     },
-    getDeleteMessage: function () {
-      return this.$t('Delete ' + this.name) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
-    },
     onSelect: function () {
       if (this.data.isSelected && this.data.currentObject.id) {
         // store this.data.currentObject.id in vuex
-        this.$store.commit('setSelectedId', this.data.currentObject.id)
+        this.$store.commit('setSelectedObject', { name: this.name, api: this.api, id: this.data.currentObject.id })
         this.$router.go(-1)
+      }
+    },
+    getDeleteMessage: function (name, object) {
+      if (this.data.isSelected && this.deleteMessage) {
+        return this.deleteMessage(this.name, this.data.currentObject)
+      } else {
+        return this.$t('Delete ' + this.name) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
+      }
+    },
+    goAdd: function () {
+      router.push({ name: this.addRouter })
+    },
+    goEdit: function () {
+      if (this.data.currentObject !== '') {
+        router.push({ name: this.editRouter, params: { id: this.data.currentObject.id } })
+      }
+    },
+    getTableValue: function (property, jsonField) {
+      const arr = jsonField.name.split('.')
+      if (arr.length === 1) {
+        return property[jsonField.name]
+      } else {
+        var value = property
+        for (const item in arr) {
+          if (value[arr[item]]) {
+            value = value[arr[item]]
+          } else {
+            return ''
+          }
+        }
+        return value
+      }
+    }
+  },
+  computed: {
+    getNames: function () {
+      if (this.names) {
+        return this.names
+      } else {
+        return this.defaultNames
+      }
+    },
+    getHeaders: function () {
+      if (this.headers) {
+        return this.headers
+      } else {
+        return this.defaultHeaders
       }
     }
   },
   components: {
-    DeleteDialog,
-    AddNameDialog,
-    EditNameDialog
+    DeleteDialog
   },
   props: {
     title: String,
     name: String,
     api: String,
-    select: Boolean
+    select: String,
+    headers: Array,
+    names: Array,
+    addRouter: String,
+    editRouter: String,
+    deleteMessage: Function
   }
 }
 </script>

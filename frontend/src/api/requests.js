@@ -1,4 +1,6 @@
 import axios from 'axios'
+import Vue from 'vue'
+import vuetifyToast from 'vuetify-toast'
 
 export function onGet (api, data, pagination, searchTerm) {
   data.loading = true
@@ -30,6 +32,7 @@ export function onPost (api, data, getFunction) {
     .then(resp => {
       data.loading = false
       data.addDialog = false
+      vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
       getFunction()
     })
     .catch(err => {
@@ -42,6 +45,7 @@ export function onPost (api, data, getFunction) {
             data.addDialogErrorMessage = errors[value]
           }
         }
+        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
         console.log(err.response.data)
       }
     })
@@ -55,6 +59,7 @@ export function onPut (api, data, getFunction) {
         data.loading = false
         data.currentObject = resp.data
         data.editDialog = false
+        vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
         getFunction()
       })
       .catch(err => {
@@ -67,6 +72,7 @@ export function onPut (api, data, getFunction) {
             } else {
               data.editDialogErrorMessage = errors[value]
             }
+            vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
             console.log(err.response.data)
           }
         }
@@ -77,15 +83,17 @@ export function onPut (api, data, getFunction) {
 export function onDelete (api, data, getFunction) {
   data.deleteDialogErrorMessage = ''
   data.deleteDialog = false
-  if (data.object !== '') {
+  if (data.currentObject !== '') {
     axios.delete(process.env.API_URL + api + data.currentObject.id + '/')
       .then(resp => {
-        data.object = ''
+        data.currentObject = ''
         data.isSelected = false
+        vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
         getFunction()
       })
       .catch(err => {
         console.log(err)
+        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
         if (err.response && err.response.data) {
           const errors = err.response.data
           for (const value in errors) {
@@ -98,6 +106,8 @@ export function onDelete (api, data, getFunction) {
           }
         }
       })
+  } else {
+    console.log('Empty object to delete')
   }
 }
 
@@ -114,13 +124,13 @@ export function onGetCount (api, data) {
     })
 }
 
-export function onGetSingle (api, data) {
+export function onGetSingle (api, name, data) {
   data.errorMessage = ''
-  if (data.currentObject.id) {
-    axios.get(process.env.API_URL + api + data.currentObject.id + '/')
+  if (data[name] && data[name].id) {
+    axios.get(process.env.API_URL + api + data[name].id + '/')
       .then(resp => {
         data.loading = false
-        data.currentObject = resp.data
+        Vue.set(data, name, resp.data)
       })
       .catch(err => {
         console.log(err)
@@ -145,20 +155,30 @@ export function onPostSingle (api, data, getFunction) {
     .then(resp => {
       data.loading = false
       data.currentObject = resp.data
+      vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
       getFunction()
     })
-    .catch(err => {
-      if (err.response && err.response.data) {
-        const errors = err.response.data
-        for (const value in errors) {
-          if (errors[value] instanceof Array) {
-            data.errorMessage = errors[value][0]
-          } else {
-            data.errorMessage = errors[value]
-          }
-        }
-        console.log(err.response.data)
+    .catch((error) => {
+      // Error
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        // console.log(error.response.data);
+        // console.log(error.response.status);
+        // console.log(error.response.headers);
+        data.errorMessage = error.response.data
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        data.errorMessage = error.request
+        console.log(error.request)
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        data.errorMessage = error.message
+        console.log('Error', error.message)
       }
+      vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
     })
 }
 
@@ -169,21 +189,30 @@ export function onPutSingle (api, data, getFunction) {
       .then(resp => {
         data.loading = false
         data.currentObject = resp.data
+        vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
         getFunction()
       })
-      .catch(err => {
-        console.log(err)
-        if (err.response && err.response.data) {
-          const errors = err.response.data
-          for (const value in errors) {
-            if (errors[value] instanceof Array) {
-              data.errorMessage = errors[value][0]
-            } else {
-              data.errorMessage = errors[value]
-            }
-            console.log(err.response.data)
-          }
+      .catch((error) => {
+        // Error
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          // console.log(error.response.data);
+          // console.log(error.response.status);
+          // console.log(error.response.headers);
+          data.errorMessage = error.response.data
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          data.errorMessage = error.request
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          data.errorMessage = error.message
+          console.log('Error', error.message)
         }
+        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
       })
   }
 }
