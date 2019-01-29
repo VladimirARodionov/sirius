@@ -72,6 +72,17 @@
                 :value="'Not selected' | translate">
               </v-text-field>
           </v-item-group>
+          <v-item-group v-else-if="field_name.type === 'multi-selector'">
+            <v-select
+              :items="getItems(field_name)"
+              :value="getPeopleValue(data, field_name)"
+              :label="$t(field_name.text) + (field_name.required?' *':'')"
+              :id="field_name.name"
+              :error-messages="data.errorMessage[field_name.name]"
+              multiple
+              chips>
+            </v-select>
+          </v-item-group>
         </v-item-group>
       </v-card-text>
       <v-divider></v-divider>
@@ -139,9 +150,10 @@
 
 <script>
 import Vue from 'vue'
-import { onGetSingle, onPutSingle } from '../api/requests'
+import { onGetSingle, onPutSingle, onGetMax } from '../api/requests'
 import axios from 'axios'
 import Menu from '../layouts/Menu'
+import vuetifyToast from 'vuetify-toast'
 
 export default {
   name: 'PeopleDetails',
@@ -155,7 +167,8 @@ export default {
         { text: 'Mobile', type: 'input', name: 'mobile' },
         { text: 'Birthday', type: 'date', name: 'birthday' },
         { text: 'Address', type: 'selector', name: 'address', routerName: 'addresses', api: '/api/address/', value: 'address.address_city.name' },
-        { text: 'Unit', type: 'selector', name: 'unit', routerName: 'units', api: '/api/unit/', value: 'unit.text' }
+        { text: 'Unit', type: 'selector', name: 'unit', routerName: 'units', api: '/api/unit/', value: 'unit.text' },
+        { text: 'Positions', type: 'multi-selector', name: 'positions', routerName: 'positions', api: '/api/position/', updateApi: '/api/userposition/', value: 'name' }
       ],
       data: {
         currentObject: {},
@@ -176,9 +189,14 @@ export default {
   },
   mounted: function () {
     this.getPeople()
+    const names = this.names
+    for (const field in names) {
+      if (names[field].type === 'multi-selector' && !this.data[names[field].name]) {
+        this.getMultiSelectItems(names[field])
+      }
+    }
     if (this.$store.getters.getSelectedObject) {
       const selectedValue = JSON.parse(JSON.stringify(this.$store.getters.getSelectedObject))
-      console.log('from mounted:' + JSON.stringify(selectedValue))
       this.$store.commit('clearSelectedObject')
       Vue.set(this.data, selectedValue.name, { id: selectedValue.id })
       this.getSelectedObject(selectedValue.api, selectedValue.name)
@@ -230,23 +248,32 @@ export default {
       for (const field in names) {
         if (names[field].type === 'selector') {
           if (this.data[names[field].name]) {
-            console.log('from clicked:' + names[field].name)
             this.onSelect({ name: names[field].name, id: this.data[names[field].name].id })
+          }
+        }
+        if (names[field].type === 'multi-selector') {
+          if (this.data[names[field].name]) {
+            this.onMultiSelect(names[field].name)
           }
         }
       }
       this.updatePeople()
     },
     onSelect: function (event) {
-      console.log('from onSelect:' + JSON.stringify(event))
       if (event.name === 'address') {
         this.data.currentObject.address = event.id
       } else if (event.name === 'unit') {
         this.data.currentObject.unit = event.id
       }
     },
+    onMultiSelect: function (event) {
+      if (event === 'positions') {
+        // get current user positions
+        // delete all user positions
+        // add new user positions
+      }
+    },
     getSelectedObject (api, name) {
-      console.log('from getSelectedObject: ' + api + ' ' + name)
       onGetSingle(api, name, this.data)
     },
     getPeople: function () {
@@ -265,18 +292,21 @@ export default {
       this.data.errorMessage = ''
       axios.post(process.env.API_URL + '/api/people/' + this.$route.params.id + '/password_change', this.passwords)
         .then(resp => {
+          vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
           if (resp.data.result) {
             this.result = resp.data.result
           }
         })
-        .catch(err => {
-          console.log(err)
-          if (err.response && err.response.data) {
-            var errors = err.response.data
-            for (var value in errors) {
-              this.data.errorMessage = errors[value][0]
-            }
-            console.log(err.response.data)
+        .catch(error => {
+          vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
+          if (error.response) {
+            this.data.errorMessage = error.response.data
+          } else if (error.request) {
+            this.data.errorMessage = error.request
+            console.log(error.request)
+          } else {
+            this.data.errorMessage = error.message
+            console.log('Error', error.message)
           }
         })
     },
@@ -287,9 +317,12 @@ export default {
     getPeopleValue: function (property, jsonField) {
       const arr = jsonField.value.split('.')
       if (arr.length === 1) {
-        return property[jsonField.name]
+        return property[jsonField.value]
       } else {
         var value = property
+        if (value instanceof Array) {
+          value = value[0]
+        }
         for (const item in arr) {
           if (value[arr[item]]) {
             value = value[arr[item]]
@@ -299,6 +332,18 @@ export default {
         }
         return value
       }
+    },
+    getItems: function (jsonField) {
+      let arr = []
+      if (this.data[jsonField.name]) {
+        for (const item in this.data[jsonField.name]) {
+          arr.push(this.getPeopleValue(this.data[jsonField.name][item], jsonField))
+        }
+      }
+      return arr
+    },
+    getMultiSelectItems: function (jsonField) {
+      onGetMax(jsonField.api, jsonField.name, this.data)
     }
   },
   components: {

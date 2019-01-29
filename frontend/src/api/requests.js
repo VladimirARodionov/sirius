@@ -26,6 +26,20 @@ export function onGet (api, data, pagination, searchTerm) {
     })
 }
 
+export function onGetMax (api, name, data) {
+  data.loading = true
+  let apiUrl = api + '?page=1&page_size=1000'
+  axios.get(process.env.API_URL + apiUrl)
+    .then(resp => {
+      data.loading = false
+      Vue.set(data, name, resp.data.results)
+    })
+    .catch(err => {
+      data.loading = false
+      console.log(err)
+    })
+}
+
 export function onPost (api, data, getFunction) {
   data.addDialogErrorMessage = ''
   axios.post(process.env.API_URL + api, data.newObject)
@@ -160,6 +174,7 @@ export function onPostSingle (api, data, getFunction) {
     })
     .catch((error) => {
       // Error
+      vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
@@ -178,7 +193,6 @@ export function onPostSingle (api, data, getFunction) {
         data.errorMessage = error.message
         console.log('Error', error.message)
       }
-      vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
     })
 }
 
@@ -194,6 +208,7 @@ export function onPutSingle (api, data, getFunction) {
       })
       .catch((error) => {
         // Error
+        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
@@ -212,7 +227,6 @@ export function onPutSingle (api, data, getFunction) {
           data.errorMessage = error.message
           console.log('Error', error.message)
         }
-        vuetifyToast.error(Vue.i18n.translate('Error'), { icon: 'highlight_off' })
       })
   }
 }

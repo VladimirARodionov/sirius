@@ -8,10 +8,10 @@ from rest_framework.response import Response
 
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address
+    Payment, Address, UserPosition
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
-    CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer
+    CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -240,5 +240,18 @@ class AddressViewSet(HasRoleMixin, viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
     search_fields = ('village', 'street', 'house', 'apartment')
     ordering_fields = ('id', 'city', 'village', 'street', 'house', 'apartment')
+
+
+class UserPositionViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
+    queryset = UserPosition.objects.all()
+    serializer_class = UserPositionSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    search_fields = 'user'
+    ordering_fields = ('id', 'user', 'position')
 
 
