@@ -87,9 +87,10 @@ class AddressSerializer(ModelSerializer):
 
 class UserDetailSerializer(ModelSerializer):
     user_address = AddressSerializer(source='address', read_only=True)
+    user_unit = UnitSerializer(source='unit', read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile', 'address', 'user_address')
+        fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile', 'address', 'user_address', 'unit', 'user_unit')
 
 

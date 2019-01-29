@@ -112,8 +112,8 @@ class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
         return Response(data)
 
     def retrieve(self, request, pk=None):
-        data = self.serialize_tree([self.get_object()])
-        return Response(data)
+        data = list(self.serialize_tree([self.get_object()]))
+        return Response(data[0])
 
 
 class PositionViewSet(HasRoleMixin, viewsets.ModelViewSet):

@@ -154,7 +154,8 @@ export default {
         { text: 'Email', type: 'input', name: 'email' },
         { text: 'Mobile', type: 'input', name: 'mobile' },
         { text: 'Birthday', type: 'date', name: 'birthday' },
-        { text: 'Address', type: 'selector', name: 'address', routerName: 'addresses', api: '/api/address/', value: 'address.address_city.name' }
+        { text: 'Address', type: 'selector', name: 'address', routerName: 'addresses', api: '/api/address/', value: 'address.address_city.name' },
+        { text: 'Unit', type: 'selector', name: 'unit', routerName: 'units', api: '/api/unit/', value: 'unit.text' }
       ],
       data: {
         currentObject: {},
@@ -177,6 +178,7 @@ export default {
     this.getPeople()
     if (this.$store.getters.getSelectedObject) {
       const selectedValue = JSON.parse(JSON.stringify(this.$store.getters.getSelectedObject))
+      console.log('from mounted:' + JSON.stringify(selectedValue))
       this.$store.commit('clearSelectedObject')
       Vue.set(this.data, selectedValue.name, { id: selectedValue.id })
       this.getSelectedObject(selectedValue.api, selectedValue.name)
@@ -228,6 +230,7 @@ export default {
       for (const field in names) {
         if (names[field].type === 'selector') {
           if (this.data[names[field].name]) {
+            console.log('from clicked:' + names[field].name)
             this.onSelect({ name: names[field].name, id: this.data[names[field].name].id })
           }
         }
@@ -235,11 +238,15 @@ export default {
       this.updatePeople()
     },
     onSelect: function (event) {
+      console.log('from onSelect:' + JSON.stringify(event))
       if (event.name === 'address') {
         this.data.currentObject.address = event.id
+      } else if (event.name === 'unit') {
+        this.data.currentObject.unit = event.id
       }
     },
     getSelectedObject (api, name) {
+      console.log('from getSelectedObject: ' + api + ' ' + name)
       onGetSingle(api, name, this.data)
     },
     getPeople: function () {
