@@ -10,12 +10,6 @@ class UserSerializer(ModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'email')
 
 
-class UserDetailSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile')
-
-
 class OrganizationSerializer(ModelSerializer):
     class Meta:
         model = Organization
@@ -89,5 +83,13 @@ class AddressSerializer(ModelSerializer):
     class Meta:
         model = Address
         fields = ('id', 'city', 'address_city', 'village', 'street', 'house', 'apartment')
+
+
+class UserDetailSerializer(ModelSerializer):
+    user_address = AddressSerializer(source='address', read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile', 'address', 'user_address')
 
 
