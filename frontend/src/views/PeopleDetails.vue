@@ -78,7 +78,7 @@
               :value="getPeopleValue(data, field_name)"
               :label="$t(field_name.text) + (field_name.required?' *':'')"
               :id="field_name.name"
-              append-icon="search"
+              append-icon="done_all"
               @click:append="changeMultiSelect(field_name)"
               :error-messages="data.errorMessage[field_name.name]"
               multiple
@@ -148,7 +148,7 @@
     </v-dialog>
     <!-- End of change password -->
     <!-- Delete People Modal -->
-    <MultiSelectDialog :dialog.sync="multiSelectDialog" :json="multiSelectJson"/>
+    <MultiSelectDialog :dialog.sync="multiSelectDialog" :json="multiSelectJson" :forId="$route.params.id" forName="user" :currentSelected="data.currentObject.positions"/>
   </Menu>
 </template>
 
@@ -173,7 +173,7 @@ export default {
         { text: 'Birthday', type: 'date', name: 'birthday' },
         { text: 'Address', type: 'selector', name: 'address', routerName: 'addresses', api: '/api/address/', value: 'address.address_city.name' },
         { text: 'Unit', type: 'selector', name: 'unit', routerName: 'units', api: '/api/unit/', value: 'unit.text' },
-        { text: 'Positions', type: 'multi-selector', name: 'positions', routerName: 'positions', api: '/api/position/', updateApi: '/api/userposition/', value: 'name' }
+        { text: 'Positions', type: 'multi-selector', name: 'positions', routerName: 'positions', api: '/api/position/', updateApi: '/api/userposition/update/', value: 'name' }
       ],
       data: {
         currentObject: {},

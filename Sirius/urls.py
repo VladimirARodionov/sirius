@@ -23,27 +23,22 @@ from rest_framework.routers import SimpleRouter
 from rest_framework_jwt.views import obtain_jwt_token
 
 from SiriusCRM import views
-from SiriusCRM.views import PasswordResetView, PasswordResetConfirmView
-from SiriusCRM.viewsets import UserViewSet, OrganizationViewSet, UnitViewSet, \
-    PositionViewSet, CategoryViewSet, \
-    CountryViewSet, RegionViewSet, CityViewSet, \
-    CompetencyViewSet, CourseViewSet, PaymentViewSet, UserDetailViewSet, AddressViewSet, UserPositionViewSet
-
+from SiriusCRM import viewsets
 router = SimpleRouter()
-router.register('api/user', UserViewSet, basename='user')
-router.register('api/userdetail', UserDetailViewSet, basename='userdetail')
-router.register('api/organization', OrganizationViewSet, basename='organization')
-router.register('api/unit', UnitViewSet, basename='unit')
-router.register('api/position', PositionViewSet, basename='position')
-router.register('api/category', CategoryViewSet, basename='category')
-router.register('api/country', CountryViewSet, basename='country')
-router.register('api/region', RegionViewSet, basename='region')
-router.register('api/city', CityViewSet, basename='city')
-router.register('api/competency', CompetencyViewSet, basename='competency')
-router.register('api/course', CourseViewSet, basename='course')
-router.register('api/payment', PaymentViewSet, basename='payment')
-router.register('api/address', AddressViewSet, basename='address')
-router.register('api/userposition', UserPositionViewSet, basename='userposition')
+router.register('api/user', viewsets.UserViewSet, basename='user')
+router.register('api/userdetail', viewsets.UserDetailViewSet, basename='userdetail')
+router.register('api/organization', viewsets.OrganizationViewSet, basename='organization')
+router.register('api/unit', viewsets.UnitViewSet, basename='unit')
+router.register('api/position', viewsets.PositionViewSet, basename='position')
+router.register('api/category', viewsets.CategoryViewSet, basename='category')
+router.register('api/country', viewsets.CountryViewSet, basename='country')
+router.register('api/region', viewsets.RegionViewSet, basename='region')
+router.register('api/city', viewsets.CityViewSet, basename='city')
+router.register('api/competency', viewsets.CompetencyViewSet, basename='competency')
+router.register('api/course', viewsets.CourseViewSet, basename='course')
+router.register('api/payment', viewsets.PaymentViewSet, basename='payment')
+router.register('api/address', viewsets.AddressViewSet, basename='address')
+router.register('api/userposition', viewsets.UserPositionViewSet, basename='userposition')
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -62,11 +57,12 @@ urlpatterns = [
     path('api/import/user/', views.PeopleImportView.as_view(), name='import_user'),
     path('api/export/user/', views.UserExportView.as_view(), name='export_user'),
     path('admin/', admin.site.urls),
-    path('api/accounts/password_reset/', PasswordResetView.as_view(), name='password_reset'),
-    re_path('api/accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('api/accounts/password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
+    re_path('api/accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('api/login/', obtain_jwt_token),
     path('api/people/<int:number>/password_change', views.PasswordChangeView.as_view(), name='peoplePasswordChange'),
     path('api/role/', views.UserRolesView.as_view(), name='role'),
+    path('api/userposition/update/', views.UserPositionView.as_view(), name='user-position-update'),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
