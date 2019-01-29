@@ -74,10 +74,12 @@
           </v-item-group>
           <v-item-group v-else-if="field_name.type === 'multi-selector'">
             <v-select
-              :items="getItems(field_name)"
+              readonly
               :value="getPeopleValue(data, field_name)"
               :label="$t(field_name.text) + (field_name.required?' *':'')"
               :id="field_name.name"
+              append-icon="search"
+              @click:append="changeMultiSelect(field_name)"
               :error-messages="data.errorMessage[field_name.name]"
               multiple
               chips>
@@ -145,15 +147,18 @@
       </v-card>
     </v-dialog>
     <!-- End of change password -->
+    <!-- Delete People Modal -->
+    <MultiSelectDialog :dialog.sync="multiSelectDialog" :json="multiSelectJson"/>
   </Menu>
 </template>
 
 <script>
 import Vue from 'vue'
-import { onGetSingle, onPutSingle, onGetMax } from '../api/requests'
+import { onGetSingle, onPutSingle } from '../api/requests'
 import axios from 'axios'
 import Menu from '../layouts/Menu'
 import vuetifyToast from 'vuetify-toast'
+import MultiSelectDialog from '../components/dialogs/MultiSelectDialog'
 
 export default {
   name: 'PeopleDetails',
@@ -179,7 +184,9 @@ export default {
       changePasswordDialog: false,
       passwords: { new_password1: '', new_password2: '' },
       result: {},
-      menu: false
+      menu: false,
+      multiSelectDialog: false,
+      multiSelectJson: {}
     }
   },
   watch: {
@@ -189,12 +196,14 @@ export default {
   },
   mounted: function () {
     this.getPeople()
+    /*
     const names = this.names
     for (const field in names) {
       if (names[field].type === 'multi-selector' && !this.data[names[field].name]) {
         this.getMultiSelectItems(names[field])
       }
     }
+    */
     if (this.$store.getters.getSelectedObject) {
       const selectedValue = JSON.parse(JSON.stringify(this.$store.getters.getSelectedObject))
       this.$store.commit('clearSelectedObject')
@@ -273,6 +282,10 @@ export default {
         // add new user positions
       }
     },
+    changeMultiSelect: function (json) {
+      this.multiSelectJson = json
+      this.multiSelectDialog = true
+    },
     getSelectedObject (api, name) {
       onGetSingle(api, name, this.data)
     },
@@ -332,22 +345,11 @@ export default {
         }
         return value
       }
-    },
-    getItems: function (jsonField) {
-      let arr = []
-      if (this.data[jsonField.name]) {
-        for (const item in this.data[jsonField.name]) {
-          arr.push(this.getPeopleValue(this.data[jsonField.name][item], jsonField))
-        }
-      }
-      return arr
-    },
-    getMultiSelectItems: function (jsonField) {
-      onGetMax(jsonField.api, jsonField.name, this.data)
     }
   },
   components: {
-    Menu
+    Menu,
+    MultiSelectDialog
   }
 }
 </script>
