@@ -75,7 +75,8 @@
           <v-item-group v-else-if="field_name.type === 'multi-selector'">
             <v-select
               readonly
-              :value="getPeopleValue(data, field_name)"
+              :items="getMultiSelectValues(data[field_name.name], field_name)"
+              :value="getMultiSelectValues(data[field_name.name], field_name)"
               :label="$t(field_name.text) + (field_name.required?' *':'')"
               :id="field_name.name"
               append-icon="done_all"
@@ -148,7 +149,7 @@
     </v-dialog>
     <!-- End of change password -->
     <!-- Delete People Modal -->
-    <MultiSelectDialog :dialog.sync="multiSelectDialog" :json="multiSelectJson" :forId="$route.params.id" forName="user" :currentSelected="data.currentObject.positions"/>
+    <MultiSelectDialog :dialog.sync="multiSelectDialog" :json="multiSelectJson" :forId="'' + $route.params.id" forName="user" :currentSelected="data.currentObject.positions" :getFunction="getPeople"/>
   </Menu>
 </template>
 
@@ -173,7 +174,7 @@ export default {
         { text: 'Birthday', type: 'date', name: 'birthday' },
         { text: 'Address', type: 'selector', name: 'address', routerName: 'addresses', api: '/api/address/', value: 'address.address_city.name' },
         { text: 'Unit', type: 'selector', name: 'unit', routerName: 'units', api: '/api/unit/', value: 'unit.text' },
-        { text: 'Positions', type: 'multi-selector', name: 'positions', routerName: 'positions', api: '/api/position/', updateApi: '/api/userposition/update/', value: 'name' }
+        { text: 'Positions', type: 'multi-selector', name: 'positions', routerName: 'positions', api: '/api/position/', updateApi: '/api/userposition/update/', value: 'name', multiselect_value: 'position_value.name' }
       ],
       data: {
         currentObject: {},
@@ -196,14 +197,12 @@ export default {
   },
   mounted: function () {
     this.getPeople()
-    /*
     const names = this.names
     for (const field in names) {
       if (names[field].type === 'multi-selector' && !this.data[names[field].name]) {
         this.getMultiSelectItems(names[field])
       }
     }
-    */
     if (this.$store.getters.getSelectedObject) {
       const selectedValue = JSON.parse(JSON.stringify(this.$store.getters.getSelectedObject))
       this.$store.commit('clearSelectedObject')
@@ -232,6 +231,9 @@ export default {
     },
     errorMessageText: function () {
       const errors = this.data.errorMessage
+      if (!(errors instanceof Array)) {
+        return errors
+      }
       for (const value in errors) {
         if (errors[value] instanceof Array) {
           const names = this.names
@@ -282,6 +284,10 @@ export default {
         // add new user positions
       }
     },
+    getMultiSelectItems: function (name) {
+      this.data[name.name] = { id: this.$route.params.id }
+      onGetSingle(name.updateApi, name.name, this.data)
+    },
     changeMultiSelect: function (json) {
       this.multiSelectJson = json
       this.multiSelectDialog = true
@@ -293,6 +299,13 @@ export default {
       axios.get(process.env.API_URL + '/api/userdetail/' + this.$route.params.id + '/')
         .then(resp => {
           this.data.currentObject = resp.data
+          // To update multi-select values
+          const names = this.names
+          for (const field in names) {
+            if (names[field].type === 'multi-selector') {
+              this.getMultiSelectItems(names[field])
+            }
+          }
         })
         .catch(err => {
           console.log(err)
@@ -331,6 +344,38 @@ export default {
       const arr = jsonField.value.split('.')
       if (arr.length === 1) {
         return property[jsonField.value]
+      } else {
+        var value = property
+        if (value instanceof Array) {
+          value = value[0]
+        }
+        for (const item in arr) {
+          if (value[arr[item]]) {
+            value = value[arr[item]]
+          } else {
+            return ''
+          }
+        }
+        return value
+      }
+    },
+    getMultiSelectValues (property, jsonField) {
+      var result = []
+      if (!property) { return result }
+      if (property instanceof Array) {
+        for (const item in property) {
+          const value = this.getMultiSelectValue(property[item], jsonField)
+          result.push(value)
+        }
+      } else {
+        result.push(this.getMultiSelectValue(property, jsonField))
+      }
+      return result
+    },
+    getMultiSelectValue: function (property, jsonField) {
+      const arr = jsonField.multiselect_value.split('.')
+      if (arr.length === 1) {
+        return property[jsonField.multiselect_value]
       } else {
         var value = property
         if (value instanceof Array) {

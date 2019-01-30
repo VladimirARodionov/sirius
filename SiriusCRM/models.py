@@ -253,6 +253,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 # Таблица связей пользователя и его позиции
 class UserPosition(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_position")
     position = models.ForeignKey(Position, on_delete=models.PROTECT, related_name="position_value")
     date_joined = models.DateField(null=True, blank=True)
@@ -261,6 +262,7 @@ class UserPosition(models.Model):
 
 # Таблица связей пользователя и его категории
 class UserCategory(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_category")
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="category_value")
     date_joined = models.DateField(null=True, blank=True)
@@ -269,6 +271,7 @@ class UserCategory(models.Model):
 
 # Таблица связей пользователя и курсов
 class UserCourse(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_course")
     course = models.ForeignKey(Course, on_delete=models.PROTECT, related_name="course_value")
     date_begin = models.DateField(null=True, blank=True)
@@ -277,6 +280,7 @@ class UserCourse(models.Model):
 
 # Таблица связей пользователя, курсов и его эссе
 class UserCourseEssay(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_course_essay")
     course = models.ForeignKey(Course, on_delete=models.PROTECT, related_name="course_essay")
     essay = models.ForeignKey(Essay, on_delete=models.PROTECT, related_name="essay_value")
@@ -285,6 +289,7 @@ class UserCourseEssay(models.Model):
 
 # Таблица связей курсов и их кураторов
 class CourseCurator(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_course_curator")
     course = models.ForeignKey(Position, on_delete=models.PROTECT, related_name="course_curator")
     is_primary = models.BooleanField(default=False)
@@ -292,18 +297,21 @@ class CourseCurator(models.Model):
 
 # Таблица связей пользователя и offline мероприятия, в котором он участвовал
 class UserOffline(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_offline")
     offline = models.ForeignKey(Offline, on_delete=models.PROTECT, related_name="offline_value")
 
 
 # Таблица связей пользователя и его компетенций
 class UserCompetency(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_competency")
     competency = models.ForeignKey(Competency, on_delete=models.PROTECT, related_name="competency_value")
 
 
 # Таблица прихода денежных средств в организацию
 class OrganizationIncome(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=True, on_delete=models.PROTECT, related_name="user_income")
     payment = models.ForeignKey(Payment, on_delete=models.PROTECT, related_name="payment_income")
     currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name="currency_income")
@@ -314,6 +322,7 @@ class OrganizationIncome(models.Model):
 
 # Таблица расхода денежных средств из организации
 class OrganizationOutcome(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=True, on_delete=models.PROTECT, related_name="user_outcome")
     payment = models.ForeignKey(Payment, on_delete=models.PROTECT, related_name="payment_outcome")
     currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name="currency_outcome")
@@ -324,11 +333,13 @@ class OrganizationOutcome(models.Model):
 
 # Таблица связей пользователя и его аккаунтов в социальных сетях
 class UserSocial(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_social")
     social = models.ForeignKey(Social, on_delete=models.PROTECT, related_name="social_value")
 
 
 # Таблица связей контакта (лида) и его аккаунтов в социальных сетях
 class ContactSocial(models.Model):
+    id = models.AutoField(primary_key=True)
     contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="contact_social")
     social = models.ForeignKey(Social, on_delete=models.PROTECT, related_name="contact_social_value")

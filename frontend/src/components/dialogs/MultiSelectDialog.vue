@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="intDialogVisible" persistent max-width="500">
     <v-card>
-      <v-card-title class="headline grey lighten-2" primary-title> {{json.text}} </v-card-title>
+      <v-card-title class="headline grey lighten-2" primary-title> {{getTitle}} </v-card-title>
         <v-alert outline type="error" value="true" v-if="errorMessage">
           {{errorMessage}}
         </v-alert>
@@ -46,10 +46,18 @@ export default {
     }
   },
   computed: {
+    getTitle () {
+      if (this.json.text) {
+        return this.$t(this.json.text)
+      } else {
+        return ''
+      }
+    },
     intDialogVisible: {
       get: function () {
         if (this.dialog) {
           this.getMultiSelectItems()
+          this.getCurrentSelectedItems()
         }
         return this.dialog
       }
@@ -86,11 +94,17 @@ export default {
       onGetMax(this.json.api, this.json.name, this.data)
     },
     getCurrentSelectedItems: function () {
-      // onGetSingle(this.json.api, this.json.name, this.data)
+      if (this.currentSelected && this.currentSelected instanceof Array) {
+        for (const item in this.currentSelected) {
+          if (this.currentSelected[item]) {
+            this.data['selected'][this.currentSelected[item]] = true
+          }
+        }
+      }
     },
     updateSelected () {
       this.data.currentObject = { forId: this.forId, selected: this.data.selected }
-      onPostSingle(this.json.updateApi, this.data, null)
+      onPostSingle(this.json.updateApi, this.data, this.getFunction)
     }
   },
   props: {
@@ -100,7 +114,8 @@ export default {
     json: Object,
     forId: String,
     forName: String,
-    currentSelected: Array
+    currentSelected: Array,
+    getFunction: Function
   }
 }
 </script>

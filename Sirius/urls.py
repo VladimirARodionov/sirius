@@ -63,6 +63,7 @@ urlpatterns = [
     path('api/people/<int:number>/password_change', views.PasswordChangeView.as_view(), name='peoplePasswordChange'),
     path('api/role/', views.UserRolesView.as_view(), name='role'),
     path('api/userposition/update/', views.UserPositionView.as_view(), name='user-position-update'),
+    path('api/userposition/update/<int:number>/', views.UserPositionView.as_view(), name='user-position-update'),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

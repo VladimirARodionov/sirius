@@ -1,10 +1,13 @@
 from django.core.paginator import InvalidPage
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.utils import six
 from rest_framework import viewsets, filters
 from rest_framework.exceptions import NotFound
+from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.utils import json
 
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
@@ -248,10 +251,7 @@ class UserPositionViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_post_roles = ['admin_role', 'user_role']
     allowed_put_roles = ['admin_role', 'user_role']
     allowed_delete_roles = ['admin_role', 'user_role']
-    queryset = UserPosition.objects.all()
     serializer_class = UserPositionSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     search_fields = 'user'
     ordering_fields = ('id', 'user', 'position')
-
-

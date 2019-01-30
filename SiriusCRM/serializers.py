@@ -96,7 +96,9 @@ class UserDetailSerializer(ModelSerializer):
 
 
 class UserPositionSerializer(ModelSerializer):
+    position_value = PositionSerializer(source='position', read_only=True)
+
     class Meta:
         model = UserPosition
-        fields = ('id', 'user', 'position')
+        fields = ('id', 'user', 'position', 'position_value')
 
