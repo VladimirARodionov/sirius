@@ -2,6 +2,11 @@
   <Menu>
     <h1>{{'Units' | translate}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
+        <button class="btn btn-success btn-block" v-roles="['admin_role', 'edit_role']" v-if="select === 'true'"
+                v-on:click="onSelect()" :disabled="!isSelected">{{'Select' | translate}}
+        </button>
+    </div>
+    <div class="btn-toolbar justify-content-between mb-3">
       <div>
         <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="addDialog = true">{{'Add' |
           translate}}
@@ -106,11 +111,17 @@ export default {
       deleteDialog: false,
       editDialog: false,
       addDialog: false,
-      errors: []
+      errors: [],
+      select: 'false'
     }
   },
   mounted: function () {
     this.getObjects()
+  },
+  created () {
+    if (this.$route.query && this.$route.query.select) {
+      this.select = this.$route.query.select
+    }
   },
   methods: {
     getObjects: function () {
@@ -202,6 +213,13 @@ export default {
             this.isSelected = false
             this.getObjects()
           })
+      }
+    },
+    onSelect: function () {
+      if (this.isSelected && this.currentObject.id) {
+        // store this.data.currentObject.id in vuex
+        this.$store.commit('setSelectedObject', { name: 'unit', api: '/api/unit/', id: this.currentObject.id })
+        this.$router.go(-1)
       }
     },
     getDeleteMessage: function () {

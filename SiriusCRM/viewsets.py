@@ -1,17 +1,20 @@
 from django.core.paginator import InvalidPage
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.utils import six
 from rest_framework import viewsets, filters
 from rest_framework.exceptions import NotFound
+from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.utils import json
 
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address
+    Payment, Address, UserPosition
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
-    CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer
+    CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -112,8 +115,8 @@ class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
         return Response(data)
 
     def retrieve(self, request, pk=None):
-        data = self.serialize_tree([self.get_object()])
-        return Response(data)
+        data = list(self.serialize_tree([self.get_object()]))
+        return Response(data[0])
 
 
 class PositionViewSet(HasRoleMixin, viewsets.ModelViewSet):
@@ -242,3 +245,13 @@ class AddressViewSet(HasRoleMixin, viewsets.ModelViewSet):
     ordering_fields = ('id', 'city', 'village', 'street', 'house', 'apartment')
 
 
+class UserPositionViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
+    serializer_class = UserPositionSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    search_fields = 'user'
+    ordering_fields = ('id', 'user', 'position')

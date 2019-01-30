@@ -76,7 +76,7 @@ class SocialName(models.Model):
 # Аккаунт в социальной сети. Name берется из справочника SocialName
 class Social(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.ForeignKey(SocialName, null=False, on_delete=models.CASCADE, related_name="social_name")
+    name = models.ForeignKey(SocialName, null=False, on_delete=models.PROTECT, related_name="social_name")
     account = models.CharField(max_length=255, blank=False)
 
     class Meta:
@@ -87,7 +87,7 @@ class Social(models.Model):
 class Organization(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True, blank=False)
-    address = models.ForeignKey(Address, null=True, on_delete=models.CASCADE, related_name="organization_address")
+    address = models.ForeignKey(Address, null=True, on_delete=models.PROTECT, related_name="organization_address")
 
     class Meta:
         ordering = ['id']
@@ -153,7 +153,7 @@ class Competency(models.Model):
 class Offline(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, blank=False)
-    address = models.ForeignKey(Address, null=True, on_delete=models.CASCADE, related_name="offline_address")
+    address = models.ForeignKey(Address, null=True, on_delete=models.PROTECT, related_name="offline_address")
     date_begin = models.DateField(null=True, blank=True)
     date_end = models.DateField(null=True, blank=True)
 
@@ -214,9 +214,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=20, null=True, blank=True)
     salary = models.FloatField(null=True, blank=True)
     characteristic = models.TextField(null=True, blank=True)
-    address = models.ForeignKey(Address, null=True, on_delete=models.CASCADE, related_name="user_address")
-    organization = models.ForeignKey(Organization, null=True, on_delete=models.CASCADE, related_name="user_organization")
-    unit = models.ForeignKey(Unit, null=True, on_delete=models.CASCADE, related_name="user_unit")
+    address = models.ForeignKey(Address, null=True, on_delete=models.PROTECT, related_name="user_address")
+    organization = models.ForeignKey(Organization, null=True, on_delete=models.PROTECT, related_name="user_organization")
+    unit = models.ForeignKey(Unit, null=True, on_delete=models.PROTECT, related_name="user_unit")
     positions = models.ManyToManyField(Position, through='UserPosition')
     categories = models.ManyToManyField(Category, through='UserCategory')
     socials = models.ManyToManyField(Social, through='UserSocial')
@@ -253,60 +253,68 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 # Таблица связей пользователя и его позиции
 class UserPosition(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_position")
-    position = models.ForeignKey(Position, on_delete=models.CASCADE, related_name="position_value")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_position")
+    position = models.ForeignKey(Position, on_delete=models.PROTECT, related_name="position_value")
     date_joined = models.DateField(null=True, blank=True)
     invite_reason = models.CharField(max_length=255, null=True, blank=True)
 
 
 # Таблица связей пользователя и его категории
 class UserCategory(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_category")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category_value")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_category")
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="category_value")
     date_joined = models.DateField(null=True, blank=True)
     invite_reason = models.CharField(max_length=255, null=True, blank=True)
 
 
 # Таблица связей пользователя и курсов
 class UserCourse(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_course")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="course_value")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_course")
+    course = models.ForeignKey(Course, on_delete=models.PROTECT, related_name="course_value")
     date_begin = models.DateField(null=True, blank=True)
     date_end = models.DateField(null=True, blank=True)
 
 
 # Таблица связей пользователя, курсов и его эссе
 class UserCourseEssay(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_course_essay")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="course_essay")
-    essay = models.ForeignKey(Essay, on_delete=models.CASCADE, related_name="essay_value")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_course_essay")
+    course = models.ForeignKey(Course, on_delete=models.PROTECT, related_name="course_essay")
+    essay = models.ForeignKey(Essay, on_delete=models.PROTECT, related_name="essay_value")
     date = models.DateField(null=True, blank=True)
 
 
 # Таблица связей курсов и их кураторов
 class CourseCurator(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_course_curator")
-    course = models.ForeignKey(Position, on_delete=models.CASCADE, related_name="course_curator")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_course_curator")
+    course = models.ForeignKey(Position, on_delete=models.PROTECT, related_name="course_curator")
     is_primary = models.BooleanField(default=False)
 
 
 # Таблица связей пользователя и offline мероприятия, в котором он участвовал
 class UserOffline(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_offline")
-    offline = models.ForeignKey(Offline, on_delete=models.CASCADE, related_name="offline_value")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_offline")
+    offline = models.ForeignKey(Offline, on_delete=models.PROTECT, related_name="offline_value")
 
 
 # Таблица связей пользователя и его компетенций
 class UserCompetency(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_competency")
-    competency = models.ForeignKey(Competency, on_delete=models.CASCADE, related_name="competency_value")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_competency")
+    competency = models.ForeignKey(Competency, on_delete=models.PROTECT, related_name="competency_value")
 
 
 # Таблица прихода денежных средств в организацию
 class OrganizationIncome(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name="user_income")
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name="payment_income")
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name="currency_income")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.PROTECT, related_name="user_income")
+    payment = models.ForeignKey(Payment, on_delete=models.PROTECT, related_name="payment_income")
+    currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name="currency_income")
     date = models.DateField(null=False, blank=False)
     value = models.FloatField(null=False, blank=False)
     note = models.CharField(max_length=255, null=True, blank=True)
@@ -314,9 +322,10 @@ class OrganizationIncome(models.Model):
 
 # Таблица расхода денежных средств из организации
 class OrganizationOutcome(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name="user_outcome")
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name="payment_outcome")
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name="currency_outcome")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.PROTECT, related_name="user_outcome")
+    payment = models.ForeignKey(Payment, on_delete=models.PROTECT, related_name="payment_outcome")
+    currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name="currency_outcome")
     date = models.DateField(null=False, blank=False)
     value = models.FloatField(null=False, blank=False)
     note = models.CharField(max_length=255, null=True, blank=True)
@@ -324,11 +333,13 @@ class OrganizationOutcome(models.Model):
 
 # Таблица связей пользователя и его аккаунтов в социальных сетях
 class UserSocial(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_social")
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, related_name="social_value")
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_social")
+    social = models.ForeignKey(Social, on_delete=models.PROTECT, related_name="social_value")
 
 
 # Таблица связей контакта (лида) и его аккаунтов в социальных сетях
 class ContactSocial(models.Model):
-    contact = models.ForeignKey(Contact, on_delete=models.CASCADE, related_name="contact_social")
-    social = models.ForeignKey(Social, on_delete=models.CASCADE, related_name="contact_social_value")
+    id = models.AutoField(primary_key=True)
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="contact_social")
+    social = models.ForeignKey(Social, on_delete=models.PROTECT, related_name="contact_social_value")
