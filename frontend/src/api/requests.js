@@ -100,7 +100,7 @@ export function onDelete (api, data, getFunction) {
   if (data.currentObject !== '') {
     axios.delete(process.env.API_URL + api + data.currentObject.id + '/')
       .then(resp => {
-        data.currentObject = ''
+        data.currentObject = {}
         data.isSelected = false
         vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
         getFunction()
