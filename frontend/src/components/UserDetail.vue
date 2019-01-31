@@ -1,7 +1,8 @@
 <template>
-  <Menu>
-  <v-card>
-    <v-card-title class="headline lighten-2" primary-title> {{'User details' | translate}} </v-card-title>
+  <div>
+    <v-progress-linear v-if="data.loading" height="2" :indeterminate="true"></v-progress-linear>
+    <v-card>
+    <v-card-title class="headline lighten-2" primary-title> {{title}} </v-card-title>
     <v-form>
       <v-card-text>
         <v-alert outline type="error" value="true" v-if="errorMessageText">
@@ -149,33 +150,22 @@
     </v-dialog>
     <!-- End of change password -->
     <!-- Delete People Modal -->
-    <MultiSelectDialog :dialog.sync="multiSelectDialog" :json="multiSelectJson" :forId="'' + $route.params.id" forName="user" :currentSelected="data.currentObject.positions" :getFunction="getPeople"/>
-  </Menu>
+    <MultiSelectDialog :dialog.sync="multiSelectDialog.positions" :json="multiSelectJson" :forId="'' + $route.params.id" forName="user" :currentSelected="data.currentObject.positions" :getFunction="getPeople"/>
+    <MultiSelectDialog :dialog.sync="multiSelectDialog.categories" :json="multiSelectJson" :forId="'' + $route.params.id" forName="user" :currentSelected="data.currentObject.categories" :getFunction="getPeople"/>
+  </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import { onGetSingle, onPutSingle } from '../api/requests'
 import axios from 'axios'
-import Menu from '../layouts/Menu'
 import vuetifyToast from 'vuetify-toast'
 import MultiSelectDialog from '../components/dialogs/MultiSelectDialog'
 
 export default {
-  name: 'PeopleDetails',
+  name: 'UserDetail',
   data () {
     return {
-      names: [
-        { text: 'Last name', type: 'input', name: 'last_name', required: true },
-        { text: 'First name', type: 'input', name: 'first_name', required: true },
-        { text: 'Middle name', type: 'input', name: 'middle_name' },
-        { text: 'Email', type: 'input', name: 'email' },
-        { text: 'Mobile', type: 'input', name: 'mobile' },
-        { text: 'Birthday', type: 'date', name: 'birthday' },
-        { text: 'Address', type: 'selector', name: 'address', routerName: 'addresses', api: '/api/address/', value: 'address.address_city.name' },
-        { text: 'Unit', type: 'selector', name: 'unit', routerName: 'units', api: '/api/unit/', value: 'unit.text' },
-        { text: 'Positions', type: 'multi-selector', name: 'positions', routerName: 'positions', api: '/api/position/', updateApi: '/api/userposition/update/', value: 'name', multiselect_value: 'position_value.name' }
-      ],
       data: {
         currentObject: {},
         loading: false,
@@ -186,7 +176,10 @@ export default {
       passwords: { new_password1: '', new_password2: '' },
       result: {},
       menu: false,
-      multiSelectDialog: false,
+      multiSelectDialog: {
+        positions: false,
+        categories: false
+      },
       multiSelectJson: {}
     }
   },
@@ -290,13 +283,13 @@ export default {
     },
     changeMultiSelect: function (json) {
       this.multiSelectJson = json
-      this.multiSelectDialog = true
+      this.multiSelectDialog[json.name] = true
     },
     getSelectedObject (api, name) {
       onGetSingle(api, name, this.data)
     },
     getPeople: function () {
-      axios.get(process.env.API_URL + '/api/userdetail/' + this.$route.params.id + '/')
+      axios.get(process.env.API_URL + this.api + this.$route.params.id + '/')
         .then(resp => {
           this.data.currentObject = resp.data
           // To update multi-select values
@@ -312,7 +305,7 @@ export default {
         })
     },
     updatePeople: function () {
-      onPutSingle('/api/userdetail/', this.data, this.getPeople)
+      onPutSingle(this.api, this.data, this.getPeople)
     },
     changePassword: function () {
       this.data.errorMessage = ''
@@ -364,8 +357,7 @@ export default {
       if (!property) { return result }
       if (property instanceof Array) {
         for (const item in property) {
-          const value = this.getMultiSelectValue(property[item], jsonField)
-          result.push(value)
+          result.push(this.getMultiSelectValue(property[item], jsonField))
         }
       } else {
         result.push(this.getMultiSelectValue(property, jsonField))
@@ -392,8 +384,12 @@ export default {
       }
     }
   },
+  props: {
+    title: String,
+    api: String,
+    names: Array
+  },
   components: {
-    Menu,
     MultiSelectDialog
   }
 }

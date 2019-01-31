@@ -115,11 +115,18 @@ class Position(models.Model):
 
 # Справочник названий категорий человека (ученик, сотрудник,...)
 class Category(models.Model):
+    EMPLOYEE = 1
+    DISCIPLE = 2
+
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
+
+    def delete(self, using=None, keep_parents=False):
+        if self.id not in [Category.EMPLOYEE, Category.DISCIPLE]:
+            super(Category, self).delete(using, keep_parents)
 
 
 # Справочник названий курсов

@@ -26,6 +26,8 @@ from SiriusCRM import views
 from SiriusCRM import viewsets
 router = SimpleRouter()
 router.register('api/user', viewsets.UserViewSet, basename='user')
+router.register('api/employee', viewsets.EmployeeViewSet, basename='employee')
+router.register('api/disciple', viewsets.DiscipleViewSet, basename='disciple')
 router.register('api/userdetail', viewsets.UserDetailViewSet, basename='userdetail')
 router.register('api/organization', viewsets.OrganizationViewSet, basename='organization')
 router.register('api/unit', viewsets.UnitViewSet, basename='unit')
@@ -64,6 +66,8 @@ urlpatterns = [
     path('api/role/', views.UserRolesView.as_view(), name='role'),
     path('api/userposition/update/', views.UserPositionView.as_view(), name='user-position-update'),
     path('api/userposition/update/<int:number>/', views.UserPositionView.as_view(), name='user-position-update'),
+    path('api/usercategory/update/', views.UserCategoryView.as_view(), name='user-category-update'),
+    path('api/usercategory/update/<int:number>/', views.UserCategoryView.as_view(), name='user-category-update'),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

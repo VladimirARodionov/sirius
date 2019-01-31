@@ -3,11 +3,11 @@ import Router from 'vue-router'
 import store from '../store'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
-import People from '../views/People.vue'
+import Employee from '../views/Employee.vue'
 import Actions from '../views/Actions.vue'
 import Reports from '../views/Reports.vue'
 import Directories from '../views/directories/Directories.vue'
-import PeopleDetails from '../views/PeopleDetails.vue'
+import EmployeeDetails from '../views/EmployeeDetails.vue'
 import ImportUsers from '../views/ImportUsers.vue'
 import ResetPasswordEmail from '../views/ResetPasswordEmail'
 import ResetPasswordConfirm from '../views/ResetPasswordConfirm'
@@ -43,6 +43,10 @@ import AddPayment from '../views/directories/AddPayment'
 import EditPayment from '../views/directories/EditPayment'
 import AddPosition from '../views/directories/AddPosition'
 import EditPosition from '../views/directories/EditPosition'
+import Disciple from '../views/Disciple'
+import DiscipleDetails from '../views/DiscipleDetails'
+import User from '../views/directories/User'
+import UserDetails from '../views/directories/UserDetails'
 
 Vue.use(Router)
 
@@ -74,9 +78,49 @@ let router = new Router({
       }
     },
     {
-      path: '/people',
-      name: 'people',
-      component: People,
+      path: '/employee',
+      name: 'employee',
+      component: Employee,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/employee/:id/details',
+      name: 'employeeDetails',
+      component: EmployeeDetails,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/disciple',
+      name: 'disciple',
+      component: Disciple,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/disciple/:id/details',
+      name: 'discipleDetails',
+      component: DiscipleDetails,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/users',
+      name: 'user',
+      component: User,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/users/:id/details',
+      name: 'userDetails',
+      component: UserDetails,
       meta: {
         requiresAuth: true
       }
@@ -365,14 +409,6 @@ let router = new Router({
       path: '/directories/payments/edit/:id',
       name: 'editPayment',
       component: EditPayment,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/people/:id/details',
-      name: 'peopleDetails',
-      component: PeopleDetails,
       meta: {
         requiresAuth: true
       }

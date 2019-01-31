@@ -1,6 +1,6 @@
 <template>
-  <Menu>
-    <h1>{{'List of Users' | translate}}</h1>
+  <div>
+    <h1>{{title}}</h1>
     <div class="btn-toolbar justify-content-between mb-3">
       <div>
         <button class="btn btn-success" v-roles="['admin_role', 'edit_role']" v-on:click="data.addDialog = true">{{'Add' |
@@ -45,32 +45,25 @@
 
     </div>
     <!-- Add People Modal -->
-    <AddPeopleDialog :errorMessage="data.addDialogErrorMessage" :dialog.sync="data.addDialog" :newPeople="data.newObject" :title="this.$t('Add user')" :on-clicked="addPeople"/>
+    <AddPeopleDialog :errorMessage="data.addDialogErrorMessage" :dialog.sync="data.addDialog" :newPeople="data.newObject" :title="addTitle" :on-clicked="addPeople"/>
     <!-- Edit People Modal -->
-    <EditPeopleDialog :errorMessage="data.editDialogErrorMessage" :dialog.sync="data.editDialog" :currentPeople="data.currentObject" :title="this.$t('Edit')" :on-clicked="updatePeople"/>
+    <EditPeopleDialog :errorMessage="data.editDialogErrorMessage" :dialog.sync="data.editDialog" :currentPeople="data.currentObject" :title="editTitle" :on-clicked="updatePeople"/>
     <!-- Delete People Modal -->
     <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deletePeople"/>
-  </Menu>
+  </div>
 </template>
 
 <script>
 import router from '../router'
-import Menu from '../layouts/Menu'
 import DeleteDialog from '../components/dialogs/DeleteDialog'
 import AddPeopleDialog from '../components/dialogs/AddPeopleDialog'
 import EditPeopleDialog from '../components/dialogs/EditPeopleDialog'
 import { onGet, onPost, onPut, onDelete } from '../api/requests'
 
 export default {
-  name: 'People',
+  name: 'UserList',
   data () {
     return {
-      headers: [
-        { text: '#', value: 'id' },
-        { text: this.$i18n.translate('First name'), value: 'first_name' },
-        { text: this.$i18n.translate('Last name'), value: 'last_name' },
-        { text: this.$i18n.translate('Email'), value: 'email' }
-      ],
       data: {
         objects: [],
         loading: false,
@@ -101,7 +94,7 @@ export default {
   },
   methods: {
     getPeoples: function () {
-      onGet('/api/user/', this.data, this.pagination, this.search_term)
+      onGet(this.api, this.data, this.pagination, this.search_term)
     },
     selectPeople: function (user) {
       this.data.currentObject = JSON.parse(JSON.stringify(user))
@@ -114,29 +107,37 @@ export default {
     },
     goUserDetails: function () {
       if (this.data.currentObject !== '') {
-        router.push({ name: 'peopleDetails', params: { id: this.data.currentObject.id } })
+        router.push({ name: this.userDetailsRoute, params: { id: this.data.currentObject.id } })
       }
     },
     addPeople: function () {
       this.data.newObject.email = this.data.newObject.email || null
-      onPost('/api/user/', this.data, this.getPeoples)
+      onPost(this.api, this.data, this.getPeoples)
     },
     updatePeople: function () {
       this.data.currentObject.email = this.data.currentObject.email || null
-      onPut('/api/user/', this.data, this.getPeoples)
+      onPut(this.api, this.data, this.getPeoples)
     },
     deletePeople: function () {
-      onDelete('/api/user/', this.data, this.getPeoples)
+      onDelete(this.api, this.data, this.getPeoples)
     },
     getDeleteMessage: function () {
-      return this.$t('Delete user') + ' ' + this.data.currentObject.id + ' ' + this.data.currentObject.first_name + ' ' + this.data.currentObject.last_name + ((this.data.currentObject.email) ? '(' + this.data.currentObject.email + ') ?' : ' ?')
+      return this.deleteMessagePrefix + ' ' + this.data.currentObject.id + ' ' + this.data.currentObject.first_name + ' ' + this.data.currentObject.last_name + ((this.data.currentObject.email) ? ' (' + this.data.currentObject.email + ') ?' : ' ?')
     }
+  },
+  props: {
+    title: String,
+    api: String,
+    headers: Array,
+    addTitle: String,
+    editTitle: String,
+    deleteMessagePrefix: String,
+    userDetailsRoute: String
   },
   components: {
     DeleteDialog,
     AddPeopleDialog,
-    EditPeopleDialog,
-    Menu
+    EditPeopleDialog
   }
 }
 </script>

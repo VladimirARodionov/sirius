@@ -1,13 +1,13 @@
 from rest_framework.serializers import ModelSerializer
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address, UserPosition
+    Payment, Address, UserPosition, UserCategory
 
 
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email')
+        fields = ('id', 'first_name', 'last_name', 'email', 'categories')
 
 
 class OrganizationSerializer(ModelSerializer):
@@ -92,7 +92,7 @@ class UserDetailSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile',
-                  'address', 'user_address', 'unit', 'user_unit', 'positions')
+                  'address', 'user_address', 'unit', 'user_unit', 'positions', 'categories')
 
 
 class UserPositionSerializer(ModelSerializer):
@@ -102,3 +102,10 @@ class UserPositionSerializer(ModelSerializer):
         model = UserPosition
         fields = ('id', 'user', 'position', 'position_value')
 
+
+class UserCategorySerializer(ModelSerializer):
+    category_value = CategorySerializer(source='category', read_only=True)
+
+    class Meta:
+        model = UserCategory
+        fields = ('id', 'user', 'category', 'category_value')
