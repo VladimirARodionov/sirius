@@ -1,6 +1,12 @@
 <template>
   <Menu>
-    <InfoBox icon="people_outline" title="Total users" :value="data.object"/>
+    <v-container grid-list-xl fluid>
+      <v-layout row wrap>
+          <InfoBox icon="people_outline" title="Total employees" :value="data.employees"/>
+          <InfoBox icon="chat" title="Total disciples" :value="data.disciples"/>
+          <InfoBox icon="people" title="Total users" :value="data.users"/>
+      </v-layout>
+    </v-container>
   </Menu>
 </template>
 
@@ -14,17 +20,27 @@ export default {
   data () {
     return {
       data: {
-        object: 0,
+        employees: 0,
+        disciples: 0,
+        users: 0,
         loading: false
       }
     }
   },
   mounted: function () {
-    this.getCount()
+    this.getEmployeeCount()
+    this.getDiscipleCount()
+    this.getUserCount()
   },
   methods: {
-    getCount: function () {
-      onGetCount('/api/user/count/', this.data)
+    getEmployeeCount: function () {
+      onGetCount('/api/employee/count/', 'employees', this.data)
+    },
+    getDiscipleCount: function () {
+      onGetCount('/api/disciple/count/', 'disciples', this.data)
+    },
+    getUserCount: function () {
+      onGetCount('/api/user/count/', 'users', this.data)
     }
   },
   components: {

@@ -125,11 +125,11 @@ export function onDelete (api, data, getFunction) {
   }
 }
 
-export function onGetCount (api, data) {
+export function onGetCount (api, name, data) {
   data.loading = true
   axios.get(process.env.API_URL + api)
     .then(resp => {
-      data.object = resp.data.count
+      data[name] = resp.data.count
       data.loading = false
     })
     .catch(err => {
@@ -141,6 +141,7 @@ export function onGetCount (api, data) {
 export function onGetSingle (api, name, data) {
   data.errorMessage = ''
   if (data[name] && data[name].id) {
+    data.loading = true
     axios.get(process.env.API_URL + api + data[name].id + '/')
       .then(resp => {
         data.loading = false

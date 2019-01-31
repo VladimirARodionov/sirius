@@ -21,6 +21,8 @@
       </router-link>
       <router-link class="navbar" active-class="active" to="/directories/payments">{{'Payments' | translate}}
       </router-link>
+      <router-link class="navbar" active-class="active" to="/directories/users">{{'All users' | translate}}
+      </router-link>
     </nav>
   </Menu>
 </template>

@@ -26,9 +26,9 @@ from rest_framework.views import APIView
 from rolepermissions.roles import get_user_roles, RolesManager, assign_role, retrieve_role, remove_role
 
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, UserPosition, Position
+from SiriusCRM.models import User, UserPosition, Position, UserCategory, Category
 from SiriusCRM.resources import UserResource
-from SiriusCRM.serializers import PositionSerializer, UserPositionSerializer
+from SiriusCRM.serializers import PositionSerializer, UserPositionSerializer, UserCategorySerializer
 
 
 def jwt_response_payload_handler(token, user=None, request=None):
@@ -330,6 +330,44 @@ class UserPositionView(HasRoleMixin, APIView):
             current_positions.delete()
             for new_pos in new_positions:
                 UserPosition.objects.create(user=user, position=new_pos)
+            context['result'] = {'success': True}
+            return JsonResponse(context)
+        except Exception as e:
+            context['result'] = {'success': False, 'error': str(e)}
+            return HttpResponseBadRequest(context)
+
+
+class UserCategoryView(HasRoleMixin, APIView):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role', 'edit_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+
+    def get(self, request, number):
+        context = {}
+        try:
+            user = get_object_or_404(User, pk=number)
+            current_categories = UserCategory.objects.filter(user=user.id)
+            serializer = UserCategorySerializer(current_categories, many=True)
+            context = serializer.data
+            return JsonResponse(context, safe=False)
+        except Exception as e:
+            context['result'] = {'success': False, 'error': str(e)}
+            return HttpResponseBadRequest(context)
+
+    def post(self, request):
+        context = {}
+        try:
+            body = json.loads(request.body)
+            user = get_object_or_404(User, pk=body['forId'])
+            new_categories = []
+            for row in body['selected']:
+                if body['selected'][row]:
+                    category = get_object_or_404(Category, pk=row)
+                    new_categories.append(category)
+            current_categories = UserCategory.objects.filter(user=user.id)
+            current_categories.delete()
+            for new_cat in new_categories:
+                UserCategory.objects.create(user=user, category=new_cat)
             context['result'] = {'success': True}
             return JsonResponse(context)
         except Exception as e:

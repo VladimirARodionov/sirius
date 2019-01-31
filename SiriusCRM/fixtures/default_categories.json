@@ -1,0 +1,16 @@
+[
+  {
+    "model": "SiriusCRM.Category",
+    "pk": 1,
+    "fields": {
+      "name": "Сотрудники"
+    }
+  },
+  {
+    "model": "SiriusCRM.Category",
+    "pk": 2,
+    "fields": {
+      "name": "Ученики"
+    }
+  }
+]
