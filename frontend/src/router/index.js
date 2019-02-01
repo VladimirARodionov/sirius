@@ -47,6 +47,8 @@ import Disciple from '../views/Disciple'
 import DiscipleDetails from '../views/DiscipleDetails'
 import User from '../views/directories/User'
 import UserDetails from '../views/directories/UserDetails'
+import AddUnit from '../views/directories/AddUnit'
+import EditUnit from '../views/directories/EditUnit'
 
 Vue.use(Router)
 
@@ -193,6 +195,22 @@ let router = new Router({
       path: '/directories/units',
       name: 'units',
       component: Units,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/units/add',
+      name: 'addUnit',
+      component: AddUnit,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/directories/units/edit/:id',
+      name: 'editUnit',
+      component: EditUnit,
       meta: {
         requiresAuth: true
       }

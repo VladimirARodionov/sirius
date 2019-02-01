@@ -41,6 +41,7 @@ router.register('api/course', viewsets.CourseViewSet, basename='course')
 router.register('api/payment', viewsets.PaymentViewSet, basename='payment')
 router.register('api/address', viewsets.AddressViewSet, basename='address')
 router.register('api/userposition', viewsets.UserPositionViewSet, basename='userposition')
+router.register('api/faculty', viewsets.FacultyViewSet, basename='faculty')
 
 schema_view = get_schema_view(
    openapi.Info(

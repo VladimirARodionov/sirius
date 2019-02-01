@@ -1,7 +1,8 @@
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address, UserPosition, UserCategory
+    Payment, Address, UserPosition, UserCategory, Faculty
 
 
 class UserSerializer(ModelSerializer):
@@ -22,7 +23,7 @@ class UnitSerializer(ModelSerializer):
 
     class Meta:
         model = Unit
-        fields = ('id', 'text', 'parent', 'nodes')
+        fields = ('id', 'name', 'parent', 'children')
 
 
 class PositionSerializer(ModelSerializer):
@@ -87,12 +88,11 @@ class AddressSerializer(ModelSerializer):
 
 class UserDetailSerializer(ModelSerializer):
     user_address = AddressSerializer(source='address', read_only=True)
-    user_unit = UnitSerializer(source='unit', read_only=True)
 
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile',
-                  'address', 'user_address', 'unit', 'user_unit', 'positions', 'categories')
+                  'address', 'user_address', 'units', 'faculties', 'positions', 'categories')
 
 
 class UserPositionSerializer(ModelSerializer):
@@ -109,3 +109,15 @@ class UserCategorySerializer(ModelSerializer):
     class Meta:
         model = UserCategory
         fields = ('id', 'user', 'category', 'category_value')
+
+
+class FacultySerializer(ModelSerializer):
+    user_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Faculty
+        fields = ('id', 'name', 'parent', 'children', 'user_count')
+
+    def get_user_count(self, obj):
+        return User.objects.filter(faculties__in=[obj.id]).count()
+

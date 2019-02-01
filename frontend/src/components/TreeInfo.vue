@@ -5,7 +5,7 @@
     </v-card-title>
     <v-treeview
       :items="items"
-      open-all="true"
+      :open-all="true"
     />
   </v-card>
 </template>

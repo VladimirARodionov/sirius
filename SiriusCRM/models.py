@@ -97,8 +97,8 @@ class Organization(models.Model):
 class Unit(models.Model):
     id = models.AutoField(primary_key=True)
     # organization = models.ForeignKey(Organization, null=False, on_delete=models.CASCADE, related_name="unit_organization")
-    text = models.CharField(max_length=255, blank=False)
-    parent = models.ForeignKey('self', blank=True, null=True, related_name='nodes', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, blank=False)
+    parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['id']
