@@ -20,7 +20,7 @@ export default {
         { text: 'Mobile', type: 'input', name: 'mobile' },
         { text: 'Birthday', type: 'date', name: 'birthday' },
         { text: 'Address', type: 'selector', name: 'address', routerName: 'addresses', api: '/api/address/', value: 'address.address_city.name' },
-        { text: 'Unit', type: 'selector', name: 'unit', routerName: 'units', api: '/api/unit/', value: 'unit.text' },
+        { text: 'Unit', type: 'multi-selector-tree', name: 'unit', routerName: 'units', api: '/api/unit/', value: 'unit.text' },
         { text: 'Categories', type: 'multi-selector', name: 'categories', routerName: 'categories', api: '/api/category/', updateApi: '/api/usercategory/update/', value: 'name', multiselect_value: 'category_value.name' },
         { text: 'Positions', type: 'multi-selector', name: 'positions', routerName: 'positions', api: '/api/position/', updateApi: '/api/userposition/update/', value: 'name', multiselect_value: 'position_value.name' }
       ]

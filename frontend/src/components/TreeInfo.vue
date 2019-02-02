@@ -5,8 +5,14 @@
     </v-card-title>
     <v-treeview
       :items="items"
-      :open-all="true"
-    />
+      open-all
+    >
+      <template slot="label" slot-scope="{ item }">
+        <div>
+          {{ item.name + ' (' + item.user_count + ')'}}
+        </div>
+      </template>
+    </v-treeview>
   </v-card>
 </template>
 

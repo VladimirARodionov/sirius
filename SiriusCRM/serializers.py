@@ -18,12 +18,14 @@ class OrganizationSerializer(ModelSerializer):
 
 
 class UnitSerializer(ModelSerializer):
-    # parent = serializers.PrimaryKeyRelatedField()
-    # parent = RecursiveField(required=False, allow_null=True, many=True)
+    user_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Unit
-        fields = ('id', 'name', 'parent', 'children')
+        fields = ('id', 'name', 'parent', 'children', 'user_count')
+
+    def get_user_count(self, obj):
+        return User.objects.filter(units__in=[obj.id]).count()
 
 
 class PositionSerializer(ModelSerializer):

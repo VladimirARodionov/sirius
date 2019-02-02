@@ -87,6 +87,20 @@
               chips>
             </v-select>
           </v-item-group>
+          <v-item-group v-else-if="field_name.type === 'multi-selector-tree'">
+            <v-select
+              readonly
+              :items="getMultiSelectTreeValues(data[field_name.name], field_name)"
+              :value="getMultiSelectTreeValues(data[field_name.name], field_name)"
+              :label="$t(field_name.text) + (field_name.required?' *':'')"
+              :id="field_name.name"
+              append-icon="done_all"
+              @click:append="changeMultiSelectTree(field_name)"
+              :error-messages="data.errorMessage[field_name.name]"
+              multiple
+              chips>
+            </v-select>
+          </v-item-group>
         </v-item-group>
       </v-card-text>
       <v-divider></v-divider>
@@ -258,6 +272,11 @@ export default {
         if (names[field].type === 'multi-selector') {
           if (this.data[names[field].name]) {
             this.onMultiSelect(names[field].name)
+          }
+        }
+        if (names[field].type === 'multi-selector-tree') {
+          if (this.data[names[field].name]) {
+            this.onMultiSelectTree(names[field].name)
           }
         }
       }
