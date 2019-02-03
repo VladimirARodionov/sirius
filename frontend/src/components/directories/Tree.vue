@@ -26,7 +26,7 @@
         activatable
         :active.sync="active"
         :selectable="select === 'true'"
-        :value.sync="selected"
+        v-model="selected"
       >
         <template slot="label" slot-scope="{ item }">
           <div>

@@ -90,11 +90,11 @@
           <v-item-group v-else-if="field_name.type === 'multi-selector-tree'">
             <v-select
               readonly
-              :items="getMultiSelectTreeValues(data[field_name.name], field_name)"
-              :value="getMultiSelectTreeValues(data[field_name.name], field_name)"
+              :items="getMultiSelectTreeValues(data[field_name.value], field_name)"
+              :value="getMultiSelectTreeValues(data[field_name.value], field_name)"
               :label="$t(field_name.text) + (field_name.required?' *':'')"
               :id="field_name.name"
-              append-icon="done_all"
+              append-icon="search"
               @click:append="find(field_name.routerName)"
               :error-messages="data.errorMessage[field_name.name]"
               multiple
@@ -218,7 +218,7 @@ export default {
       this.$store.commit('clearSelectedObject')
       if (selectedValue.id instanceof Array) {
         // for (const item in selectedValue.id) {
-        Vue.set(this.data, selectedValue.name, selectedValue.id)
+        Vue.set(this.data, selectedValue.name, { name: selectedValue.name, id: selectedValue.id })
         // this.getSelectedObject(selectedValue.api, selectedValue.name + '_' + item)
         // }
       } else {
@@ -233,6 +233,9 @@ export default {
       if (names[field].type === 'selector' && !this.data[names[field].name] && this.data.currentObject[names[field].name]) {
         Vue.set(this.data, names[field].name, { id: this.data.currentObject[names[field].name] })
         this.getSelectedObject(names[field].api, names[field].name)
+      }
+      if (names[field].type === 'multi-selector-tree' && this.data[names[field].tree_name] && names[field].tree_name === this.data[names[field].tree_name].name) {
+        Vue.set(this.data.currentObject, names[field].name, this.data[names[field].tree_name].id)
       }
     }
   },
@@ -415,10 +418,8 @@ export default {
       if (!property) { return result }
       if (property instanceof Array) {
         for (const item in property) {
-          result.push(this.getMultiSelectTreeValue(property[item], item))
+          result.push(this.getMultiSelectTreeValue(this.data[jsonField.tree_name], property[item]))
         }
-      } else {
-        result.push(this.getMultiSelectTreeValue(property, 0))
       }
       return result
     },
