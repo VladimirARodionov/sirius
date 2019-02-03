@@ -25,7 +25,7 @@
         open-all
         activatable
         :active.sync="active"
-        :selectable="select"
+        :selectable="select === 'true'"
         :value.sync="selected"
       >
         <template slot="label" slot-scope="{ item }">
