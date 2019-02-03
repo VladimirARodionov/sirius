@@ -17,10 +17,15 @@ export default {
         { text: 'Name', type: 'input', name: 'name', required: true }
       ],
       data: {
-        currentObject: {},
+        currentObject: { children: [] },
         loading: false,
         errorMessage: ''
       }
+    }
+  },
+  created: function () {
+    if (this.$route.params.id !== 0) {
+      this.data.currentObject.parent = this.$route.params.id
     }
   },
   methods: {

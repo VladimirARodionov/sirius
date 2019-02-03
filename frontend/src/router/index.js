@@ -200,7 +200,7 @@ let router = new Router({
       }
     },
     {
-      path: '/directories/units/add',
+      path: '/directories/units/add/:id',
       name: 'addUnit',
       component: AddUnit,
       meta: {

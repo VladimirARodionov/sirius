@@ -23,7 +23,7 @@ export default {
       }
     }
   },
-  mounted: function () {
+  created: function () {
     this.data.currentObject.id = this.$route.params.id
     this.getObject()
   },
@@ -32,7 +32,15 @@ export default {
       onGetSingle('/api/unit/', 'currentObject', this.data)
     },
     editObject: function () {
+      this.fillChildren()
       onPutSingle('/api/unit/', this.data, this.getObject)
+    },
+    fillChildren () {
+      let children = []
+      for (const child in this.data.currentObject.children) {
+        children.push(this.data.currentObject.children[child].id)
+      }
+      this.data.currentObject.children = children
     }
   },
   components: {

@@ -129,7 +129,11 @@ export default {
       }
     },
     goAdd: function () {
-      router.push({ name: this.addRouter })
+      let currentId = 0
+      if (this.data.isSelected) {
+        currentId = this.data.currentObject.id
+      }
+      router.push({ name: this.addRouter, params: { id: currentId } })
     },
     goEdit: function () {
       if (this.data.currentObject) {
