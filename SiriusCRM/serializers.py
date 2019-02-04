@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address, UserPosition, UserCategory, Faculty
+    Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty
 
 
 class UserSerializer(ModelSerializer):
@@ -122,4 +122,21 @@ class FacultySerializer(ModelSerializer):
 
     def get_user_count(self, obj):
         return User.objects.filter(faculties__in=[obj.id]).count()
+
+
+class UserUnitSerializer(ModelSerializer):
+    unit_value = UnitSerializer(source='unit', read_only=True)
+
+    class Meta:
+        model = UserUnit
+        fields = ('id', 'user', 'unit', 'unit_value')
+
+
+class UserFacultySerializer(ModelSerializer):
+    faculty_value = FacultySerializer(source='faculty', read_only=True)
+
+    class Meta:
+        model = UserFaculty
+        fields = ('id', 'user', 'faculty', 'faculty_value')
+
 
