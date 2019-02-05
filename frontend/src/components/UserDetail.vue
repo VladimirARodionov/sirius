@@ -313,14 +313,6 @@ export default {
       onPostSingle(jsonField.updateApi, this.data, this.getPeople)
       this.data.currentObject = currentObj
     },
-    findJsonField (name) {
-      for (const item in this.names) {
-        if (this.json[item].name === name) {
-          return this.json[item]
-        }
-      }
-      return '' // wrong case
-    },
     getMultiSelectItems: function (name) {
       this.data[name.name] = { id: this.$route.params.id }
       onGetSingle(name.updateApi, name.name, this.data)
