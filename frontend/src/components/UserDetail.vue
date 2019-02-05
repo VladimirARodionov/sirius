@@ -209,7 +209,7 @@ export default {
       if (names[field].type === 'multi-selector' && !this.data[names[field].name]) {
         this.getMultiSelectItems(names[field])
       }
-      if (names[field].type === 'multi-selector-tree' && !this.data[names[field].name]) {
+      if (names[field].type === 'multi-selector-tree' && !this.data[names[field].tree_name]) {
         this.getMultiSelectTreeItems(names[field])
       }
     }
@@ -218,7 +218,7 @@ export default {
       this.$store.commit('clearSelectedObject')
       if (selectedValue.id instanceof Array) {
         // for (const item in selectedValue.id) {
-        Vue.set(this.data, selectedValue.name, { name: selectedValue.name, id: selectedValue.id })
+        Vue.set(this.data, selectedValue.name, { id: selectedValue.id })
         // this.getSelectedObject(selectedValue.api, selectedValue.name + '_' + item)
         // }
       } else {
@@ -234,8 +234,8 @@ export default {
         Vue.set(this.data, names[field].name, { id: this.data.currentObject[names[field].name] })
         this.getSelectedObject(names[field].api, names[field].name)
       }
-      if (names[field].type === 'multi-selector-tree' && this.data[names[field].tree_name] && names[field].tree_name === this.data[names[field].tree_name].name) {
-        Vue.set(this.data.currentObject, names[field].name, this.data[names[field].tree_name].id)
+      if (names[field].type === 'multi-selector-tree' && !this.data[names[field].name] && this.data.currentObject[names[field].name]) {
+        Vue.set(this.data, names[field].name, { id: this.data.currentObject[names[field].name] })
       }
     }
   },
@@ -293,9 +293,7 @@ export default {
     onSelect: function (event) {
       if (event.name === 'address') {
         this.data.currentObject.address = event.id
-      } else if (event.name === 'unit') {
-        this.data.currentObject.unit = event.id
-      }
+      } 
     },
     onMultiSelect: function (event) {
       if (event === 'positions') {
@@ -309,7 +307,7 @@ export default {
       onGetSingle(name.updateApi, name.name, this.data)
     },
     getMultiSelectTreeItems: function (name) {
-      onGetAll(name.api, name.name, this.data)
+      onGetAll(name.api, name.tree_name, this.data)
     },
     changeMultiSelect: function (json) {
       this.multiSelectJson = json
