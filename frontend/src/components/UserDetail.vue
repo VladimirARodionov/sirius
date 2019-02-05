@@ -403,10 +403,16 @@ export default {
       if (!property) { return result }
       if (property instanceof Array) {
         for (const item in property) {
-          result.push(this.getMultiSelectValue(property[item], jsonField))
+          const value = this.getMultiSelectValue(property[item], jsonField)
+          if (value) {
+            result.push(value)
+          }
         }
       } else {
-        result.push(this.getMultiSelectValue(property, jsonField))
+        const value = this.getMultiSelectValue(property, jsonField)
+        if (value) {
+          result.push(value)
+        }
       }
       return result
     },
@@ -434,7 +440,10 @@ export default {
       if (!property) { return result }
       if (!this.data[jsonField.name]) { return result }
       for (const item in this.data[jsonField.name].id) {
-        result.push(this.getMultiSelectTreeValue(property, this.data[jsonField.name].id[item], jsonField))
+        const value = this.getMultiSelectTreeValue(property, this.data[jsonField.name].id[item], jsonField)
+        if (value) {
+          result.push(value)
+        }
       }
       return result
     },

@@ -76,7 +76,7 @@ export default {
   },
   mounted () {
     this.getObjects()
-    if (this.$store.getters.getSelectedObject) {
+    if (this.selected === 'true' && this.$store.getters.getSelectedObject) {
       const selectedValue = JSON.parse(JSON.stringify(this.$store.getters.getSelectedObject))
       this.$store.commit('clearSelectedObject')
       if (selectedValue.id instanceof Array) {
