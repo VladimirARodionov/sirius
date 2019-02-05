@@ -31,7 +31,7 @@ export default {
         faculty: [],
         unit: [],
         loading: false
-      },
+      }
     }
   },
   mounted: function () {
