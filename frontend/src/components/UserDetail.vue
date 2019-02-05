@@ -58,7 +58,7 @@
                 :error-messages="data.errorMessage[field_name.name]"
                 v-if="getPeopleValue(data, field_name)"
                 append-icon="search"
-                @click:append="find(field_name.routerName)"
+                @click:append="find(field_name)"
                 :value="getPeopleValue(data, field_name)">
               </v-text-field>
               <v-text-field
@@ -69,7 +69,7 @@
                 :error-messages="data.errorMessage[field_name.name]"
                 v-else
                 append-icon="search"
-                @click:append="find(field_name.routerName)"
+                @click:append="find(field_name)"
                 :value="'Not selected' | translate">
               </v-text-field>
           </v-item-group>
@@ -95,7 +95,7 @@
               :label="$t(field_name.text) + (field_name.required?' *':'')"
               :id="field_name.name"
               append-icon="search"
-              @click:append="find(field_name.routerName)"
+              @click:append="find(field_name)"
               :error-messages="data.errorMessage[field_name.name]"
               multiple
               chips>
@@ -368,9 +368,16 @@ export default {
           }
         })
     },
-    find (routerName) {
+    find (jsonField) {
       this.$store.commit('setSavedState', { name: this.name, obj: this.object })
-      this.$router.push({ name: routerName, query: { select: 'true' } })
+      if (jsonField.type === 'multi-selector-tree') {
+        this.$store.commit('setSelectedObject', {
+          name: jsonField.name,
+          api: jsonField.api,
+          id: this.data[jsonField.name].id
+        })
+      }
+      this.$router.push({ name: jsonField.routerName, query: { select: 'true' } })
     },
     getPeopleValue: function (property, jsonField) {
       const arr = jsonField.value.split('.')

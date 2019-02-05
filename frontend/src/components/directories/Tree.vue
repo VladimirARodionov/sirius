@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import router from '../../router'
 import DeleteDialog from '../dialogs/DeleteDialog'
 import { onGetAll, onPost, onPut, onDelete } from '../../api/requests'
@@ -73,8 +74,15 @@ export default {
   watch: {
     active: 'selectObject'
   },
-  created () {
+  mounted () {
     this.getObjects()
+    if (this.$store.getters.getSelectedObject) {
+      const selectedValue = JSON.parse(JSON.stringify(this.$store.getters.getSelectedObject))
+      this.$store.commit('clearSelectedObject')
+      if (selectedValue.id instanceof Array) {
+        Vue.set(this, 'selected', selectedValue.id)
+      }
+    }
   },
   methods: {
     getObjects: function () {
