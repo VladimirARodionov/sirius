@@ -90,8 +90,8 @@
           <v-item-group v-else-if="field_name.type === 'multi-selector-tree'">
             <v-select
               readonly
-              :items="getMultiSelectTreeValues(data[field_name.value], field_name)"
-              :value="getMultiSelectTreeValues(data[field_name.value], field_name)"
+              :items="getMultiSelectTreeValues(data[field_name.tree_name], field_name)"
+              :value="getMultiSelectTreeValues(data[field_name.tree_name], field_name)"
               :label="$t(field_name.text) + (field_name.required?' *':'')"
               :id="field_name.name"
               append-icon="search"
@@ -171,7 +171,7 @@
 
 <script>
 import Vue from 'vue'
-import { onGetSingle, onGetAll, onPutSingle } from '../api/requests'
+import { onGetSingle, onGetAll, onPutSingle, onPostSingle } from '../api/requests'
 import axios from 'axios'
 import vuetifyToast from 'vuetify-toast'
 import MultiSelectDialog from '../components/dialogs/MultiSelectDialog'
@@ -234,8 +234,8 @@ export default {
         Vue.set(this.data, names[field].name, { id: this.data.currentObject[names[field].name] })
         this.getSelectedObject(names[field].api, names[field].name)
       }
-      if (names[field].type === 'multi-selector-tree' && !this.data[names[field].name] && this.data.currentObject[names[field].name]) {
-        Vue.set(this.data, names[field].name, { id: this.data.currentObject[names[field].name] })
+      if (names[field].type === 'multi-selector-tree' && !this.data[names[field].name] && this.data.currentObject[names[field].tree_name]) {
+        Vue.set(this.data, names[field].name, { id: this.data.currentObject[names[field].tree_name] })
       }
     }
   },
@@ -287,13 +287,18 @@ export default {
             this.onMultiSelect(names[field].name)
           }
         }
+        if (names[field].type === 'multi-selector-tree') {
+          if (this.data[names[field].name]) {
+            this.onMultiSelectTree({ name: names[field].name, id: this.data[names[field].name].id }, names[field])
+          }
+        }
       }
       this.updatePeople()
     },
     onSelect: function (event) {
       if (event.name === 'address') {
         this.data.currentObject.address = event.id
-      } 
+      }
     },
     onMultiSelect: function (event) {
       if (event === 'positions') {
@@ -301,6 +306,20 @@ export default {
         // delete all user positions
         // add new user positions
       }
+    },
+    onMultiSelectTree: function (event, jsonField) {
+      const currentObj = this.data.currentObject
+      this.data.currentObject = { forId: currentObj.id, selected: this.data[jsonField.name].id }
+      onPostSingle(jsonField.updateApi, this.data, this.getPeople)
+      this.data.currentObject = currentObj
+    },
+    findJsonField (name) {
+      for (const item in this.names) {
+        if (this.json[item].name === name) {
+          return this.json[item]
+        }
+      }
+      return '' // wrong case
     },
     getMultiSelectItems: function (name) {
       this.data[name.name] = { id: this.$route.params.id }
@@ -414,17 +433,16 @@ export default {
     getMultiSelectTreeValues (property, jsonField) {
       var result = []
       if (!property) { return result }
-      if (property instanceof Array) {
-        for (const item in property) {
-          result.push(this.getMultiSelectTreeValue(this.data[jsonField.tree_name], property[item]))
-        }
+      if (!this.data[jsonField.name]) { return result }
+      for (const item in this.data[jsonField.name].id) {
+        result.push(this.getMultiSelectTreeValue(property, this.data[jsonField.name].id[item], jsonField))
       }
       return result
     },
-    getMultiSelectTreeValue: function (property, id) {
+    getMultiSelectTreeValue: function (property, id, jsonField) {
       const node = this.getNodeById(id, property)
       if (node) {
-        return node.value
+        return node[jsonField.value]
       } else {
         return ''
       }

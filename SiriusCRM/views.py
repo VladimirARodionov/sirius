@@ -324,9 +324,8 @@ class UserPositionView(HasRoleMixin, APIView):
             user = get_object_or_404(User, pk=body['forId'])
             new_positions = []
             for row in body['selected']:
-                if body['selected'][row]:
-                    position = get_object_or_404(Position, pk=row)
-                    new_positions.append(position)
+                position = get_object_or_404(Position, pk=row)
+                new_positions.append(position)
             current_positions = UserPosition.objects.filter(user=user.id)
             current_positions.delete()
             for new_pos in new_positions:
@@ -362,9 +361,8 @@ class UserCategoryView(HasRoleMixin, APIView):
             user = get_object_or_404(User, pk=body['forId'])
             new_categories = []
             for row in body['selected']:
-                if body['selected'][row]:
-                    category = get_object_or_404(Category, pk=row)
-                    new_categories.append(category)
+                category = get_object_or_404(Category, pk=row)
+                new_categories.append(category)
             current_categories = UserCategory.objects.filter(user=user.id)
             current_categories.delete()
             for new_cat in new_categories:
@@ -400,9 +398,8 @@ class UserUnitView(HasRoleMixin, APIView):
             user = get_object_or_404(User, pk=body['forId'])
             new_units = []
             for row in body['selected']:
-                if body['selected'][row]:
-                    unit = get_object_or_404(Unit, pk=row)
-                    new_units.append(unit)
+                unit = get_object_or_404(Unit, pk=row)
+                new_units.append(unit)
             current_units = UserUnit.objects.filter(user=user.id)
             current_units.delete()
             for new_un in new_units:
@@ -438,9 +435,8 @@ class UserFacultyView(HasRoleMixin, APIView):
             user = get_object_or_404(User, pk=body['forId'])
             new_faculties = []
             for row in body['selected']:
-                if body['selected'][row]:
-                    faculty = get_object_or_404(Faculty, pk=row)
-                    new_faculties.append(faculty)
+                faculty = get_object_or_404(Faculty, pk=row)
+                new_faculties.append(faculty)
             current_faculties = UserFaculty.objects.filter(user=user.id)
             current_faculties.delete()
             for new_fac in new_faculties:
