@@ -5,6 +5,7 @@
         translate}}
       </router-link>
       <router-link class="navbar" active-class="active" to="/directories/units">{{'Units' | translate}}</router-link>
+      <router-link class="navbar" active-class="active" to="/directories/faculties">{{'Faculties' | translate}}</router-link>
       <router-link class="navbar" active-class="active" to="/directories/positions">{{'Positions' | translate}}
       </router-link>
       <router-link class="navbar" active-class="active" to="/directories/categories">{{'Categories' | translate}}

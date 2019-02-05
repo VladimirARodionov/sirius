@@ -119,5 +119,10 @@
   "Address": "Адрес",
   "Unit": "Подразделение",
   "Employees": "Сотрудники",
-  "Disciples": "Ученики"
+  "Disciples": "Ученики",
+  "Faculty": "Факультет",
+  "Faculties": "Факультеты",
+  "Add faculty": "Добавление факультета",
+  "Edit faculty": "Изменение факультета",
+  "Delete faculty": "Удалить факультет"
 }
