@@ -41,6 +41,7 @@ router.register('api/course', viewsets.CourseViewSet, basename='course')
 router.register('api/payment', viewsets.PaymentViewSet, basename='payment')
 router.register('api/address', viewsets.AddressViewSet, basename='address')
 router.register('api/userposition', viewsets.UserPositionViewSet, basename='userposition')
+router.register('api/faculty', viewsets.FacultyViewSet, basename='faculty')
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -68,6 +69,10 @@ urlpatterns = [
     path('api/userposition/update/<int:number>/', views.UserPositionView.as_view(), name='user-position-update'),
     path('api/usercategory/update/', views.UserCategoryView.as_view(), name='user-category-update'),
     path('api/usercategory/update/<int:number>/', views.UserCategoryView.as_view(), name='user-category-update'),
+    path('api/userunit/update/', views.UserUnitView.as_view(), name='user-unit-update'),
+    path('api/userunit/update/<int:number>/', views.UserUnitView.as_view(), name='user-unit-update'),
+    path('api/userfaculty/update/', views.UserFacultyView.as_view(), name='user-faculty-update'),
+    path('api/userfaculty/update/<int:number>/', views.UserFacultyView.as_view(), name='user-faculty-update'),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

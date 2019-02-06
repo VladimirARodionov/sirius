@@ -97,8 +97,18 @@ class Organization(models.Model):
 class Unit(models.Model):
     id = models.AutoField(primary_key=True)
     # organization = models.ForeignKey(Organization, null=False, on_delete=models.CASCADE, related_name="unit_organization")
-    text = models.CharField(max_length=255, blank=False)
-    parent = models.ForeignKey('self', blank=True, null=True, related_name='nodes', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, blank=False)
+    parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['id']
+
+
+# Справочник ученических подразделений (факультетов) организации. Если parent != null то это подразделение вложено в parent
+class Faculty(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255, blank=False)
+    parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['id']
@@ -223,10 +233,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     characteristic = models.TextField(null=True, blank=True)
     address = models.ForeignKey(Address, null=True, on_delete=models.PROTECT, related_name="user_address")
     organization = models.ForeignKey(Organization, null=True, on_delete=models.PROTECT, related_name="user_organization")
-    unit = models.ForeignKey(Unit, null=True, on_delete=models.PROTECT, related_name="user_unit")
+    units = models.ManyToManyField(Unit, through='UserUnit')
     positions = models.ManyToManyField(Position, through='UserPosition')
     categories = models.ManyToManyField(Category, through='UserCategory')
     socials = models.ManyToManyField(Social, through='UserSocial')
+    faculties = models.ManyToManyField(Faculty, through='UserFaculty')
 
     objects = UserManager()
 
@@ -350,3 +361,19 @@ class ContactSocial(models.Model):
     id = models.AutoField(primary_key=True)
     contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="contact_social")
     social = models.ForeignKey(Social, on_delete=models.PROTECT, related_name="contact_social_value")
+
+
+# Таблица связей пользователя и подразделениz
+class UserUnit(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_unit")
+    unit = models.ForeignKey(Unit, on_delete=models.PROTECT, related_name="unit_value")
+
+
+# Таблица связей пользователя и факультета
+class UserFaculty(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_faculty")
+    faculty = models.ForeignKey(Faculty, on_delete=models.PROTECT, related_name="faculty_value")
+
+

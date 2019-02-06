@@ -9,10 +9,11 @@ from rest_framework.response import Response
 
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address, UserCategory
+    Payment, Address, UserCategory, Faculty
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
-    CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer
+    CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer, \
+    FacultySerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -138,7 +139,7 @@ class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
     def serialize_tree(self, queryset):
         for obj in queryset:
             data = self.get_serializer(obj).data
-            data['nodes'] = self.serialize_tree(obj.nodes.all())
+            data['children'] = self.serialize_tree(obj.children.all())
             yield data
 
     def list(self, request):
@@ -149,6 +150,31 @@ class UnitViewSet(HasRoleMixin, viewsets.ModelViewSet):
     def retrieve(self, request, pk=None):
         data = list(self.serialize_tree([self.get_object()]))
         return Response(data[0])
+
+
+class FacultyViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'user_role']
+    allowed_put_roles = ['admin_role', 'user_role']
+    allowed_delete_roles = ['admin_role', 'user_role']
+    queryset = Faculty.objects.all()
+    serializer_class = FacultySerializer
+
+    def serialize_tree(self, queryset):
+        for obj in queryset:
+            data = self.get_serializer(obj).data
+            data['children'] = self.serialize_tree(obj.children.all())
+            yield data
+
+    def list(self, request):
+        queryset = self.get_queryset().filter(parent=None)
+        data = self.serialize_tree(queryset)
+        return Response(data)
+
+    def retrieve(self, request, pk=None):
+        data = list(self.serialize_tree([self.get_object()]))
+        return Response(data)
 
 
 class PositionViewSet(HasRoleMixin, viewsets.ModelViewSet):

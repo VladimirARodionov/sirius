@@ -4,7 +4,7 @@
       <v-icon size="40">
         {{icon}}
       </v-icon>&nbsp;
-      <span class="info-box-text">{{title | translate}}</span>
+      <span class="info-box-text">{{title}}</span>
     </v-card-title>
     <v-card-text class="headline font-weight-bold">
       {{value}}

@@ -2,9 +2,13 @@
   <Menu>
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
-          <InfoBox icon="people_outline" title="Total employees" :value="data.employees"/>
-          <InfoBox icon="chat" title="Total disciples" :value="data.disciples"/>
-          <InfoBox icon="people" title="Total users" :value="data.users"/>
+          <InfoBox icon="people_outline" :title="$t('Total employees')" :value="data.employees"/>
+          <InfoBox icon="chat" :title="$t('Total disciples')" :value="data.disciples"/>
+          <InfoBox icon="people" :title="$t('Total users')" :value="data.users"/>
+      </v-layout>
+      <v-layout row wrap>
+          <TreeInfo :title="$t('Employees')" :items="data.unit"/>
+          <TreeInfo :title="$t('Disciples')" :items="data.faculty"/>
       </v-layout>
     </v-container>
   </Menu>
@@ -13,7 +17,8 @@
 <script>
 import Menu from '../layouts/Menu'
 import InfoBox from '../components/InfoBox'
-import { onGetCount } from '../api/requests'
+import TreeInfo from '../components/TreeInfo'
+import { onGetCount, onGetAll } from '../api/requests'
 
 export default {
   name: 'Home',
@@ -23,6 +28,8 @@ export default {
         employees: 0,
         disciples: 0,
         users: 0,
+        faculty: [],
+        unit: [],
         loading: false
       }
     }
@@ -31,6 +38,8 @@ export default {
     this.getEmployeeCount()
     this.getDiscipleCount()
     this.getUserCount()
+    this.getUnitTreeCount()
+    this.getFacultyTreeCount()
   },
   methods: {
     getEmployeeCount: function () {
@@ -41,11 +50,18 @@ export default {
     },
     getUserCount: function () {
       onGetCount('/api/user/count/', 'users', this.data)
+    },
+    getUnitTreeCount: function () {
+      onGetAll('/api/unit/', 'unit', this.data)
+    },
+    getFacultyTreeCount: function () {
+      onGetAll('/api/faculty/', 'faculty', this.data)
     }
   },
   components: {
     Menu,
-    InfoBox
+    InfoBox,
+    TreeInfo
   }
 
 }

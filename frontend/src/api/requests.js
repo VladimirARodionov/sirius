@@ -40,6 +40,19 @@ export function onGetMax (api, name, data) {
     })
 }
 
+export function onGetAll (api, name, data) {
+  data.loading = true
+  axios.get(process.env.API_URL + api)
+    .then(resp => {
+      data.loading = false
+      Vue.set(data, name, resp.data)
+    })
+    .catch(err => {
+      data.loading = false
+      console.log(err)
+    })
+}
+
 export function onPost (api, data, getFunction) {
   data.addDialogErrorMessage = ''
   axios.post(process.env.API_URL + api, data.newObject)
