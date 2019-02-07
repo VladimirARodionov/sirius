@@ -1,0 +1,21 @@
+{
+  "resource": "directory",
+  "type": "list",
+  "title": "Directories",
+  "fields": [
+    {
+      "id": 1,
+      "type": "menulist",
+      "name": "menulist1",
+      "text": "Countries",
+      "value": "/country"
+    },
+    {
+      "id": 2,
+      "type": "menulist",
+      "name": "menulist2",
+      "text": "Positions",
+      "value": "/position"
+    }
+  ]
+}

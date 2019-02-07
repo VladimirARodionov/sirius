@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app>
-      <router-view></router-view>
+      <router-view :key="$route.name + ($route.params.resource || '') + ($route.params.id || '')"></router-view>
     </v-app>
   </div>
 </template>

@@ -1,0 +1,75 @@
+{
+  "resource": "position",
+  "type": "list",
+  "title": "Positions",
+  "fields": [
+    {
+      "type": "group",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "add_button1",
+          "text": "Add",
+          "action": "add",
+          "color": "success",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "edit_button1",
+          "text": "Edit",
+          "action": "edit",
+          "color": "info",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "delete_button1",
+          "text": "Delete",
+          "action": "delete",
+          "color": "error",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "search",
+          "name": "search_button1",
+          "text": "Search",
+          "action": "search"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "headers": [
+        {
+          "text": "#",
+          "value": "id"
+        },
+        {
+          "text": "Name",
+          "value": "name"
+        }
+      ],
+      "names": [
+        {
+          "name": "id"
+        },
+        {
+          "name": "name"
+        }
+      ],
+      "pagination": true,
+      "api": "/api/position/"
+    }
+  ]
+}

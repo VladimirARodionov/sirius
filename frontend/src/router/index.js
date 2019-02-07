@@ -52,6 +52,7 @@ import EditUnit from '../views/directories/EditUnit'
 import Faculties from '../views/directories/Faculties'
 import AddFaculty from '../views/directories/AddFaculty'
 import EditFaculty from '../views/directories/EditFaculty'
+import ResourceList from '../views/ResourceList'
 
 Vue.use(Router)
 
@@ -78,6 +79,14 @@ let router = new Router({
       path: '/',
       name: 'home',
       component: Home,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:resource',
+      name: 'list',
+      component: ResourceList,
       meta: {
         requiresAuth: true
       }
