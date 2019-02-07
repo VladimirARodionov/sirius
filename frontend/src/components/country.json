@@ -39,17 +39,12 @@
             "admin_role",
             "edit_role"
           ]
-        },
-        {
-          "type": "search",
-          "name": "search1",
-          "text": "Search",
-          "action": "search"
         }
       ]
     },
     {
       "type": "table",
+      "name": "table1",
       "headers": [
         {
           "text": "#",

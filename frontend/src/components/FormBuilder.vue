@@ -2,8 +2,9 @@
   <div>
       <div v-for="field in fields" :key="field.name">
         <!--<div>{{JSON.stringify(field) + ' ' + JSON.stringify(name) + ' ' + model[field.name]}}</div>-->
-        <FormFieldFactory v-model="model" :id="getFieldId(field.name)"
-        :name="field.name" :text="field.text" :field="field" :key="id + '_' +field.name" />
+        <FormFieldFactory
+          v-model="model"
+          :field="field"/>
       </div>
   </div>
 </template>
