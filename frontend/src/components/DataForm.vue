@@ -2,6 +2,9 @@
   <div :style="json.style">
     <v-card>
       <v-card-title class="headline grey lighten-2" primary-title> {{json.title | translate}} </v-card-title>
+        <v-alert outline type="error" value="true" v-if="errorMessageText">
+          {{errorMessageText}}
+        </v-alert>
       <v-card-text>
         <FormBuilder
           v-if="loaded"
@@ -57,6 +60,7 @@ export default {
     this.$bus.on('saveObject', this.onSave)
     this.$bus.on('deleteObject', this.onDelete)
     this.$bus.on('selectObject', this.onSelect)
+    this.$bus.on('error', this.onError)
     if (this.json.type === 'edit') {
       this.getObject()
     }
@@ -66,6 +70,7 @@ export default {
     this.$bus.off('saveObject', this.onSave)
     this.$bus.off('deleteObject', this.onDelete)
     this.$bus.off('selectObject', this.onSelect)
+    this.$bus.off('error', this.onError)
   },
   methods: {
     fetchData () {
@@ -99,21 +104,58 @@ export default {
         this.data.currentObject = {}
       }
     },
+    onError (data) {
+      this.data.errorMessage = data
+    },
     getObject () {
       this.$set(this.data, 'currentObject', { id: this.$route.params.id })
       onGetSingle(this.json.api, 'currentObject', this.data)
     },
     addObject: function () {
-      onPostSingle(this.json.api, this.data, this.getObject).then(resp => { this.$bus.emit('goBack', {}) })
+      onPostSingle(this.json.api, this.data, this.getObject).then(resp => {
+        this.$bus.emit('goBack', {})
+      })
     },
     updateObject: function () {
-      onPutSingle(this.json.api, this.data, this.getObject).then(resp => { this.$bus.emit('goBack', {}) })
+      onPutSingle(this.json.api, this.data, this.getObject).then(resp => {
+        this.$bus.emit('goBack', {})
+      })
     },
     deleteObject: function () {
-      onDelete(this.json.api, this.data, this.getObject).then(resp => { this.$bus.emit('updateList', {}) })
+      onDelete(this.json.api, this.data, this.getObject).then(resp => {
+        this.$bus.emit('updateList', {})
+      })
     },
     getDeleteMessage: function () {
       return this.$t('Delete ' + this.json.name ? this.json.name : '') + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
+    }
+  },
+  computed: {
+    errorMessageText: function () {
+      const errors = this.data.errorMessage
+      let result = []
+      let skip = false
+      for (const value in errors) {
+        if (errors[value] instanceof Array) {
+          const names = this.json.fields
+          for (const field in names) {
+            if (names[field].value === value) {
+              skip = true
+            }
+          }
+          if (!skip) {
+            result.push(value + ': ' + errors[value][0])
+            skip = false
+          }
+        } else {
+          result.push(errors[value])
+        }
+      }
+      if (result.length) {
+        return JSON.stringify(result)
+      } else {
+        return ''
+      }
     }
   }
 }

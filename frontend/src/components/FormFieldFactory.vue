@@ -8,7 +8,10 @@
        v-else-if="field.type === 'table'"
        :field="field"
        v-model="value"/>
-
+     <DataTree
+       v-else-if="field.type === 'tree'"
+       :field="field"
+       v-model="value"/>
      <v-layout
        v-else-if="field.type === 'group'"
        row pl-3
@@ -47,6 +50,7 @@
 
 <script>
 import DataTable from './DataTable'
+import DataTree from './DataTree'
 import Button from './Button'
 import Search from './Search'
 import TextField from './TextField'
@@ -60,6 +64,7 @@ export default {
   },
   components: {
     DataTable,
+    DataTree,
     Button,
     Search,
     TextField

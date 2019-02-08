@@ -17,6 +17,13 @@
       "name": "menulist2",
       "text": "Positions",
       "value": "/position/list"
+    },
+    {
+      "id": 3,
+      "type": "menulist",
+      "name": "menulist3",
+      "text": "Units",
+      "value": "/unit/list"
     }
   ]
 }
