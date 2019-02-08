@@ -26,23 +26,25 @@ export default {
     }
   },
   created () {
-    this.$bus.on('select', this.onSelect)
+    this.$bus.on('selectObject', this.onSelect)
+    this.$bus.on('goBack', this.onBack)
   },
   beforeDestroy () {
-    this.$bus.off('select', this.onSelect)
+    this.$bus.off('selectObject', this.onSelect)
+    this.$bus.off('goBack', this.onBack)
   },
   methods: {
     getAction (action) {
       if (action === 'back') {
-        this.$router.go(-1)
+        this.$router.push('/' + this.$route.params.resource + '/list')
       } else if (action === 'add') {
         this.$router.push('/' + this.$route.params.resource + '/add/' + this.selectedId)
       } else if (action === 'edit') {
         this.$router.push('/' + this.$route.params.resource + '/edit/' + this.selectedId)
       } else if (action === 'delete') {
-        this.$bus.emit('delete', this.selectedId)
+        this.$bus.emit('deleteObject', {})
       } else if (action === 'save') {
-        this.$bus.emit('save', this.selectedId)
+        this.$bus.emit('saveObject', this.selectedId)
       }
     },
     onSelect (data) {
@@ -52,6 +54,11 @@ export default {
       } else {
         this.selectedId = ''
         this.object = {}
+      }
+    },
+    onBack () {
+      if (this.field.action === 'save') {
+        this.$router.push('/' + this.$route.params.resource + '/list')
       }
     }
   }

@@ -12,7 +12,7 @@ from SiriusCRM.managers.UserManager import UserManager
 # Справочник стран
 class Country(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50, null=False, unique=True, blank=False)
+    name = models.CharField(max_length=80, null=False, unique=True, blank=False)
 
     def __str__(self):
         return self.name
@@ -25,7 +25,7 @@ class Country(models.Model):
 class Region(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.ForeignKey(Country, null=False, on_delete=models.PROTECT, related_name="region_country")
-    name = models.CharField(max_length=50, null=False, blank=False)
+    name = models.CharField(max_length=80, null=False, blank=False)
 
     def __str__(self):
         return '%s, %s' % (self.name, self.country.name)
@@ -54,8 +54,8 @@ class City(models.Model):
 class Address(models.Model):
     id = models.AutoField(primary_key=True)
     city = models.ForeignKey(City, null=False, on_delete=models.PROTECT, related_name="address_city")
-    village = models.CharField(max_length=255, null=True, blank=True)
-    street = models.CharField(max_length=255, null=True, blank=True)
+    village = models.CharField(max_length=80, null=True, blank=True)
+    street = models.CharField(max_length=80, null=True, blank=True)
     house = models.CharField(max_length=30, null=True, blank=True)
     apartment = models.CharField(max_length=10, null=True, blank=True)
 
@@ -66,8 +66,8 @@ class Address(models.Model):
 # Имя и адрес социальной сети
 class SocialName(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=False)
-    address = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=80, blank=False)
+    address = models.CharField(max_length=160, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -77,7 +77,7 @@ class SocialName(models.Model):
 class Social(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.ForeignKey(SocialName, null=False, on_delete=models.PROTECT, related_name="social_name")
-    account = models.CharField(max_length=255, blank=False)
+    account = models.CharField(max_length=160, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -86,7 +86,7 @@ class Social(models.Model):
 # Справочник организаций
 class Organization(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, unique=True, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
     address = models.ForeignKey(Address, null=True, on_delete=models.PROTECT, related_name="organization_address")
 
     class Meta:
@@ -97,7 +97,7 @@ class Organization(models.Model):
 class Unit(models.Model):
     id = models.AutoField(primary_key=True)
     # organization = models.ForeignKey(Organization, null=False, on_delete=models.CASCADE, related_name="unit_organization")
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=80, blank=False)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
 
     class Meta:
@@ -107,7 +107,7 @@ class Unit(models.Model):
 # Справочник ученических подразделений (факультетов) организации. Если parent != null то это подразделение вложено в parent
 class Faculty(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=80, blank=False)
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
 
     class Meta:
@@ -117,7 +117,7 @@ class Faculty(models.Model):
 # Справочник названий позиций человека (должность)
 class Position(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, unique=True, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -129,7 +129,7 @@ class Category(models.Model):
     DISCIPLE = 2
 
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, unique=True, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -142,7 +142,7 @@ class Category(models.Model):
 # Справочник названий курсов
 class Course(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, unique=True, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -160,7 +160,7 @@ class Essay(models.Model):
 # Справочник компетенций человека, что он умеет
 class Competency(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, unique=True, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -169,7 +169,7 @@ class Competency(models.Model):
 # Справочник offline мероприятий. Адрес берется из справочника адресов
 class Offline(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, blank=False)
+    name = models.CharField(max_length=80, blank=False)
     address = models.ForeignKey(Address, null=True, on_delete=models.PROTECT, related_name="offline_address")
     date_begin = models.DateField(null=True, blank=True)
     date_end = models.DateField(null=True, blank=True)
@@ -181,7 +181,7 @@ class Offline(models.Model):
 # Справочник названий выплат
 class Payment(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255, unique=True, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -191,7 +191,7 @@ class Payment(models.Model):
 class Currency(models.Model):
     id = models.AutoField(primary_key=True)
     short_name = models.CharField(max_length=3, unique=True, blank=False)
-    name = models.CharField(max_length=255, unique=True, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
 
     class Meta:
         ordering = ['id']
@@ -201,9 +201,9 @@ class Currency(models.Model):
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(_('first name'), max_length=50, blank=True)
-    last_name = models.CharField(_('last name'), max_length=50, blank=True)
-    middle_name = models.CharField(_('last name'), max_length=50, blank=True)
+    first_name = models.CharField(_('first name'), max_length=80, blank=True)
+    last_name = models.CharField(_('last name'), max_length=80, blank=True)
+    middle_name = models.CharField(_('last name'), max_length=80, blank=True)
     socials = models.ManyToManyField(Social, through='ContactSocial')
 
     class Meta:
@@ -213,9 +213,9 @@ class Contact(models.Model):
 # Список пользователей
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True, null=True)
-    first_name = models.CharField(_('first name'), max_length=50, blank=False)
-    last_name = models.CharField(_('last name'), max_length=50, blank=False)
-    middle_name = models.CharField(_('middle name'), max_length=50, blank=True)
+    first_name = models.CharField(_('first name'), max_length=80, blank=False)
+    last_name = models.CharField(_('last name'), max_length=80, blank=False)
+    middle_name = models.CharField(_('middle name'), max_length=80, blank=True)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     date_left = models.DateTimeField(_('date left'),null=True, blank=True)
     is_active = models.BooleanField(_('active'), default=True)
@@ -275,7 +275,7 @@ class UserPosition(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_position")
     position = models.ForeignKey(Position, on_delete=models.PROTECT, related_name="position_value")
     date_joined = models.DateField(null=True, blank=True)
-    invite_reason = models.CharField(max_length=255, null=True, blank=True)
+    invite_reason = models.CharField(max_length=160, null=True, blank=True)
 
 
 # Таблица связей пользователя и его категории
@@ -284,7 +284,7 @@ class UserCategory(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_category")
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="category_value")
     date_joined = models.DateField(null=True, blank=True)
-    invite_reason = models.CharField(max_length=255, null=True, blank=True)
+    invite_reason = models.CharField(max_length=160, null=True, blank=True)
 
 
 # Таблица связей пользователя и курсов
@@ -335,7 +335,7 @@ class OrganizationIncome(models.Model):
     currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name="currency_income")
     date = models.DateField(null=False, blank=False)
     value = models.FloatField(null=False, blank=False)
-    note = models.CharField(max_length=255, null=True, blank=True)
+    note = models.CharField(max_length=160, null=True, blank=True)
 
 
 # Таблица расхода денежных средств из организации
@@ -346,7 +346,7 @@ class OrganizationOutcome(models.Model):
     currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name="currency_outcome")
     date = models.DateField(null=False, blank=False)
     value = models.FloatField(null=False, blank=False)
-    note = models.CharField(max_length=255, null=True, blank=True)
+    note = models.CharField(max_length=160, null=True, blank=True)
 
 
 # Таблица связей пользователя и его аккаунтов в социальных сетях

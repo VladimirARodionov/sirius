@@ -59,11 +59,11 @@ export default {
   },
   created () {
     this.$bus.on('search', this.searchChange)
-    this.$bus.on('delete', this.onDelete)
+    this.$bus.on('updateList', this.getObjects)
   },
   beforeDestroy () {
     this.$bus.off('search', this.searchChange)
-    this.$bus.off('delete', this.onDelete)
+    this.$bus.off('updateList', this.getObjects)
   },
   methods: {
     getObjects: function () {
@@ -72,7 +72,7 @@ export default {
     selectObject: function (obj) {
       this.data.currentObject = JSON.parse(JSON.stringify(obj))
       this.data.isSelected = true
-      this.$bus.emit('select', this.data.currentObject)
+      this.$bus.emit('selectObject', this.data.currentObject)
     },
     isActive: function (obj) {
       return {

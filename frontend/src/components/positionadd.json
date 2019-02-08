@@ -3,12 +3,15 @@
   "api": "/api/position/",
   "type": "add",
   "title": "Add position",
+  "style": "max-width: 768px;",
   "fields": [
     {
       "type": "text",
       "name": "add_text1",
       "text": "Name",
-      "value": "name"
+      "value": "name",
+      "maxlength": 80,
+      "required": true
     },
     {
       "type": "actions",

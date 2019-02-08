@@ -5,6 +5,7 @@
       :id="field.name"
       :label="$t(field.text)"
       append-icon="search"
+      @keyup.enter.native="search()"
       @click:append="search()"
       v-model="search_term">
     </v-text-field>

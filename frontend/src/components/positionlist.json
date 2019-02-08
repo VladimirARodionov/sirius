@@ -1,7 +1,10 @@
 {
   "resource": "position",
+  "api": "/api/position/",
   "type": "list",
   "title": "Positions",
+  "name": "position",
+  "style": "max-width: 768px;",
   "fields": [
     {
       "type": "group",

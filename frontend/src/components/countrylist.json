@@ -1,7 +1,10 @@
 {
   "resource": "country",
+  "api": "/api/country/",
   "type": "list",
   "title": "Countries",
+  "name": "country",
+  "style": "max-width: 768px;",
   "fields": [
     {
       "type": "group",

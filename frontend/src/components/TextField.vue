@@ -3,6 +3,8 @@
     :id="field.name"
     :label="$t(field.text) + (field.required?' *':'')"
     :error-messages="errorMessage[field.value]"
+    counter
+    :maxlength="field.maxlength"
     v-model="object[field.value]">
   </v-text-field>
 </template>
@@ -16,7 +18,7 @@ export default {
   },
   data () {
     return {
-      object: {},
+      object: this.value.currentObject,
       errorMessage: {}
     }
   },
@@ -28,6 +30,15 @@ export default {
   },
   updated () {
     this.$bus.emit('changeObject', this.object)
+  },
+  watch: {
+    value: {
+      handler () {
+        this.object = this.value.currentObject
+        this.errorMessage = this.value.errorMessage
+      },
+      deep: true
+    }
   },
   methods: {
     onError (data) {

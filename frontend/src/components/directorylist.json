@@ -2,6 +2,7 @@
   "resource": "directory",
   "type": "list",
   "title": "Directories",
+  "style": "max-width: 768px;",
   "fields": [
     {
       "id": 1,

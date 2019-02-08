@@ -111,7 +111,7 @@ export function onDelete (api, data, getFunction) {
   data.deleteDialogErrorMessage = ''
   data.deleteDialog = false
   if (data.currentObject !== '') {
-    axios.delete(process.env.API_URL + api + data.currentObject.id + '/')
+    return axios.delete(process.env.API_URL + api + data.currentObject.id + '/')
       .then(resp => {
         data.currentObject = {}
         data.isSelected = false
@@ -134,7 +134,7 @@ export function onDelete (api, data, getFunction) {
         }
       })
   } else {
-    console.log('Empty object to delete')
+    throw Error('No object to delete')
   }
 }
 
@@ -179,7 +179,7 @@ export function onGetSingle (api, name, data) {
 
 export function onPostSingle (api, data, getFunction) {
   data.errorMessage = ''
-  axios.post(process.env.API_URL + api, data.currentObject)
+  return axios.post(process.env.API_URL + api, data.currentObject)
     .then(resp => {
       data.loading = false
       data.currentObject = resp.data
@@ -207,13 +207,14 @@ export function onPostSingle (api, data, getFunction) {
         data.errorMessage = error.message
         console.log('Error', error.message)
       }
+      throw error
     })
 }
 
 export function onPutSingle (api, data, getFunction) {
   data.errorMessage = ''
   if (data.currentObject !== '') {
-    axios.put(process.env.API_URL + api + data.currentObject.id + '/', data.currentObject)
+    return axios.put(process.env.API_URL + api + data.currentObject.id + '/', data.currentObject)
       .then(resp => {
         data.loading = false
         data.currentObject = resp.data
@@ -241,6 +242,9 @@ export function onPutSingle (api, data, getFunction) {
           data.errorMessage = error.message
           console.log('Error', error.message)
         }
+        throw error
       })
+  } else {
+    throw Error('No object to update')
   }
 }

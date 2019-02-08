@@ -1,7 +1,7 @@
 <template>
    <div>
      <router-link
-       v-if="field.type === 'menulist'" :id="field.name" class="navbar" active-class="active" :to="value[field.name]">
+       v-if="field.type === 'menulist'" :id="field.name" class="navbar" active-class="active" :to="field.value">
        {{field.text | translate}}
      </router-link>
      <DataTable
