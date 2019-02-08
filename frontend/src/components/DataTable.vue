@@ -1,12 +1,5 @@
 <template>
-  <v-layout column>
-      <v-text-field
-        type="text"
-        :id="field.name + '_search'"
-        append-icon="search"
-        @click:append="getObjects()"
-        v-model="search_term">
-      </v-text-field>
+  <v-layout>
       <v-data-table
         :id="field.name + '_table'"
         :headers="getHeaders"
@@ -51,8 +44,8 @@ export default {
       },
       message: null,
       errorMessage: '',
-      search_term: '',
       pagination: {},
+      search_term: '',
       errors: []
     }
   },
@@ -64,6 +57,12 @@ export default {
       deep: true
     }
   },
+  created () {
+    this.$bus.on('search', this.searchChange)
+  },
+  beforeDestroy () {
+    this.$bus.off('search', this.searchChange)
+  },
   methods: {
     getObjects: function () {
       onGet(this.field.api, this.data, this.pagination, this.search_term)
@@ -71,11 +70,16 @@ export default {
     selectObject: function (obj) {
       this.data.currentObject = JSON.parse(JSON.stringify(obj))
       this.data.isSelected = true
+      this.$bus.emit('select', this.data.currentObject)
     },
     isActive: function (obj) {
       return {
         'table-primary': this.data.currentObject.id === obj.id
       }
+    },
+    searchChange (data) {
+      this.search_term = data
+      this.getObjects()
     },
     getTableValue: function (property, jsonField) {
       const arr = jsonField.name.split('.')

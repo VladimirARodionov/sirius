@@ -1,6 +1,6 @@
 <template>
   <Menu>
-    <DataForm :resource="resource" action="list"></DataForm>
+    <DataForm :resource="resource" action="add"></DataForm>
   </Menu>
 </template>
 
@@ -8,7 +8,7 @@
 import DataForm from '../components/DataForm'
 import Menu from '../layouts/Menu'
 export default {
-  name: 'ResourceList',
+  name: 'ResourceAdd',
   components: {
     Menu,
     DataForm

@@ -7,40 +7,73 @@
      <DataTable
        v-else-if="field.type === 'table'"
        :field="field"
+       :search="search_term"
        v-model="value"/>
 
      <v-layout
        v-else-if="field.type === 'group'"
+       row pl-3
      >
       <div v-for="subfield in field.fields" :key="subfield.name">
         <!--<div>{{JSON.stringify(subfield) + ' ' + JSON.stringify(name) + ' ' + value[subfield.name]}}</div>-->
         <FormFieldFactory
           v-model="value"
-          :field="subfield" />
+          :field="subfield"/>
       </div>
      </v-layout>
      <Button
        v-else-if="field.type === 'button'"
        :field="field"
        v-model="value"/>
+     <Search
+       v-else-if="field.type === 'search'"
+       :field="field"
+       v-model="value"/>
+     <v-text-field
+       v-else-if="field.type === 'text'"
+       :id="field.name"
+       :label="$t(field.text) + (field.required?' *':'')"
+       error-messages=""
+       v-model="field.value">
+     </v-text-field>
+      <v-card-actions
+       v-else-if="field.type === 'actions'">
+        <v-spacer></v-spacer>
+          <v-layout row p-3>
+          <FormFieldFactory v-for="subfield in field.fields" :key="subfield.name"
+            v-model="value"
+            :field="subfield"/>
+            </v-layout>
+      </v-card-actions>
+
    </div>
 </template>
 
 <script>
 import DataTable from './DataTable'
 import Button from './Button'
+import Search from './Search'
 
 export default {
   name: 'FormFieldFactory',
   props: {
     value: {},
-    field: {}
+    field: {},
+    toParent: Function
   },
   components: {
     DataTable,
-    Button
+    Button,
+    Search
+  },
+  data () {
+    return {
+      search_term: '',
+      selectedId: ''
+    }
   },
   methods: {
+
   }
 }
 </script>

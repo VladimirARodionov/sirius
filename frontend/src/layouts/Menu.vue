@@ -18,7 +18,7 @@
           <router-link class="nav-item nav-link" active-class="active"
                        to="/actions">{{'Actions' | translate}}</router-link>
           <router-link class="nav-item nav-link" active-class="active"
-                       to="/directory">{{'Directories' | translate}}</router-link>
+                       to="/directory/list">{{'Directories' | translate}}</router-link>
         </div>
         <div class="navbar-nav ml-auto d-lg-flex align-items-center">
           <div class="nav-item">

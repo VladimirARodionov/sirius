@@ -1,0 +1,33 @@
+{
+  "resource": "position",
+  "type": "add",
+  "title": "Add position",
+  "fields": [
+    {
+      "type": "text",
+      "name": "add_text1",
+      "text": "Name",
+      "value": "name"
+    },
+    {
+      "type": "actions",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "back_button1",
+          "text": "Close",
+          "action": "back",
+          "color": ""
+        },
+        {
+          "type": "button",
+          "name": "add_button1",
+          "text": "Add",
+          "action": "add",
+          "color": "success"
+        }
+      ]
+    }
+  ]
+}

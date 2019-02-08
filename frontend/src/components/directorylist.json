@@ -8,14 +8,14 @@
       "type": "menulist",
       "name": "menulist1",
       "text": "Countries",
-      "value": "/country"
+      "value": "/country/list"
     },
     {
       "id": 2,
       "type": "menulist",
       "name": "menulist2",
       "text": "Positions",
-      "value": "/position"
+      "value": "/position/list"
     }
   ]
 }

@@ -53,6 +53,8 @@ import Faculties from '../views/directories/Faculties'
 import AddFaculty from '../views/directories/AddFaculty'
 import EditFaculty from '../views/directories/EditFaculty'
 import ResourceList from '../views/ResourceList'
+import ResourceAdd from '../views/ResourceAdd'
+import ResourceEdit from '../views/ResourceEdit'
 
 Vue.use(Router)
 
@@ -84,9 +86,25 @@ let router = new Router({
       }
     },
     {
-      path: '/:resource',
+      path: '/:resource/list',
       name: 'list',
       component: ResourceList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:resource/add',
+      name: 'add',
+      component: ResourceAdd,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:resource/edit/:id',
+      name: 'edit',
+      component: ResourceEdit,
       meta: {
         requiresAuth: true
       }

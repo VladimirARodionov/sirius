@@ -1,0 +1,33 @@
+{
+  "resource": "country",
+  "type": "edit",
+  "title": "Edit country",
+  "fields": [
+    {
+      "type": "text",
+      "name": "add_text1",
+      "text": "Name",
+      "value": "name"
+    },
+    {
+      "type": "actions",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "back_button1",
+          "text": "Close",
+          "action": "back",
+          "color": ""
+        },
+        {
+          "type": "button",
+          "name": "edit_button1",
+          "text": "Save",
+          "action": "edit",
+          "color": "success"
+        }
+      ]
+    }
+  ]
+}
