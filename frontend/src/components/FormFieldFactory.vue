@@ -7,7 +7,6 @@
      <DataTable
        v-else-if="field.type === 'table'"
        :field="field"
-       :search="search_term"
        v-model="value"/>
 
      <v-layout
@@ -29,13 +28,10 @@
        v-else-if="field.type === 'search'"
        :field="field"
        v-model="value"/>
-     <v-text-field
+     <TextField
        v-else-if="field.type === 'text'"
-       :id="field.name"
-       :label="$t(field.text) + (field.required?' *':'')"
-       error-messages=""
-       v-model="field.value">
-     </v-text-field>
+       :field="field"
+       v-model="value"/>
       <v-card-actions
        v-else-if="field.type === 'actions'">
         <v-spacer></v-spacer>
@@ -53,6 +49,7 @@
 import DataTable from './DataTable'
 import Button from './Button'
 import Search from './Search'
+import TextField from './TextField'
 
 export default {
   name: 'FormFieldFactory',
@@ -64,12 +61,11 @@ export default {
   components: {
     DataTable,
     Button,
-    Search
+    Search,
+    TextField
   },
   data () {
     return {
-      search_term: '',
-      selectedId: ''
     }
   },
   methods: {

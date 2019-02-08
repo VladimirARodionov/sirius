@@ -95,6 +95,14 @@ let router = new Router({
     },
     {
       path: '/:resource/add',
+      name: 'addfirst',
+      component: ResourceAdd,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:resource/add/:id',
       name: 'add',
       component: ResourceAdd,
       meta: {

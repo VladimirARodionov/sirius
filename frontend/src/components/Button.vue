@@ -2,7 +2,7 @@
   <div>
      <v-btn
        :id="field.name"
-       v-if="field.action === 'add' || field.action === 'back' || selectedId"
+       v-if="(field.action !== 'edit' && field.action !== 'delete') || selectedId"
        :color="field.color"
        :v-roles="field.roles"
        @click="getAction(field.action)">
@@ -21,7 +21,8 @@ export default {
   },
   data () {
     return {
-      selectedId: ''
+      selectedId: '',
+      object: {}
     }
   },
   created () {
@@ -39,18 +40,18 @@ export default {
       } else if (action === 'edit') {
         this.$router.push('/' + this.$route.params.resource + '/edit/' + this.selectedId)
       } else if (action === 'delete') {
-        this.$router.push('/' + this.$route.params.resource + '/delete/' + this.selectedId)
-      } else if (action === 'search') {
-
+        this.$bus.emit('delete', this.selectedId)
       } else if (action === 'save') {
-
+        this.$bus.emit('save', this.selectedId)
       }
     },
     onSelect (data) {
       if (data) {
         this.selectedId = data.id
+        this.object = data
       } else {
         this.selectedId = ''
+        this.object = {}
       }
     }
   }

@@ -1,5 +1,6 @@
 {
   "resource": "position",
+  "api": "/api/position/",
   "type": "add",
   "title": "Add position",
   "fields": [
@@ -18,14 +19,22 @@
           "name": "back_button1",
           "text": "Close",
           "action": "back",
-          "color": ""
+          "color": "",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
         },
         {
           "type": "button",
           "name": "add_button1",
-          "text": "Add",
-          "action": "add",
-          "color": "success"
+          "text": "Save",
+          "action": "save",
+          "color": "success",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
         }
       ]
     }

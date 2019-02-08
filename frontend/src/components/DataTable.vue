@@ -59,9 +59,11 @@ export default {
   },
   created () {
     this.$bus.on('search', this.searchChange)
+    this.$bus.on('delete', this.onDelete)
   },
   beforeDestroy () {
     this.$bus.off('search', this.searchChange)
+    this.$bus.off('delete', this.onDelete)
   },
   methods: {
     getObjects: function () {

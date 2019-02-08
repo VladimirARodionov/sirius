@@ -1,7 +1,7 @@
 <template>
   <div>
-      <div v-for="field in fields" :key="field.name">
-        <!--<div>{{JSON.stringify(field) + ' ' + JSON.stringify(name) + ' ' + model[field.name]}}</div>-->
+      <div v-for="field in json.fields" :key="field.name">
+        <!--<div>{{JSON.stringify(field)}}</div>-->
         <FormFieldFactory
           v-model="model"
           :field="field"/>
@@ -22,7 +22,7 @@ export default {
     id: {
       default: ''
     },
-    data: {
+    json: {
       type: Object,
       required: true
     }
@@ -34,11 +34,11 @@ export default {
     return {
       model: {},
       errors: [],
-      fields: this.data.fields
+      fields: this.json.fields
     }
   },
   created () {
-    this.populateModel(this.data.fields)
+    this.populateModel(this.json.fields)
   },
   methods: {
     getFieldId (name) {
