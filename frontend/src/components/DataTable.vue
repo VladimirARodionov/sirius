@@ -1,7 +1,7 @@
 <template>
   <v-layout>
       <v-data-table
-        :id="field.name + '_table'"
+        :id="field.name"
         :headers="getHeaders"
         :items="data.objects"
         :loading="data.loading"

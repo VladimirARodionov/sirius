@@ -38,7 +38,11 @@ export default {
       if (action === 'back') {
         this.$router.push('/' + this.$route.params.resource + '/list')
       } else if (action === 'add') {
-        this.$router.push('/' + this.$route.params.resource + '/add/' + this.selectedId)
+        let currentId = 0
+        if (this.selectedId) {
+          currentId = this.selectedId
+        }
+        this.$router.push('/' + this.$route.params.resource + '/add/' + currentId)
       } else if (action === 'edit') {
         this.$router.push('/' + this.$route.params.resource + '/edit/' + this.selectedId)
       } else if (action === 'delete') {

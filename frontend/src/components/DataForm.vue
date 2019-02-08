@@ -61,7 +61,7 @@ export default {
     this.$bus.on('deleteObject', this.onDelete)
     this.$bus.on('selectObject', this.onSelect)
     this.$bus.on('error', this.onError)
-    if (this.json.type === 'edit') {
+    if (this.json.type === 'edit' || this.json.type === 'edittree' || this.json.type === 'addtree') {
       this.getObject()
     }
   },
@@ -86,9 +86,9 @@ export default {
       this.data.currentObject = data
     },
     onSave () {
-      if (this.json.type === 'add') {
+      if (this.json.type === 'add' || this.json.type === 'addtree') {
         this.addObject()
-      } else if (this.json.type === 'edit') {
+      } else if (this.json.type === 'edit' || this.json.type === 'edittree') {
         this.updateObject()
       }
     },
@@ -108,15 +108,27 @@ export default {
       this.data.errorMessage = data
     },
     getObject () {
-      this.$set(this.data, 'currentObject', { id: this.$route.params.id })
-      onGetSingle(this.json.api, 'currentObject', this.data)
+      if (this.json.type === 'addtree') {
+        if (this.$route.params.id !== '0') {
+          this.$set(this.data, 'currentObject', { parent: this.$route.params.id, children: {} })
+        }
+      } else {
+        this.$set(this.data, 'currentObject', { id: this.$route.params.id })
+        onGetSingle(this.json.api, 'currentObject', this.data)
+      }
     },
     addObject: function () {
+      if (this.json.type === 'addtree' || this.json.type === 'edittree') {
+        this.fillChildren()
+      }
       onPostSingle(this.json.api, this.data, this.getObject).then(resp => {
         this.$bus.emit('goBack', {})
       })
     },
     updateObject: function () {
+      if (this.json.type === 'addtree' || this.json.type === 'edittree') {
+        this.fillChildren()
+      }
       onPutSingle(this.json.api, this.data, this.getObject).then(resp => {
         this.$bus.emit('goBack', {})
       })
@@ -128,16 +140,25 @@ export default {
     },
     getDeleteMessage: function () {
       return this.$t('Delete ' + this.json.name ? this.json.name : '') + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
+    },
+    fillChildren () {
+      let children = []
+      if (this.data.currentObject.children) {
+        for (const child in this.data.currentObject.children) {
+          children.push(this.data.currentObject.children[child].id)
+        }
+      }
+      this.data.currentObject.children = children
     }
   },
   computed: {
     errorMessageText: function () {
       const errors = this.data.errorMessage
       let result = []
-      let skip = false
       for (const value in errors) {
+        let skip = false
         if (errors[value] instanceof Array) {
-          const names = this.json.fields
+          const names = this.json.fields // TODO fields can be nested
           for (const field in names) {
             if (names[field].value === value) {
               skip = true

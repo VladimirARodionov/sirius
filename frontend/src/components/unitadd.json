@@ -1,7 +1,7 @@
 {
   "resource": "unit",
   "api": "/api/unit/",
-  "type": "add",
+  "type": "addtree",
   "title": "Add unit",
   "style": "max-width: 768px;",
   "fields": [

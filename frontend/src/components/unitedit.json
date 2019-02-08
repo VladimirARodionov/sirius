@@ -1,7 +1,7 @@
 {
   "resource": "unit",
   "api": "/api/unit/",
-  "type": "edit",
+  "type": "edittree",
   "title": "Edit unit",
   "style": "max-width: 768px;",
   "fields": [
