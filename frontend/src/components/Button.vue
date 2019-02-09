@@ -2,7 +2,7 @@
   <div>
      <v-btn
        :id="field.name"
-       v-if="(field.action !== 'edit' && field.action !== 'delete') || selectedId"
+       v-if="(field.action !== 'edit' && field.action !== 'delete' && field.action !== 'detail') || selectedId"
        :color="field.color"
        :v-roles="field.roles"
        @click="getAction(field.action)">

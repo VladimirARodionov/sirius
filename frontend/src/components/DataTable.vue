@@ -1,22 +1,20 @@
 <template>
-  <v-layout>
-      <v-data-table
-        :id="field.name"
-        :headers="getHeaders"
-        :items="data.objects"
-        :loading="data.loading"
-        :total-items="data.totalObjects"
-        :pagination.sync="pagination"
-        :rows-per-page-items="[10, 20, 50, 100]"
-        class="elevation-1"
-      >
-        <template slot="items" slot-scope="props">
-          <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
-            <td v-for="fieldName in getNames" :key="fieldName.name">{{ getTableValue(props.item, fieldName) }}</td>
-          </tr>
-        </template>
-      </v-data-table>
-  </v-layout>
+  <v-data-table
+    :id="field.name"
+    :headers="getHeaders"
+    :items="data.objects"
+    :loading="data.loading"
+    :total-items="data.totalObjects"
+    :pagination.sync="pagination"
+    :rows-per-page-items="[10, 20, 50, 100]"
+    class="elevation-1"
+  >
+    <template slot="items" slot-scope="props">
+      <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
+        <td v-for="fieldName in getNames" :key="fieldName.name">{{ getTableValue(props.item, fieldName) }}</td>
+      </tr>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
@@ -44,8 +42,8 @@ export default {
       },
       message: null,
       errorMessage: '',
-      pagination: {},
-      search_term: '',
+      pagination: {}, // TODO save to vuex on edit add delete detail
+      search_term: '', // TODO save to vuex on edit add delete detail?
       errors: []
     }
   },
@@ -67,7 +65,22 @@ export default {
   },
   methods: {
     getObjects: function () {
-      onGet(this.field.api, this.data, this.pagination, this.search_term)
+      onGet(this.field.api, this.data, this.pagination, this.search_term).then(resp => {
+        if (this.data.currentObject.id) {
+          let visible = false
+          for (const obj in this.data.objects) {
+            if (this.data.objects[obj].id === this.data.currentObject.id) {
+              visible = true
+              break
+            }
+          }
+          if (!visible) {
+            this.data.currentObject = {}
+            this.data.isSelected = false
+            this.$bus.emit('selectObject', this.data.currentObject)
+          }
+        }
+      })
     },
     selectObject: function (obj) {
       this.data.currentObject = JSON.parse(JSON.stringify(obj))
@@ -109,8 +122,8 @@ export default {
       }
     },
     getHeaders: function () {
-      if (this.headers) {
-        return this.headers
+      if (this.field.headers) {
+        return this.field.headers
       } else {
         return this.defaultHeaders
       }

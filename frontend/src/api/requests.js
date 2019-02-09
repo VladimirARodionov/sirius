@@ -12,17 +12,18 @@ export function onGet (api, data, pagination, searchTerm) {
     const direction = pagination.descending ? '-' : ''
     apiUrl = apiUrl + '&ordering=' + direction + pagination.sortBy
   }
-  axios.get(process.env.API_URL + apiUrl)
+  return axios.get(process.env.API_URL + apiUrl)
     .then(resp => {
       data.objects = resp.data.results
       data.totalObjects = resp.data.count
-      data.currentObject = {}
-      data.isSelected = false
+      // data.currentObject = {}
+      // data.isSelected = false
       data.loading = false
     })
     .catch(err => {
       data.loading = false
       console.log(err)
+      throw err
     })
 }
 

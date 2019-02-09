@@ -24,6 +24,12 @@
       "name": "menulist3",
       "text": "Units",
       "value": "/unit/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist4",
+      "text": "All users",
+      "value": "/user/list"
     }
   ]
 }

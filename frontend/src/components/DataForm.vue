@@ -1,6 +1,6 @@
 <template>
-  <div :style="json.style">
-    <v-card>
+  <v-container grid-list-xl fluid>
+    <v-card  :style="json.style">
       <v-card-title class="headline grey lighten-2" primary-title> {{json.title | translate}} </v-card-title>
         <v-alert outline type="error" value="true" v-if="errorMessageText">
           {{errorMessageText}}
@@ -16,7 +16,7 @@
     </v-card>
     <!-- Delete Modal -->
     <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -139,7 +139,7 @@ export default {
       })
     },
     getDeleteMessage: function () {
-      return this.$t('Delete ' + this.json.name ? this.json.name : '') + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
+      return this.$t('Delete ' + (this.json.name ? this.json.name : '')) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
     },
     fillChildren () {
       let children = []
