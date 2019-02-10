@@ -89,12 +89,13 @@ class AddressSerializer(ModelSerializer):
 
 
 class UserDetailSerializer(ModelSerializer):
-    user_address = AddressSerializer(source='address', read_only=True)
+    user_city = CitySerializer(source='city', read_only=True)
 
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile',
-                  'address', 'user_address', 'units', 'faculties', 'positions', 'categories')
+                  'city', 'user_city', 'village', 'street', 'house', 'apartment',
+                  'units', 'faculties', 'positions', 'categories')
 
 
 class UserPositionSerializer(ModelSerializer):

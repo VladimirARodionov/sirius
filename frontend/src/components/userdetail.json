@@ -65,6 +65,38 @@
       "required": false
     },
     {
+      "type": "text",
+      "name": "detail_text6",
+      "text": "Village",
+      "value": "village",
+      "maxlength": 80,
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "detail_text7",
+      "text": "Street",
+      "value": "street",
+      "maxlength": 80,
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "detail_text8",
+      "text": "House",
+      "value": "house",
+      "maxlength": 30,
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "detail_text9",
+      "text": "Apartment",
+      "value": "apartment",
+      "maxlength": 10,
+      "required": false
+    },
+    {
       "type": "multi-select-tree",
       "name": "detail_multi_select_tree1",
       "text": "Unit",
