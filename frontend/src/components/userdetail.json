@@ -56,9 +56,12 @@
     {
       "type": "select",
       "name": "detail_select1",
-      "text": "Address",
+      "text": "City",
       "value": "address",
-      "api": "/api/address/",
+      "item_text": "name",
+      "item_value": "name",
+      "api": "/api/city/",
+      "resource": "city",
       "required": false
     },
     {

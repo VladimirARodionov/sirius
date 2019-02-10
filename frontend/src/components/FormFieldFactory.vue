@@ -39,6 +39,10 @@
        v-else-if="field.type === 'date'"
        :field="field"
        v-model="value"/>
+     <SelectField
+       v-else-if="field.type === 'select'"
+       :field="field"
+       v-model="value"/>
       <v-card-actions
        v-else-if="field.type === 'actions'">
         <v-spacer></v-spacer>
@@ -59,6 +63,7 @@ import Button from './Button'
 import Search from './Search'
 import TextField from './TextField'
 import DateField from './DateField'
+import SelectField from './SelectField'
 
 export default {
   name: 'FormFieldFactory',
@@ -73,7 +78,8 @@ export default {
     Button,
     Search,
     TextField,
-    DateField
+    DateField,
+    SelectField
   },
   data () {
     return {

@@ -30,6 +30,12 @@
       "name": "menulist4",
       "text": "All users",
       "value": "/user/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist5",
+      "text": "Cities",
+      "value": "/city/list"
     }
   ]
 }

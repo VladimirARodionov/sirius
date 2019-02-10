@@ -1,27 +1,44 @@
 <template>
-  <v-select
+  <v-autocomplete
     :id="field.name"
     :label="$t(field.text) + (field.required?' *':'')"
     :error-messages="errorMessage[field.value]"
     chips
     :maxlength="field.maxlength"
     v-model="object[field.value]"
-    :items="items"
+    :items="data.objects"
+    :item-text="field.item_text"
+    :item-value="field.item_value"
+    :search-input.sync="search_term"
+    :loading="data.loading"
+    append-icon="edit"
+    @click:append="goList()"
   >
-  </v-select>
+  </v-autocomplete>
 </template>
 
 <script>
+import { onGet } from '../api/requests'
+
 export default {
-  name: 'TextField',
+  name: 'SelectField',
   props: {
     value: {},
     field: {}
   },
   data () {
     return {
+      data: {
+        objects: [],
+        loading: false
+      },
       object: this.value.currentObject,
-      errorMessage: {}
+      errorMessage: {},
+      pagination: {
+        page: 1,
+        rowsPerPage: 20
+      },
+      search_term: ''
     }
   },
   created () {
@@ -33,6 +50,9 @@ export default {
   updated () {
     this.$bus.emit('changeObject', this.object)
   },
+  mounted () {
+    this.getItems()
+  },
   watch: {
     value: {
       handler () {
@@ -40,11 +60,22 @@ export default {
         this.errorMessage = this.value.errorMessage
       },
       deep: true
+    },
+    search_term: {
+      handler () {
+        this.getItems()
+      }
     }
   },
   methods: {
     onError (data) {
       this.errorMessage = data
+    },
+    getItems () {
+      onGet(this.field.api, this.data, this.pagination, this.search_term)
+    },
+    goList () {
+      this.$router.push('/' + this.field.resource + '/list/')
     }
   }
 }
