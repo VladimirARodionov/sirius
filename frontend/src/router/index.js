@@ -55,6 +55,7 @@ import EditFaculty from '../views/directories/EditFaculty'
 import ResourceList from '../views/ResourceList'
 import ResourceAdd from '../views/ResourceAdd'
 import ResourceEdit from '../views/ResourceEdit'
+import ResourceDetail from '../views/ResourceDetail'
 
 Vue.use(Router)
 
@@ -113,6 +114,14 @@ let router = new Router({
       path: '/:resource/edit/:id',
       name: 'edit',
       component: ResourceEdit,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:resource/detail/:id',
+      name: 'edit',
+      component: ResourceDetail,
       meta: {
         requiresAuth: true
       }

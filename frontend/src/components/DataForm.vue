@@ -61,7 +61,7 @@ export default {
     this.$bus.on('deleteObject', this.onDelete)
     this.$bus.on('selectObject', this.onSelect)
     this.$bus.on('error', this.onError)
-    if (this.json.type === 'edit' || this.json.type === 'edittree' || this.json.type === 'addtree') {
+    if (this.json.type === 'edit' || this.json.type === 'edittree' || this.json.type === 'addtree' || this.json.type === 'detail') {
       this.getObject()
     }
   },
@@ -88,7 +88,7 @@ export default {
     onSave () {
       if (this.json.type === 'add' || this.json.type === 'addtree') {
         this.addObject()
-      } else if (this.json.type === 'edit' || this.json.type === 'edittree') {
+      } else if (this.json.type === 'edit' || this.json.type === 'edittree' || this.json.type === 'detail') {
         this.updateObject()
       }
     },

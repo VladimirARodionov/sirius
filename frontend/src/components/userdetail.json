@@ -1,0 +1,76 @@
+{
+  "resource": "user",
+  "api": "/api/user/",
+  "type": "detail",
+  "title": "User details",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "text",
+      "name": "detail_text1",
+      "text": "First name",
+      "value": "first_name",
+      "maxlength": 80,
+      "required": true
+    },
+    {
+      "type": "text",
+      "name": "detail_text2",
+      "text": "Last name",
+      "value": "last_name",
+      "maxlength": 80,
+      "required": true
+    },
+    {
+      "type": "text",
+      "name": "detail_text3",
+      "text": "Email",
+      "value": "email",
+      "maxlength": 80,
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "detail_text4",
+      "text": "Mobile",
+      "value": "mobile",
+      "maxlength": 20,
+      "required": false
+    },
+    {
+      "type": "date",
+      "name": "detail_date1",
+      "text": "Birthday",
+      "value": "birthday",
+      "required": false
+    },
+    {
+      "type": "actions",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "back_button1",
+          "text": "Close",
+          "action": "back",
+          "color": "",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "edit_button1",
+          "text": "Save",
+          "action": "save",
+          "color": "success",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        }
+      ]
+    }
+  ]
+}

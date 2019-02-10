@@ -49,6 +49,8 @@ export default {
         this.$bus.emit('deleteObject', {})
       } else if (action === 'save') {
         this.$bus.emit('saveObject', this.selectedId)
+      } else if (action === 'detail') {
+        this.$router.push('/' + this.$route.params.resource + '/detail/' + this.selectedId)
       }
     },
     onSelect (data) {
