@@ -35,6 +35,10 @@
        v-else-if="field.type === 'text'"
        :field="field"
        v-model="value"/>
+     <DateField
+       v-else-if="field.type === 'date'"
+       :field="field"
+       v-model="value"/>
       <v-card-actions
        v-else-if="field.type === 'actions'">
         <v-spacer></v-spacer>
@@ -54,6 +58,7 @@ import DataTree from './DataTree'
 import Button from './Button'
 import Search from './Search'
 import TextField from './TextField'
+import DateField from './DateField'
 
 export default {
   name: 'FormFieldFactory',
@@ -67,7 +72,8 @@ export default {
     DataTree,
     Button,
     Search,
-    TextField
+    TextField,
+    DateField
   },
   data () {
     return {

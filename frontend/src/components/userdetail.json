@@ -1,21 +1,14 @@
 {
   "resource": "user",
-  "api": "/api/user/",
+  "api": "/api/userdetail/",
   "type": "detail",
   "title": "User details",
+  "name": "user",
   "style": "max-width: 768px;",
   "fields": [
     {
       "type": "text",
       "name": "detail_text1",
-      "text": "First name",
-      "value": "first_name",
-      "maxlength": 80,
-      "required": true
-    },
-    {
-      "type": "text",
-      "name": "detail_text2",
       "text": "Last name",
       "value": "last_name",
       "maxlength": 80,
@@ -23,7 +16,23 @@
     },
     {
       "type": "text",
+      "name": "detail_text2",
+      "text": "First name",
+      "value": "first_name",
+      "maxlength": 80,
+      "required": true
+    },
+    {
+      "type": "text",
       "name": "detail_text3",
+      "text": "Middle name",
+      "value": "middle_name",
+      "maxlength": 80,
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "detail_text4",
       "text": "Email",
       "value": "email",
       "maxlength": 80,
@@ -31,7 +40,7 @@
     },
     {
       "type": "text",
-      "name": "detail_text4",
+      "name": "detail_text5",
       "text": "Mobile",
       "value": "mobile",
       "maxlength": 20,
@@ -42,6 +51,46 @@
       "name": "detail_date1",
       "text": "Birthday",
       "value": "birthday",
+      "required": false
+    },
+    {
+      "type": "select",
+      "name": "detail_select1",
+      "text": "Address",
+      "value": "address",
+      "api": "/api/address/",
+      "required": false
+    },
+    {
+      "type": "multi-select-tree",
+      "name": "detail_multi_select_tree1",
+      "text": "Unit",
+      "value": "units",
+      "api": "/api/unit/",
+      "required": false
+    },
+    {
+      "type": "multi-select-tree",
+      "name": "detail_multi_select_tree2",
+      "text": "Faculty",
+      "value": "faculties",
+      "api": "/api/faculty/",
+      "required": false
+    },
+    {
+      "type": "multi-select",
+      "name": "detail_multi_select1",
+      "text": "Categories",
+      "value": "categories",
+      "api": "/api/category/",
+      "required": false
+    },
+    {
+      "type": "multi-select",
+      "name": "detail_multi_select2",
+      "text": "Positions",
+      "value": "positions",
+      "api": "/api/position/",
       "required": false
     },
     {

@@ -1,6 +1,6 @@
 <template>
   <v-menu
-    ref="menu"
+    :ref="field.name + '_menu'"
     lazy
     :close-on-content-click="false"
     v-model="menu"
@@ -11,9 +11,9 @@
     min-width="290px"
   >
     <v-text-field
-      :id="field_name.name"
+      :id="field.name"
       slot="activator"
-      :label="$t(field_name.text) + (field_name.required?' *':'')"
+      :label="$t(field.text) + (field.required?' *':'')"
       v-model="object[field.value]"
       append-icon="event"
       :error-messages="errorMessage[field.value]"
@@ -21,7 +21,7 @@
     <v-date-picker
       ref="picker"
       :first-day-of-week="1"
-      v-model="getObject[field_name.name]"
+      v-model="object[field.value]"
       @change="save"
       locale="ru"
       min="1930-01-01"
@@ -40,7 +40,7 @@ export default {
     return {
       object: this.value.currentObject,
       errorMessage: {},
-      menu: false,
+      menu: false
     }
   },
   created () {
@@ -67,6 +67,9 @@ export default {
   methods: {
     onError (data) {
       this.errorMessage = data
+    },
+    save (date) {
+      this.$refs[this.field.name + '_menu'].save(date)
     }
   }
 }
