@@ -9,6 +9,19 @@
     :rows-per-page-items="[10, 20, 50, 100]"
     class="elevation-1"
   >
+    <template slot="headers" slot-scope="props">
+      <tr>
+        <th
+          v-for="header in props.headers"
+          :key="header.text"
+          :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+          @click="changeSort(header.value)"
+        >
+          {{ header.text | translate }}
+          <v-icon small>arrow_upward</v-icon>
+        </th>
+      </tr>
+    </template>
     <template slot="items" slot-scope="props">
       <tr v-on:click="selectObject(props.item)" v-bind:class="isActive(props.item)">
         <td v-for="fieldName in getNames" :key="fieldName.name">{{ getTableValue(props.item, fieldName) }}</td>
@@ -95,6 +108,14 @@ export default {
     searchChange (data) {
       this.search_term = data
       this.getObjects()
+    },
+    changeSort (column) {
+      if (this.pagination.sortBy === column) {
+        this.pagination.descending = !this.pagination.descending
+      } else {
+        this.pagination.sortBy = column
+        this.pagination.descending = false
+      }
     },
     getTableValue: function (property, jsonField) {
       const arr = jsonField.name.split('.')
