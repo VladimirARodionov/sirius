@@ -17,7 +17,6 @@
        row p-3
      >
       <v-item-group multiple v-for="subfield in field.fields" :key="subfield.name">
-        <!--<div>{{JSON.stringify(subfield) + ' ' + JSON.stringify(name) + ' ' + value[subfield.name]}}</div>-->
         <FormFieldFactory
           v-model="value"
           :field="subfield"/>

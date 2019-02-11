@@ -20,6 +20,7 @@
 
 <script>
 import { onGet } from '../api/requests'
+import vuetifyToast from 'vuetify-toast'
 
 export default {
   name: 'SelectField',
@@ -76,6 +77,8 @@ export default {
       onGet(this.field.api, this.data, this.pagination, this.search_term)
     },
     goList () {
+      this.$store.commit('setSavedState', { resource: this.$route.params.resource, id: this.$route.params.id, obj: this.value })
+      vuetifyToast.info(this.$t('ResourceSaved', { 'resource': this.$route.params.resource, 'id': this.$route.params.id }), { icon: 'edit', timeout: 6000 })
       this.$router.push('/' + this.field.resource + '/list/')
     }
   }

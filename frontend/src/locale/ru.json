@@ -1,5 +1,8 @@
 {
 	"Sirius": "Сириус",
+  "ResourceSaved": "Изменения в ресурсе {resource} с id={id} сохранены в памяти",
+  "ResourceRestored": "Изменения в ресурсе {resource} с id={id} восстановлены из памяти но не записаны",
+  "#": "#",
 	"Employees": "Сотрудники",
 	"Disciples": "Ученики",
 	"All users": "Все люди",

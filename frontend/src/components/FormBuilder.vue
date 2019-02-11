@@ -1,7 +1,6 @@
 <template>
   <div>
       <div v-for="field in json.fields" :key="field.name">
-        <!--<div>{{JSON.stringify(field)}}</div>-->
         <FormFieldFactory
           v-model="value"
           :field="field"/>
@@ -36,28 +35,6 @@ export default {
       model: {},
       errors: [],
       fields: this.json.fields
-    }
-  },
-  created () {
-    // this.populateModel(this.json.fields)
-  },
-  methods: {
-    getFieldId (name) {
-      return `input_${name}`
-    },
-    setValue (name, value) {
-      this.$set(this.model, name, value)
-      return this.$emit('input', this.model)
-    },
-    populateModel (field) {
-      for (const v of field) {
-        if (!this.model[v.name]) {
-          this.$set(this.model, v.name, v.value)
-        }
-        if (v.fields) {
-          this.populateModel(v.fields)
-        }
-      }
     }
   }
 }

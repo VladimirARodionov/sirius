@@ -28,6 +28,7 @@
 <script>
 import { onGetAll } from '../api/requests'
 import { flattenTree } from '../api/utils'
+import vuetifyToast from 'vuetify-toast'
 
 export default {
   name: 'MultiSelectTreeField',
@@ -81,6 +82,8 @@ export default {
       })
     },
     goList () {
+      this.$store.commit('setSavedState', { resource: this.$route.params.resource, id: this.$route.params.id, obj: this.value })
+      vuetifyToast.info(this.$t('ResourceSaved', { 'resource': this.$route.params.resource, 'id': this.$route.params.id }), { icon: 'edit', timeout: 6000 })
       this.$router.push('/' + this.field.resource + '/list/')
     }
   }

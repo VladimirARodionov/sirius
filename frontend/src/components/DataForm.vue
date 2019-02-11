@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-xl fluid>
-    <v-card  :style="json.style">
+    <v-card :style="json.style">
       <v-card-title class="headline grey lighten-2" primary-title> {{json.title | translate}} </v-card-title>
         <v-alert outline type="error" value="true" v-if="errorMessageText">
           {{errorMessageText}}
@@ -24,6 +24,7 @@ import FormBuilder from './FormBuilder'
 import { onGetSingle, onPostSingle, onPutSingle, onDelete } from '../api/requests'
 import { flattenJson } from '../api/utils'
 import DeleteDialog from './dialogs/DeleteDialog'
+import vuetifyToast from 'vuetify-toast'
 
 export default {
   name: 'DataForm',
@@ -63,6 +64,8 @@ export default {
     this.$bus.on('deleteObject', this.onDelete)
     this.$bus.on('selectObject', this.onSelect)
     this.$bus.on('error', this.onError)
+  },
+  mounted () {
     if (this.json.type === 'edit' || this.json.type === 'edittree' || this.json.type === 'addtree' || this.json.type === 'detail') {
       this.getObject()
     }
@@ -116,7 +119,17 @@ export default {
         }
       } else {
         this.$set(this.data, 'currentObject', { id: this.$route.params.id })
-        onGetSingle(this.json.api, 'currentObject', this.data)
+        onGetSingle(this.json.api, 'currentObject', this.data).then(resp => {
+          this.getSavedObject()
+        })
+      }
+    },
+    getSavedObject () {
+      if (this.$store.getters.getSavedState[this.resource] && this.$store.getters.getSavedState[this.resource][this.id]) {
+        let savedState = this.$store.getters.getSavedState[this.resource][this.id]
+        this.$store.commit('clearSavedState', this.resource)
+        this.$set(this.data, 'currentObject', savedState.currentObject)
+        vuetifyToast.info(this.$t('ResourceRestored', { 'resource': this.resource, 'id': this.id }), { icon: 'edit', timeout: 6000 })
       }
     },
     addObject: function () {
@@ -151,6 +164,14 @@ export default {
         }
       }
       this.data.currentObject.children = children
+    }
+  },
+  watch: {
+    data: {
+      handler () {
+        // this.getSavedObject()
+      },
+      deep: true
     }
   },
   computed: {

@@ -156,7 +156,7 @@ export function onGetSingle (api, name, data) {
   data.errorMessage = ''
   if (data[name] && data[name].id) {
     data.loading = true
-    axios.get(process.env.API_URL + api + data[name].id + '/')
+    return axios.get(process.env.API_URL + api + data[name].id + '/')
       .then(resp => {
         data.loading = false
         Vue.set(data, name, resp.data)

@@ -38,7 +38,8 @@ export default new Vuex.Store({
       state.savedState[name] = null
     },
     setSavedState (state, obj) {
-      state.savedState[obj.name] = obj.obj
+      state.savedState[obj.resource] = {}
+      state.savedState[obj.resource][obj.id] = obj.obj
     }
   },
   actions: {

@@ -19,7 +19,7 @@
       :error-messages="errorMessage[field.value]"
       readonly/>
     <v-date-picker
-      ref="picker"
+      :ref="field.name + '_picker'"
       :first-day-of-week="1"
       v-model="object[field.value]"
       @change="save"
@@ -61,7 +61,7 @@ export default {
       deep: true
     },
     menu (val) {
-      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+      val && this.$nextTick(() => (this.$refs[this.field.name + '_picker'].activePicker = 'YEAR'))
     }
   },
   methods: {
