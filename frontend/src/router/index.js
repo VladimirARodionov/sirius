@@ -120,7 +120,7 @@ let router = new Router({
     },
     {
       path: '/:resource/detail/:id',
-      name: 'edit',
+      name: 'detail',
       component: ResourceDetail,
       meta: {
         requiresAuth: true

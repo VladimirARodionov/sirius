@@ -174,7 +174,7 @@ class FacultyViewSet(HasRoleMixin, viewsets.ModelViewSet):
 
     def retrieve(self, request, pk=None):
         data = list(self.serialize_tree([self.get_object()]))
-        return Response(data)
+        return Response(data[0])
 
 
 class PositionViewSet(HasRoleMixin, viewsets.ModelViewSet):

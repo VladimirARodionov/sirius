@@ -1,9 +1,9 @@
 {
-  "resource": "unit",
-  "api": "/api/unit/",
+  "resource": "faculty",
+  "api": "/api/faculty/",
   "type": "list",
-  "title": "Units",
-  "name": "unit",
+  "title": "Faculties",
+  "name": "faculty",
   "style": "max-width: 768px;",
   "fields": [
     {
@@ -54,7 +54,7 @@
     {
       "type": "tree",
       "name": "tree1",
-      "api": "/api/unit/"
+      "api": "/api/faculty/"
     }
   ]
 }
