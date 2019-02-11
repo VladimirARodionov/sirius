@@ -16,6 +16,12 @@
     append-icon="edit"
     @click:append="goList()"
   >
+    <template slot="item" slot-scope="data">
+      <div>
+        {{data.item[field.item_text] + ' (' + data.item.user_count + ')'}}
+      </div>
+    </template>
+
   </v-autocomplete>
 </template>
 
