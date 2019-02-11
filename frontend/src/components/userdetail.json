@@ -57,9 +57,9 @@
       "type": "select",
       "name": "detail_select1",
       "text": "City",
-      "value": "address",
+      "value": "city",
       "item_text": "name",
-      "item_value": "name",
+      "item_value": "id",
       "api": "/api/city/",
       "resource": "city",
       "required": false
@@ -117,7 +117,10 @@
       "name": "detail_multi_select1",
       "text": "Categories",
       "value": "categories",
+      "item_text": "name",
+      "item_value": "category_value.id",
       "api": "/api/category/",
+      "resource": "category",
       "required": false
     },
     {
@@ -125,7 +128,10 @@
       "name": "detail_multi_select2",
       "text": "Positions",
       "value": "positions",
+      "item_text": "name",
+      "item_value": "id",
       "api": "/api/position/",
+      "resource": "position",
       "required": false
     },
     {

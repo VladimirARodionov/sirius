@@ -9,7 +9,8 @@
     v-model="object[field.value]"
     :items="data.objects"
     :item-text="field.item_text"
-    :item-value="field.item_value"
+    item-value="id"
+    multiple
     :search-input.sync="search_term"
     :loading="data.loading"
     append-icon="edit"

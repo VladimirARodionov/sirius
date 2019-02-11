@@ -18,6 +18,12 @@
     },
     {
       "type": "menulist",
+      "name": "menulist_position",
+      "text": "Categories",
+      "value": "/category/list"
+    },
+    {
+      "type": "menulist",
       "name": "menulist_unit",
       "text": "Units",
       "value": "/unit/list"

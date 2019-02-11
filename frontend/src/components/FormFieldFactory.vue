@@ -43,6 +43,10 @@
        v-else-if="field.type === 'select'"
        :field="field"
        v-model="value"/>
+     <MultiSelectField
+       v-else-if="field.type === 'multi-select'"
+       :field="field"
+       v-model="value"/>
       <v-card-actions
        v-else-if="field.type === 'actions'">
         <v-spacer></v-spacer>
@@ -64,6 +68,7 @@ import Search from './Search'
 import TextField from './TextField'
 import DateField from './DateField'
 import SelectField from './SelectField'
+import MultiSelectField from './MultiSelectField'
 
 export default {
   name: 'FormFieldFactory',
@@ -79,7 +84,8 @@ export default {
     Search,
     TextField,
     DateField,
-    SelectField
+    SelectField,
+    MultiSelectField
   },
   data () {
     return {

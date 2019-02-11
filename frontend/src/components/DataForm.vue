@@ -58,7 +58,6 @@ export default {
   created () {
     this.fetchData()
     this.$bus.on('changeObject', this.onChangeObject)
-    this.$bus.on('changeSelectObject', this.onChangeSelectObject)
     this.$bus.on('saveObject', this.onSave)
     this.$bus.on('deleteObject', this.onDelete)
     this.$bus.on('selectObject', this.onSelect)
@@ -69,7 +68,6 @@ export default {
   },
   beforeDestroy () {
     this.$bus.off('changeObject', this.onChangeObject)
-    this.$bus.off('changeSelectObject', this.onChangeSelectObject)
     this.$bus.off('saveObject', this.onSave)
     this.$bus.off('deleteObject', this.onDelete)
     this.$bus.off('selectObject', this.onSelect)
@@ -87,9 +85,6 @@ export default {
     },
     onChangeObject (data) {
       this.data.currentObject = data
-    },
-    onChangeSelectObject (data) {
-      this.data.selectedObject[data.name] = data.id
     },
     onSave () {
       if (this.json.type === 'add' || this.json.type === 'addtree') {

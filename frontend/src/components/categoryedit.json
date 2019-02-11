@@ -1,21 +1,10 @@
 {
-  "resource": "city",
-  "api": "/api/city/",
+  "resource": "category",
+  "api": "/api/category/",
   "type": "edit",
-  "title": "Edit city",
+  "title": "Edit category",
   "style": "max-width: 768px;",
   "fields": [
-    {
-      "type": "select",
-      "name": "add_select1",
-      "text": "Region",
-      "value": "region",
-      "item_text": "name",
-      "item_value": "id",
-      "api": "/api/region/",
-      "resource": "region",
-      "required": true
-    },
     {
       "type": "text",
       "name": "add_text1",

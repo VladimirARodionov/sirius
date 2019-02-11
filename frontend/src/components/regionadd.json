@@ -11,7 +11,7 @@
       "text": "Country",
       "value": "country",
       "item_text": "name",
-      "item_value": "name",
+      "item_value": "id",
       "api": "/api/country/",
       "resource": "country",
       "required": true
