@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.generics import get_object_or_404
 from rest_framework.serializers import ModelSerializer
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
@@ -32,6 +33,12 @@ class PositionSerializer(ModelSerializer):
     class Meta:
         model = Position
         fields = ('id', 'name')
+
+
+class PositionIdSerializer(ModelSerializer):
+    class Meta:
+        model = Position
+        fields = ('id',)
 
 
 class CategorySerializer(ModelSerializer):
@@ -96,6 +103,32 @@ class UserDetailSerializer(ModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile',
                   'city', 'user_city', 'village', 'street', 'house', 'apartment',
                   'units', 'faculties', 'positions', 'categories')
+
+    def update(self, instance, validated_data):
+        positions_data = self.context['request'].data['positions']
+        user_id = self.context['request'].data['id']
+        user = get_object_or_404(User, pk=user_id)
+        instance = super(UserDetailSerializer, self).update(instance, validated_data)
+        new_positions = []
+        for row in positions_data:
+            position = get_object_or_404(Position, pk=row)
+            new_positions.append(position)
+        current_positions = UserPosition.objects.filter(user=user_id)
+        current_positions.delete() # TODO not delete already existing positions
+        for new_pos in new_positions:
+            UserPosition.objects.create(user=user, position=new_pos)
+
+        categories_data = self.context['request'].data['categories']
+        new_categories = []
+        for row in categories_data:
+            category = get_object_or_404(Category, pk=row)
+            new_categories.append(category)
+        current_categories = UserCategory.objects.filter(user=user_id)
+        current_categories.delete() # TODO not delete already existing categories
+        for new_cat in new_categories:
+            UserCategory.objects.create(user=user, category=new_cat)
+
+        return instance
 
 
 class UserPositionSerializer(ModelSerializer):
