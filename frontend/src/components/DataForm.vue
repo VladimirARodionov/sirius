@@ -160,7 +160,7 @@ export default {
       for (const value in errors) {
         let skip = false
         if (errors[value] instanceof Array) {
-          const names = flattenJson(this.json.fields) // TODO fields can be nested
+          const names = flattenJson(this.json.fields) // TODO remove pathname
           for (const field in names) {
             if (names[field].value === value) {
               skip = true

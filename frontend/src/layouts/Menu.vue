@@ -10,9 +10,9 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav d-lg-flex align-items-center">
           <router-link class="nav-item nav-link" active-class="active"
-                       to="/employee">{{'Employees' | translate}}</router-link>
+                       to="/employee/list">{{'Employees' | translate}}</router-link>
           <router-link class="nav-item nav-link" active-class="active"
-                       to="/disciple">{{'Disciples' | translate}}</router-link>
+                       to="/disciple/list">{{'Disciples' | translate}}</router-link>
           <router-link class="nav-item nav-link" active-class="active"
                        to="/reports">{{'Reports' | translate}}</router-link>
           <router-link class="nav-item nav-link" active-class="active"
