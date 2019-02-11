@@ -69,11 +69,6 @@ export default {
         this.errorMessage = this.value.errorMessage
       },
       deep: true
-    },
-    search_term: {
-      handler () {
-        this.getItems()
-      }
     }
   },
   methods: {

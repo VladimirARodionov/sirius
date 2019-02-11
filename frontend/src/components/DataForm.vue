@@ -22,6 +22,7 @@
 <script>
 import FormBuilder from './FormBuilder'
 import { onGetSingle, onPostSingle, onPutSingle, onDelete } from '../api/requests'
+import { flattenJson } from '../api/utils'
 import DeleteDialog from './dialogs/DeleteDialog'
 
 export default {
@@ -159,7 +160,7 @@ export default {
       for (const value in errors) {
         let skip = false
         if (errors[value] instanceof Array) {
-          const names = this.json.fields // TODO fields can be nested
+          const names = flattenJson(this.json.fields) // TODO fields can be nested
           for (const field in names) {
             if (names[field].value === value) {
               skip = true

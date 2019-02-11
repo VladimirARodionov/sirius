@@ -14,14 +14,14 @@
        v-model="value"/>
      <v-layout
        v-else-if="field.type === 'group'"
-       row pl-3
+       row p-3
      >
-      <div v-for="subfield in field.fields" :key="subfield.name">
+      <v-item-group multiple v-for="subfield in field.fields" :key="subfield.name">
         <!--<div>{{JSON.stringify(subfield) + ' ' + JSON.stringify(name) + ' ' + value[subfield.name]}}</div>-->
         <FormFieldFactory
           v-model="value"
           :field="subfield"/>
-      </div>
+      </v-item-group>
      </v-layout>
      <Button
        v-else-if="field.type === 'button'"
