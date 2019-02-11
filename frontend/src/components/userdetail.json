@@ -101,7 +101,10 @@
       "name": "detail_multi_select_tree1",
       "text": "Unit",
       "value": "units",
+      "item_text": "pathname",
+      "item_value": "id",
       "api": "/api/unit/",
+      "resource": "unit",
       "required": false
     },
     {
@@ -109,7 +112,10 @@
       "name": "detail_multi_select_tree2",
       "text": "Faculty",
       "value": "faculties",
+      "item_text": "pathname",
+      "item_value": "id",
       "api": "/api/faculty/",
+      "resource": "faculty",
       "required": false
     },
     {

@@ -47,6 +47,10 @@
        v-else-if="field.type === 'multi-select'"
        :field="field"
        v-model="value"/>
+     <MultiSelectTreeField
+       v-else-if="field.type === 'multi-select-tree'"
+       :field="field"
+       v-model="value"/>
       <v-card-actions
        v-else-if="field.type === 'actions'">
         <v-spacer></v-spacer>
@@ -69,6 +73,7 @@ import TextField from './TextField'
 import DateField from './DateField'
 import SelectField from './SelectField'
 import MultiSelectField from './MultiSelectField'
+import MultiSelectTreeField from './MultiSelectTreeField'
 
 export default {
   name: 'FormFieldFactory',
@@ -85,7 +90,8 @@ export default {
     TextField,
     DateField,
     SelectField,
-    MultiSelectField
+    MultiSelectField,
+    MultiSelectTreeField
   },
   data () {
     return {

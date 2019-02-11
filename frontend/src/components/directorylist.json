@@ -18,7 +18,7 @@
     },
     {
       "type": "menulist",
-      "name": "menulist_position",
+      "name": "menulist_category",
       "text": "Categories",
       "value": "/category/list"
     },

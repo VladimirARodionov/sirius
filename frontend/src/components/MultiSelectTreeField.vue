@@ -20,10 +20,11 @@
 </template>
 
 <script>
-import { onGet } from '../api/requests'
+import { onGetAll } from '../api/requests'
+import { flattenTree } from '../api/utils'
 
 export default {
-  name: 'MultiSelectField',
+  name: 'MultiSelectTreeField',
   props: {
     value: {},
     field: {}
@@ -74,7 +75,9 @@ export default {
       this.errorMessage = data
     },
     getItems () {
-      onGet(this.field.api, this.data, this.pagination, this.search_term)
+      onGetAll(this.field.api, 'objects', this.data).then(resp => {
+        this.data.objects = flattenTree(this.data.objects)
+      })
     },
     goList () {
       this.$router.push('/' + this.field.resource + '/list/')

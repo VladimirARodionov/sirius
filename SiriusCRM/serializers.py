@@ -128,6 +128,26 @@ class UserDetailSerializer(ModelSerializer):
         for new_cat in new_categories:
             UserCategory.objects.create(user=user, category=new_cat)
 
+        units_data = self.context['request'].data['units']
+        new_units = []
+        for row in units_data:
+            unit = get_object_or_404(Unit, pk=row)
+            new_units.append(unit)
+        current_units = UserUnit.objects.filter(user=user_id)
+        current_units.delete() # TODO not delete already existing units
+        for new_un in new_units:
+            UserUnit.objects.create(user=user, unit=new_un)
+
+        faculties_data = self.context['request'].data['faculties']
+        new_faculties = []
+        for row in faculties_data:
+            faculty = get_object_or_404(Faculty, pk=row)
+            new_faculties.append(faculty)
+        current_faculties = UserFaculty.objects.filter(user=user_id)
+        current_faculties.delete() # TODO not delete already existing faculties
+        for new_fac in new_faculties:
+            UserFaculty.objects.create(user=user, faculty=new_fac)
+
         return instance
 
 

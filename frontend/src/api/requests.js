@@ -43,7 +43,7 @@ export function onGetMax (api, name, data) {
 
 export function onGetAll (api, name, data) {
   data.loading = true
-  axios.get(process.env.API_URL + api)
+  return axios.get(process.env.API_URL + api)
     .then(resp => {
       data.loading = false
       Vue.set(data, name, resp.data)
