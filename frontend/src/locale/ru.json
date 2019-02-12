@@ -1,5 +1,9 @@
 {
 	"Sirius": "Сириус",
+  "ResourceSaved": "Изменения в ресурсе {resource} с id={id} сохранены в памяти",
+  "ResourceRestored": "Изменения в ресурсе {resource} с id={id} восстановлены из памяти но не записаны",
+  "#": "#",
+  "Delete ": "Удалить ",
 	"Employees": "Сотрудники",
 	"Disciples": "Ученики",
 	"All users": "Все люди",
@@ -118,8 +122,6 @@
   "Edit position": "Изменение должности",
   "Address": "Адрес",
   "Unit": "Подразделение",
-  "Employees": "Сотрудники",
-  "Disciples": "Ученики",
   "Faculty": "Факультет",
   "Faculties": "Факультеты",
   "Add faculty": "Добавление факультета",

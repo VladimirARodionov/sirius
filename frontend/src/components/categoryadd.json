@@ -1,0 +1,45 @@
+{
+  "resource": "category",
+  "api": "/api/category/",
+  "type": "add",
+  "title": "Add category",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "text",
+      "name": "add_text1",
+      "text": "Name",
+      "value": "name",
+      "maxlength": 80,
+      "required": true
+    },
+    {
+      "type": "actions",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "back_button1",
+          "text": "Close",
+          "action": "back",
+          "color": "",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "add_button1",
+          "text": "Save",
+          "action": "save",
+          "color": "success",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -84,7 +84,7 @@ class UserRolesView(HasRoleMixin, APIView):
 
 class PeopleImportView(HasRoleMixin, APIView):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'edit_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
     parser_classes = (MultiPartParser,)
 
     def post(self, request):
@@ -130,7 +130,7 @@ class PeopleImportView(HasRoleMixin, APIView):
 
 class UserExportView(HasRoleMixin, APIView):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'user_role',]
+    allowed_get_roles = ['admin_role', 'user_role',]
 
     def export(self, request):
         person_resource = UserResource()

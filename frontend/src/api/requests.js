@@ -12,17 +12,18 @@ export function onGet (api, data, pagination, searchTerm) {
     const direction = pagination.descending ? '-' : ''
     apiUrl = apiUrl + '&ordering=' + direction + pagination.sortBy
   }
-  axios.get(process.env.API_URL + apiUrl)
+  return axios.get(process.env.API_URL + apiUrl)
     .then(resp => {
       data.objects = resp.data.results
       data.totalObjects = resp.data.count
-      data.currentObject = {}
-      data.isSelected = false
+      // data.currentObject = {}
+      // data.isSelected = false
       data.loading = false
     })
     .catch(err => {
       data.loading = false
       console.log(err)
+      throw err
     })
 }
 
@@ -42,7 +43,7 @@ export function onGetMax (api, name, data) {
 
 export function onGetAll (api, name, data) {
   data.loading = true
-  axios.get(process.env.API_URL + api)
+  return axios.get(process.env.API_URL + api)
     .then(resp => {
       data.loading = false
       Vue.set(data, name, resp.data)
@@ -111,7 +112,7 @@ export function onDelete (api, data, getFunction) {
   data.deleteDialogErrorMessage = ''
   data.deleteDialog = false
   if (data.currentObject !== '') {
-    axios.delete(process.env.API_URL + api + data.currentObject.id + '/')
+    return axios.delete(process.env.API_URL + api + data.currentObject.id + '/')
       .then(resp => {
         data.currentObject = {}
         data.isSelected = false
@@ -134,7 +135,7 @@ export function onDelete (api, data, getFunction) {
         }
       })
   } else {
-    console.log('Empty object to delete')
+    throw Error('No object to delete')
   }
 }
 
@@ -155,7 +156,7 @@ export function onGetSingle (api, name, data) {
   data.errorMessage = ''
   if (data[name] && data[name].id) {
     data.loading = true
-    axios.get(process.env.API_URL + api + data[name].id + '/')
+    return axios.get(process.env.API_URL + api + data[name].id + '/')
       .then(resp => {
         data.loading = false
         Vue.set(data, name, resp.data)
@@ -179,7 +180,7 @@ export function onGetSingle (api, name, data) {
 
 export function onPostSingle (api, data, getFunction) {
   data.errorMessage = ''
-  axios.post(process.env.API_URL + api, data.currentObject)
+  return axios.post(process.env.API_URL + api, data.currentObject)
     .then(resp => {
       data.loading = false
       data.currentObject = resp.data
@@ -207,13 +208,14 @@ export function onPostSingle (api, data, getFunction) {
         data.errorMessage = error.message
         console.log('Error', error.message)
       }
+      throw error
     })
 }
 
 export function onPutSingle (api, data, getFunction) {
   data.errorMessage = ''
   if (data.currentObject !== '') {
-    axios.put(process.env.API_URL + api + data.currentObject.id + '/', data.currentObject)
+    return axios.put(process.env.API_URL + api + data.currentObject.id + '/', data.currentObject)
       .then(resp => {
         data.loading = false
         data.currentObject = resp.data
@@ -241,6 +243,9 @@ export function onPutSingle (api, data, getFunction) {
           data.errorMessage = error.message
           console.log('Error', error.message)
         }
+        throw error
       })
+  } else {
+    throw Error('No object to update')
   }
 }
