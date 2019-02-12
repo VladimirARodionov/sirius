@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import store from '../store'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
+import SelectProgram from '../views/SelectProgram.vue'
 import Actions from '../views/Actions.vue'
 import Reports from '../views/Reports.vue'
 import ImportUsers from '../views/ImportUsers.vue'
@@ -37,6 +38,14 @@ let router = new Router({
     },
     {
       path: '/',
+      name: 'selectprogram',
+      component: SelectProgram,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/siriuscrm',
       name: 'home',
       component: Home,
       meta: {

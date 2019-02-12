@@ -126,5 +126,10 @@
   "Faculties": "Факультеты",
   "Add faculty": "Добавление факультета",
   "Edit faculty": "Изменение факультета",
-  "Delete faculty": "Удалить факультет"
+  "Delete faculty": "Удалить факультет",
+  "Main menu": "Главное меню",
+  "Zdravniza": "Здравница",
+  "CRM": "CRM",
+  "Manage patients": "Работа с пациентами",
+  "Manage disciples and employees": "Работа с учениками и сотрудниками"
 }

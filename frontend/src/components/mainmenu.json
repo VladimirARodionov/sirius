@@ -1,0 +1,25 @@
+{
+    "resource": "main",
+    "type": "menu",
+    "title": "Main menu",
+    "style": "max-width: 568px;",
+    "fields": [
+      {
+        "type": "menuselect",
+        "name": "menuselect_zdravniza",
+        "text": "Zdravniza",
+        "subtext": "Manage patients",
+        "icon": "event_note",
+        "value": "/zdravniza"
+      },
+      {
+        "type": "menuselect",
+        "name": "menuselect_crm",
+        "text": "CRM",
+        "subtext": "Manage disciples and employees",
+        "icon": "people_outline",
+         "value": "/siriuscrm"
+      }
+    ]
+  }
+  
