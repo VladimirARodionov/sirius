@@ -166,14 +166,6 @@ export default {
       this.data.currentObject.children = children
     }
   },
-  watch: {
-    data: {
-      handler () {
-        // this.getSavedObject()
-      },
-      deep: true
-    }
-  },
   computed: {
     errorMessageText: function () {
       const errors = this.data.errorMessage
