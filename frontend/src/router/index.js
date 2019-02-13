@@ -45,7 +45,7 @@ let router = new Router({
       }
     },
     {
-      path: '/siriuscrm',
+      path: '/crm',
       name: 'home',
       component: Home,
       meta: {

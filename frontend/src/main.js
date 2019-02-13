@@ -5,16 +5,13 @@ import store from './store'
 import Axios from 'axios'
 import vuexI18n from 'vuex-i18n'
 import 'bootstrap'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import 'vuetify/dist/vuetify.min.css'
 import Vuetify from 'vuetify'
 import ru from 'vuetify/lib/locale/ru'
 import VRM from './vue-role-manager'
-import 'patternfly-bootstrap-treeview'
 import 'bootstrap/dist/css/bootstrap.css'
 import VueBus from 'vue-bus'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(VueBus)
 Vue.use(VRM, { router: router, debug: true })
@@ -26,9 +23,6 @@ Vue.use(Vuetify, {
   }
 })
 
-library.add(faUser)
-
-Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.prototype.$http = Axios
 
 const token = localStorage.getItem('token')

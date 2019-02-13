@@ -18,7 +18,7 @@
         "text": "CRM",
         "subtext": "Manage disciples and employees",
         "icon": "people_outline",
-         "value": "/siriuscrm"
+         "value": "/crm"
       }
     ]
   }
