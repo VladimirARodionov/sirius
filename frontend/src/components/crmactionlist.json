@@ -1,0 +1,21 @@
+{
+  "program": "crm",
+  "resource": "report",
+  "type": "list",
+  "title": "Actions",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "menulist",
+      "name": "menulist_import",
+      "text": "Import users",
+      "value": "/crm/import/user"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_export",
+      "text": "Export users",
+      "value": "/crm/export/user"
+    }
+  ]
+}

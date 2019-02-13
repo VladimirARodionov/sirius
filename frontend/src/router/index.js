@@ -2,9 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store'
 import Login from '../views/Login.vue'
-import Home from '../views/Home.vue'
-import Actions from '../views/Actions.vue'
-import Reports from '../views/Reports.vue'
+import Crm from '../views/Crm.vue'
+import Zdravniza from '../views/Zdravniza.vue'
+import SelectProgram from '../views/SelectProgram.vue'
+import ActionList from '../views/ActionList.vue'
+import ReportList from '../views/ReportList.vue'
 import ImportUsers from '../views/ImportUsers.vue'
 import ResetPasswordEmail from '../views/ResetPasswordEmail'
 import ResetPasswordConfirm from '../views/ResetPasswordConfirm'
@@ -37,14 +39,46 @@ let router = new Router({
     },
     {
       path: '/',
-      name: 'home',
-      component: Home,
+      name: 'selectprogram',
+      component: SelectProgram,
       meta: {
         requiresAuth: true
       }
     },
     {
-      path: '/:resource/list',
+      path: '/crm',
+      name: 'crm',
+      component: Crm,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/zdravniza',
+      name: 'zdravniza',
+      component: Zdravniza,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:program/report/list',
+      name: 'reportlist',
+      component: ReportList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:program/action/list',
+      name: 'actionlist',
+      component: ActionList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:program/:resource/list',
       name: 'list',
       component: ResourceList,
       meta: {
@@ -52,7 +86,7 @@ let router = new Router({
       }
     },
     {
-      path: '/:resource/add',
+      path: '/:program/:resource/add',
       name: 'addfirst',
       component: ResourceAdd,
       meta: {
@@ -60,7 +94,7 @@ let router = new Router({
       }
     },
     {
-      path: '/:resource/add/:id',
+      path: '/:program/:resource/add/:id',
       name: 'add',
       component: ResourceAdd,
       meta: {
@@ -68,7 +102,7 @@ let router = new Router({
       }
     },
     {
-      path: '/:resource/edit/:id',
+      path: '/:program/:resource/edit/:id',
       name: 'edit',
       component: ResourceEdit,
       meta: {
@@ -76,7 +110,7 @@ let router = new Router({
       }
     },
     {
-      path: '/:resource/detail/:id',
+      path: '/:program/:resource/detail/:id',
       name: 'detail',
       component: ResourceDetail,
       meta: {
@@ -84,23 +118,7 @@ let router = new Router({
       }
     },
     {
-      path: '/reports',
-      name: 'reports',
-      component: Reports,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/actions',
-      name: 'actions',
-      component: Actions,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/actions/import/users',
+      path: '/crm/import/user',
       name: 'importUsers',
       component: ImportUsers,
       meta: {
@@ -108,7 +126,7 @@ let router = new Router({
       }
     },
     {
-      path: '/actions/export/users',
+      path: '/crm/export/user',
       name: 'exportUsers',
       component: ExportUsers,
       meta: {

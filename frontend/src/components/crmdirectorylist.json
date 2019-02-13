@@ -1,0 +1,57 @@
+{
+  "program": "crm",
+  "resource": "directory",
+  "type": "list",
+  "title": "Directories",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "menulist",
+      "name": "menulist_user",
+      "text": "All users",
+      "value": "/crm/user/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_position",
+      "text": "Positions",
+      "value": "/crm/position/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_category",
+      "text": "Categories",
+      "value": "/crm/category/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_unit",
+      "text": "Units",
+      "value": "/crm/unit/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_faculty",
+      "text": "Faculties",
+      "value": "/crm/faculty/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_city",
+      "text": "Cities",
+      "value": "/crm/city/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_region",
+      "text": "Regions",
+      "value": "/crm/region/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_country",
+      "text": "Countries",
+      "value": "/crm/country/list"
+    }
+  ]
+}

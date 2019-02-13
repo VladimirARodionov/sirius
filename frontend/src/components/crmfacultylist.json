@@ -1,0 +1,61 @@
+{
+  "program": "crm",
+  "resource": "faculty",
+  "api": "/api/faculty/",
+  "type": "list",
+  "title": "Faculties",
+  "name": "faculty",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "group",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "add_button1",
+          "text": "Add",
+          "action": "add",
+          "color": "success",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "edit_button1",
+          "text": "Edit",
+          "action": "edit",
+          "color": "info",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "delete_button1",
+          "text": "Delete",
+          "action": "delete",
+          "color": "error",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "search",
+          "name": "search1",
+          "text": "Search",
+          "action": "search"
+        }
+      ]
+    },
+    {
+      "type": "tree",
+      "name": "tree1",
+      "api": "/api/faculty/"
+    }
+  ]
+}

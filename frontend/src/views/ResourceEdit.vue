@@ -1,16 +1,12 @@
 <template>
-  <Menu>
-    <DataForm :resource="resource" action="edit" :id="id"></DataForm>
-  </Menu>
+  <DataForm :program="program" :resource="resource" action="edit" :id="id"></DataForm>
 </template>
 
 <script>
 import DataForm from '../components/DataForm'
-import Menu from '../layouts/Menu'
 export default {
   name: 'ResourceEdit',
   components: {
-    Menu,
     DataForm
   },
   data () {
@@ -19,6 +15,9 @@ export default {
   computed: {
     resource () {
       return this.$route.params.resource
+    },
+    program () {
+      return this.$route.params.program
     },
     id () {
       return this.$route.params.id

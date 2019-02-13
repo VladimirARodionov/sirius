@@ -127,6 +127,7 @@ class Position(models.Model):
 class Category(models.Model):
     EMPLOYEE = 1
     DISCIPLE = 2
+    ZDRAVNIZA = 3
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=80, unique=True, blank=False)
@@ -135,7 +136,7 @@ class Category(models.Model):
         ordering = ['id']
 
     def delete(self, using=None, keep_parents=False):
-        if self.id not in [Category.EMPLOYEE, Category.DISCIPLE]:
+        if self.id not in [Category.EMPLOYEE, Category.DISCIPLE, Category.ZDRAVNIZA]:
             super(Category, self).delete(using, keep_parents)
 
 
@@ -200,11 +201,11 @@ class Currency(models.Model):
 # Список контактов, лидов
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
-    email = models.EmailField(_('email address'), unique=True)
-    first_name = models.CharField(_('first name'), max_length=80, blank=True)
+    email = models.EmailField(_('email address'), blank=False)
+    mobile = models.CharField(max_length=20, blank=False)
+    first_name = models.CharField(_('first name'), max_length=80, blank=False)
     last_name = models.CharField(_('last name'), max_length=80, blank=True)
     middle_name = models.CharField(_('last name'), max_length=80, blank=True)
-    socials = models.ManyToManyField(Social, through='ContactSocial')
 
     class Meta:
         ordering = ['id']

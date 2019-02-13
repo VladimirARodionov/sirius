@@ -80,7 +80,7 @@ export default {
     goList () {
       this.$store.commit('setSavedState', { resource: this.$route.params.resource, id: this.$route.params.id, obj: this.value })
       vuetifyToast.info(this.$t('ResourceSaved', { 'resource': this.$route.params.resource, 'id': this.$route.params.id }), { icon: 'edit', timeout: 6000 })
-      this.$router.push('/' + this.field.resource + '/list/')
+      this.$router.push('/' + this.$route.params.program + '/' + this.field.resource + '/list/')
     }
   }
 }

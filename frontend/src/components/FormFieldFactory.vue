@@ -50,6 +50,10 @@
        v-else-if="field.type === 'multi-select-tree'"
        :field="field"
        v-model="value"/>
+     <MenuSelectField
+       v-else-if="field.type === 'menuselect'"
+       :field="field"
+       v-model="value"/>
       <v-card-actions
        v-else-if="field.type === 'actions'">
         <v-spacer></v-spacer>
@@ -73,6 +77,7 @@ import DateField from './DateField'
 import SelectField from './SelectField'
 import MultiSelectField from './MultiSelectField'
 import MultiSelectTreeField from './MultiSelectTreeField'
+import MenuSelectField from './MenuSelectField'
 
 export default {
   name: 'FormFieldFactory',
@@ -90,7 +95,8 @@ export default {
     DateField,
     SelectField,
     MultiSelectField,
-    MultiSelectTreeField
+    MultiSelectTreeField,
+    MenuSelectField
   },
   data () {
     return {

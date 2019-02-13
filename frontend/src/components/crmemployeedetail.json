@@ -1,0 +1,172 @@
+{
+  "program": "crm",
+  "resource": "employee",
+  "api": "/api/userdetail/",
+  "type": "detail",
+  "title": "Employee details",
+  "name": "employee",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "group",
+      "fields": [
+        {
+          "type": "text",
+          "name": "detail_text1",
+          "text": "Last name",
+          "value": "last_name",
+          "maxlength": 80,
+          "required": true
+        },
+        {
+          "type": "text",
+          "name": "detail_text2",
+          "text": "First name",
+          "value": "first_name",
+          "maxlength": 80,
+          "required": true
+        },
+        {
+          "type": "text",
+          "name": "detail_text3",
+          "text": "Middle name",
+          "value": "middle_name",
+          "maxlength": 80,
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "detail_text4",
+      "text": "Email",
+      "value": "email",
+      "maxlength": 80,
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "detail_text5",
+      "text": "Mobile",
+      "value": "mobile",
+      "maxlength": 20,
+      "required": false
+    },
+    {
+      "type": "date",
+      "name": "detail_date1",
+      "text": "Birthday",
+      "value": "birthday",
+      "required": false
+    },
+    {
+      "type": "select",
+      "name": "detail_select1",
+      "text": "City",
+      "value": "city",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/city/",
+      "resource": "city",
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "detail_text6",
+      "text": "Village",
+      "value": "village",
+      "maxlength": 80,
+      "required": false
+    },
+    {
+      "type": "group",
+      "fields": [
+        {
+          "type": "text",
+          "name": "detail_text7",
+          "text": "Street",
+          "value": "street",
+          "maxlength": 80,
+          "required": false
+        },
+        {
+          "type": "text",
+          "name": "detail_text8",
+          "text": "House",
+          "value": "house",
+          "maxlength": 30,
+          "required": false
+        },
+        {
+          "type": "text",
+          "name": "detail_text9",
+          "text": "Apartment",
+          "value": "apartment",
+          "maxlength": 10,
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "multi-select-tree",
+      "name": "detail_multi_select_tree1",
+      "text": "Unit",
+      "value": "units",
+      "item_text": "pathname",
+      "item_value": "id",
+      "api": "/api/unit/",
+      "resource": "unit",
+      "required": false
+    },
+    {
+      "type": "multi-select",
+      "name": "detail_multi_select1",
+      "text": "Categories",
+      "value": "categories",
+      "item_text": "name",
+      "item_value": "category_value.id",
+      "api": "/api/category/",
+      "resource": "category",
+      "required": false
+    },
+    {
+      "type": "multi-select",
+      "name": "detail_multi_select2",
+      "text": "Positions",
+      "value": "positions",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/position/",
+      "resource": "position",
+      "required": false
+    },
+    {
+      "type": "actions",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "back_button1",
+          "text": "Close",
+          "action": "back",
+          "color": "",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "edit_button1",
+          "text": "Save",
+          "action": "save",
+          "color": "success",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        }
+      ]
+    }
+  ]
+}
