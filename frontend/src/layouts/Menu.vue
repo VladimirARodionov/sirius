@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-      <router-link class="navbar-brand" active-class="active" to="/crm">{{'Sirius' | translate}}</router-link>
+      <router-link class="navbar-brand" active-class="active" :to="json.value">{{json.title | translate}}</router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
               aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -9,16 +9,10 @@
 
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav d-lg-flex align-items-center">
-          <router-link class="nav-item nav-link" active-class="active"
-                       to="/employee/list">{{'Employees' | translate}}</router-link>
-          <router-link class="nav-item nav-link" active-class="active"
-                       to="/disciple/list">{{'Disciples' | translate}}</router-link>
-          <router-link class="nav-item nav-link" active-class="active"
-                       to="/reports">{{'Reports' | translate}}</router-link>
-          <router-link class="nav-item nav-link" active-class="active"
-                       to="/actions">{{'Actions' | translate}}</router-link>
-          <router-link class="nav-item nav-link" active-class="active"
-                       to="/directory/list">{{'Directories' | translate}}</router-link>
+          <div v-for="field in json.fields" :key="field.name">
+            <router-link class="nav-item nav-link" active-class="active"
+                       :to="field.value">{{field.text | translate}}</router-link>
+          </div>
         </div>
         <div class="navbar-nav ml-auto d-lg-flex align-items-center">
           <div class="nav-item">
@@ -43,7 +37,28 @@
 <script>
 export default {
   name: 'Menu',
+  props: {
+    program: {
+      type: String,
+      required: true
+    }
+  },
+  data: () => ({
+    json: {}
+  }),
+  created () {
+    this.fetchData()
+  },
   methods: {
+    fetchData () {
+      this.loaded = false
+      this.json = this.getJson()
+      this.loaded = true
+    },
+    getJson () {
+      const json = require('./' + this.program + '.json')
+      return json
+    },
     logout: function () {
       this.$store.dispatch('logout')
         .then(() => {

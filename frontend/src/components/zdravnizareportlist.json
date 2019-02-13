@@ -1,0 +1,7 @@
+{
+  "program": "zdravniza",
+  "resource": "report",
+  "type": "list",
+  "title": "Reports",
+  "style": "max-width: 768px;"
+}

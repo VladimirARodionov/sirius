@@ -1,4 +1,5 @@
 <template>
+  <Menu :program="program">
   <v-container grid-list-xl fluid>
     <v-card :style="json.style">
       <v-card-title class="headline grey lighten-2" primary-title> {{json.title | translate}} </v-card-title>
@@ -17,6 +18,7 @@
     <!-- Delete Modal -->
     <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
   </v-container>
+  </Menu>
 </template>
 
 <script>
@@ -25,11 +27,16 @@ import { onGetSingle, onPostSingle, onPutSingle, onDelete } from '../api/request
 import { flattenJson } from '../api/utils'
 import DeleteDialog from './dialogs/DeleteDialog'
 import vuetifyToast from 'vuetify-toast'
+import Menu from '../layouts/Menu'
 
 export default {
   name: 'DataForm',
   props: {
     resource: {
+      type: String,
+      required: true
+    },
+    program: {
       type: String,
       required: true
     },
@@ -42,6 +49,7 @@ export default {
     }
   },
   components: {
+    Menu,
     FormBuilder,
     DeleteDialog
   },
@@ -84,7 +92,7 @@ export default {
       this.loaded = true
     },
     getJson () {
-      const json = require('./' + this.resource + this.action + '.json')
+      const json = require('./' + this.program + this.resource + this.action + '.json')
       return json
     },
     onChangeObject (data) {

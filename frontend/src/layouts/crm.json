@@ -1,0 +1,42 @@
+{
+    "title": "CRM",
+    "value": "/crm",
+    "fields": [
+        {
+            "type": "menuitem",
+            "name": "menuitem_main",
+            "text": "Main menu",
+            "value": "/"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_employees",
+            "text": "Employees",
+            "value": "/crm/employee/list"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_disciples",
+            "text": "Disciples",
+            "value": "/crm/disciple/list"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_reports",
+            "text": "Reports",
+            "value": "/crm/report/list"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_actions",
+            "text": "Actions",
+            "value": "/crm/action/list"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_directories",
+            "text": "Directories",
+            "value": "/crm/directory/list"
+        }
+    ]
+}

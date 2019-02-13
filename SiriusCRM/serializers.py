@@ -3,7 +3,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.serializers import ModelSerializer
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty
+    Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact
 
 
 class UserSerializer(ModelSerializer):
@@ -192,5 +192,11 @@ class UserFacultySerializer(ModelSerializer):
     class Meta:
         model = UserFaculty
         fields = ('id', 'user', 'faculty', 'faculty_value')
+
+
+class ContactSerializer(ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'mobile')
 
 

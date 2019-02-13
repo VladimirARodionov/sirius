@@ -12,5 +12,12 @@
     "fields": {
       "name": "Ученики"
     }
+  },
+  {
+    "model": "SiriusCRM.Category",
+    "pk": 3,
+    "fields": {
+      "name": "Сотрудники Здравницы"
+    }
   }
 ]

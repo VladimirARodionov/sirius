@@ -1,0 +1,7 @@
+{
+  "program": "crm",
+  "resource": "report",
+  "type": "list",
+  "title": "Actions",
+  "style": "max-width: 768px;"
+}

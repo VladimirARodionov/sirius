@@ -131,5 +131,11 @@
   "Zdravniza": "Здравница",
   "CRM": "CRM",
   "Manage patients": "Работа с пациентами",
-  "Manage disciples and employees": "Работа с учениками и сотрудниками"
+  "Manage disciples and employees": "Работа с учениками и сотрудниками",
+  "Clients": "Клиенты",
+  "Total clients": "Всего клиентов",
+  "List of contacts": "Список контактов",
+  "Edit contact": "Изменение контакта",
+  "Delete contact": "Удалить контакт"
+
 }

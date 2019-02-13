@@ -1,0 +1,42 @@
+{
+    "title": "Zdravniza",
+    "value": "/zdravniza",
+    "fields": [
+        {
+            "type": "menuitem",
+            "name": "menuitem_main",
+            "text": "Main menu",
+            "value": "/"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_employees",
+            "text": "Employees",
+            "value": "/zdravniza/employee/list"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_clients",
+            "text": "Clients",
+            "value": "/zdravniza/client/list"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_reports",
+            "text": "Reports",
+            "value": "/zdravniza/report/list"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_actions",
+            "text": "Actions",
+            "value": "/zdravniza/action/list"
+        },
+        {
+            "type": "menuitem",
+            "name": "menuitem_directories",
+            "text": "Directories",
+            "value": "/zdravniza/directory/list"
+        }
+    ]
+}

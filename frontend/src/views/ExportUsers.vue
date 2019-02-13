@@ -1,5 +1,5 @@
 <template>
-  <Menu>
+  <Menu program="crm">
     <h1>{{ 'Export users' | translate}}</h1>
     <div container v-if="result">
       <div class="row">
