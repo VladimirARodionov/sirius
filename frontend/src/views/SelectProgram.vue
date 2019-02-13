@@ -1,6 +1,8 @@
 <template>
   <Default>
-    <DataForm resource="main" action="menu"></DataForm>
+    <v-container>
+        <DataForm resource="main" action="menu"></DataForm>
+    </v-container>
   </Default>
 </template>
 
