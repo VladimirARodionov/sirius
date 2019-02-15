@@ -92,7 +92,7 @@ export default {
       this.loaded = true
     },
     getJson () {
-      const json = require('./' + this.program + this.resource + this.action + '.json')
+      const json = require('../assets/' + this.program + '/' + this.resource + this.action + '.json')
       return json
     },
     onChangeObject (data) {
