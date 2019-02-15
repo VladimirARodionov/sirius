@@ -37,7 +37,7 @@ export default {
       onGetCount('/api/zdravniza/count/', 'employees', this.data)
     },
     getClientCount: function () {
-      onGetCount('/api/client/count/', 'clients', this.data)
+      onGetCount('/api/contact/count/', 'clients', this.data)
     }
   },
   components: {
