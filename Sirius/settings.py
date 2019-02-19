@@ -160,3 +160,4 @@ LANGUAGES = [('en', _('English')), ('ru', _('Russian')), ]
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'), 'templates' )
 CORS_ORIGIN_ALLOW_ALL = True
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+ATOMIC_REQUESTS = True

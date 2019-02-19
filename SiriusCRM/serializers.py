@@ -197,6 +197,7 @@ class UserFacultySerializer(ModelSerializer):
 class ContactSerializer(ModelSerializer):
     class Meta:
         model = Contact
-        fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'mobile')
+        fields = ('id', 'first_name', 'last_name',
+                  'middle_name', 'email', 'mobile', 'comment')
 
 

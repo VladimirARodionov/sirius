@@ -342,7 +342,7 @@ class ContactViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
     serializer_class = ContactSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('first_name', 'last_name', 'middle_name', 'email', 'mobile')
-    ordering_fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'mobile')
+    search_fields = ('first_name', 'last_name', 'middle_name', 'email', 'mobile', 'comment')
+    ordering_fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'comment')
 
 

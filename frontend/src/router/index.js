@@ -119,7 +119,7 @@ let router = new Router({
       }
     },
     {
-      path: '/open/appointment/step',
+      path: '/open/zdravniza/appointment',
       name: 'appointment',
       component: Appointment,
       meta: {

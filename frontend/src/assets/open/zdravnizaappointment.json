@@ -1,7 +1,7 @@
 {
-  "program": "zdravniza",
+  "program": "open",
   "resource": "appointment",
-  "type": "step",
+  "type": "appointment",
   "title": "Appointment",
   "fields": [
     {
@@ -38,7 +38,7 @@
           "fields": [
             {
               "type": "text",
-              "name": "detail_text2",
+              "name": "contact_text_first_name",
               "text": "First name",
               "value": "first_name",
               "maxlength": 80,
@@ -46,7 +46,7 @@
             },
             {
               "type": "text",
-              "name": "detail_text1",
+              "name": "contact_text_last_name",
               "text": "Last name",
               "value": "last_name",
               "maxlength": 80,
@@ -54,7 +54,15 @@
             },
             {
               "type": "text",
-              "name": "detail_text4",
+              "name": "contact_text_diagnos",
+              "text": "Diagnos",
+              "value": "comment",
+              "maxlength": 255,
+              "required": false
+            },
+            {
+              "type": "text",
+              "name": "contact_text_email",
               "text": "Email",
               "value": "email",
               "maxlength": 80,
@@ -62,7 +70,7 @@
             },
             {
               "type": "text",
-              "name": "detail_text5",
+              "name": "contact_text_mobile",
               "text": "Mobile",
               "value": "mobile",
               "maxlength": 20,

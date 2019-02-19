@@ -198,14 +198,22 @@ class Currency(models.Model):
         ordering = ['id']
 
 
+# Таблица статусов обращений
+class AppointmentStatus(models.Model):
+    id = models.AutoField(primary_key=True)
+    number = models.IntegerField(unique=True, null=False, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
+
+
 # Список контактов, лидов
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
-    email = models.EmailField(_('email address'), blank=False)
+    email = models.EmailField(_('Email'), blank=False)
     mobile = models.CharField(max_length=20, blank=False)
-    first_name = models.CharField(_('first name'), max_length=80, blank=False)
-    last_name = models.CharField(_('last name'), max_length=80, blank=True)
-    middle_name = models.CharField(_('last name'), max_length=80, blank=True)
+    first_name = models.CharField(_('First name'), max_length=80, blank=False)
+    last_name = models.CharField(_('Last name'), max_length=80, blank=True)
+    middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
+    comment = models.CharField(_('Comment'), max_length=255, blank=True)
 
     class Meta:
         ordering = ['id']
@@ -213,21 +221,21 @@ class Contact(models.Model):
 
 # Список пользователей
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_('email address'), unique=True, null=True)
-    first_name = models.CharField(_('first name'), max_length=80, blank=False)
-    last_name = models.CharField(_('last name'), max_length=80, blank=False)
-    middle_name = models.CharField(_('middle name'), max_length=80, blank=True)
-    date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
-    date_left = models.DateTimeField(_('date left'),null=True, blank=True)
-    is_active = models.BooleanField(_('active'), default=True)
+    email = models.EmailField(_('Email'), unique=True, null=True)
+    first_name = models.CharField(_('First name'), max_length=80, blank=False)
+    last_name = models.CharField(_('Last name'), max_length=80, blank=False)
+    middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
+    date_joined = models.DateTimeField(_('Date joined'), auto_now_add=True)
+    date_left = models.DateTimeField(_('Date left'), null=True, blank=True)
+    is_active = models.BooleanField(_('Active'), default=True)
     is_superuser = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
     is_staff = models.BooleanField(
-        _('staff status'),
+        _('Staff status'),
         default=False,
         help_text=_('Designates whether the user can log into this admin site.'),
     )
-    birthday = models.DateField(_('birthday'), null=True, blank=True)
+    birthday = models.DateField(_('Birthday'), null=True, blank=True)
     mobile = models.CharField(max_length=20, null=True, blank=True)
     phone = models.CharField(max_length=20, null=True, blank=True)
     salary = models.FloatField(null=True, blank=True)
@@ -272,6 +280,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+# Таблица записей на прием
+class Appointment(models.Model):
+    id = models.AutoField(primary_key=True)
+    datetime = models.DateTimeField(_('Date'), null=False, blank=False)
+    status = models.ForeignKey(AppointmentStatus, null=False,
+                               on_delete=models.PROTECT, related_name="appointment_status")
+    contact = models.ForeignKey(
+        Contact, null=False, on_delete=models.PROTECT, related_name="appointment_contact")
+    consulter = models.ForeignKey(
+        User, null=True, on_delete=models.PROTECT, related_name="appointment_consulter")
 
 
 # Таблица связей пользователя и его позиции

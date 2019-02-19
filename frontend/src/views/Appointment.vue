@@ -1,5 +1,5 @@
 <template>
-  <DataForm program="open" resource="appointment" action="step"></DataForm>
+  <DataForm program="open" resource="zdravniza" action="appointment"></DataForm>
 </template>
 
 <script>

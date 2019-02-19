@@ -20,45 +20,24 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\SiriusCRM\models.py:126 .\SiriusCRM\models.py:135
-msgid "email address"
-msgstr ""
-
-#: .\SiriusCRM\models.py:127 .\SiriusCRM\models.py:136
-msgid "first name"
-msgstr ""
-
-#: .\SiriusCRM\models.py:128 .\SiriusCRM\models.py:129
-#: .\SiriusCRM\models.py:137
-msgid "last name"
-msgstr ""
-
-#: .\SiriusCRM\models.py:138
-msgid "middle name"
-msgstr ""
-
 #: .\SiriusCRM\models.py:139
-msgid "date joined"
+msgid "Date joined"
 msgstr ""
 
 #: .\SiriusCRM\models.py:140
-msgid "date left"
+msgid "Date left"
 msgstr ""
 
 #: .\SiriusCRM\models.py:141
-msgid "active"
+msgid "Active"
 msgstr ""
 
 #: .\SiriusCRM\models.py:144
-msgid "staff status"
+msgid "Staff status"
 msgstr ""
 
 #: .\SiriusCRM\models.py:146
 msgid "Designates whether the user can log into this admin site."
-msgstr ""
-
-#: .\SiriusCRM\models.py:148
-msgid "birthday"
 msgstr ""
 
 #: .\SiriusCRM\models.py:166
