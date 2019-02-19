@@ -1,0 +1,76 @@
+{
+  "program": "zdravniza",
+  "resource": "appointment",
+  "type": "step",
+  "title": "Appointment",
+  "fields": [
+    {
+      "type": "stepper",
+      "name": "stepper1",
+      "headers": [
+        {
+          "text": "Appointment date"
+        },
+        {
+          "text": "Appointment time"
+        },
+        {
+          "text": "Contact info"
+        }
+      ],
+      "fields": [
+        {
+          "type": "date",
+          "name": "stepper_date1",
+          "text": "Select appointment date",
+          "value": "date",
+          "required": true
+        },
+        {
+          "type": "select",
+          "name": "stepper_select1",
+          "text": "Select appointment time",
+          "value": "time",
+          "required": true
+        },
+        {
+          "text": "Enter contact info",
+          "fields": [
+            {
+              "type": "text",
+              "name": "detail_text2",
+              "text": "First name",
+              "value": "first_name",
+              "maxlength": 80,
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "detail_text1",
+              "text": "Last name",
+              "value": "last_name",
+              "maxlength": 80,
+              "required": false
+            },
+            {
+              "type": "text",
+              "name": "detail_text4",
+              "text": "Email",
+              "value": "email",
+              "maxlength": 80,
+              "required": true
+            },
+            {
+              "type": "text",
+              "name": "detail_text5",
+              "text": "Mobile",
+              "value": "mobile",
+              "maxlength": 20,
+              "required": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div v-if="json.title">
+      <nav class="navbar navbar-expand-md navbar-dark bg-dark">
       <router-link class="navbar-brand" active-class="active" :to="json.value">{{json.title | translate}}</router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
               aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -30,7 +31,10 @@
       </div>
 
     </div>
-
+    </div>
+    <div v-else>
+      <slot/>
+    </div>
   </div>
 </template>
 

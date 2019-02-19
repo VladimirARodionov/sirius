@@ -15,6 +15,7 @@ import ResourceList from '../views/ResourceList'
 import ResourceAdd from '../views/ResourceAdd'
 import ResourceEdit from '../views/ResourceEdit'
 import ResourceDetail from '../views/ResourceDetail'
+import Appointment from '../views/Appointment'
 
 Vue.use(Router)
 
@@ -115,6 +116,14 @@ let router = new Router({
       component: ResourceDetail,
       meta: {
         requiresAuth: true
+      }
+    },
+    {
+      path: '/open/appointment/step',
+      name: 'appointment',
+      component: Appointment,
+      meta: {
+        requiresAuth: false
       }
     },
     {

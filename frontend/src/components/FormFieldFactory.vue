@@ -54,6 +54,11 @@
        v-else-if="field.type === 'menuselect'"
        :field="field"
        v-model="value"/>
+     <Stepper
+       v-else-if="field.type === 'stepper'"
+       :field="field"
+       v-model="value">
+     </Stepper>
       <v-card-actions
        v-else-if="field.type === 'actions'">
         <v-spacer></v-spacer>
@@ -78,13 +83,13 @@ import SelectField from './SelectField'
 import MultiSelectField from './MultiSelectField'
 import MultiSelectTreeField from './MultiSelectTreeField'
 import MenuSelectField from './MenuSelectField'
+import Stepper from './Stepper'
 
 export default {
   name: 'FormFieldFactory',
   props: {
     value: {},
-    field: {},
-    toParent: Function
+    field: {}
   },
   components: {
     DataTable,
@@ -96,7 +101,8 @@ export default {
     SelectField,
     MultiSelectField,
     MultiSelectTreeField,
-    MenuSelectField
+    MenuSelectField,
+    Stepper
   },
   data () {
     return {

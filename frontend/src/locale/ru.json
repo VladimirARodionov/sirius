@@ -137,6 +137,16 @@
   "Total clients": "Всего клиентов",
   "List of contacts": "Список контактов",
   "Edit contact": "Изменение контакта",
-  "Delete contact": "Удалить контакт"
+  "Delete contact": "Удалить контакт",
+  "Appointment": "Запись на бесплатную консультацию",
+  "Appointment date": "Дата записи",
+  "Appointment time": "Время записи",
+  "Contact info": "Контактная информация",
+  "Select appointment date": "Выберите дату",
+  "Select appointment time": "Выберите время",
+  "Enter contact info": "Введите контактную информацию",
+  "Continue": "Продолжить",
+  "Submit": "Отправить",
+  "Appointment successfully made": "Вы успешно записались на консультацию"
 
 }
