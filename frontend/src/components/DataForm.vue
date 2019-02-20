@@ -103,6 +103,8 @@ export default {
         this.addObject()
       } else if (this.json.type === 'edit' || this.json.type === 'edittree' || this.json.type === 'detail') {
         this.updateObject()
+      } else if (this.json.type === 'appointment') {
+        this.addAppointment()
       }
     },
     onDelete () {
@@ -146,6 +148,11 @@ export default {
       }
       onPostSingle(this.json.api, this.data, this.getObject).then(resp => {
         this.$bus.emit('goBack', {})
+      })
+    },
+    addAppointment: function () {
+      onPostSingle(this.json.api, this.data, null).then(resp => {
+        this.$bus.emit('appointmentSuccess', {})
       })
     },
     updateObject: function () {

@@ -185,7 +185,9 @@ export function onPostSingle (api, data, getFunction) {
       data.loading = false
       data.currentObject = resp.data
       vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
-      getFunction()
+      if (getFunction) {
+        getFunction()
+      }
     })
     .catch((error) => {
       // Error

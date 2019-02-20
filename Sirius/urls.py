@@ -67,6 +67,7 @@ urlpatterns = [
     path('api/login/', obtain_jwt_token),
     path('api/people/<int:number>/password_change', views.PasswordChangeView.as_view(), name='peoplePasswordChange'),
     path('api/role/', views.UserRolesView.as_view(), name='role'),
+    path('api/appointment/', views.AppointmentView.as_view(), name='appointment'),
     path('api/userposition/update/', views.UserPositionView.as_view(), name='user-position-update'),
     path('api/userposition/update/<int:number>/', views.UserPositionView.as_view(), name='user-position-update'),
     path('api/usercategory/update/', views.UserCategoryView.as_view(), name='user-category-update'),

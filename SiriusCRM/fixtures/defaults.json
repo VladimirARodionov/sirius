@@ -1,0 +1,52 @@
+[
+  {
+    "model": "SiriusCRM.Category",
+    "pk": 1,
+    "fields": {
+      "name": "Сотрудники"
+    }
+  },
+  {
+    "model": "SiriusCRM.Category",
+    "pk": 2,
+    "fields": {
+      "name": "Ученики"
+    }
+  },
+  {
+    "model": "SiriusCRM.Category",
+    "pk": 3,
+    "fields": {
+      "name": "Сотрудники Здравницы"
+    }
+  },
+  {
+    "model": "SiriusCRM.Position",
+    "pk": 1,
+    "fields": {
+      "name": "Консультант Здравницы"
+    }
+  },
+  {
+    "model": "SiriusCRM.Position",
+    "pk": 2,
+    "fields": {
+      "name": "Целитель Здравницы"
+    }
+  },
+  {
+    "model": "SiriusCRM.Position",
+    "pk": 3,
+    "fields": {
+      "name": "Админ Здравницы"
+    }
+  },
+  {
+    "model": "SiriusCRM.AppointmentStatus",
+    "pk": 1,
+    "fields": {
+      "number": 1,
+      "name": "Заявка принята"
+    }
+  }
+]

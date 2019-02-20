@@ -3,6 +3,7 @@
   "resource": "appointment",
   "type": "appointment",
   "title": "Appointment",
+  "api": "/api/appointment/",
   "fields": [
     {
       "type": "stepper",

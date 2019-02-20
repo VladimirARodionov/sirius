@@ -116,6 +116,10 @@ class Faculty(models.Model):
 
 # Справочник названий позиций человека (должность)
 class Position(models.Model):
+    ZDRAVNIZA_CONSULTANT = 1
+    ZDRAVNIZA_HEALER = 2
+    ZDRAVNIZA_ADMIN = 3
+
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=80, unique=True, blank=False)
 
@@ -200,6 +204,8 @@ class Currency(models.Model):
 
 # Таблица статусов обращений
 class AppointmentStatus(models.Model):
+    CREATED = 1
+
     id = models.AutoField(primary_key=True)
     number = models.IntegerField(unique=True, null=False, blank=False)
     name = models.CharField(max_length=80, unique=True, blank=False)
@@ -209,7 +215,7 @@ class AppointmentStatus(models.Model):
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.EmailField(_('Email'), blank=False)
-    mobile = models.CharField(max_length=20, blank=False)
+    mobile = models.CharField(_('Mobile'), max_length=20, blank=False)
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
     last_name = models.CharField(_('Last name'), max_length=80, blank=True)
     middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
@@ -281,16 +287,18 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+
 # Таблица записей на прием
 class Appointment(models.Model):
     id = models.AutoField(primary_key=True)
-    datetime = models.DateTimeField(_('Date'), null=False, blank=False)
+    date = models.DateField(null=False, blank=False)
+    time = models.TimeField(null=False, blank=False)
     status = models.ForeignKey(AppointmentStatus, null=False,
                                on_delete=models.PROTECT, related_name="appointment_status")
     contact = models.ForeignKey(
         Contact, null=False, on_delete=models.PROTECT, related_name="appointment_contact")
-    consulter = models.ForeignKey(
-        User, null=True, on_delete=models.PROTECT, related_name="appointment_consulter")
+    consultant = models.ForeignKey(
+        User, null=True, on_delete=models.PROTECT, related_name="appointment_consultant")
 
 
 # Таблица связей пользователя и его позиции

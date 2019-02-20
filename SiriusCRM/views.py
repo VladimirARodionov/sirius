@@ -1,5 +1,7 @@
 import csv
+import datetime
 import io
+import random
 
 from casl_django.casl.casl import django_permissions_to_casl_rules
 from django import forms
@@ -26,10 +28,11 @@ from rest_framework.views import APIView
 from rolepermissions.roles import get_user_roles, RolesManager, assign_role, retrieve_role, remove_role
 
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, UserPosition, Position, UserCategory, Category, UserUnit, Unit, UserFaculty, Faculty
+from SiriusCRM.models import User, UserPosition, Position, UserCategory, Category, UserUnit, Unit, UserFaculty, Faculty, \
+    Contact, Appointment, AppointmentStatus
 from SiriusCRM.resources import UserResource
 from SiriusCRM.serializers import PositionSerializer, UserPositionSerializer, UserCategorySerializer, \
-    UserUnitSerializer, UserFacultySerializer
+    UserUnitSerializer, UserFacultySerializer, ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
 
 
 def jwt_response_payload_handler(token, user=None, request=None):
@@ -371,7 +374,7 @@ class UserCategoryView(HasRoleMixin, APIView):
             return JsonResponse(context)
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
-            return HttpResponseBadRequest(context)
+            return HttpResponseBadRequest(JsonResponse(context))
 
 
 class UserUnitView(HasRoleMixin, APIView):
@@ -446,3 +449,55 @@ class UserFacultyView(HasRoleMixin, APIView):
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
             return HttpResponseBadRequest(context)
+
+
+class AppointmentView(APIView):
+
+    def get(self, request):
+        context = {}
+        serializer = AppointmentDateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        body = json.loads(request.body)
+        date = body['date']
+        context['result'] = self.get_free_time(date)
+        return JsonResponse(context)
+
+    def post(self, request):
+        context = {}
+        body = json.loads(request.body)
+        AppointmentDateSerializer(data=request.data).is_valid(raise_exception=True)
+        # AppointmentTimeSerializer(data=request.data).is_valid(raise_exception=True)
+        ContactSerializer(data=request.data).is_valid(raise_exception=True)
+        try:
+            first_name = body.get('first_name')
+            last_name = body.get('last_name', '')
+            email = body.get('email')
+            mobile = body.get('mobile')
+            comment = body.get('comment', '')
+            date = body.get('date')
+            time = body.get('time', datetime.datetime.now().time())
+            contact, created = Contact.objects.update_or_create(defaults={'email': email, 'mobile': mobile, 'first_name': first_name, 'last_name': last_name, 'comment': comment}, email=email, mobile=mobile)
+            appointment = Appointment.objects.create(contact=contact, date=date, time=time, status_id=AppointmentStatus.CREATED)
+            consultants = User.objects.filter(categories__in=[Category.ZDRAVNIZA], positions__in=[Position.ZDRAVNIZA_CONSULTANT])
+            consultant = self.select_consultant(consultants, appointment)
+            appointment.consultant = consultant
+            appointment.save()
+            context['result'] = {'success': True}
+            return JsonResponse(context)
+        except Exception as e:
+            context['result'] = {'success': False, 'error': str(e)}
+            return HttpResponseBadRequest(JsonResponse(context))
+
+    def get_free_consultants(self, consultants, appointment):
+        # TODO find free consultant, better to same as before for the contact in the appointment
+        return consultants
+
+    def select_consultant(self, consultants, appointment):
+        cons = self.get_free_consultants(consultants, appointment)
+        if len(cons):
+            return cons[random.randint(0, len(cons) - 1)]
+        else:
+            raise Exception(_('No free consultants at this time'))
+
+    def get_free_time(self, date):
+        return {}

@@ -57,6 +57,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'Stepper',
   props: {
@@ -69,8 +70,19 @@ export default {
   data () {
     return {
       step: 0,
-      successMessage: ''
+      successMessage: '',
+      data: {
+        currentObject: {},
+        loading: false,
+        errorMessage: ''
+      }
     }
+  },
+  created () {
+    this.$bus.on('appointmentSuccess', this.onSuccess)
+  },
+  beforeDestroy () {
+    this.$bus.off('appointmentSuccess', this.onSuccess)
   },
   methods: {
     onNext (index, total) {
@@ -86,6 +98,9 @@ export default {
       }
     },
     onSubmit () {
+      this.$bus.emit('saveObject')
+    },
+    onSuccess () {
       this.step = this.field.fields.length + 1
       this.successMessage = this.$t('Appointment successfully made')
     }
