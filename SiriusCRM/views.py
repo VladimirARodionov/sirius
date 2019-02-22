@@ -27,13 +27,13 @@ from rest_framework.utils import json
 from rest_framework.views import APIView
 from rolepermissions.roles import get_user_roles, RolesManager, assign_role, retrieve_role, remove_role
 
-from SiriusCRM.apps import SiriuscrmConfig
 from SiriusCRM.mixins import HasRoleMixin
 from SiriusCRM.models import User, UserPosition, Position, UserCategory, Category, UserUnit, Unit, UserFaculty, Faculty, \
     Contact, Appointment, AppointmentStatus
 from SiriusCRM.resources import UserResource
 from SiriusCRM.serializers import PositionSerializer, UserPositionSerializer, UserCategorySerializer, \
     UserUnitSerializer, UserFacultySerializer, ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
+from pyrogram import Client
 
 
 def jwt_response_payload_handler(token, user=None, request=None):
@@ -485,7 +485,8 @@ class AppointmentView(APIView):
             appointment.save()
             context['result'] = {'success': True}
             try:
-                SiriuscrmConfig.sender.msg("@VladimirARodionov", "New appointment has been made")
+                app = Client("@VladimirARodionov").send_message(
+                    "@VladimirARodionov", "New appointment has been made")
             except Exception as e:
                 print (e)
             return JsonResponse(context)
