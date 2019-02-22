@@ -38,6 +38,7 @@ export function onGetMax (api, name, data) {
     .catch(err => {
       data.loading = false
       console.log(err)
+      throw err
     })
 }
 
@@ -51,6 +52,7 @@ export function onGetAll (api, name, data) {
     .catch(err => {
       data.loading = false
       console.log(err)
+      throw err
     })
 }
 

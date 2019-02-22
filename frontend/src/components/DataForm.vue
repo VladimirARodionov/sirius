@@ -1,23 +1,30 @@
 <template>
   <Menu :program="program">
-  <v-container grid-list-xl fluid>
-    <v-card :style="json.style">
-      <v-card-title class="headline grey lighten-2" primary-title> {{json.title | translate}} </v-card-title>
-        <v-alert outline type="error" value="true" v-if="errorMessageText">
-          {{errorMessageText}}
-        </v-alert>
-      <v-card-text>
-        <FormBuilder
-          v-if="loaded"
-          :resource="resource"
-          :id="id"
-          :json="json"
-          v-model="data"/>
-      </v-card-text>
-    </v-card>
-    <!-- Delete Modal -->
-    <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
-  </v-container>
+    <v-container grid-list-xl fluid>
+      <v-card :style="json.style">
+        <v-card-title class="headline grey lighten-2" primary-title> {{json.title | translate}} </v-card-title>
+        <div v-if="successMessage">
+          <v-alert outline type="success" value="true">
+            {{successMessage | translate}}
+          </v-alert>
+        </div>
+        <div v-else>
+          <v-alert outline type="error" value="true" v-if="errorMessageText">
+            {{errorMessageText}}
+          </v-alert>
+          <v-card-text>
+            <FormBuilder
+              v-if="loaded"
+              :resource="resource"
+              :id="id"
+              :json="json"
+              v-model="data"/>
+          </v-card-text>
+        </div>
+      </v-card>
+      <!-- Delete Modal -->
+      <DeleteDialog :dialog.sync="data.deleteDialog" :message="getDeleteMessage()" :on-clicked="deleteObject"/>
+    </v-container>
   </Menu>
 </template>
 
@@ -63,12 +70,14 @@ export default {
       deleteDialog: false,
       deleteDialogErrorMessage: ''
     },
-    loaded: false
+    loaded: false,
+    successMessage: ''
   }),
   created () {
     this.fetchData()
     this.$bus.on('changeObject', this.onChangeObject)
     this.$bus.on('saveObject', this.onSave)
+    this.$bus.on('saveAppointment', this.onSaveAppointment)
     this.$bus.on('deleteObject', this.onDelete)
     this.$bus.on('selectObject', this.onSelect)
     this.$bus.on('error', this.onError)
@@ -81,6 +90,7 @@ export default {
   beforeDestroy () {
     this.$bus.off('changeObject', this.onChangeObject)
     this.$bus.off('saveObject', this.onSave)
+    this.$bus.off('saveAppointment', this.onSaveAppointment)
     this.$bus.off('deleteObject', this.onDelete)
     this.$bus.off('selectObject', this.onSelect)
     this.$bus.off('error', this.onError)
@@ -103,9 +113,10 @@ export default {
         this.addObject()
       } else if (this.json.type === 'edit' || this.json.type === 'edittree' || this.json.type === 'detail') {
         this.updateObject()
-      } else if (this.json.type === 'appointment') {
-        this.addAppointment()
       }
+    },
+    onSaveAppointment () {
+      this.addAppointment()
     },
     onDelete () {
       if (this.data.currentObject.id) {
@@ -151,8 +162,9 @@ export default {
       })
     },
     addAppointment: function () {
+      let self = this
       onPostSingle(this.json.api, this.data, null).then(resp => {
-        this.$bus.emit('appointmentSuccess', {})
+        self.successMessage = self.json.successMessage
       })
     },
     updateObject: function () {

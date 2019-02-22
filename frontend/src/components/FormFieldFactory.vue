@@ -34,12 +34,20 @@
        v-else-if="field.type === 'text'"
        :field="field"
        v-model="value"/>
-     <DateField
-       v-else-if="field.type === 'date'"
+     <BirthdayField
+       v-else-if="field.type === 'birthday'"
+       :field="field"
+       v-model="value"/>
+     <AppointmentDateField
+       v-else-if="field.type === 'appointmentdate'"
        :field="field"
        v-model="value"/>
      <SelectField
        v-else-if="field.type === 'select'"
+       :field="field"
+       v-model="value"/>
+     <AppointmentSelectField
+       v-else-if="field.type === 'appointmentselect'"
        :field="field"
        v-model="value"/>
      <MultiSelectField
@@ -52,6 +60,10 @@
        v-model="value"/>
      <MenuSelectField
        v-else-if="field.type === 'menuselect'"
+       :field="field"
+       v-model="value"/>
+     <SuccessMessage
+       v-else-if="field.type === 'successmessage'"
        :field="field"
        v-model="value"/>
      <Stepper
@@ -78,12 +90,15 @@ import DataTree from './DataTree'
 import Button from './Button'
 import Search from './Search'
 import TextField from './TextField'
-import DateField from './DateField'
+import BirthdayField from './BirthdayField'
+import AppointmentDateField from './AppointmentDateField'
 import SelectField from './SelectField'
+import AppointmentSelectField from './AppointmentSelectField'
 import MultiSelectField from './MultiSelectField'
 import MultiSelectTreeField from './MultiSelectTreeField'
 import MenuSelectField from './MenuSelectField'
 import Stepper from './Stepper'
+import SuccessMessage from './SuccessMessage'
 
 export default {
   name: 'FormFieldFactory',
@@ -92,13 +107,16 @@ export default {
     field: {}
   },
   components: {
+    SuccessMessage,
     DataTable,
     DataTree,
     Button,
     Search,
     TextField,
-    DateField,
+    BirthdayField,
+    AppointmentDateField,
     SelectField,
+    AppointmentSelectField,
     MultiSelectField,
     MultiSelectTreeField,
     MenuSelectField,

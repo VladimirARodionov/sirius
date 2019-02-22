@@ -79,16 +79,22 @@ export default {
     }
   },
   created () {
-    this.$bus.on('appointmentSuccess', this.onSuccess)
+    this.$bus.on('timeIntervalSuccess', this.onTimeIntervalSuccess)
+    this.$bus.on('consultantSuccess', this.onConsultantSuccess)
+    this.$bus.on('appointmentSuccess', this.onAppointmentSuccess)
   },
   beforeDestroy () {
-    this.$bus.off('appointmentSuccess', this.onSuccess)
+    this.$bus.off('timeIntervalSuccess', this.onTimeIntervalSuccess)
+    this.$bus.off('consultantSuccess', this.onConsultantSuccess)
+    this.$bus.off('appointmentSuccess', this.onAppointmentSuccess)
   },
   methods: {
     onNext (index, total) {
-      if (index < total) {
-        this.step = index + 1
-      } else {
+      if (index === 1) {
+        this.onGetTimeInterval()
+      } else if (index === 2) {
+        this.onGetConsultant()
+      } else if (index === 3) {
         this.onSubmit()
       }
     },
@@ -100,7 +106,19 @@ export default {
     onSubmit () {
       this.$bus.emit('saveObject')
     },
-    onSuccess () {
+    onGetTimeInterval () {
+      this.$bus.emit('getTimeInterval')
+    },
+    onGetConsultant () {
+      this.$bus.emit('getConsultant')
+    },
+    onTimeIntervalSuccess () {
+      this.step = this.step + 1
+    },
+    onConsultantSuccess () {
+      this.step = this.step + 1
+    },
+    onAppointmentSuccess () {
       this.step = this.field.fields.length + 1
       this.successMessage = this.$t('Appointment successfully made')
     }

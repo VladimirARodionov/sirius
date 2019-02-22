@@ -53,7 +53,7 @@
       "required": false
     },
     {
-      "type": "date",
+      "type": "birthday",
       "name": "detail_date1",
       "text": "Birthday",
       "value": "birthday",

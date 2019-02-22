@@ -24,14 +24,13 @@
       v-model="object[field.value]"
       @change="save"
       locale="ru"
-      min="1930-01-01"
-      :max="new Date().toISOString().substr(0, 10)"/>
+      :min="new Date().toISOString().substr(0, 10)"/>
   </v-menu>
 </template>
 
 <script>
 export default {
-  name: 'DateField',
+  name: 'AppointmentDateField',
   props: {
     value: {},
     field: {}
@@ -51,6 +50,7 @@ export default {
   },
   updated () {
     this.$bus.emit('changeObject', this.object)
+    this.$bus.emit('changeAppointmentDate', this.object[this.field.value])
   },
   watch: {
     value: {
@@ -59,9 +59,6 @@ export default {
         this.errorMessage = this.value.errorMessage
       },
       deep: true
-    },
-    menu (val) {
-      val && this.$nextTick(() => (this.$refs[this.field.name + '_picker'].activePicker = 'YEAR'))
     }
   },
   methods: {

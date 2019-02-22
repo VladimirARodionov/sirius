@@ -51,6 +51,8 @@ export default {
         this.$bus.emit('saveObject', this.selectedId)
       } else if (action === 'detail') {
         this.$router.push('/' + this.$route.params.program + '/' + this.$route.params.resource + '/detail/' + this.selectedId)
+      } else if (action === 'appointmentsave') {
+        this.$bus.emit('saveAppointment')
       }
     },
     onSelect (data) {

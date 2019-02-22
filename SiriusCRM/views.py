@@ -27,6 +27,7 @@ from rest_framework.utils import json
 from rest_framework.views import APIView
 from rolepermissions.roles import get_user_roles, RolesManager, assign_role, retrieve_role, remove_role
 
+from SiriusCRM.apps import SiriuscrmConfig
 from SiriusCRM.mixins import HasRoleMixin
 from SiriusCRM.models import User, UserPosition, Position, UserCategory, Category, UserUnit, Unit, UserFaculty, Faculty, \
     Contact, Appointment, AppointmentStatus
@@ -454,28 +455,28 @@ class UserFacultyView(HasRoleMixin, APIView):
 class AppointmentView(APIView):
 
     def get(self, request):
-        context = {}
-        serializer = AppointmentDateSerializer(data=request.data)
+        serializer = AppointmentDateSerializer(data=request.query_params)
         serializer.is_valid(raise_exception=True)
-        body = json.loads(request.body)
-        date = body['date']
-        context['result'] = self.get_free_time(date)
-        return JsonResponse(context)
+        date = serializer.data['date']
+        context = self.get_free_time(date)
+        return JsonResponse(context, safe=False)
 
     def post(self, request):
         context = {}
-        body = json.loads(request.body)
-        AppointmentDateSerializer(data=request.data).is_valid(raise_exception=True)
-        # AppointmentTimeSerializer(data=request.data).is_valid(raise_exception=True)
-        ContactSerializer(data=request.data).is_valid(raise_exception=True)
+        appointment_date_serializer = AppointmentDateSerializer(data=request.data)
+        appointment_date_serializer.is_valid(raise_exception=True)
+        appointment_time_serializer = AppointmentTimeSerializer(data=request.data)
+        appointment_time_serializer.is_valid(raise_exception=True)
+        contact_serializer = ContactSerializer(data=request.data)
+        contact_serializer.is_valid(raise_exception=True)
         try:
-            first_name = body.get('first_name')
-            last_name = body.get('last_name', '')
-            email = body.get('email')
-            mobile = body.get('mobile')
-            comment = body.get('comment', '')
-            date = body.get('date')
-            time = body.get('time', datetime.datetime.now().time())
+            first_name = contact_serializer.data.get('first_name')
+            last_name = contact_serializer.data.get('last_name', '')
+            email = contact_serializer.data.get('email')
+            mobile = contact_serializer.data.get('mobile')
+            comment = contact_serializer.data.get('comment', '')
+            date = appointment_date_serializer.data.get('date')
+            time = appointment_time_serializer.data.get('time')
             contact, created = Contact.objects.update_or_create(defaults={'email': email, 'mobile': mobile, 'first_name': first_name, 'last_name': last_name, 'comment': comment}, email=email, mobile=mobile)
             appointment = Appointment.objects.create(contact=contact, date=date, time=time, status_id=AppointmentStatus.CREATED)
             consultants = User.objects.filter(categories__in=[Category.ZDRAVNIZA], positions__in=[Position.ZDRAVNIZA_CONSULTANT])
@@ -483,6 +484,10 @@ class AppointmentView(APIView):
             appointment.consultant = consultant
             appointment.save()
             context['result'] = {'success': True}
+            try:
+                SiriuscrmConfig.sender.msg("@VladimirARodionov", "New appointment has been made")
+            except Exception as e:
+                print (e)
             return JsonResponse(context)
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
@@ -500,4 +505,4 @@ class AppointmentView(APIView):
             raise Exception(_('No free consultants at this time'))
 
     def get_free_time(self, date):
-        return {}
+        return ['9:00', '9:30', '10:00', '10:30']
