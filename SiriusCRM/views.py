@@ -485,7 +485,7 @@ class AppointmentView(APIView):
             appointment.save()
             context['result'] = {'success': True}
             try:
-                app = Client("@VladimirARodionov").send_message(
+                app = Client("@VladimirARodionov", api_id=742459, api_hash='131ca587d18de4209331e87ec81f265d').send_message(
                     "@VladimirARodionov", "New appointment has been made")
             except Exception as e:
                 print (e)
