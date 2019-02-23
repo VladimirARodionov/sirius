@@ -483,17 +483,8 @@ class AppointmentView(APIView):
             consultant = self.select_consultant(consultants, appointment)
             appointment.consultant = consultant
             appointment.save()
-            send_notification(appointment)
+            self.send_notification(appointment)
             context['result'] = {'success': True}
-            client = TelegramClient(
-                "@VladimirARodionov", api_id=742459, api_hash='131ca587d18de4209331e87ec81f265d')
-            try:
-                client.start()
-                client.send_message("@VladimirARodionov", "New appointment has been made")
-            except Exception as e:
-                print (e)
-            finally:
-                client.disconnect()
             return JsonResponse(context)
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
