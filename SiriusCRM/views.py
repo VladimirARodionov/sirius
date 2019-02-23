@@ -504,10 +504,10 @@ class AppointmentView(APIView):
     def get_free_time(self, date):
         return ['9:00', '9:30', '10:00', '10:30']
     
-    async def send_notification(self, appointment):
+    def send_notification(self, appointment):
         try:
             sender = Sender(host="localhost", port=4458)
-            await sender.msg("@VladimirARodionov",
+            sender.send_msg("@VladimirARodionov",
                                     "New appointment has been made")
         except Exception as e:
             print(e)
