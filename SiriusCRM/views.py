@@ -507,7 +507,7 @@ class AppointmentView(APIView):
     async def send_notification(self, appointment):
         try:
             sender = Sender(host="localhost", port=4458)
-            sender.msg("@VladimirARodionov",
+            await sender.msg("@VladimirARodionov",
                                     "New appointment has been made")
         except Exception as e:
             print(e)
