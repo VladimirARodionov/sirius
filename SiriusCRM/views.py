@@ -33,7 +33,7 @@ from SiriusCRM.models import User, UserPosition, Position, UserCategory, Categor
 from SiriusCRM.resources import UserResource
 from SiriusCRM.serializers import PositionSerializer, UserPositionSerializer, UserCategorySerializer, \
     UserUnitSerializer, UserFacultySerializer, ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
-from pyrogram import Client
+from pytg.sender import Sender
 
 
 def jwt_response_payload_handler(token, user=None, request=None):
@@ -483,12 +483,17 @@ class AppointmentView(APIView):
             consultant = self.select_consultant(consultants, appointment)
             appointment.consultant = consultant
             appointment.save()
+            send_notification(appointment)
             context['result'] = {'success': True}
+            client = TelegramClient(
+                "@VladimirARodionov", api_id=742459, api_hash='131ca587d18de4209331e87ec81f265d')
             try:
-                app = Client("@VladimirARodionov", api_id=742459, api_hash='131ca587d18de4209331e87ec81f265d').send_message(
-                    "@VladimirARodionov", "New appointment has been made")
+                client.start()
+                client.send_message("@VladimirARodionov", "New appointment has been made")
             except Exception as e:
                 print (e)
+            finally:
+                client.disconnect()
             return JsonResponse(context)
         except Exception as e:
             context['result'] = {'success': False, 'error': str(e)}
@@ -507,3 +512,11 @@ class AppointmentView(APIView):
 
     def get_free_time(self, date):
         return ['9:00', '9:30', '10:00', '10:30']
+    
+    async def send_notification(self, appointment):
+        try:
+            sender = Sender(host="localhost", port=4458)
+            sender.msg("@VladimirARodionov",
+                                    "New appointment has been made")
+        except Exception as e:
+            print(e)
