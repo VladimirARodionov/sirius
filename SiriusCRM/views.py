@@ -484,7 +484,8 @@ class AppointmentView(APIView):
             appointment.consultant = consultant
             appointment.save()
             to='@VladimirARodionov'
-            message = "New appointment has been made.\nDate: {}\n Time: {}\n".format(str(appointment.date), str(appointment.time))
+            message = "New appointment has been made.\nDate: {}\nTime: {}\nContact name: {}\nContact email: {}\nContact mobile: {}\nDiagnos: {}".format(
+                str(appointment.date), str(appointment.time), str(appointment.contact.first_name) + " " str(appointment.contact.last_name), str(appointment.contact.email), str(appointment.contact.mobile), str(appointment.contact.comment))
             send_telegram_notification.delay(to, message)
             context['result'] = {'success': True}
             return JsonResponse(context)
