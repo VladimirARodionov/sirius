@@ -482,7 +482,7 @@ class AppointmentView(APIView):
             consultants = User.objects.filter(categories__in=[Category.ZDRAVNIZA], positions__in=[Position.ZDRAVNIZA_CONSULTANT])
             consultant = self.select_consultant(consultants, appointment)
             appointment.consultant = consultant
-            appointment = appointment.save()
+            appointment.save()
             send_telegram_notification.delay(appointment.id)
             context['result'] = {'success': True}
             return JsonResponse(context)
