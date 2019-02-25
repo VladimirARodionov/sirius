@@ -10,5 +10,5 @@ app = Celery('tasks', broker='amqp://localhost')
 def send_telegram_notification(appointment_id):
     appointment = Appointment.objects.get(pk=appointment_id)
     sender = Sender(host="localhost", port=4458)
-    sender.send_msg('@VladimirARodionov',
-                    'New appointment has been made on date: ' + str(appointment.date) + ' time: ' + str(appointment.time))
+    message = "New appointment has been made on date: {} time: {}".format(str(appointment.date), str(appointment.time))
+    sender.send_msg('@VladimirARodionov', message)
