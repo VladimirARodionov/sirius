@@ -11,4 +11,4 @@ def send_telegram_notification(appointment_id):
     appointment = Appointment.objects.get(pk=appointment_id)
     sender = Sender(host="localhost", port=4458)
     sender.send_msg('@VladimirARodionov',
-                    'New appointment has been made on date: ' + appointment.date + ' time: ' + appointment.time)
+                    'New appointment has been made on date: ' + str(appointment.date) + ' time: ' + str(appointment.time))
