@@ -33,7 +33,7 @@ from SiriusCRM.models import User, UserPosition, Position, UserCategory, Categor
 from SiriusCRM.resources import UserResource
 from SiriusCRM.serializers import PositionSerializer, UserPositionSerializer, UserCategorySerializer, \
     UserUnitSerializer, UserFacultySerializer, ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
-from SiriusCRM.tasks import send_telegram_notification
+from SiriusCRM.tasks import send_telegram_notification, send_email_notification
 
 
 def jwt_response_payload_handler(token, user=None, request=None):
@@ -487,6 +487,7 @@ class AppointmentView(APIView):
             message = "New appointment has been made.\nDate: {}\nTime: {}\nContact name: {}\nContact email: {}\nContact mobile: {}\nDiagnos: {}".format(
                 str(appointment.date), str(appointment.time), str(appointment.contact.first_name) + " " + str(appointment.contact.last_name), str(appointment.contact.email), str(appointment.contact.mobile), str(appointment.contact.comment))
             send_telegram_notification.delay(to, message)
+            send_email_notification.delay('vladimirarodionov@gmail.com', 'no-reply@server.raevskyschool.ru', 'New Zdravniza appointment', message)
             context['result'] = {'success': True}
             return JsonResponse(context)
         except Exception as e:
