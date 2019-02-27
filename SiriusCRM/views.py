@@ -1,7 +1,7 @@
 import csv
-import datetime
 import io
 import random
+from datetime import datetime, timedelta
 
 from casl_django.casl.casl import django_permissions_to_casl_rules
 from django import forms
@@ -21,17 +21,21 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic.edit import ProcessFormView, FormView
 from rest_framework.generics import get_object_or_404
-from rest_framework.parsers import FileUploadParser, MultiPartParser
+from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.utils import json
 from rest_framework.views import APIView
 from rolepermissions.roles import get_user_roles, RolesManager, assign_role, retrieve_role, remove_role
+from schedule.models import Event, Calendar
+from schedule.periods import Day
 
+from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin
 from SiriusCRM.models import User, UserPosition, Position, UserCategory, Category, UserUnit, Unit, UserFaculty, Faculty, \
     Contact, Appointment, AppointmentStatus
 from SiriusCRM.resources import UserResource
-from SiriusCRM.serializers import PositionSerializer, UserPositionSerializer, UserCategorySerializer, \
+from SiriusCRM.schedule.periods import HalfHour
+from SiriusCRM.serializers import UserPositionSerializer, UserCategorySerializer, \
     UserUnitSerializer, UserFacultySerializer, ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
 from SiriusCRM.tasks import send_telegram_notification, send_email_notification
 
@@ -483,6 +487,10 @@ class AppointmentView(APIView):
             consultant = self.select_consultant(consultants, appointment)
             appointment.consultant = consultant
             appointment.save()
+            _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M:%S').time())
+            period = HalfHour([], _datetime)
+            event = Event(start=period.start, end=period.end, title=str(contact), calendar=Calendar.objects.get(pk=1))
+            event.save()
             to='@VladimirARodionov'
             message = "New appointment has been made.\nDate: {}\nTime: {}\nContact name: {}\nContact email: {}\nContact mobile: {}\nDiagnos: {}".format(
                 str(appointment.date), str(appointment.time), str(appointment.contact.first_name) + " " + str(appointment.contact.last_name), str(appointment.contact.email), str(appointment.contact.mobile), str(appointment.contact.comment))
@@ -506,4 +514,28 @@ class AppointmentView(APIView):
             raise Exception(_('No free consultants at this time'))
 
     def get_free_time(self, date):
-        return ['9:00', '9:30', '10:00', '10:30']
+        _date = datetime.strptime(date, '%Y-%m-%d')
+        day = Day([], _date, tzinfo=None)
+        period = day.get_periods(HalfHour)
+        result = []
+        begin, end = self.get_working_hours(_date)
+        for p in period:
+            if (p.start >= begin and p.end <= end):
+                result.append(datetime.strftime(p.start, '%H:%M'))
+        # return ['9:00', '9:30', '10:00', '10:30']
+        return result
+
+    def get_working_hours(self, date):
+        if (date.date() == datetime.today().date()):
+            begin = datetime.today() + timedelta(hours=1)
+            end = self.get_end_of_working_day(date)
+        else:
+            begin = self.get_begin_of_working_day(date)
+            end = self.get_end_of_working_day(date)
+        return begin, end
+
+    def get_begin_of_working_day(self, date):
+        return datetime(year=date.year, month=date.month, day=date.day, hour=settings.WORKING_HOUR_BEGIN, minute=0, second=0)
+
+    def get_end_of_working_day(self, date):
+        return datetime(year=date.year, month=date.month, day=date.day, hour=settings.WORKING_HOUR_END, minute=0, second=0)

@@ -48,5 +48,12 @@
       "number": 1,
       "name": "Заявка принята"
     }
+  },
+  {
+    "model": "schedule.Calendar",
+    "pk": 1,
+    "fields": {
+      "name": "Zdravniza"
+    }
   }
 ]
