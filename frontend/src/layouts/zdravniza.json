@@ -1,6 +1,6 @@
 {
     "title": "Zdravniza",
-    "value": "/zdravniza",
+    "value": "/zdravniza/dashboard/list",
     "fields": [
         {
             "type": "menuitem",

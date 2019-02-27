@@ -1,0 +1,12 @@
+{
+    "program": "zdravniza",
+    "resource": "dashboard",
+    "type": "list",
+    "title": "Dashboard",
+    "fields": [
+      {
+        "type": "calendar",
+        "name": "calendar1"
+      }
+    ]
+}

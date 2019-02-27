@@ -66,6 +66,10 @@
        v-else-if="field.type === 'successmessage'"
        :field="field"
        v-model="value"/>
+     <Calendar
+       v-else-if="field.type === 'calendar'"
+       :field="field"
+       v-model="value"/>
      <Stepper
        v-else-if="field.type === 'stepper'"
        :field="field"
@@ -99,6 +103,7 @@ import MultiSelectTreeField from './MultiSelectTreeField'
 import MenuSelectField from './MenuSelectField'
 import Stepper from './Stepper'
 import SuccessMessage from './SuccessMessage'
+import Calendar from './Calendar'
 
 export default {
   name: 'FormFieldFactory',
@@ -120,7 +125,8 @@ export default {
     MultiSelectField,
     MultiSelectTreeField,
     MenuSelectField,
-    Stepper
+    Stepper,
+    Calendar
   },
   data () {
     return {
