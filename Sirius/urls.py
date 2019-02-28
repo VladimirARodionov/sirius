@@ -76,6 +76,7 @@ urlpatterns = [
     path('api/userunit/update/<int:number>/', views.UserUnitView.as_view(), name='user-unit-update'),
     path('api/userfaculty/update/', views.UserFacultyView.as_view(), name='user-faculty-update'),
     path('api/userfaculty/update/<int:number>/', views.UserFacultyView.as_view(), name='user-faculty-update'),
+    path('api/zdravniza/calendar/<int:number>/', views.CalendarView.as_view(), name='zdravniza-calendar'),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

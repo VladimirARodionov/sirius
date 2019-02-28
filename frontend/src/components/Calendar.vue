@@ -12,6 +12,7 @@
           color="primary"
           :weekdays="[1, 2, 3, 4, 5, 6, 0]"
           interval-minutes=30
+          interval-count=48
           locale="ru"
         ></v-calendar>
       </v-sheet>
@@ -77,6 +78,9 @@ export default {
         { text: 'Month', value: 'month' }
       ]
     }
+  },
+  mounted () {
+    this.$refs[this.field.name].scrollToTime(new Date().getTime())
   }
 }
 </script>

@@ -3,6 +3,7 @@ import io
 import random
 from datetime import datetime, timedelta
 
+import pytz
 from casl_django.casl.casl import django_permissions_to_casl_rules
 from django import forms
 from django.contrib.auth import get_user_model
@@ -26,8 +27,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.utils import json
 from rest_framework.views import APIView
 from rolepermissions.roles import get_user_roles, RolesManager, assign_role, retrieve_role, remove_role
-from schedule.models import Event, Calendar
+from schedule.models import Event, Calendar, EventManager, EventRelationManager, Occurrence, Q, EventRelation
 from schedule.periods import Day
+from schedule.views import _api_occurrences
 
 from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin
@@ -489,8 +491,12 @@ class AppointmentView(APIView):
             appointment.save()
             _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M:%S').time())
             period = HalfHour([], _datetime)
-            event = Event(start=period.start, end=period.end, title=str(contact), calendar=Calendar.objects.get(pk=1))
+            event = Event(start=period.start, end=period.end, title=str(contact), calendar=Calendar.objects.get(pk=1), creator=consultant)
             event.save()
+            appointment_relation = EventRelation.objects.create_relation(event, appointment, 'appointment')
+            consultant_relation = EventRelation.objects.create_relation(event, consultant, 'consultant')
+            appointment_relation.save()
+            consultant_relation.save()
             to='@VladimirARodionov'
             message = "New appointment has been made.\nDate: {}\nTime: {}\nContact name: {}\nContact email: {}\nContact mobile: {}\nDiagnos: {}".format(
                 str(appointment.date), str(appointment.time), str(appointment.contact.first_name) + " " + str(appointment.contact.last_name), str(appointment.contact.email), str(appointment.contact.mobile), str(appointment.contact.comment))
@@ -539,3 +545,22 @@ class AppointmentView(APIView):
 
     def get_end_of_working_day(self, date):
         return datetime(year=date.year, month=date.month, day=date.day, hour=settings.WORKING_HOUR_END, minute=0, second=0)
+
+
+class CalendarView(HasRoleMixin, APIView):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role', 'edit_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+
+    def get(self, request):
+        # user = get_object_or_404(User, pk=request.user.id)
+        start = request.GET.get('start')
+        end = request.GET.get('end')
+        # calendar_slug = Calendar.objects.get(pk=1).slug
+        timezone = request.GET.get('timezone')
+
+        try:
+            response_data = _api_occurrences(start, end, 'Zdravniza', timezone)
+        except (ValueError, Calendar.DoesNotExist) as e:
+            return HttpResponseBadRequest(e)
+        return JsonResponse(response_data, safe=False)
