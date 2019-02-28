@@ -14,6 +14,7 @@
           interval-minutes=30
           interval-count=48
           locale="ru"
+          v-on:change="change(start, end)"
         ></v-calendar>
       </v-sheet>
     </v-flex>
@@ -62,6 +63,9 @@
 </template>
 
 <script>
+import { onGetAll } from '../api/requests'
+import moment from 'moment-timezone'
+
 export default {
   name: 'Calendar',
   props: {
@@ -70,8 +74,15 @@ export default {
   },
   data () {
     return {
+      data: {
+        objects: [],
+        loading: false
+      },
       type: 'week',
       date: new Date().toISOString().substr(0, 10),
+      start: '',
+      end: '',
+      timezone: moment.tz.guess(),
       typeOptions: [
         { text: 'Day', value: 'day' },
         { text: 'Week', value: 'week' },
@@ -81,6 +92,20 @@ export default {
   },
   mounted () {
     this.$refs[this.field.name].scrollToTime(new Date().getTime())
+    var current = new Date() // get current date
+    this.start = current.getDate() - current.getDay() + 1
+    this.end = this.start + 6 // end day is the first day + 6
+    this.getItems()
+  },
+  methods: {
+    getItems () {
+      onGetAll(this.field.api + '?start=' + this.start + '&end=' + this.end + '&timezone=' + this.timezone, 'objects', this.data)
+    },
+    change (start, end) {
+      this.start = start.date
+      this.end = end.date
+      this.getItems()
+    }
   }
 }
 </script>

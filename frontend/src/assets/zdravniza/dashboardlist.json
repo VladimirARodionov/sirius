@@ -6,7 +6,8 @@
     "fields": [
       {
         "type": "calendar",
-        "name": "calendar1"
+        "name": "calendar1",
+        "api": "/api/zdravniza/calendar/"
       }
     ]
 }

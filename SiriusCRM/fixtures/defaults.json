@@ -53,7 +53,8 @@
     "model": "schedule.Calendar",
     "pk": 1,
     "fields": {
-      "name": "Zdravniza"
+      "name": "Zdravniza",
+      "slug": "Zdravniza"
     }
   }
 ]

@@ -554,13 +554,15 @@ class CalendarView(HasRoleMixin, APIView):
 
     def get(self, request):
         # user = get_object_or_404(User, pk=request.user.id)
-        start = request.GET.get('start')
-        end = request.GET.get('end')
+        start = request.query_params.get('start')
+        end = request.query_params.get('end')
         # calendar_slug = Calendar.objects.get(pk=1).slug
-        timezone = request.GET.get('timezone')
+        timezone = request.query_params.get('timezone')
 
         try:
             response_data = _api_occurrences(start, end, 'Zdravniza', timezone)
+            for record in response_data:
+                record.update({duration: (record.end - record.start) // timedelta(minutes=1)})
         except (ValueError, Calendar.DoesNotExist) as e:
             return HttpResponseBadRequest(e)
         return JsonResponse(response_data, safe=False)
