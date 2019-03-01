@@ -94,8 +94,6 @@
 <script>
 import { onGetAll } from '../api/requests'
 import moment from 'moment-timezone'
-import startOfWeek from 'date-fns/start_of_week'
-import endOfWeek from 'date-fns/end_of_week'
 import getHours from 'date-fns/get_hours'
 import getMinutes from 'date-fns/get_minutes'
 
@@ -113,8 +111,8 @@ export default {
       },
       type: 'week',
       date: new Date().toISOString().substr(0, 10),
-      start: startOfWeek(new Date(), { weekStartsOn: 1 }).toISOString().substr(0, 10),
-      end: endOfWeek(new Date(), { weekStartsOn: 1 }).toISOString().substr(0, 10),
+      start: '',
+      end: '',
       timezone: moment.tz.guess(),
       typeOptions: [
         { text: 'Day', value: 'day' },
@@ -125,10 +123,6 @@ export default {
   },
   mounted () {
     this.$refs[this.field.name].scrollToTime(new Date().getTime())
-    // let startAndEnd = this.startAndEndOfWeek(new Date())
-    // this.start = startAndEnd[0].toISOString().substr(0, 10)
-    // this.end = startAndEnd[1].toISOString().substr(0, 10)
-    // this.getItems()
   },
   methods: {
     getItems () {

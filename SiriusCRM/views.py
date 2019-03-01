@@ -490,7 +490,7 @@ class AppointmentView(APIView):
             appointment.consultant = consultant
             appointment.save()
             _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M:%S').time())
-            period = HalfHour([], _datetime)
+            period = HalfHour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
             event = Event(start=period.start, end=period.end, title=str(contact), calendar=Calendar.objects.get(pk=1), creator=consultant)
             event.save()
             appointment_relation = EventRelation.objects.create_relation(event, appointment, 'appointment')
