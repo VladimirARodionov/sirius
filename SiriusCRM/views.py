@@ -562,7 +562,7 @@ class CalendarView(HasRoleMixin, APIView):
         try:
             response_data = _api_occurrences(start, end, 'Zdravniza', timezone)
             for record in response_data:
-                record.update({duration: (record.end - record.start) // timedelta(minutes=1)})
+                record.update({'duration': (record['end'] - record['start']).total_seconds() / 60})
         except (ValueError, Calendar.DoesNotExist) as e:
             return HttpResponseBadRequest(e)
         return JsonResponse(response_data, safe=False)
