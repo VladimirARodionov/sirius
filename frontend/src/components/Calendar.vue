@@ -4,7 +4,7 @@
       xs12
       class="mb-3"
     >
-      <v-sheet height="500">
+      <v-sheet>
         <v-calendar
           :ref="field.name"
           v-model="date"
@@ -23,22 +23,22 @@
             <template v-for="event in objectsMap[date]">
                 <div
                   :key="event.id"
-                  v-ripple
+                  class="my-event"
+                  @click="open(event)"
                   v-html="event.title"
                 ></div>
             </template>
           </template>
           <template
-            slot="dayBody"
-            slot-scope="{ date, timeToY, minutesToPixels }"
+            slot="interval"
+            slot-scope="{ date, time}"
           >
-            <template v-for="event in objectsMap[date]">
+              <template v-for="event in objectsMap[date]">
               <!-- timed events -->
               <div
-                v-if="event.start"
+                v-if="time === getTime(event.start)"
                 :key="event.id"
-                :style="{ top: timeToY(getTime(event.start)) + 'px', height: minutesToPixels(event.duration) + 'px' }"
-                class="my-event with-time"
+                class="my-event"
                 @click="open(event)"
                 v-html="event.title"
               ></div>
@@ -136,7 +136,8 @@ export default {
       this.getItems()
     },
     getTime (date) {
-      let time = getHours(date) + ':' + getMinutes(date)
+      let minutes = getMinutes(date)
+      let time = getHours(date) + ':' + ((minutes < 10) ? ('0' + minutes) : minutes)
       return time
     }
   },
@@ -167,6 +168,7 @@ export default {
     left: 4px;
     margin-right: 8px;
     position: relative;
+    clear:both;
   }
 
   .with-time {
