@@ -496,11 +496,12 @@ class AppointmentView(APIView):
             consultant_relation = EventRelation.objects.create_relation(event, consultant, 'consultant')
             appointment_relation.save()
             consultant_relation.save()
-            to='@VladimirARodionov'
             message = "New appointment has been made.\nDate: {}\nTime: {}\nContact name: {}\nContact email: {}\nContact mobile: {}\nDiagnos: {}".format(
                 str(appointment.date), str(appointment.time), str(appointment.contact.first_name) + " " + str(appointment.contact.last_name), str(appointment.contact.email), str(appointment.contact.mobile), str(appointment.contact.comment))
-            send_telegram_notification.delay(to, message)
-            send_email_notification.delay('vladimirarodionov@gmail.com', 'no-reply@server.raevskyschool.ru', 'New Zdravniza appointment', message)
+            if consultant.telegram:
+              send_telegram_notification.delay(consultant.telegram, message)
+            if consultant.email:
+              send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru', 'New Zdravniza appointment', message)
             context['result'] = {'success': True}
             return JsonResponse(context)
         except Exception as e:

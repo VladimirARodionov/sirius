@@ -247,6 +247,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     birthday = models.DateField(_('Birthday'), null=True, blank=True)
     mobile = models.CharField(max_length=20, null=True, blank=True)
     phone = models.CharField(max_length=20, null=True, blank=True)
+    telegram = models.CharField(max_length=80, null=True, blank=True)
     salary = models.FloatField(null=True, blank=True)
     characteristic = models.TextField(null=True, blank=True)
     city = models.ForeignKey(City, null=True, on_delete=models.PROTECT, related_name="user_city")
