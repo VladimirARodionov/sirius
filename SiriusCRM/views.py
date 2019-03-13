@@ -485,8 +485,7 @@ class AppointmentView(APIView):
             time = appointment_time_serializer.data.get('time')
             contact, created = Contact.objects.update_or_create(defaults={'email': email, 'mobile': mobile, 'first_name': first_name, 'last_name': last_name, 'comment': comment}, email=email, mobile=mobile)
             appointment = Appointment.objects.create(contact=contact, date=date, time=time, status_id=AppointmentStatus.CREATED)
-            consultants = User.objects.filter(categories__in=[Category.ZDRAVNIZA], positions__in=[Position.ZDRAVNIZA_CONSULTANT])
-            consultant = self.select_consultant(consultants, appointment)
+            consultant = self.select_consultant(appointment)
             appointment.consultant = consultant
             appointment.save()
             _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M:%S').time())
@@ -508,12 +507,29 @@ class AppointmentView(APIView):
             context['result'] = {'success': False, 'error': str(e)}
             return HttpResponseBadRequest(JsonResponse(context))
 
-    def get_free_consultants(self, consultants, appointment):
-        # TODO find free consultant, better to same as before for the contact in the appointment
-        return consultants
+    def get_free_consultants(self, date, time):
+        consultants = User.objects.filter(categories__in=[Category.ZDRAVNIZA],
+                                          positions__in=[Position.ZDRAVNIZA_CONSULTANT])
+        _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M:%S').time())
+        period = HalfHour(Event.objects.all(), _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        occurrences = period.get_occurrences()
+        free_consultants = []
+        if occurrences:
+            for consultant in consultants:
+                is_free = True
+                for occurrence in occurrences:
+                    if occurrence.event.creator_id == consultant.id:
+                        is_free = False
+                if is_free:
+                    free_consultants.append(consultant)
+            return free_consultants
+        else:
+            for consultant in consultants:
+                free_consultants.append(consultant)
+            return free_consultants
 
-    def select_consultant(self, consultants, appointment):
-        cons = self.get_free_consultants(consultants, appointment)
+    def select_consultant(self, appointment):
+        cons = self.get_free_consultants(appointment.date, appointment.time)
         if len(cons):
             return cons[random.randint(0, len(cons) - 1)]
         else:
@@ -527,7 +543,8 @@ class AppointmentView(APIView):
         begin, end = self.get_working_hours(_date)
         for p in period:
             if (p.start >= begin and p.end <= end):
-                result.append(datetime.strftime(p.start, '%H:%M'))
+                if self.get_free_consultants(date, datetime.strftime(p.start, '%H:%M:%S')):
+                    result.append(datetime.strftime(p.start, '%H:%M'))
         # return ['9:00', '9:30', '10:00', '10:30']
         return result
 
