@@ -2,7 +2,6 @@ import csv
 import io
 import random
 from datetime import datetime, timedelta
-
 import pytz
 from casl_django.casl.casl import django_permissions_to_casl_rules
 from django import forms
@@ -496,12 +495,13 @@ class AppointmentView(APIView):
             consultant_relation = EventRelation.objects.create_relation(event, consultant, 'consultant')
             appointment_relation.save()
             consultant_relation.save()
-            message = "New appointment has been made.\nDate: {}\nTime: {}\nContact name: {}\nContact email: {}\nContact mobile: {}\nDiagnos: {}".format(
-                str(appointment.date), str(appointment.time), str(appointment.contact.first_name) + " " + str(appointment.contact.last_name), str(appointment.contact.email), str(appointment.contact.mobile), str(appointment.contact.comment))
+            message = _('New appointment has been made.\nDate: %(date)s\nTime: %(time)s\nContact name: %(contact_name)s\nContact email: %(contact_email)s\nContact mobile: %(contact_mobile)s\nDiagnos: %(diagnos)s') % {'date': str(appointment.date), 'time': str(appointment.time), 'contact_name': str(appointment.contact.first_name) + " " + str(appointment.contact.last_name), 'contact_email': str(appointment.contact.email), 'contact_mobile': str(appointment.contact.mobile), 'diagnos': str(appointment.contact.comment)}
             if consultant.telegram:
-              send_telegram_notification.delay(consultant.telegram, message)
+                send_telegram_notification.delay(consultant.telegram, message)
             if consultant.email:
-              send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru', 'New Zdravniza appointment', message)
+                send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru', _('New Zdravniza appointment'), message)
+            send_email_notification.delay(contact.email, 'no-reply@server.raevskyschool.ru',
+                                          _('You are successfully made new Zdravniza appointment'), message)
             context['result'] = {'success': True}
             return JsonResponse(context)
         except Exception as e:
