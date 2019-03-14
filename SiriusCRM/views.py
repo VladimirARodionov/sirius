@@ -571,16 +571,19 @@ class CalendarView(HasRoleMixin, APIView):
     allowed_post_roles = ['admin_role', 'edit_role']
 
     def get(self, request):
-        # user = get_object_or_404(User, pk=request.user.id)
+        user_email = request.user.email
         start = request.query_params.get('start')
         end = request.query_params.get('end')
         # calendar_slug = Calendar.objects.get(pk=1).slug
         timezone = request.query_params.get('timezone')
 
         try:
-            response_data = _api_occurrences(start, end, 'Zdravniza', timezone)
-            for record in response_data:
-                record.update({'duration': (record['end'] - record['start']).total_seconds() / 60})
+            occurrences = _api_occurrences(start, end, 'Zdravniza', timezone)
+            response_data = []
+            for record in occurrences:
+                if record['creator'] == user_email:
+                    record.update({'duration': (record['end'] - record['start']).total_seconds() / 60})
+                    response_data.append(record)
         except (ValueError, Calendar.DoesNotExist) as e:
             return HttpResponseBadRequest(e)
         return JsonResponse(response_data, safe=False)
