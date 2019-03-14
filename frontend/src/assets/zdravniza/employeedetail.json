@@ -76,7 +76,8 @@
       "item_value": "id",
       "api": "/api/city/",
       "resource": "city",
-      "required": false
+      "required": false,
+      "hide_edit": true
     },
     {
       "type": "text",
@@ -124,7 +125,8 @@
       "item_value": "id",
       "api": "/api/unit/",
       "resource": "unit",
-      "required": false
+      "required": false,
+      "hide_edit": true
     },
     {
       "type": "multi-select",
@@ -135,7 +137,8 @@
       "item_value": "category_value.id",
       "api": "/api/category/",
       "resource": "category",
-      "required": false
+      "required": false,
+      "hide_edit": true
     },
     {
       "type": "multi-select",
@@ -146,7 +149,8 @@
       "item_value": "id",
       "api": "/api/position/",
       "resource": "position",
-      "required": false
+      "required": false,
+      "hide_edit": true
     },
     {
       "type": "actions",
