@@ -61,10 +61,12 @@ def jwt_response_payload_handler(token, user=None, request=None):
 
 class UserRolesView(HasRoleMixin, APIView):
     permission_classes = (IsAuthenticated,)
-    allowed_roles = ['admin_role', 'edit_role']
+    allowed_get_roles = ['admin_role', 'user_role', 'edit_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
 
     def get(self, request):
-        return JsonResponse(list(RolesManager.get_roles_names()), safe=False)
+        result = [{'name': entry} for entry in RolesManager.get_roles_names()]
+        return JsonResponse(result, safe=False)
 
     def post(self, request):
         context = {}

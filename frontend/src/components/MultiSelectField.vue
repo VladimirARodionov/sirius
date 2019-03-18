@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { onGet } from '../api/requests'
+import { onGet, onGetAll } from '../api/requests'
 import vuetifyToast from 'vuetify-toast'
 
 export default {
@@ -75,7 +75,11 @@ export default {
       this.errorMessage = data
     },
     getItems () {
-      onGet(this.field.api, this.data, this.pagination, this.search_term)
+      if (this.field.non_pageable) {
+        onGetAll(this.field.api, 'objects', this.data)
+      } else {
+        onGet(this.field.api, this.data, this.pagination, this.search_term)
+      }
     },
     goList () {
       if (!this.field.hide_edit) {

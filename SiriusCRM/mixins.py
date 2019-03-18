@@ -22,7 +22,10 @@ class HasRoleMixin(object):
 
     def method_to_name(self, request):
         method_name = request.method.lower()
-        return getattr(self, 'allowed_' + method_name + '_roles')
+        if hasattr(self, 'allowed_' + method_name + '_roles'):
+            return getattr(self, 'allowed_' + method_name + '_roles')
+        else: 
+            return None
 
     def dispatch(self, request, *args, **kwargs):
         roles = self.method_to_name(request)

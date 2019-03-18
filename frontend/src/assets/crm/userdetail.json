@@ -160,6 +160,19 @@
       "required": false
     },
     {
+      "type": "multi-select",
+      "name": "detail_roles",
+      "text": "Roles",
+      "value": "roles",
+      "item_text": "name",
+      "item_value": "name",
+      "api": "/api/role/",
+      "resource": "role",
+      "required": false,
+      "hide_edit": true,
+      "non_pageable": true
+    },
+    {
       "type": "actions",
       "fields":
       [
