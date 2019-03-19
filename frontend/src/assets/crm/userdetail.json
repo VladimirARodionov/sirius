@@ -163,7 +163,7 @@
       "type": "multi-select",
       "name": "detail_roles",
       "text": "Roles",
-      "value": "roles",
+      "value": "role",
       "item_text": "name",
       "item_value": "name",
       "api": "/api/role/",

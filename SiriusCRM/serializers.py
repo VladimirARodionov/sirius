@@ -1,6 +1,9 @@
+from django.core.serializers.json import DjangoJSONEncoder
+from rest_framework.utils import json
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 from rest_framework.serializers import ModelSerializer
+from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, clear_roles
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
     Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment
@@ -97,12 +100,17 @@ class AddressSerializer(ModelSerializer):
 
 class UserDetailSerializer(ModelSerializer):
     user_city = CitySerializer(source='city', read_only=True)
+    role = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile',
                   'city', 'telegram', 'user_city', 'village', 'street', 'house', 'apartment',
-                  'units', 'faculties', 'positions', 'categories')
+                  'units', 'faculties', 'positions', 'categories', 'role')
+
+    def get_role(self, obj):
+        result=[entry.get_name() for entry in get_user_roles(obj)]
+        return result
 
     def update(self, instance, validated_data):
         positions_data = self.context['request'].data['positions']
@@ -147,6 +155,11 @@ class UserDetailSerializer(ModelSerializer):
         current_faculties.delete() # TODO not delete already existing faculties
         for new_fac in new_faculties:
             UserFaculty.objects.create(user=user, faculty=new_fac)
+
+        role_data = self.context['request'].data['role']
+        clear_roles(user)
+        for row in role_data:
+            assign_role(user, retrieve_role(row))
 
         return instance
 
