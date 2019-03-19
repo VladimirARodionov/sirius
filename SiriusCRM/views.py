@@ -2,6 +2,7 @@ import csv
 import io
 import random
 from datetime import datetime, timedelta
+
 import pytz
 from casl_django.casl.casl import django_permissions_to_casl_rules
 from django import forms
@@ -25,19 +26,17 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.utils import json
 from rest_framework.views import APIView
-from rolepermissions.roles import get_user_roles, RolesManager, assign_role, retrieve_role, remove_role
-from schedule.models import Event, Calendar, EventManager, EventRelationManager, Occurrence, Q, EventRelation
+from rolepermissions.roles import get_user_roles, RolesManager
+from schedule.models import Event, Calendar, EventRelation
 from schedule.periods import Day
 from schedule.views import _api_occurrences
 
 from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, UserPosition, Position, UserCategory, Category, UserUnit, Unit, UserFaculty, Faculty, \
-    Contact, Appointment, AppointmentStatus
+from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus
 from SiriusCRM.resources import UserResource
 from SiriusCRM.schedule.periods import HalfHour
-from SiriusCRM.serializers import UserPositionSerializer, UserCategorySerializer, \
-    UserUnitSerializer, UserFacultySerializer, ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
+from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
 from SiriusCRM.tasks import send_telegram_notification, send_email_notification
 
 
@@ -67,30 +66,6 @@ class UserRolesView(HasRoleMixin, APIView):
     def get(self, request):
         result = [{'name': entry} for entry in RolesManager.get_roles_names()]
         return JsonResponse(result, safe=False)
-
-    def post(self, request):
-        context = {}
-        try:
-            body = json.loads(request.body)
-            user = get_object_or_404(User, pk=body['user_id'])
-            assign_role(user, retrieve_role(body['role_name']))
-            context['result'] = {'success': True}
-            return JsonResponse(context)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return JsonResponse(context)
-
-    def delete(self, request):
-        context = {}
-        try:
-            body = json.loads(request.body)
-            user = get_object_or_404(User, pk=body['user_id'])
-            remove_role(user, retrieve_role(body['role_name']))
-            context['result'] = {'success': True}
-            return JsonResponse(context)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return JsonResponse(context)
 
 
 class PeopleImportView(HasRoleMixin, APIView):
@@ -152,12 +127,6 @@ class UserExportView(HasRoleMixin, APIView):
 
     def get(self, request):
         return self.export(request)
-
-
-class PeopleDetailsForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile']
 
 
 class PasswordChangeView(ProcessFormView):
@@ -309,154 +278,6 @@ class PasswordResetConfirmView(PasswordContextMixin, FormView):
         context = {}
         context['result'] = {'success': True, 'validlink': self.validlink}
         return JsonResponse(context)
-
-
-class UserPositionView(HasRoleMixin, APIView):
-    permission_classes = (IsAuthenticated,)
-    allowed_get_roles = ['admin_role', 'user_role', 'edit_role']
-    allowed_post_roles = ['admin_role', 'edit_role']
-
-    def get(self, request, number):
-        context = {}
-        try:
-            user = get_object_or_404(User, pk=number)
-            current_positions = UserPosition.objects.filter(user=user.id)
-            serializer = UserPositionSerializer(current_positions, many=True)
-            context = serializer.data
-            return JsonResponse(context, safe=False)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return HttpResponseBadRequest(context)
-
-    def post(self, request):
-        context = {}
-        try:
-            body = json.loads(request.body)
-            user = get_object_or_404(User, pk=body['forId'])
-            new_positions = []
-            for row in body['selected']:
-                position = get_object_or_404(Position, pk=row)
-                new_positions.append(position)
-            current_positions = UserPosition.objects.filter(user=user.id)
-            current_positions.delete()
-            for new_pos in new_positions:
-                UserPosition.objects.create(user=user, position=new_pos)
-            context['result'] = {'success': True}
-            return JsonResponse(context)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return HttpResponseBadRequest(context)
-
-
-class UserCategoryView(HasRoleMixin, APIView):
-    permission_classes = (IsAuthenticated,)
-    allowed_get_roles = ['admin_role', 'user_role', 'edit_role']
-    allowed_post_roles = ['admin_role', 'edit_role']
-
-    def get(self, request, number):
-        context = {}
-        try:
-            user = get_object_or_404(User, pk=number)
-            current_categories = UserCategory.objects.filter(user=user.id)
-            serializer = UserCategorySerializer(current_categories, many=True)
-            context = serializer.data
-            return JsonResponse(context, safe=False)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return HttpResponseBadRequest(context)
-
-    def post(self, request):
-        context = {}
-        try:
-            body = json.loads(request.body)
-            user = get_object_or_404(User, pk=body['forId'])
-            new_categories = []
-            for row in body['selected']:
-                category = get_object_or_404(Category, pk=row)
-                new_categories.append(category)
-            current_categories = UserCategory.objects.filter(user=user.id)
-            current_categories.delete()
-            for new_cat in new_categories:
-                UserCategory.objects.create(user=user, category=new_cat)
-            context['result'] = {'success': True}
-            return JsonResponse(context)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return HttpResponseBadRequest(JsonResponse(context))
-
-
-class UserUnitView(HasRoleMixin, APIView):
-    permission_classes = (IsAuthenticated,)
-    allowed_get_roles = ['admin_role', 'user_role', 'edit_role']
-    allowed_post_roles = ['admin_role', 'edit_role']
-
-    def get(self, request, number):
-        context = {}
-        try:
-            user = get_object_or_404(User, pk=number)
-            current_units = UserUnit.objects.filter(user=user.id)
-            serializer = UserUnitSerializer(current_units, many=True)
-            context = serializer.data
-            return JsonResponse(context, safe=False)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return HttpResponseBadRequest(context)
-
-    def post(self, request):
-        context = {}
-        try:
-            body = json.loads(request.body)
-            user = get_object_or_404(User, pk=body['forId'])
-            new_units = []
-            for row in body['selected']:
-                unit = get_object_or_404(Unit, pk=row)
-                new_units.append(unit)
-            current_units = UserUnit.objects.filter(user=user.id)
-            current_units.delete()
-            for new_un in new_units:
-                UserUnit.objects.create(user=user, unit=new_un)
-            context['result'] = {'success': True}
-            return JsonResponse(context)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return HttpResponseBadRequest(context)
-
-
-class UserFacultyView(HasRoleMixin, APIView):
-    permission_classes = (IsAuthenticated,)
-    allowed_get_roles = ['admin_role', 'user_role', 'edit_role']
-    allowed_post_roles = ['admin_role', 'edit_role']
-
-    def get(self, request, number):
-        context = {}
-        try:
-            user = get_object_or_404(User, pk=number)
-            current_faculties = UserFaculty.objects.filter(user=user.id)
-            serializer = UserFacultySerializer(current_faculties, many=True)
-            context = serializer.data
-            return JsonResponse(context, safe=False)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return HttpResponseBadRequest(context)
-
-    def post(self, request):
-        context = {}
-        try:
-            body = json.loads(request.body)
-            user = get_object_or_404(User, pk=body['forId'])
-            new_faculties = []
-            for row in body['selected']:
-                faculty = get_object_or_404(Faculty, pk=row)
-                new_faculties.append(faculty)
-            current_faculties = UserFaculty.objects.filter(user=user.id)
-            current_faculties.delete()
-            for new_fac in new_faculties:
-                UserFaculty.objects.create(user=user, faculty=new_fac)
-            context['result'] = {'success': True}
-            return JsonResponse(context)
-        except Exception as e:
-            context['result'] = {'success': False, 'error': str(e)}
-            return HttpResponseBadRequest(context)
 
 
 class AppointmentView(APIView):
