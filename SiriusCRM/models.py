@@ -219,7 +219,7 @@ class Contact(models.Model):
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
     last_name = models.CharField(_('Last name'), max_length=80, blank=True)
     middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
-    comment = models.CharField(_('Comment'), max_length=255, blank=True)
+    comment = models.TextField(_('Comment'), blank=True)
 
     class Meta:
         ordering = ['id']

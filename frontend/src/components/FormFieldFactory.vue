@@ -34,6 +34,10 @@
        v-else-if="field.type === 'text'"
        :field="field"
        v-model="value"/>
+     <TextAreaField
+       v-else-if="field.type === 'textarea'"
+       :field="field"
+       v-model="value"/>
      <BirthdayField
        v-else-if="field.type === 'birthday'"
        :field="field"
@@ -94,6 +98,7 @@ import DataTree from './DataTree'
 import Button from './Button'
 import Search from './Search'
 import TextField from './TextField'
+import TextAreaField from './TextAreaField'
 import BirthdayField from './BirthdayField'
 import AppointmentDateField from './AppointmentDateField'
 import SelectField from './SelectField'
@@ -118,6 +123,7 @@ export default {
     Button,
     Search,
     TextField,
+    TextAreaField,
     BirthdayField,
     AppointmentDateField,
     SelectField,
