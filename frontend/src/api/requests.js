@@ -119,7 +119,9 @@ export function onDelete (api, data, getFunction) {
         data.currentObject = {}
         data.isSelected = false
         vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
-        getFunction()
+        if (getFunction) {
+          getFunction()
+        }
       })
       .catch(err => {
         console.log(err)

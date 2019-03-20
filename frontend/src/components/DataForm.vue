@@ -176,12 +176,12 @@ export default {
       })
     },
     deleteObject: function () {
-      onDelete(this.json.api, this.data, this.getObject).then(resp => {
+      onDelete(this.json.api, this.data, null).then(resp => {
         this.$bus.emit('updateList', {})
       })
     },
     getDeleteMessage: function () {
-      return this.$t('Delete ' + (this.json.name ? this.json.name : '')) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.name + ' ?'
+      return this.$t('Delete ' + (this.json.name ? this.json.name : '')) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.email + ' ?'
     },
     fillChildren () {
       let children = []

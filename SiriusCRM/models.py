@@ -214,7 +214,7 @@ class AppointmentStatus(models.Model):
 # Список контактов, лидов
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
-    email = models.EmailField(_('Email'), blank=False)
+    email = models.EmailField(_('Email'), unique=True, blank=False)
     mobile = models.CharField(_('Mobile'), max_length=20, blank=False)
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
     last_name = models.CharField(_('Last name'), max_length=80, blank=True)
@@ -300,7 +300,7 @@ class Appointment(models.Model):
     status = models.ForeignKey(AppointmentStatus, null=False,
                                on_delete=models.PROTECT, related_name="appointment_status")
     contact = models.ForeignKey(
-        Contact, null=False, on_delete=models.PROTECT, related_name="appointment_contact")
+        Contact, null=False, on_delete=models.CASCADE, related_name="appointment_contact")
     consultant = models.ForeignKey(
         User, null=True, on_delete=models.PROTECT, related_name="appointment_consultant")
 

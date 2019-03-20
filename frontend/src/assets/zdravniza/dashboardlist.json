@@ -2,7 +2,7 @@
     "program": "zdravniza",
     "resource": "dashboard",
     "type": "list",
-    "title": "Dashboard",
+    "title": "Calendar",
     "fields": [
       {
         "type": "calendar",
