@@ -196,6 +196,9 @@ export default {
   computed: {
     errorMessageText: function () {
       const errors = this.data.errorMessage
+      if (!(errors instanceof Array)) {
+        return errors
+      }
       let result = []
       for (const value in errors) {
         let skip = false

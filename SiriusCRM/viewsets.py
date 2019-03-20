@@ -9,11 +9,11 @@ from rest_framework.response import Response
 
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address, UserCategory, Faculty, Contact
+    Payment, Address, UserCategory, Faculty, Contact, Appointment
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
     CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer, \
-    FacultySerializer, ContactSerializer
+    FacultySerializer, ContactSerializer, AppointmentSerializer
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -344,5 +344,19 @@ class ContactViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
     search_fields = ('first_name', 'last_name', 'middle_name', 'email', 'mobile', 'comment')
     ordering_fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'comment')
+
+
+class AppointmentViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_post_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_put_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_delete_roles = ['admin_role', 'user_role', 'user_list_role']
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('date', 'time', 'status', 'contact', 'consultant')
+    ordering_fields = ('id', 'date', 'time', 'status', 'contact', 'consultant')
 
 

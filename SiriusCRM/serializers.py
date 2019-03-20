@@ -225,3 +225,9 @@ class AppointmentTimeSerializer(ModelSerializer):
         model = Appointment
         fields = ('id', 'time')
 
+
+class AppointmentSerializer(ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = ('id', 'date', 'time', 'status', 'contact', 'consultant')
+

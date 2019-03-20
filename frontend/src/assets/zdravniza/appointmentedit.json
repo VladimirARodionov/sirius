@@ -1,0 +1,76 @@
+{
+  "program": "zdravniza",
+  "resource": "appointment",
+  "api": "/api/appointmentdetail/",
+  "type": "edit",
+  "title": "Edit appointment",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "appointmentdate",
+      "name": "date_edit",
+      "text": "Date",
+      "value": "date",
+      "required": true
+    },
+    {
+      "type": "text",
+      "name": "time_edit",
+      "text": "Time",
+      "value": "time",
+      "required": true
+    },
+    {
+      "type": "select",
+      "name": "contact_edit_select",
+      "text": "Contact",
+      "value": "contact",
+      "item_text": "contact.email",
+      "item_value": "id",
+      "api": "/api/contact/",
+      "resource": "contact",
+      "required": true,
+      "hide_edit": false
+    },
+    {
+      "type": "select",
+      "name": "consultant_edit_select",
+      "text": "Consultant",
+      "value": "consultant",
+      "item_text": "consultant.email",
+      "item_value": "id",
+      "api": "/api/zdravniza/",
+      "resource": "consultant",
+      "required": true,
+      "hide_edit": false
+    },
+    {
+      "type": "actions",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "back_edit_button",
+          "text": "Close",
+          "action": "back",
+          "color": "",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "save_edit_button1",
+          "text": "Save",
+          "action": "save",
+          "color": "success",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        }
+      ]
+    }
+  ]
+}

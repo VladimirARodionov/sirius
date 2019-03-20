@@ -139,6 +139,9 @@ export default {
       let minutes = getMinutes(date)
       let time = getHours(date) + ':' + ((minutes < 10) ? ('0' + minutes) : minutes)
       return time
+    },
+    open (event) {
+      this.$router.push('/' + this.$route.params.program + '/appointment/edit/' + event.description)
     }
   },
   computed: {
