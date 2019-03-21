@@ -14,7 +14,7 @@
       "required": true
     },
     {
-      "type": "appointmentselect",
+      "type": "text",
       "name": "time_add",
       "text": "Time",
       "value": "time",
@@ -37,10 +37,10 @@
       "name": "contact_add_select",
       "text": "Contact",
       "value": "contact",
-      "item_text": "contact.email",
+      "item_text": "email",
       "item_value": "id",
       "api": "/api/contact/",
-      "resource": "contact",
+      "resource": "client",
       "required": true,
       "hide_edit": false
     },
@@ -49,12 +49,12 @@
       "name": "consultant_add_select",
       "text": "Consultant",
       "value": "consultant",
-      "item_text": "consultant.email",
+      "item_text": "email",
       "item_value": "id",
-      "api": "/api/zdravniza/",
+      "api": "/api/zdravnizaconsultant/",
       "resource": "consultant",
       "required": true,
-      "hide_edit": false
+      "hide_edit": true
     },
     {
       "type": "textarea",
