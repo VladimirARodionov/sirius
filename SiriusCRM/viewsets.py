@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address, UserCategory, Faculty, Contact, Appointment
+    Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
     CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer, \
@@ -118,6 +118,24 @@ class ZdravnizaViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         UserCategory.objects.create(user=serializer.save(), category=get_object_or_404(Category, pk=Category.ZDRAVNIZA))
+
+
+class ConsultantViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_post_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_put_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_delete_roles = ['admin_role', 'user_role', 'user_list_role']
+    queryset = User.objects.filter(categories__in=[Category.ZDRAVNIZA], positions__in=[Position.ZDRAVNIZA_CONSULTANT])
+    serializer_class = UserSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('first_name', 'last_name', 'email')
+    ordering_fields = ('id', 'first_name', 'last_name', 'email')
+
+    def perform_create(self, serializer):
+        UserCategory.objects.create(user=serializer.save(), category=get_object_or_404(Category, pk=Category.ZDRAVNIZA))
+        UserPosition.objects.create(user=serializer.save(), position=get_object_or_404(Position, pk=Position.ZDRAVNIZA_CONSULTANT))
 
 
 class UserDetailViewSet(HasRoleMixin, viewsets.ModelViewSet):

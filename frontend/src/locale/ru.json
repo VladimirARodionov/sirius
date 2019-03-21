@@ -154,6 +154,14 @@
   "Telegram": "Телеграм",
   "Roles": "Роли",
   "Comment": "Комментарии",
-  "Calendar": "Календарь"
+  "Calendar": "Календарь",
+  "List of appointments": "Список записей на консультацию",
+  "Edit appointment": "Изменение записи на консультацию",
+  "Delete appointment": "Удалить запись на консультацию",
+  "Date": "Дата",
+  "Time": "Время",
+  "Contact": "Контакт",
+  "Consultant": "Консультант",
+  "Status": "Статус"
 
 }
