@@ -140,6 +140,8 @@
   "Edit contact": "Изменение контакта",
   "Delete contact": "Удалить контакт",
   "Appointment": "Запись на бесплатную консультацию",
+  "Appointments": "Записи на консультацию",
+  "Add appointment": "Добавление записи на консультацию",
   "Appointment date": "Дата записи",
   "Appointment time": "Время записи",
   "Contact info": "Контактная информация",
@@ -162,6 +164,11 @@
   "Time": "Время",
   "Contact": "Контакт",
   "Consultant": "Консультант",
-  "Status": "Статус"
+  "Status": "Статус",
+  "Appointment statuses": "Список статусов записи на консультацию",
+  "Add appointment status": "Добавление статуса записи на консультацию",
+  "Edit appointment status": "Изменение статуса записи на консультацию",
+  "Delete appointmentstatus": "Удалить статус записи на консультацию",
+  "Number": "Номер"
 
 }

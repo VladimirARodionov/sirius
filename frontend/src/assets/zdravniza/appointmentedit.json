@@ -22,6 +22,18 @@
     },
     {
       "type": "select",
+      "name": "status_add_select",
+      "text": "Status",
+      "value": "status",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/appointmentstatus/",
+      "resource": "appointmentstatus",
+      "required": true,
+      "hide_edit": false
+    },
+    {
+      "type": "select",
       "name": "contact_edit_select",
       "text": "Contact",
       "value": "contact",
@@ -43,6 +55,13 @@
       "resource": "consultant",
       "required": true,
       "hide_edit": true
+    },
+    {
+      "type": "textarea",
+      "name": "consultant_edit_comment",
+      "text": "Comment",
+      "value": "comment",
+      "required": false
     },
     {
       "type": "actions",

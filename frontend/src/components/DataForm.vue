@@ -196,7 +196,7 @@ export default {
   computed: {
     errorMessageText: function () {
       const errors = this.data.errorMessage
-      if (!(errors instanceof Array)) {
+      if (errors instanceof String) {
         return errors
       }
       let result = []

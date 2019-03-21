@@ -303,6 +303,7 @@ class Appointment(models.Model):
         Contact, null=False, on_delete=models.CASCADE, related_name="appointment_contact")
     consultant = models.ForeignKey(
         User, null=True, on_delete=models.PROTECT, related_name="appointment_consultant")
+    comment = models.TextField(_('Comment'), blank=True)
 
 
 # Таблица связей пользователя и его позиции

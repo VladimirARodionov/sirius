@@ -6,7 +6,8 @@ from rest_framework.serializers import ModelSerializer
 from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, clear_roles
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
-    Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment
+    Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment, \
+    AppointmentStatus
 
 
 class UserSerializer(ModelSerializer):
@@ -226,8 +227,18 @@ class AppointmentTimeSerializer(ModelSerializer):
         fields = ('id', 'time')
 
 
+class AppointmentStatusSerializer(ModelSerializer):
+    class Meta:
+        model = AppointmentStatus
+        fields = ('id', 'number', 'name')
+
+
 class AppointmentSerializer(ModelSerializer):
+    status_value = AppointmentStatusSerializer(source='status', read_only=True)
+    contact_value = ContactSerializer(source='contact', read_only=True)
+    consultant_value = UserSerializer(source='consultant', read_only=True)
+
     class Meta:
         model = Appointment
-        fields = ('id', 'date', 'time', 'status', 'contact', 'consultant')
+        fields = ('id', 'date', 'time', 'status', 'contact', 'consultant', 'comment', 'status_value', 'contact_value', 'consultant_value')
 

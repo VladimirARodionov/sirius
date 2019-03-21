@@ -12,7 +12,6 @@ from django.contrib.auth.forms import SetPasswordForm, PasswordResetForm
 from django.contrib.auth.models import Permission
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordContextMixin, INTERNAL_RESET_URL_TOKEN, INTERNAL_RESET_SESSION_TOKEN
-from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -21,6 +20,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic.edit import ProcessFormView, FormView
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
@@ -296,7 +296,14 @@ class AppointmentView(APIView):
         appointment_time_serializer = AppointmentTimeSerializer(data=request.data)
         appointment_time_serializer.is_valid(raise_exception=True)
         contact_serializer = ContactSerializer(data=request.data)
-        contact_serializer.is_valid(raise_exception=True)
+        try:
+            contact_serializer.is_valid(raise_exception=True)
+        except ValidationError as e:
+            codes = e.get_codes()
+            # Check if error due to email exists
+            if 'email' not in codes or codes['email'][0] != 'unique':
+                raise e
+
         try:
             first_name = contact_serializer.data.get('first_name')
             last_name = contact_serializer.data.get('last_name', '')
@@ -305,8 +312,8 @@ class AppointmentView(APIView):
             comment = contact_serializer.data.get('comment', '')
             date = appointment_date_serializer.data.get('date')
             time = appointment_time_serializer.data.get('time')
-            contact, created = Contact.objects.update_or_create(defaults={'email': email, 'mobile': mobile, 'first_name': first_name, 'last_name': last_name, 'comment': comment}, email=email, mobile=mobile)
-            appointment = Appointment.objects.create(contact=contact, date=date, time=time, status_id=AppointmentStatus.CREATED)
+            contact, created = Contact.objects.update_or_create(defaults={'email': email, 'mobile': mobile, 'first_name': first_name, 'last_name': last_name}, email=email)
+            appointment = Appointment.objects.create(contact=contact, date=date, time=time, comment=comment, status_id=AppointmentStatus.CREATED)
             consultant = self.select_consultant(appointment)
             appointment.consultant = consultant
             appointment.save()

@@ -25,10 +25,10 @@
       "name": "status_add_select",
       "text": "Status",
       "value": "status",
-      "item_text": "status.name",
+      "item_text": "name",
       "item_value": "id",
-      "api": "/api/status/",
-      "resource": "status",
+      "api": "/api/appointmentstatus/",
+      "resource": "appointmentstatus",
       "required": true,
       "hide_edit": false
     },
@@ -55,6 +55,13 @@
       "resource": "consultant",
       "required": true,
       "hide_edit": false
+    },
+    {
+      "type": "textarea",
+      "name": "consultant_add_comment",
+      "text": "Comment",
+      "value": "comment",
+      "required": false
     },
     {
       "type": "actions",
