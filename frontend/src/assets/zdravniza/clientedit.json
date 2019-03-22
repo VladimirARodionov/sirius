@@ -47,12 +47,19 @@
       "required": true
     },
     {
+      "type": "textarea",
+      "name": "edit_comment",
+      "text": "Comment",
+      "value": "comment",
+      "required": false
+    },
+    {
       "type": "actions",
       "fields":
       [
         {
           "type": "button",
-          "name": "back_button1",
+          "name": "back_edit_button",
           "text": "Close",
           "action": "back",
           "color": "",
@@ -63,7 +70,7 @@
         },
         {
           "type": "button",
-          "name": "add_button1",
+          "name": "save_edit_button",
           "text": "Save",
           "action": "save",
           "color": "success",

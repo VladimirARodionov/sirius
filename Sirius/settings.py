@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'casl_django',
     'import_export',
     'drf_yasg',
+    'schedule',
     'SiriusCRM.apps.SiriuscrmConfig',
 
 ]
@@ -134,7 +135,7 @@ ROLEPERMISSIONS_MODULE = 'Sirius.roles'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -160,3 +161,7 @@ LANGUAGES = [('en', _('English')), ('ru', _('Russian')), ]
 TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'), 'templates' )
 CORS_ORIGIN_ALLOW_ALL = True
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+ATOMIC_REQUESTS = True
+FIRST_DAY_OF_WEEK = 1
+WORKING_HOUR_BEGIN = 9
+WORKING_HOUR_END = 19

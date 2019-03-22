@@ -1,0 +1,95 @@
+{
+  "program": "zdravniza",
+  "resource": "appointment",
+  "api": "/api/appointmentdetail/",
+  "type": "add",
+  "title": "Add appointment",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "appointmentdate",
+      "name": "date_add",
+      "text": "Date",
+      "value": "date",
+      "required": true
+    },
+    {
+      "type": "text",
+      "name": "time_add",
+      "text": "Time",
+      "value": "time",
+      "required": true
+    },
+    {
+      "type": "select",
+      "name": "status_add_select",
+      "text": "Status",
+      "value": "status",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/appointmentstatus/",
+      "resource": "appointmentstatus",
+      "required": true,
+      "hide_edit": false
+    },
+    {
+      "type": "select",
+      "name": "contact_add_select",
+      "text": "Contact",
+      "value": "contact",
+      "item_text": "email",
+      "item_value": "id",
+      "api": "/api/contact/",
+      "resource": "client",
+      "required": true,
+      "hide_edit": false
+    },
+    {
+      "type": "select",
+      "name": "consultant_add_select",
+      "text": "Consultant",
+      "value": "consultant",
+      "item_text": "email",
+      "item_value": "id",
+      "api": "/api/zdravnizaconsultant/",
+      "resource": "consultant",
+      "required": true,
+      "hide_edit": true
+    },
+    {
+      "type": "textarea",
+      "name": "consultant_add_comment",
+      "text": "Comment",
+      "value": "comment",
+      "required": false
+    },
+    {
+      "type": "actions",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "back_add_button",
+          "text": "Close",
+          "action": "back",
+          "color": "",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "save_add_button1",
+          "text": "Save",
+          "action": "save",
+          "color": "success",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        }
+      ]
+    }
+  ]
+}

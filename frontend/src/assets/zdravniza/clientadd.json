@@ -52,7 +52,7 @@
       [
         {
           "type": "button",
-          "name": "back_button1",
+          "name": "back_add_button",
           "text": "Close",
           "action": "back",
           "color": "",
@@ -63,7 +63,7 @@
         },
         {
           "type": "button",
-          "name": "add_button1",
+          "name": "save_add_button",
           "text": "Save",
           "action": "save",
           "color": "success",

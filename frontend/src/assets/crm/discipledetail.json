@@ -12,7 +12,7 @@
       "fields": [
         {
           "type": "text",
-          "name": "detail_text1",
+          "name": "detail_last_name",
           "text": "Last name",
           "value": "last_name",
           "maxlength": 80,
@@ -20,7 +20,7 @@
         },
         {
           "type": "text",
-          "name": "detail_text2",
+          "name": "detail_first_name",
           "text": "First name",
           "value": "first_name",
           "maxlength": 80,
@@ -28,7 +28,7 @@
         },
         {
           "type": "text",
-          "name": "detail_text3",
+          "name": "detail_middle_name",
           "text": "Middle name",
           "value": "middle_name",
           "maxlength": 80,
@@ -38,7 +38,7 @@
     },
     {
       "type": "text",
-      "name": "detail_text4",
+      "name": "detail_email",
       "text": "Email",
       "value": "email",
       "maxlength": 80,
@@ -46,10 +46,18 @@
     },
     {
       "type": "text",
-      "name": "detail_text5",
+      "name": "detail_mobile",
       "text": "Mobile",
       "value": "mobile",
       "maxlength": 20,
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "detail_telegram",
+      "text": "Telegram",
+      "value": "telegram",
+      "maxlength": 80,
       "required": false
     },
     {
@@ -72,7 +80,7 @@
     },
     {
       "type": "text",
-      "name": "detail_text6",
+      "name": "detail_village",
       "text": "Village",
       "value": "village",
       "maxlength": 80,
@@ -83,7 +91,7 @@
       "fields": [
         {
           "type": "text",
-          "name": "detail_text7",
+          "name": "detail_street",
           "text": "Street",
           "value": "street",
           "maxlength": 80,
@@ -91,7 +99,7 @@
         },
         {
           "type": "text",
-          "name": "detail_text8",
+          "name": "detail_house",
           "text": "House",
           "value": "house",
           "maxlength": 30,
@@ -99,7 +107,7 @@
         },
         {
           "type": "text",
-          "name": "detail_text9",
+          "name": "detail_apartment",
           "text": "Apartment",
           "value": "apartment",
           "maxlength": 10,

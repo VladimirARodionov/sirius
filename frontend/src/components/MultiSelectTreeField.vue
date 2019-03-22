@@ -13,7 +13,7 @@
     multiple
     :search-input.sync="search_term"
     :loading="data.loading"
-    append-icon="edit"
+    :append-icon="field.hide_edit?'':'edit'"
     @click:append="goList()"
   >
     <template slot="item" slot-scope="data">
@@ -82,9 +82,18 @@ export default {
       })
     },
     goList () {
-      this.$store.commit('setSavedState', { resource: this.$route.params.resource, id: this.$route.params.id, obj: this.value })
-      vuetifyToast.info(this.$t('ResourceSaved', { 'resource': this.$route.params.resource, 'id': this.$route.params.id }), { icon: 'edit', timeout: 6000 })
-      this.$router.push('/' + this.$route.params.program + '/' + this.field.resource + '/list/')
+      if (!this.field.hide_edit) {
+        this.$store.commit('setSavedState', {
+          resource: this.$route.params.resource,
+          id: this.$route.params.id,
+          obj: this.value
+        })
+        vuetifyToast.info(this.$t('ResourceSaved', {
+          'resource': this.$route.params.resource,
+          'id': this.$route.params.id
+        }), { icon: 'edit', timeout: 6000 })
+        this.$router.push('/' + this.$route.params.program + '/' + this.field.resource + '/list/')
+      }
     }
   }
 }

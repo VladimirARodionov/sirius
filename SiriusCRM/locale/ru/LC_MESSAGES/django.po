@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-06 14:05+0300\n"
+"POT-Creation-Date: 2019-03-14 12:13+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,294 +20,230 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\SiriusCRM\models.py:126 .\SiriusCRM\models.py:135
-msgid "email address"
-msgstr ""
-
-#: .\SiriusCRM\models.py:127 .\SiriusCRM\models.py:136
-msgid "first name"
-msgstr ""
-
-#: .\SiriusCRM\models.py:128 .\SiriusCRM\models.py:129
-#: .\SiriusCRM\models.py:137
-msgid "last name"
-msgstr ""
-
-#: .\SiriusCRM\models.py:138
-msgid "middle name"
-msgstr ""
-
-#: .\SiriusCRM\models.py:139
-msgid "date joined"
-msgstr ""
-
-#: .\SiriusCRM\models.py:140
-msgid "date left"
-msgstr ""
-
-#: .\SiriusCRM\models.py:141
-msgid "active"
-msgstr ""
-
-#: .\SiriusCRM\models.py:144
-msgid "staff status"
-msgstr ""
-
-#: .\SiriusCRM\models.py:146
-msgid "Designates whether the user can log into this admin site."
-msgstr ""
-
-#: .\SiriusCRM\models.py:148
-msgid "birthday"
-msgstr ""
-
-#: .\SiriusCRM\models.py:166
-msgid "user"
-msgstr ""
-
-#: .\SiriusCRM\models.py:167
-msgid "users"
-msgstr ""
-
-#: .\Sirius\settings.py:136
-msgid "English"
-msgstr ""
-
-#: .\Sirius\settings.py:136
-msgid "Russian"
-msgstr "Русский"
-
-#: .\templates\base.html:7 .\templates\base.html:25
-#: .\templates\base_generic.html:7
-msgid "Sirius"
-msgstr "Сириус"
-
-#: .\templates\base.html:32
-msgid "People"
-msgstr "Люди"
-
-#: .\templates\base.html:33
-msgid "Reports"
-msgstr "Отчеты"
-
-#: .\templates\base.html:34
-msgid "Actions"
-msgstr "Действия"
-
-#: .\templates\base.html:35
-msgid "Directories"
-msgstr "Справочники"
-
-#: .\templates\base.html:39
-msgid "User"
-msgstr "Пользователь"
-
-#: .\templates\base.html:42
-msgid "Logout"
-msgstr "Выйти"
-
-#: .\templates\base.html:46 .\templates\registration\login.html:29
-#: .\templates\registration\login.html:49
-#: .\templates\registration\password_reset_complete.html:8
-msgid "Login"
-msgstr "Войти"
-
-#: .\templates\people\details.html:7
-msgid "User details"
-msgstr "Детальная информация о пользователе"
-
-#: .\templates\people\details.html:12 .\templates\people\details.html:13
-#: .\templates\people\list.html:26 .\templates\people\list.html:68
-#: .\templates\people\list.html:123
-msgid "Last name"
-msgstr "Фамилия"
-
-#: .\templates\people\details.html:16 .\templates\people\details.html:17
-#: .\templates\people\list.html:25 .\templates\people\list.html:58
-#: .\templates\people\list.html:113
-msgid "First name"
-msgstr "Имя"
-
-#: .\templates\people\details.html:20 .\templates\people\details.html:21
-msgid "Middle name"
-msgstr "Отчество"
-
-#: .\templates\people\details.html:25 .\templates\people\details.html:26
-#: .\templates\people\list.html:27 .\templates\people\list.html:78
-#: .\templates\people\list.html:133 .\templates\registration\login.html:36
-#: .\templates\registration\password_reset_form.html:22
+#: .\models.py:217 .\models.py:233 .\resources.py:12
 msgid "Email"
 msgstr "Email"
 
-#: .\templates\people\details.html:29 .\templates\people\details.html:30
+#: .\models.py:218 .\resources.py:13
 msgid "Mobile"
 msgstr "Сотовый"
 
-#: .\templates\people\details.html:33 .\templates\people\details.html:34
+#: .\models.py:219 .\models.py:234 .\resources.py:10
+msgid "First name"
+msgstr "Имя"
+
+#: .\models.py:220 .\models.py:235 .\resources.py:9
+msgid "Last name"
+msgstr "Фамилия"
+
+#: .\models.py:221 .\models.py:236 .\resources.py:11
+msgid "Middle name"
+msgstr "Отчество"
+
+#: .\models.py:222
+msgid "Comment"
+msgstr ""
+
+#: .\models.py:237
+msgid "Date joined"
+msgstr ""
+
+#: .\models.py:238
+msgid "Date left"
+msgstr ""
+
+#: .\models.py:239
+msgid "Active"
+msgstr ""
+
+#: .\models.py:243
+msgid "Staff status"
+msgstr ""
+
+#: .\models.py:245
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: .\models.py:247 .\resources.py:14
 msgid "Birthday"
 msgstr "День рождения"
 
-#: .\templates\people\details.html:38 .\templates\people\list.html:89
-#: .\templates\people\list.html:144
-msgid "Save"
-msgstr "Сохранить"
-
-#: .\templates\people\details.html:39
-#, fuzzy
-#| msgid "New password"
-msgid "Change password"
-msgstr "Новый пароль"
-
-#: .\templates\people\import.html:7
-msgid "Import Users"
-msgstr "Импорт пользователей"
-
-#: .\templates\people\import.html:15
-msgid "Success"
-msgstr "Успешно"
-
-#: .\templates\people\import.html:16
-msgid "Added records"
-msgstr "Добавленных записей"
-
-#: .\templates\people\import.html:17
-msgid "Existing records"
-msgstr "Существующих записей"
-
-#: .\templates\people\import.html:18
-msgid "Failed records"
-msgstr "Записей с ошибкой"
-
-#: .\templates\people\import.html:22
-msgid "Failure"
-msgstr "Ошибка"
-
-#: .\templates\people\import.html:36
-msgid "Import"
-msgstr "Импорт"
-
-#: .\templates\people\list.html:7
-msgid "List of Users"
-msgstr "Список пользователей"
-
-#: .\templates\people\list.html:10
-msgid "Add"
-msgstr "Добавить"
-
-#: .\templates\people\list.html:11
-msgid "Details"
-msgstr "Детали"
-
-#: .\templates\people\list.html:12 .\templates\people\list.html:101
-msgid "Edit"
-msgstr "Редактировать"
-
-#: .\templates\people\list.html:13 .\templates\people\list.html:173
-msgid "Delete"
-msgstr "Удалить"
-
-#: .\templates\people\list.html:16 .\templates\people\list.html:17
-msgid "Search"
-msgstr "Поиск"
-
-#: .\templates\people\list.html:46
-msgid "Add user"
-msgstr "Добавить пользователя"
-
-#: .\templates\people\list.html:88 .\templates\people\list.html:143
-msgid "Close"
-msgstr "Закрыть"
-
-#: .\templates\people\list.html:156
-msgid "Delete confirm"
-msgstr "Подтверждение удаления"
-
-#: .\templates\people\list.html:168
-#, python-brace-format
-msgid ""
-"Delete user #${currentPeople.id}  ${currentPeople.first_name} "
-"${currentPeople.last_name} (${currentPeople.email})  ?"
-msgstr ""
-"Удалить пользователя #${currentPeople.id}  ${currentPeople.first_name} "
-"${currentPeople.last_name} (${currentPeople.email})  ?"
-
-#: .\templates\people\list.html:172
-msgid "No"
-msgstr "Нет"
-
-#: .\templates\registration\logged_out.html:6
-msgid "Logged out"
+#: .\models.py:271
+msgid "user"
 msgstr ""
 
-#: .\templates\registration\logged_out.html:8
-msgid "Click here to login again"
+#: .\models.py:272
+msgid "users"
 msgstr ""
 
-#: .\templates\registration\login.html:16
-msgid ""
-"Your account doesn't have access to this page. To proceed, please login with "
-"an account that has access"
+#: .\schedule\periods.py:42
+#, python-format
+msgid "Hour: %(start)s-%(end)s"
 msgstr ""
 
-#: .\templates\registration\login.html:42
-msgid "Password"
-msgstr "Пароль"
+#: .\schedule\periods.py:83
+#, python-format
+msgid "HalfHour: %(start)s-%(end)s"
+msgstr ""
 
-#: .\templates\registration\login.html:46
-msgid "Lost password?"
-msgstr "Забыли пароль?"
-
-#: .\templates\registration\password_reset_complete.html:7
-msgid "Password change successful"
-msgstr "Пароль успешно сменен"
-
-#: .\templates\registration\password_reset_confirm.html:17
-#: .\templates\registration\password_reset_form.html:15
+#: .\views.py:196
 msgid "Password reset"
 msgstr "Сброс пароля"
 
-#: .\templates\registration\password_reset_confirm.html:24
-msgid "New password"
+#: .\views.py:233
+#, fuzzy
+#| msgid "New password"
+msgid "Enter new password"
 msgstr "Новый пароль"
 
-#: .\templates\registration\password_reset_confirm.html:25
-msgid "Password confirmation"
-msgstr "Подтверждение пароля"
-
-#: .\templates\registration\password_reset_confirm.html:29
-msgid "Password change"
-msgstr "Смена пароля"
-
-#: .\templates\registration\password_reset_confirm.html:46
+#: .\views.py:301
 msgid "Password reset unsuccessful"
 msgstr "Не удалось сбросить пароль"
 
-#: .\templates\registration\password_reset_confirm.html:47
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used. Please request a new password reset."
-msgstr ""
-
-#: .\templates\registration\password_reset_done.html:6
-msgid ""
-"We've emailed you instructions for setting your password. If they haven't "
-"arrived in a few minutes, check your spam folder."
-msgstr ""
-
-#: .\templates\registration\password_reset_email.html:3
-#, python-format
-msgid "Password reset on %(site_name)s"
-msgstr ""
-
-#: .\templates\registration\password_reset_email.html:4
+#: .\views.py:498
 #, python-format
 msgid ""
-"Someone asked for password reset for email %(email)s. Follow the link below:"
+"New appointment has been made.\n"
+"Date: %(date)s\n"
+"Time: %(time)s\n"
+"Contact name: %(contact_name)s\n"
+"Contact email: %(contact_email)s\n"
+"Contact mobile: %(contact_mobile)s\n"
+"Diagnos: %(diagnos)s"
 msgstr ""
+"Новая запись на бесплатную консультацию в Здравницу.\n"
+"Дата: %(date)s\n"
+"Время: %(time)s\n"
+"Имя: %(contact_name)s\n"
+"Email: %(contact_email)s\n"
+"Телефон: %(contact_mobile)s\n"
+"Диагноз: %(diagnos)s"
 
-#: .\templates\registration\password_reset_form.html:26
-msgid "Reset password"
-msgstr "Сброс пароля"
+#: .\views.py:502
+msgid "New Zdravniza appointment"
+msgstr "Новая запись на бесплатную консультацию в Здравницу"
+
+#: .\views.py:504
+msgid "You are successfully made new Zdravniza appointment"
+msgstr "Вы успешно записались на бесплатную консультацию в Здравницу"
+
+#: .\views.py:537
+msgid "No free consultants at this time"
+msgstr "Нет свободных консультантов на это время"
+
+#~ msgid "Russian"
+#~ msgstr "Русский"
+
+#~ msgid "Sirius"
+#~ msgstr "Сириус"
+
+#~ msgid "People"
+#~ msgstr "Люди"
+
+#~ msgid "Reports"
+#~ msgstr "Отчеты"
+
+#~ msgid "Actions"
+#~ msgstr "Действия"
+
+#~ msgid "Directories"
+#~ msgstr "Справочники"
+
+#~ msgid "User"
+#~ msgstr "Пользователь"
+
+#~ msgid "Logout"
+#~ msgstr "Выйти"
+
+#~ msgid "Login"
+#~ msgstr "Войти"
+
+#~ msgid "User details"
+#~ msgstr "Детальная информация о пользователе"
+
+#~ msgid "Save"
+#~ msgstr "Сохранить"
+
+#, fuzzy
+#~| msgid "New password"
+#~ msgid "Change password"
+#~ msgstr "Новый пароль"
+
+#~ msgid "Import Users"
+#~ msgstr "Импорт пользователей"
+
+#~ msgid "Success"
+#~ msgstr "Успешно"
+
+#~ msgid "Added records"
+#~ msgstr "Добавленных записей"
+
+#~ msgid "Existing records"
+#~ msgstr "Существующих записей"
+
+#~ msgid "Failed records"
+#~ msgstr "Записей с ошибкой"
+
+#~ msgid "Failure"
+#~ msgstr "Ошибка"
+
+#~ msgid "Import"
+#~ msgstr "Импорт"
+
+#~ msgid "List of Users"
+#~ msgstr "Список пользователей"
+
+#~ msgid "Add"
+#~ msgstr "Добавить"
+
+#~ msgid "Details"
+#~ msgstr "Детали"
+
+#~ msgid "Edit"
+#~ msgstr "Редактировать"
+
+#~ msgid "Delete"
+#~ msgstr "Удалить"
+
+#~ msgid "Search"
+#~ msgstr "Поиск"
+
+#~ msgid "Add user"
+#~ msgstr "Добавить пользователя"
+
+#~ msgid "Close"
+#~ msgstr "Закрыть"
+
+#~ msgid "Delete confirm"
+#~ msgstr "Подтверждение удаления"
+
+#~ msgid ""
+#~ "Delete user #${currentPeople.id}  ${currentPeople.first_name} "
+#~ "${currentPeople.last_name} (${currentPeople.email})  ?"
+#~ msgstr ""
+#~ "Удалить пользователя #${currentPeople.id}  ${currentPeople.first_name} "
+#~ "${currentPeople.last_name} (${currentPeople.email})  ?"
+
+#~ msgid "No"
+#~ msgstr "Нет"
+
+#~ msgid "Password"
+#~ msgstr "Пароль"
+
+#~ msgid "Lost password?"
+#~ msgstr "Забыли пароль?"
+
+#~ msgid "Password change successful"
+#~ msgstr "Пароль успешно сменен"
+
+#~ msgid "Password confirmation"
+#~ msgstr "Подтверждение пароля"
+
+#~ msgid "Password change"
+#~ msgstr "Смена пароля"
+
+#~ msgid "Reset password"
+#~ msgstr "Сброс пароля"
 
 #~ msgid "Authorization"
 #~ msgstr "Авторизация"

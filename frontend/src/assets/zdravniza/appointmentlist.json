@@ -1,0 +1,107 @@
+{
+  "program": "zdravniza",
+  "resource": "appointment",
+  "api": "/api/appointmentdetail/",
+  "type": "list",
+  "title": "List of appointments",
+  "name": "appointment",
+  "fields": [
+    {
+      "type": "group",
+      "fields":
+      [
+        {
+          "type": "button",
+          "name": "appointment_add_button",
+          "text": "Add",
+          "action": "add",
+          "color": "success",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "appointment_edit_button",
+          "text": "Edit",
+          "action": "edit",
+          "color": "info",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "button",
+          "name": "appointment_delete_button",
+          "text": "Delete",
+          "action": "delete",
+          "color": "error",
+          "roles": [
+            "admin_role",
+            "edit_role"
+          ]
+        },
+        {
+          "type": "search",
+          "name": "appointment_search",
+          "text": "Search",
+          "action": "search"
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "name": "appointment_table",
+      "headers": [
+        {
+          "text": "#",
+          "value": "id"
+        },
+        {
+          "text": "Date",
+          "value": "date"
+        },
+        {
+          "text": "Time",
+          "value": "time"
+        },
+        {
+          "text": "Status",
+          "value": "status"
+        },
+        {
+          "text": "Contact",
+          "value": "contact"
+        },
+        {
+          "text": "Consultant",
+          "value": "consultant"
+        }
+      ],
+      "names": [
+        {
+          "name": "id"
+        },
+        {
+          "name": "date"
+        },
+        {
+          "name": "time"
+        },
+        {
+          "name": "status_value.name"
+        },
+        {
+          "name": "contact_value.email"
+        },
+        {
+          "name": "consultant_value.email"
+        }
+      ],
+      "pagination": true,
+      "api": "/api/appointmentdetail/"
+    }
+  ]
+}

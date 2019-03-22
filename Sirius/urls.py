@@ -29,6 +29,7 @@ router.register('api/user', viewsets.UserViewSet, basename='user')
 router.register('api/employee', viewsets.EmployeeViewSet, basename='employee')
 router.register('api/disciple', viewsets.DiscipleViewSet, basename='disciple')
 router.register('api/zdravniza', viewsets.ZdravnizaViewSet, basename='zdravniza')
+router.register('api/zdravnizaconsultant', viewsets.ConsultantViewSet, basename='zdravnizaconsultant')
 router.register('api/contact', viewsets.ContactViewSet, basename='contact')
 router.register('api/userdetail', viewsets.UserDetailViewSet, basename='userdetail')
 router.register('api/organization', viewsets.OrganizationViewSet, basename='organization')
@@ -44,6 +45,8 @@ router.register('api/payment', viewsets.PaymentViewSet, basename='payment')
 router.register('api/address', viewsets.AddressViewSet, basename='address')
 router.register('api/userposition', viewsets.UserPositionViewSet, basename='userposition')
 router.register('api/faculty', viewsets.FacultyViewSet, basename='faculty')
+router.register('api/appointmentdetail', viewsets.AppointmentViewSet, basename='appointmentdetail')
+router.register('api/appointmentstatus', viewsets.AppointmentStatusViewSet, basename='appointmentstatus')
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -67,14 +70,8 @@ urlpatterns = [
     path('api/login/', obtain_jwt_token),
     path('api/people/<int:number>/password_change', views.PasswordChangeView.as_view(), name='peoplePasswordChange'),
     path('api/role/', views.UserRolesView.as_view(), name='role'),
-    path('api/userposition/update/', views.UserPositionView.as_view(), name='user-position-update'),
-    path('api/userposition/update/<int:number>/', views.UserPositionView.as_view(), name='user-position-update'),
-    path('api/usercategory/update/', views.UserCategoryView.as_view(), name='user-category-update'),
-    path('api/usercategory/update/<int:number>/', views.UserCategoryView.as_view(), name='user-category-update'),
-    path('api/userunit/update/', views.UserUnitView.as_view(), name='user-unit-update'),
-    path('api/userunit/update/<int:number>/', views.UserUnitView.as_view(), name='user-unit-update'),
-    path('api/userfaculty/update/', views.UserFacultyView.as_view(), name='user-faculty-update'),
-    path('api/userfaculty/update/<int:number>/', views.UserFacultyView.as_view(), name='user-faculty-update'),
+    path('api/appointment/', views.AppointmentView.as_view(), name='appointment'),
+    path('api/zdravniza/calendar/', views.CalendarView.as_view(), name='zdravniza-calendar'),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

@@ -1,0 +1,13 @@
+{
+    "program": "zdravniza",
+    "resource": "dashboard",
+    "type": "list",
+    "title": "Calendar",
+    "fields": [
+      {
+        "type": "calendar",
+        "name": "calendar1",
+        "api": "/api/zdravniza/calendar/"
+      }
+    ]
+}

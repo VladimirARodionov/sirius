@@ -38,6 +38,7 @@ export function onGetMax (api, name, data) {
     .catch(err => {
       data.loading = false
       console.log(err)
+      throw err
     })
 }
 
@@ -51,6 +52,7 @@ export function onGetAll (api, name, data) {
     .catch(err => {
       data.loading = false
       console.log(err)
+      throw err
     })
 }
 
@@ -117,7 +119,9 @@ export function onDelete (api, data, getFunction) {
         data.currentObject = {}
         data.isSelected = false
         vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
-        getFunction()
+        if (getFunction) {
+          getFunction()
+        }
       })
       .catch(err => {
         console.log(err)
@@ -185,7 +189,9 @@ export function onPostSingle (api, data, getFunction) {
       data.loading = false
       data.currentObject = resp.data
       vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
-      getFunction()
+      if (getFunction) {
+        getFunction()
+      }
     })
     .catch((error) => {
       // Error

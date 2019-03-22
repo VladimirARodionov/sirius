@@ -10,7 +10,7 @@
         "text": "Zdravniza",
         "subtext": "Manage patients",
         "icon": "event_note",
-        "value": "/zdravniza"
+        "value": "/zdravniza/dashboard/list"
       },
       {
         "type": "menuselect",
