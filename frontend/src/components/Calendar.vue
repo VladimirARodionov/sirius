@@ -137,7 +137,8 @@ export default {
     },
     getTime (date) {
       let minutes = getMinutes(date)
-      let time = getHours(date) + ':' + ((minutes < 10) ? ('0' + minutes) : minutes)
+      let hours = getHours(date)
+      let time = ((hours < 10) ? ('0' + hours) : hours) + ':' + ((minutes < 10) ? ('0' + minutes) : minutes)
       return time
     },
     open (event) {
