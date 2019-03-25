@@ -5,6 +5,7 @@
   "title": "Appointment",
   "api": "/api/appointment/",
   "successMessage": "Appointment successfully made",
+  "style": "max-width: 568px;margin-left: auto;margin-right: auto;",
   "fields": [
     {
       "type": "appointmentdate",
