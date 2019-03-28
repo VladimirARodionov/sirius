@@ -1,3 +1,5 @@
+import pytz
+from datetime import datetime
 from django.core.paginator import InvalidPage
 from django.utils import six
 from rest_framework import viewsets, filters
@@ -6,15 +8,18 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from schedule.models import Event
+from schedule.models import Event, Calendar, EventRelation
 
+from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
     Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus
+from SiriusCRM.schedule.periods import HalfHour
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
     CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer, \
     FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer
+from SiriusCRM.views import AppointmentView
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -378,11 +383,43 @@ class AppointmentViewSet(HasRoleMixin, viewsets.ModelViewSet):
     search_fields = ('date', 'time', 'status', 'contact', 'consultant')
     ordering_fields = ('id', 'date', 'time', 'status', 'contact', 'consultant')
 
+    def perform_create(self, serializer):
+        appointment = serializer.save()
+        date = appointment.date
+        time = appointment.time
+        contact = Contact.objects.get(pk=appointment.contact_id)
+        consultant = User.objects.get(pk=appointment.consultant_id)
+        _datetime = datetime.combine(date, time)
+        period = HalfHour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        event = Event(start=period.start, end=period.end, title=str(contact), description=str(appointment.id),
+                      calendar=Calendar.objects.get(pk=1), creator=consultant)
+        event.save()
+        appointment_relation = EventRelation.objects.create_relation(event, appointment, 'appointment')
+        consultant_relation = EventRelation.objects.create_relation(event, consultant, 'consultant')
+        appointment_relation.save()
+        consultant_relation.save()
+        AppointmentView.send_notification(appointment, consultant, contact)
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        event = Event.objects.get(description=instance.id)
+        date = instance.date
+        time = instance.time
+        contact = Contact.objects.get(pk=instance.contact_id)
+        _datetime = datetime.combine(date, time)
+        period = HalfHour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        event.start=period.start
+        event.end=period.end
+        event.title=str(contact)
+        event.save()
+        # TODO send notification
+
     def perform_destroy(self, instance):
         event = Event.objects.filter(description=instance.id)
         if event:
             event.delete()
         instance.delete()
+        # TODO send notification
 
 
 class AppointmentStatusViewSet(HasRoleMixin, viewsets.ModelViewSet):
