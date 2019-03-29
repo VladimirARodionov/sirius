@@ -34,7 +34,8 @@ export default {
       data: {
         objects: [],
         loading: false,
-        object: this.value.currentObject
+        object: this.value.currentObject,
+        current_id: this.value.currentObject.id
       },
       errorMessage: {},
       pagination: {
@@ -75,7 +76,7 @@ export default {
       this.errorMessage = data
     },
     onChange (data) {
-      this.data.object.id = data
+      this.data.current_id = data
     },
     getItems () {
       onGet(this.field.api, this.data, this.pagination, this.search_term)
