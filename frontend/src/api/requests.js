@@ -12,6 +12,9 @@ export function onGet (api, data, pagination, searchTerm) {
     const direction = pagination.descending ? '-' : ''
     apiUrl = apiUrl + '&ordering=' + direction + pagination.sortBy
   }
+  if (data.object && data.object.id) {
+    apiUrl = apiUrl + '&page_by_id=' + data.object.id
+  }
   return axios.get(process.env.API_URL + apiUrl)
     .then(resp => {
       data.objects = resp.data.results

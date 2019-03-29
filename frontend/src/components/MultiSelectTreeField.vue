@@ -46,7 +46,7 @@ export default {
       errorMessage: {},
       pagination: {
         page: 1,
-        rowsPerPage: 20
+        rowsPerPage: 100 // TODO check select with pagination enabled
       },
       search_term: ''
     }

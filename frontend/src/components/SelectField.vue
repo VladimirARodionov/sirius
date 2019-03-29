@@ -6,7 +6,7 @@
     chips
     deletable-chips
     :maxlength="field.maxlength"
-    v-model="object[field.value]"
+    v-model="data.object[field.value]"
     :items="data.objects"
     :item-text="field.item_text"
     :item-value="field.item_value"
@@ -14,6 +14,7 @@
     :loading="data.loading"
     :append-icon="field.hide_edit?'':'edit'"
     @click:append="goList()"
+    @change="onChange"
   >
   </v-autocomplete>
 </template>
@@ -32,9 +33,9 @@ export default {
     return {
       data: {
         objects: [],
-        loading: false
+        loading: false,
+        object: this.value.currentObject
       },
-      object: this.value.currentObject,
       errorMessage: {},
       pagination: {
         page: 1,
@@ -50,7 +51,7 @@ export default {
     this.$bus.off('error', this.onError)
   },
   updated () {
-    this.$bus.emit('changeObject', this.object)
+    this.$bus.emit('changeObject', this.data.object)
   },
   mounted () {
     this.getItems()
@@ -58,7 +59,7 @@ export default {
   watch: {
     value: {
       handler () {
-        this.object = this.value.currentObject
+        this.data.object = this.value.currentObject
         this.errorMessage = this.value.errorMessage
       },
       deep: true
@@ -72,6 +73,9 @@ export default {
   methods: {
     onError (data) {
       this.errorMessage = data
+    },
+    onChange (data) {
+      this.data.object.id = data
     },
     getItems () {
       onGet(this.field.api, this.data, this.pagination, this.search_term)

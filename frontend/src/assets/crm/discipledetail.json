@@ -72,7 +72,7 @@
       "name": "detail_select1",
       "text": "City",
       "value": "city",
-      "item_text": "name",
+      "item_text": "human_name",
       "item_value": "id",
       "api": "/api/city/",
       "resource": "city",
