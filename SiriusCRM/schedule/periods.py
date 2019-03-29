@@ -38,10 +38,10 @@ class Hour(Period):
         return start, end
 
     def __str__(self):
-        date_format = 'l, %s' % settings.DATE_FORMAT
+        date_format = '%Y-%m-%d %H:%M:%S'
         return ugettext('Hour: %(start)s-%(end)s') % {
-            'start': date_filter(self.start, date_format),
-            'end': date_filter(self.end, date_format),
+            'start': datetime.datetime.strftime(self.start, date_format),
+            'end': datetime.datetime.strftime(self.end, date_format),
         }
 
     def next_hour(self):

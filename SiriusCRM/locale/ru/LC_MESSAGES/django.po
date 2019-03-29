@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-29 09:25+0300\n"
+"POT-Creation-Date: 2019-03-29 18:11+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,64 +48,64 @@ msgstr ""
 "Диагноз: %(diagnos)s"
 
 #: .\cron\notification.py:36 .\cron\notification.py:38
-#, fuzzy
+#, fuzzy, python-format
 #| msgid "New Zdravniza appointment"
-msgid "Zdravniza appointment notification"
-msgstr "Запись на бесплатную консультацию в Здравницу"
+msgid "[Zdravniza] appointment notification (%(date)s %(time)s)"
+msgstr "[Здравница] Запись на бесплатную консультацию (%(date)s %(time)s)"
 
-#: .\models.py:217 .\models.py:233 .\resources.py:12
+#: .\models.py:177 .\models.py:193 .\resources.py:12
 msgid "Email"
 msgstr "Email"
 
-#: .\models.py:218 .\resources.py:13
+#: .\models.py:178 .\resources.py:13
 msgid "Mobile"
 msgstr "Сотовый"
 
-#: .\models.py:219 .\models.py:234 .\resources.py:10
+#: .\models.py:179 .\models.py:194 .\resources.py:10
 msgid "First name"
 msgstr "Имя"
 
-#: .\models.py:220 .\models.py:235 .\resources.py:9
+#: .\models.py:180 .\models.py:195 .\resources.py:9
 msgid "Last name"
 msgstr "Фамилия"
 
-#: .\models.py:221 .\models.py:236 .\resources.py:11
+#: .\models.py:181 .\models.py:196 .\resources.py:11
 msgid "Middle name"
 msgstr "Отчество"
 
-#: .\models.py:222 .\models.py:315
+#: .\models.py:182 .\models.py:275
 msgid "Comment"
 msgstr ""
 
-#: .\models.py:237
+#: .\models.py:197
 msgid "Date joined"
 msgstr ""
 
-#: .\models.py:238
+#: .\models.py:198
 msgid "Date left"
 msgstr ""
 
-#: .\models.py:239
+#: .\models.py:199
 msgid "Active"
 msgstr ""
 
-#: .\models.py:243
+#: .\models.py:203
 msgid "Staff status"
 msgstr ""
 
-#: .\models.py:245
+#: .\models.py:205
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: .\models.py:247 .\resources.py:14
+#: .\models.py:207 .\resources.py:14
 msgid "Birthday"
 msgstr "День рождения"
 
-#: .\models.py:271
+#: .\models.py:231
 msgid "user"
 msgstr ""
 
-#: .\models.py:272
+#: .\models.py:232
 msgid "users"
 msgstr ""
 
@@ -153,8 +153,10 @@ msgstr ""
 "Диагноз: %(diagnos)s"
 
 #: .\views.py:347
-msgid "New Zdravniza appointment"
-msgstr "Новая запись на бесплатную консультацию в Здравницу"
+#, fuzzy, python-format
+#| msgid "New Zdravniza appointment"
+msgid "[Zdravniza] New appointment (%(date)s %(time)s)"
+msgstr "[Здравница] Запись на бесплатную консультацию (%(date)s %(time)s)"
 
 #: .\views.py:349
 msgid "You are successfully made new Zdravniza appointment"
@@ -163,6 +165,9 @@ msgstr "Вы успешно записались на бесплатную ко�
 #: .\views.py:377
 msgid "No free consultants at this time"
 msgstr "Нет свободных консультантов на это время"
+
+#~ msgid "New Zdravniza appointment"
+#~ msgstr "Новая запись на бесплатную консультацию в Здравницу"
 
 #~ msgid "Russian"
 #~ msgstr "Русский"

@@ -35,7 +35,7 @@ from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin
 from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus
 from SiriusCRM.resources import UserResource
-from SiriusCRM.schedule.periods import HalfHour
+from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
 from SiriusCRM.tasks import send_telegram_notification, send_email_notification
 
@@ -318,7 +318,7 @@ class AppointmentView(APIView):
             appointment.consultant = consultant
             appointment.save()
             _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M:%S').time())
-            period = HalfHour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
+            period = Hour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
             event = Event(start=period.start, end=period.end, title=str(contact), description=str(appointment.id), calendar=Calendar.objects.get(pk=1), creator=consultant)
             event.save()
             appointment_relation = EventRelation.objects.create_relation(event, appointment, 'appointment')
@@ -344,7 +344,7 @@ class AppointmentView(APIView):
             send_telegram_notification.delay(consultant.get_telegram_username(), message)
         if consultant.email:
             send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru',
-                                          _('New Zdravniza appointment'), message)
+                                          _('[Zdravniza] New appointment (%(date)s %(time)s)') % {'date': str(appointment.date), 'time': str(appointment.time)}, message)
         send_email_notification.delay(contact.email, 'no-reply@server.raevskyschool.ru',
                                       _('You are successfully made new Zdravniza appointment'), message)
 
@@ -352,7 +352,7 @@ class AppointmentView(APIView):
         consultants = User.objects.filter(categories__in=[Category.ZDRAVNIZA],
                                           positions__in=[Position.ZDRAVNIZA_CONSULTANT])
         _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M:%S').time())
-        period = HalfHour(Event.objects.all(), _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        period = Hour(Event.objects.all(), _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
         occurrences = period.get_occurrences()
         free_consultants = []
         if occurrences:
@@ -379,7 +379,7 @@ class AppointmentView(APIView):
     def get_free_time(self, date):
         _date = datetime.strptime(date, '%Y-%m-%d')
         day = Day([], _date, tzinfo=None)
-        period = day.get_periods(HalfHour)
+        period = day.get_periods(Hour)
         result = []
         begin, end = self.get_working_hours(_date)
         for p in period:
