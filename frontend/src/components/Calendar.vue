@@ -11,8 +11,8 @@
           :type="type"
           color="primary"
           :weekdays="[1, 2, 3, 4, 5, 6, 0]"
-          interval-minutes=30
-          interval-count=48
+          interval-minutes=60
+          interval-count=24
           locale="ru"
           v-on:change="change"
         >

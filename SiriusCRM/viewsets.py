@@ -16,7 +16,7 @@ from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus
-from SiriusCRM.schedule.periods import HalfHour
+from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
     CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer, \
@@ -434,7 +434,7 @@ class AppointmentViewSet(HasRoleMixin, viewsets.ModelViewSet):
         contact = Contact.objects.get(pk=appointment.contact_id)
         consultant = User.objects.get(pk=appointment.consultant_id)
         _datetime = datetime.combine(date, time)
-        period = HalfHour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        period = Hour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
         event = Event(start=period.start, end=period.end, title=str(contact), description=str(appointment.id),
                       calendar=Calendar.objects.get(pk=1), creator=consultant)
         event.save()
@@ -451,7 +451,7 @@ class AppointmentViewSet(HasRoleMixin, viewsets.ModelViewSet):
         time = instance.time
         contact = Contact.objects.get(pk=instance.contact_id)
         _datetime = datetime.combine(date, time)
-        period = HalfHour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
+        period = Hour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
         event.start=period.start
         event.end=period.end
         event.title=str(contact)

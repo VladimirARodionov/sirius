@@ -7,7 +7,7 @@ from SiriusCRM.tasks import send_telegram_notification, send_email_notification
 
 
 class NotificationJob(CronJobBase):
-    RUN_EVERY_MINS = 15 # every 15 mins
+    RUN_EVERY_MINS = 30 # every 30 mins
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
     code = 'SiriusCRM.notification_job'    # a unique code
@@ -19,7 +19,8 @@ class NotificationJob(CronJobBase):
             appointment_date = datetime.combine(appointment.date, appointment.time)
             delta = appointment_date - date
             minutes = (delta.total_seconds() % 3600) // 60
-            if 15 > minutes > 0:
+            hours = (delta.total_seconds() % 3600)
+            if 30 > minutes > 0 and hours == 0:
                 self.send_notification(appointment)
 
     def send_notification(self, appointment):
@@ -33,6 +34,6 @@ class NotificationJob(CronJobBase):
             send_telegram_notification.delay(appointment.consultant.get_telegram_username(), message)
         if appointment.consultant.email:
             send_email_notification.delay(appointment.consultant.email, 'no-reply@server.raevskyschool.ru',
-                                          _('Zdravniza appointment notification'), message)
+                                          _('[Zdravniza] appointment notification (%(date)s %(time)s)') % {'date': str(appointment.date), 'time': str(appointment.time)}, message)
         send_email_notification.delay(appointment.contact.email, 'no-reply@server.raevskyschool.ru',
-                                      _('Zdravniza appointment notification'), message)
+                                      _('[Zdravniza] appointment notification (%(date)s %(time)s)') % {'date': str(appointment.date), 'time': str(appointment.time)}, message)
