@@ -62,7 +62,7 @@
         },
         {
           "text": "Name",
-          "value": "name"
+          "value": "human_name"
         }
       ],
       "names": [
@@ -70,7 +70,7 @@
           "name": "id"
         },
         {
-          "name": "name"
+          "name": "human_name"
         }
       ],
       "pagination": true,

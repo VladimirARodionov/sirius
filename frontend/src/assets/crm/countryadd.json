@@ -10,7 +10,7 @@
       "type": "text",
       "name": "add_text1",
       "text": "Name",
-      "value": "name",
+      "value": "human_name",
       "maxlength": 80,
       "required": true
     },

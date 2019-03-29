@@ -1,11 +1,10 @@
-from django.core.serializers.json import DjangoJSONEncoder
-from rest_framework.utils import json
+from cities_light.models import Country, Region, City
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 from rest_framework.serializers import ModelSerializer
 from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, clear_roles
 
-from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
+from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment, \
     AppointmentStatus
 
@@ -52,25 +51,59 @@ class CategorySerializer(ModelSerializer):
 
 
 class CountrySerializer(ModelSerializer):
+    human_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Country
-        fields = ('id', 'name')
+        fields = ('id', 'human_name', 'alternate_names')
+
+    def get_human_name(self, obj):
+        if obj.alternate_names:
+            human_name = obj.alternate_names.split(';')[0]
+            if human_name:
+                return human_name
+            else:
+                return obj.name
+        else:
+            return obj.name
 
 
 class RegionSerializer(ModelSerializer):
+    human_name = serializers.SerializerMethodField()
     region_country = CountrySerializer(source='country', read_only=True)
 
     class Meta:
         model = Region
-        fields = ('id', 'name', 'country', 'region_country')
+        fields = ('id', 'human_name', 'alternate_names', 'country', 'region_country')
+
+    def get_human_name(self, obj):
+        if obj.alternate_names:
+            human_name = obj.alternate_names.split(';')[0]
+            if human_name:
+                return human_name
+            else:
+                return obj.name
+        else:
+            return obj.name
 
 
 class CitySerializer(ModelSerializer):
+    human_name = serializers.SerializerMethodField()
     city_region = RegionSerializer(source='region', read_only=True)
 
     class Meta:
         model = City
-        fields = ('id', 'name', 'region', 'city_region')
+        fields = ('id', 'human_name', 'alternate_names', 'region', 'city_region')
+
+    def get_human_name(self, obj):
+        if obj.alternate_names:
+            human_name = obj.alternate_names.split(';')[0]
+            if human_name:
+                return human_name
+            else:
+                return obj.name
+        else:
+            return obj.name
 
 
 class CompetencySerializer(ModelSerializer):

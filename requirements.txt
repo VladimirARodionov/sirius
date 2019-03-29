@@ -15,3 +15,4 @@ celery==4.2.1
 pytg==0.4.10
 django-scheduler==0.8.8
 django-cron==0.5.1
+django-cities-light==3.5.0

@@ -1,5 +1,7 @@
 import pytz
 from datetime import datetime
+
+from cities_light.models import Country, Region, City
 from django.core.paginator import InvalidPage
 from django.utils import six
 from rest_framework import viewsets, filters
@@ -12,7 +14,7 @@ from schedule.models import Event, Calendar, EventRelation
 
 from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
-from SiriusCRM.models import User, Organization, Unit, Position, Category, Country, Region, City, Competency, Course, \
+from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus
 from SiriusCRM.schedule.periods import HalfHour
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
@@ -25,6 +27,7 @@ from SiriusCRM.views import AppointmentView
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 5
     page_size_query_param = 'page_size'
+    page_by_id_param = 'page_by_id'
     max_page_size = 1000
 
     def paginate_queryset(self, queryset, request, view=None):
@@ -40,7 +43,12 @@ class StandardResultsSetPagination(PageNumberPagination):
         page_number = request.query_params.get(self.page_query_param, 1)
         if page_number in self.last_page_strings:
             page_number = paginator.num_pages
-
+        page_by_id = request.query_params.get(self.page_by_id_param, 0)
+        if page_by_id:
+            try:
+                page_number = (list(queryset.values_list('id', flat=True).distinct()).index(int(page_by_id)) // page_size) + 1
+            except:
+                pass
         try:
             self.page = paginator.page(page_number)
         except InvalidPage:
@@ -252,12 +260,24 @@ class CountryViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_post_roles = ['admin_role', 'edit_role']
     allowed_put_roles = ['admin_role', 'edit_role']
     allowed_delete_roles = ['admin_role', 'edit_role']
-    queryset = Country.objects.all()
+    queryset = Country.objects.all().order_by('id')
     serializer_class = CountrySerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('name',)
-    ordering_fields = ('id', 'name')
+    search_fields = ('alternate_names', 'name',)
+    ordering_fields = ('id', 'human_name')
+
+    def perform_create(self, serializer):
+        if 'human_name' in self.request.data:
+            serializer.instance.alternate_names = self.request.data['human_name']
+        serializer.is_valid(raise_exception=True)
+        serializer.instance.save()
+
+    def perform_update(self, serializer):
+        if 'human_name' in self.request.data:
+            serializer.instance.alternate_names = self.request.data['human_name']
+        serializer.is_valid(raise_exception=True)
+        serializer.instance.save()
 
 
 class RegionViewSet(HasRoleMixin, viewsets.ModelViewSet):
@@ -266,12 +286,24 @@ class RegionViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_post_roles = ['admin_role', 'edit_role']
     allowed_put_roles = ['admin_role', 'edit_role']
     allowed_delete_roles = ['admin_role', 'edit_role']
-    queryset = Region.objects.all()
+    queryset = Region.objects.all().order_by('id')
     serializer_class = RegionSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('name',)
-    ordering_fields = ('id', 'name', 'country')
+    search_fields = ('alternate_names', 'name',)
+    ordering_fields = ('id', 'human_name', 'country')
+
+    def perform_create(self, serializer):
+        if 'human_name' in self.request.data:
+            serializer.instance.alternate_names = self.request.data['human_name']
+        serializer.is_valid(raise_exception=True)
+        serializer.instance.save()
+
+    def perform_update(self, serializer):
+        if 'human_name' in self.request.data:
+            serializer.instance.alternate_names = self.request.data['human_name']
+        serializer.is_valid(raise_exception=True)
+        serializer.instance.save()
 
 
 class CityViewSet(HasRoleMixin, viewsets.ModelViewSet):
@@ -280,12 +312,24 @@ class CityViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_post_roles = ['admin_role', 'edit_role']
     allowed_put_roles = ['admin_role', 'edit_role']
     allowed_delete_roles = ['admin_role', 'edit_role']
-    queryset = City.objects.all()
+    queryset = City.objects.all().order_by('id')
     serializer_class = CitySerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('name',)
-    ordering_fields = ('id', 'name', 'region')
+    search_fields = ('alternate_names', 'name',)
+    ordering_fields = ('id', 'human_name', 'region')
+
+    def perform_create(self, serializer):
+        if 'human_name' in self.request.data:
+            serializer.instance.alternate_names = self.request.data['human_name']
+        serializer.is_valid(raise_exception=True)
+        serializer.instance.save()
+
+    def perform_update(self, serializer):
+        if 'human_name' in self.request.data:
+            serializer.instance.alternate_names = self.request.data['human_name']
+        serializer.is_valid(raise_exception=True)
+        serializer.instance.save()
 
 
 class CompetencyViewSet(HasRoleMixin, viewsets.ModelViewSet):

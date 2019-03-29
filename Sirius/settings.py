@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'schedule',
     'django_cron',
+    'cities_light',
     'SiriusCRM.apps.SiriuscrmConfig',
 
 ]
@@ -170,3 +171,5 @@ ATOMIC_REQUESTS = True
 FIRST_DAY_OF_WEEK = 1
 WORKING_HOUR_BEGIN = 9
 WORKING_HOUR_END = 19
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['ru']
+
