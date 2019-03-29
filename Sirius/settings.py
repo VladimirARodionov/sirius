@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'import_export',
     'drf_yasg',
     'schedule',
+    'django_cron',
     'SiriusCRM.apps.SiriuscrmConfig',
 
 ]
@@ -63,6 +64,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+]
+
+CRON_CLASSES = [
+    'SiriusCRM.cron.notification.NotificationJob',
 ]
 
 ROOT_URLCONF = 'Sirius.urls'

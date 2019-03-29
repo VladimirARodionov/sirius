@@ -285,6 +285,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         return self.first_name
 
+    def get_telegram_username(self):
+        if self.telegram:
+            if self.telegram[0] == '@':
+                return self.telegram
+            else:
+                return '@' + self.telegram
+        else:
+            return None
+
     def email_user(self, subject, message, from_email=None, **kwargs):
         '''
         Sends an email to this User.

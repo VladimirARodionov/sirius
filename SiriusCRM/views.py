@@ -341,7 +341,7 @@ class AppointmentView(APIView):
                       'contact_email': str(appointment.contact.email),
                       'contact_mobile': str(appointment.contact.mobile), 'diagnos': str(appointment.comment)}
         if consultant.telegram:
-            send_telegram_notification.delay(consultant.telegram, message)
+            send_telegram_notification.delay(consultant.get_telegram_username(), message)
         if consultant.email:
             send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru',
                                           _('New Zdravniza appointment'), message)
