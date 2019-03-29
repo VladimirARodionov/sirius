@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-14 12:13+0300\n"
+"POT-Creation-Date: 2019-03-29 09:25+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,39 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\cron\notification.py:27
+#, fuzzy, python-format
+#| msgid ""
+#| "New appointment has been made.\n"
+#| "Date: %(date)s\n"
+#| "Time: %(time)s\n"
+#| "Contact name: %(contact_name)s\n"
+#| "Contact email: %(contact_email)s\n"
+#| "Contact mobile: %(contact_mobile)s\n"
+#| "Diagnos: %(diagnos)s"
+msgid ""
+"You have an appointment.\n"
+"Date: %(date)s\n"
+"Time: %(time)s\n"
+"Contact name: %(contact_name)s\n"
+"Contact email: %(contact_email)s\n"
+"Contact mobile: %(contact_mobile)s\n"
+"Diagnos: %(diagnos)s"
+msgstr ""
+"У вас есть запись на бесплатную консультацию в Здравницу.\n"
+"Дата: %(date)s\n"
+"Время: %(time)s\n"
+"Имя: %(contact_name)s\n"
+"Email: %(contact_email)s\n"
+"Телефон: %(contact_mobile)s\n"
+"Диагноз: %(diagnos)s"
+
+#: .\cron\notification.py:36 .\cron\notification.py:38
+#, fuzzy
+#| msgid "New Zdravniza appointment"
+msgid "Zdravniza appointment notification"
+msgstr "Запись на бесплатную консультацию в Здравницу"
 
 #: .\models.py:217 .\models.py:233 .\resources.py:12
 msgid "Email"
@@ -40,7 +73,7 @@ msgstr "Фамилия"
 msgid "Middle name"
 msgstr "Отчество"
 
-#: .\models.py:222
+#: .\models.py:222 .\models.py:315
 msgid "Comment"
 msgstr ""
 
@@ -86,21 +119,21 @@ msgstr ""
 msgid "HalfHour: %(start)s-%(end)s"
 msgstr ""
 
-#: .\views.py:196
+#: .\views.py:167
 msgid "Password reset"
 msgstr "Сброс пароля"
 
-#: .\views.py:233
+#: .\views.py:204
 #, fuzzy
 #| msgid "New password"
 msgid "Enter new password"
 msgstr "Новый пароль"
 
-#: .\views.py:301
+#: .\views.py:272
 msgid "Password reset unsuccessful"
 msgstr "Не удалось сбросить пароль"
 
-#: .\views.py:498
+#: .\views.py:338
 #, python-format
 msgid ""
 "New appointment has been made.\n"
@@ -119,15 +152,15 @@ msgstr ""
 "Телефон: %(contact_mobile)s\n"
 "Диагноз: %(diagnos)s"
 
-#: .\views.py:502
+#: .\views.py:347
 msgid "New Zdravniza appointment"
 msgstr "Новая запись на бесплатную консультацию в Здравницу"
 
-#: .\views.py:504
+#: .\views.py:349
 msgid "You are successfully made new Zdravniza appointment"
 msgstr "Вы успешно записались на бесплатную консультацию в Здравницу"
 
-#: .\views.py:537
+#: .\views.py:377
 msgid "No free consultants at this time"
 msgstr "Нет свободных консультантов на это время"
 
