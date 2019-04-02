@@ -47,9 +47,11 @@ export default {
   },
   created () {
     this.$bus.on('error', this.onError)
+    this.$bus.on('getObject', this.onGet)
   },
   beforeDestroy () {
     this.$bus.off('error', this.onError)
+    this.$bus.off('getObject', this.onGet)
   },
   updated () {
     this.$bus.emit('changeObject', this.data.object)
@@ -77,6 +79,10 @@ export default {
     },
     onChange (data) {
       this.data.current_id = data
+    },
+    onGet (data) {
+      this.data.current_id = data[this.field.value]
+      this.getItems()
     },
     getItems () {
       onGet(this.field.api, this.data, this.pagination, this.search_term)
