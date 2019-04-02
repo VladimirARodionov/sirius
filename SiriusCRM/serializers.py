@@ -245,7 +245,7 @@ class ContactSerializer(ModelSerializer):
     class Meta:
         model = Contact
         fields = ('id', 'first_name', 'last_name',
-                  'middle_name', 'email', 'mobile', 'comment')
+                  'middle_name', 'email', 'mobile', 'comments')
 
 
 class AppointmentDateSerializer(ModelSerializer):

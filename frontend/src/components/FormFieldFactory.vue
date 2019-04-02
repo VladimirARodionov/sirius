@@ -79,6 +79,11 @@
        :field="field"
        v-model="value">
      </Stepper>
+     <CommentsField
+       v-else-if="field.type === 'comments'"
+       :field="field"
+       v-model="value">
+     </CommentsField>
       <v-card-actions
        v-else-if="field.type === 'actions'">
         <v-spacer></v-spacer>
@@ -109,6 +114,7 @@ import MenuSelectField from './MenuSelectField'
 import Stepper from './Stepper'
 import SuccessMessage from './SuccessMessage'
 import Calendar from './Calendar'
+import CommentsField from './CommentsField'
 
 export default {
   name: 'FormFieldFactory',
@@ -117,6 +123,7 @@ export default {
     field: {}
   },
   components: {
+    CommentsField,
     SuccessMessage,
     DataTable,
     DataTree,

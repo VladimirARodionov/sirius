@@ -171,23 +171,6 @@ class AppointmentStatus(models.Model):
     name = models.CharField(max_length=80, unique=True, blank=False)
 
 
-# Список контактов, лидов
-class Contact(models.Model):
-    id = models.AutoField(primary_key=True)
-    email = models.EmailField(_('Email'), unique=True, blank=False)
-    mobile = models.CharField(_('Mobile'), max_length=20, blank=False)
-    first_name = models.CharField(_('First name'), max_length=80, blank=False)
-    last_name = models.CharField(_('Last name'), max_length=80, blank=True)
-    middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
-    comment = models.TextField(_('Comment'), blank=True)
-
-    class Meta:
-        ordering = ['id']
-
-    def __str__(self):
-        return '%s %s (%s) [%s]' % (self.first_name, self.last_name, self.email, self.mobile)
-
-
 # Список пользователей
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('Email'), unique=True, null=True)
@@ -259,6 +242,31 @@ class User(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+# Таблица комментариев контакта
+class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_value")
+    time = models.DateTimeField(auto_now_add=True)
+    comment = models.TextField(blank=False)
+
+
+# Список контактов, лидов
+class Contact(models.Model):
+    id = models.AutoField(primary_key=True)
+    email = models.EmailField(_('Email'), unique=True, blank=False)
+    mobile = models.CharField(_('Mobile'), max_length=20, blank=False)
+    first_name = models.CharField(_('First name'), max_length=80, blank=False)
+    last_name = models.CharField(_('Last name'), max_length=80, blank=True)
+    middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
+    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True, related_name="contact_comments")
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return '%s %s (%s) [%s]' % (self.first_name, self.last_name, self.email, self.mobile)
 
 
 # Таблица записей на прием
@@ -381,5 +389,4 @@ class UserFaculty(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_faculty")
     faculty = models.ForeignKey(Faculty, on_delete=models.PROTECT, related_name="faculty_value")
-
 

@@ -47,13 +47,6 @@
       "required": true
     },
     {
-      "type": "textarea",
-      "name": "edit_comment",
-      "text": "Comment",
-      "value": "comment",
-      "required": false
-    },
-    {
       "type": "actions",
       "fields":
       [
