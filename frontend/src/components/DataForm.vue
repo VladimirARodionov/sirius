@@ -141,6 +141,7 @@ export default {
       } else {
         this.$set(this.data, 'currentObject', { id: this.$route.params.id })
         onGetSingle(this.json.api, 'currentObject', this.data).then(resp => {
+          this.$bus.emit('getObject', this.data.currentObject)
           this.getSavedObject()
         })
       }
