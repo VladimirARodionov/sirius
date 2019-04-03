@@ -51,9 +51,8 @@
       "name": "edit_comment",
       "text": "Comment",
       "value": "comments",
-      "comment": "comment",
+      "comment": "comment_value",
       "api": "/api/comment/",
-      "comment_api": "/api/contactcomment/",
       "required": false
     },
     {

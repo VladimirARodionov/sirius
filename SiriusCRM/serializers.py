@@ -242,14 +242,14 @@ class UserFacultySerializer(ModelSerializer):
 
 
 class CommentSerializer(ModelSerializer):
+    user_value = UserSerializer(source='user', read_only=True)
 
     class Meta:
         model = Comment
-        fields = ('id', 'user', 'time', 'comment')
+        fields = ('id', 'user', 'time', 'comment', 'user_value')
 
 
 class ContactCommentSerializer(ModelSerializer):
-    # comment_value = CommentSerializer(source='comment', read_only=True)
 
     class Meta:
         model = ContactComment
@@ -257,12 +257,12 @@ class ContactCommentSerializer(ModelSerializer):
 
 
 class ContactSerializer(ModelSerializer):
-    # comment_value = ContactCommentSerializer(source='comments', read_only=True)
+    comment_value = CommentSerializer(source='comments', read_only=True, many=True)
 
     class Meta:
         model = Contact
         fields = ('id', 'first_name', 'last_name',
-                  'middle_name', 'email', 'mobile', 'comments')
+                  'middle_name', 'email', 'mobile', 'comments', 'comment_value')
 
 
 class AppointmentDateSerializer(ModelSerializer):
