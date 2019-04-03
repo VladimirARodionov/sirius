@@ -15,12 +15,14 @@ from schedule.models import Event, Calendar, EventRelation
 from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
-    Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus
+    Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus, Comment, \
+    ContactComment
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
     CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer, \
-    FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer
+    FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer, CommentSerializer, \
+    ContactCommentSerializer
 from SiriusCRM.views import AppointmentView
 
 
@@ -148,8 +150,9 @@ class ConsultantViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
     ordering_fields = ('id', 'first_name', 'last_name', 'email')
 
     def perform_create(self, serializer):
-        UserCategory.objects.create(user=serializer.save(), category=get_object_or_404(Category, pk=Category.ZDRAVNIZA))
-        UserPosition.objects.create(user=serializer.save(), position=get_object_or_404(Position, pk=Position.ZDRAVNIZA_CONSULTANT))
+        user = serializer.save()
+        UserCategory.objects.create(user=user, category=get_object_or_404(Category, pk=Category.ZDRAVNIZA))
+        UserPosition.objects.create(user=user, position=get_object_or_404(Position, pk=Position.ZDRAVNIZA_CONSULTANT))
 
 
 class UserDetailViewSet(HasRoleMixin, viewsets.ModelViewSet):
@@ -479,4 +482,29 @@ class AppointmentStatusViewSet(HasRoleMixin, viewsets.ModelViewSet):
     search_fields = ('number', 'name')
     ordering_fields = ('id', 'number', 'name')
 
+
+class CommentViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def perform_create(self, serializer):
+        user = get_object_or_404(User, pk=self.request.user.id)
+        contact = get_object_or_404(Contact, pk=self.request.data['contact'])
+        comment = Comment.objects.create(user=user, comment=serializer.data['comment'])
+        ContactComment.objects.create(contact=contact, comment=comment)
+
+
+class ContactCommentViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role','edit_role']
+    serializer_class = ContactCommentSerializer
+    queryset = ContactComment.objects.all()
 

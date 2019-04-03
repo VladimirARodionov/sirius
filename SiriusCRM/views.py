@@ -33,7 +33,7 @@ from schedule.views import _api_occurrences
 
 from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus
+from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Comment
 from SiriusCRM.resources import UserResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
@@ -427,3 +427,15 @@ class CalendarView(HasRoleMixin, APIView):
         except (ValueError, Calendar.DoesNotExist) as e:
             return HttpResponseBadRequest(e)
         return JsonResponse(response_data, safe=False)
+
+
+class CommentView(HasRoleMixin, APIView):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role', 'edit_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+
+    def post(self, request):
+        user = get_object_or_404(User, pk=request.user.id)
+        body = json.loads(request.body)
+        comment = Comment.objects.create(user=user, comment=body)
+        return JsonResponse(comment, safe=False)

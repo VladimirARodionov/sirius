@@ -260,7 +260,7 @@ class Contact(models.Model):
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
     last_name = models.CharField(_('Last name'), max_length=80, blank=True)
     middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
-    comments = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, blank=True, related_name="contact_comments")
+    comments = models.ManyToManyField(Comment, through='ContactComment')
 
     class Meta:
         ordering = ['id']
@@ -389,4 +389,12 @@ class UserFaculty(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_faculty")
     faculty = models.ForeignKey(Faculty, on_delete=models.PROTECT, related_name="faculty_value")
+
+
+# Таблица комментариев контакта
+class ContactComment(models.Model):
+    id = models.AutoField(primary_key=True)
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="contact_value")
+    comment = models.ForeignKey(Comment, on_delete=models.PROTECT, related_name="comment_value")
+
 

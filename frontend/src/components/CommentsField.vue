@@ -17,7 +17,7 @@
       :error-messages="errorMessage[field.value]"
       counter
       auto-grow
-      v-model="currentObject">
+      v-model="data.newObject.comment">
     </v-textarea>
     <v-btn
       :id="field.name + '_add_button'"
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { onPost, onGetAll } from '../api/requests'
+
 export default {
   name: 'CommentsField',
   props: {
@@ -36,9 +38,16 @@ export default {
   },
   data () {
     return {
+      data: {
+        objects: {},
+        newObject: {
+          user: 1,
+          contact: 1,
+          comment: ''
+        }
+      },
       object: this.value.currentObject,
-      errorMessage: {},
-      currentObject: ''
+      errorMessage: {}
     }
   },
   created () {
@@ -49,6 +58,9 @@ export default {
   },
   updated () {
     this.$bus.emit('changeObject', this.object)
+  },
+  mounted () {
+    this.getItems()
   },
   watch: {
     value: {
@@ -64,7 +76,12 @@ export default {
       this.errorMessage = data
     },
     onAdd () {
-
+      onPost(this.field.api, this.data, null).then(resp => {
+        this.getItems()
+      })
+    },
+    getItems () {
+      onGetAll(this.field.comment_api, 'objects', this.data)
     },
     getLabel (comment) {
       if (comment && comment.user && comment.time) {
