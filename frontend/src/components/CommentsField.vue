@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div v-for="comment in object[field.value]" :key="comment.id">
-    <v-textarea
-      :id="field.name + '_textarea_' + comment.id"
-      :label="getLabel(comment)"
-      auto-grow
-      readonly
-      :value="comment">
-    </v-textarea>
+    <div v-if="object[field.value]">
+      <div v-for="comment in object[field.value][field.comment]" :key="comment.id">
+        <v-textarea
+          :id="field.name + '_textarea_' + comment.id"
+          :label="getLabel(comment)"
+          auto-grow
+          readonly
+          :value="comment">
+        </v-textarea>
+      </div>
     </div>
     <v-textarea
       :id="field.name + '_textarea'"
@@ -15,7 +17,7 @@
       :error-messages="errorMessage[field.value]"
       counter
       auto-grow
-      v-model="object[field.value]">
+      v-model="currentObject">
     </v-textarea>
     <v-btn
       :id="field.name + '_add_button'"
@@ -35,7 +37,8 @@ export default {
   data () {
     return {
       object: this.value.currentObject,
-      errorMessage: {}
+      errorMessage: {},
+      currentObject: ''
     }
   },
   created () {

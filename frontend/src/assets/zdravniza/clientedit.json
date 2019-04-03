@@ -47,6 +47,14 @@
       "required": true
     },
     {
+      "type": "comments",
+      "name": "edit_comment",
+      "text": "Comment",
+      "value": "comments",
+      "comment": "comment",
+      "required": false
+    },
+    {
       "type": "actions",
       "fields":
       [
