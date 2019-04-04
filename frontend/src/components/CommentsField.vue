@@ -7,6 +7,7 @@
           :label="getLabel(comment)"
           auto-grow
           readonly
+          rows="1"
           :value="comment.comment">
         </v-textarea>
       </div>
@@ -28,7 +29,7 @@
 </template>
 
 <script>
-import { onPost } from '../api/requests'
+import { onGetSingle, onPost } from '../api/requests'
 
 export default {
   name: 'CommentsField',
@@ -39,10 +40,12 @@ export default {
   data () {
     return {
       data: {
-        objects: {},
+        currentObject: {
+          id: this.value.currentObject.id
+        },
         newObject: {
-          user: 1,
-          contact: 1,
+          user: localStorage.getItem('user_id'),
+          contact: this.$route.params.id,
           comment: ''
         }
       },
@@ -72,8 +75,15 @@ export default {
     onError (data) {
       this.errorMessage = data
     },
+    onGet () {
+      this.data.currentObject.id = this.value.currentObject.id
+      onGetSingle(this.field.contact_api, 'currentObject', this.data).then(resp => {
+        this.object[this.field.comment] = this.data.currentObject[this.field.comment]
+        this.data.newObject.comment = ''
+      })
+    },
     onAdd () {
-      onPost(this.field.api, this.data, null)
+      onPost(this.field.api, this.data, this.onGet)
     },
     getLabel (comment) {
       if (comment && comment.user_value && comment.time) {

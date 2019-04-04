@@ -53,6 +53,7 @@
       "value": "comments",
       "comment": "comment_value",
       "api": "/api/comment/",
+      "contact_api": "/api/contact/",
       "required": false
     },
     {
