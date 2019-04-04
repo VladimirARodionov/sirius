@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-divider></v-divider>
     <div v-if="object[field.comment]">
       <div v-for="comment in object[field.comment]" :key="comment.id">
         <v-textarea
