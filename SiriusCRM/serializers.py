@@ -6,7 +6,7 @@ from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, cl
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment, \
-    AppointmentStatus
+    AppointmentStatus, Comment, ContactComment
 
 
 class UserSerializer(ModelSerializer):
@@ -241,11 +241,28 @@ class UserFacultySerializer(ModelSerializer):
         fields = ('id', 'user', 'faculty', 'faculty_value')
 
 
+class CommentSerializer(ModelSerializer):
+    user_value = UserSerializer(source='user', read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'user', 'time', 'comment', 'user_value')
+
+
+class ContactCommentSerializer(ModelSerializer):
+
+    class Meta:
+        model = ContactComment
+        fields = ('id', 'contact', 'comment')
+
+
 class ContactSerializer(ModelSerializer):
+    comment_value = CommentSerializer(source='comments', read_only=True, many=True)
+
     class Meta:
         model = Contact
         fields = ('id', 'first_name', 'last_name',
-                  'middle_name', 'email', 'mobile', 'comment')
+                  'middle_name', 'email', 'mobile', 'comments', 'comment_value')
 
 
 class AppointmentDateSerializer(ModelSerializer):

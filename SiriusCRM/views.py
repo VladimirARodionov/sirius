@@ -33,7 +33,7 @@ from schedule.views import _api_occurrences
 
 from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus
+from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Comment
 from SiriusCRM.resources import UserResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
@@ -54,7 +54,8 @@ def jwt_response_payload_handler(token, user=None, request=None):
     return {
         'token': token,
         'roles': user_roles,
-        'permissions': permissions
+        'permissions': permissions,
+        'user_id': user.id
     }
 
 
@@ -427,3 +428,4 @@ class CalendarView(HasRoleMixin, APIView):
         except (ValueError, Calendar.DoesNotExist) as e:
             return HttpResponseBadRequest(e)
         return JsonResponse(response_data, safe=False)
+

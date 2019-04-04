@@ -47,10 +47,13 @@
       "required": true
     },
     {
-      "type": "textarea",
+      "type": "comments",
       "name": "edit_comment",
       "text": "Comment",
-      "value": "comment",
+      "value": "comments",
+      "comment": "comment_value",
+      "api": "/api/comment/",
+      "contact_api": "/api/contact/",
       "required": false
     },
     {

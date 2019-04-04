@@ -61,12 +61,14 @@ export function onGetAll (api, name, data) {
 
 export function onPost (api, data, getFunction) {
   data.addDialogErrorMessage = ''
-  axios.post(process.env.API_URL + api, data.newObject)
+  return axios.post(process.env.API_URL + api, data.newObject)
     .then(resp => {
       data.loading = false
       data.addDialog = false
       vuetifyToast.success(Vue.i18n.translate('Success'), { icon: 'check_circle_outline' })
-      getFunction()
+      if (getFunction) {
+        getFunction()
+      }
     })
     .catch(err => {
       if (err.response && err.response.data) {
