@@ -2,6 +2,7 @@ import csv
 import io
 import random
 from datetime import datetime, timedelta
+from django.utils import timezone
 
 import pytz
 from casl_django.casl.casl import django_permissions_to_casl_rules
@@ -469,7 +470,7 @@ class LeadView(APIView):
     def send_notification(lead, consultant):
         message = _(
             'New lead has been made.\nDate: %(date)s\nName: %(lead_name)s\nEmail: %(lead_email)s\nMobile: %(lead_mobile)s\nMessenger: %(messenger)s') % {
-                      'date': datetime.strftime(lead.time, '%Y-%m-%d %H:%M:%S'),
+                      'date': timezone.localtime(lead.time).strftime('%Y-%m-%d %H:%M:%S'),
                       'lead_name': str(lead.first_name) + " " + str(lead.last_name),
                       'lead_email': str(lead.email),
                       'lead_mobile': str(lead.mobile),
@@ -478,7 +479,7 @@ class LeadView(APIView):
             send_telegram_notification.delay(consultant.get_telegram_username(), message)
         if consultant and consultant.email:
             send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru',
-                                          _('[CRM] New lead (%(date)s)') % {'date': datetime.strftime(lead.time, '%Y-%m-%d %H:%M:%S')}, message)
+                                          _('[CRM] New lead (%(date)s)') % {'date': timezone.localtime(lead.time).strftime('%Y-%m-%d %H:%M:%S')}, message)
         if lead.email:
             send_email_notification.delay(lead.email, 'no-reply@server.raevskyschool.ru',
                                       _('You are successfully contacted Raevsky School'), message)
