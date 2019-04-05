@@ -190,5 +190,7 @@
   "Consultants": "Консультанты",
   "Add consultant": "Добавление консультанта",
   "Edit consultant": "Изменение консультанта",
-  "Delete consultant": "Удалить консультанта"
+  "Delete consultant": "Удалить консультанта",
+  "Total consultants": "Всего консультантов",
+  "Total leads": "Всего лидов"
 }
