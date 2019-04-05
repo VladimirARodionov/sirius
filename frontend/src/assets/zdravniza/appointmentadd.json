@@ -49,7 +49,7 @@
       "name": "consultant_add_select",
       "text": "Consultant",
       "value": "consultant",
-      "item_text": "email",
+      "item_text": "full_name",
       "item_value": "id",
       "api": "/api/zdravnizaconsultant/",
       "resource": "consultant",

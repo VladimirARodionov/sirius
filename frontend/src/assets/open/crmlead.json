@@ -1,0 +1,68 @@
+{
+  "program": "open",
+  "resource": "crm",
+  "type": "lead",
+  "title": "Raevsky School",
+  "api": "/api/addlead/",
+  "successMessage": "You are successfully contacted Raevsky School",
+  "style": "max-width: 568px;margin-left: auto;margin-right: auto;",
+  "fields": [
+    {
+      "type": "text",
+      "name": "lead_first_name",
+      "text": "First name",
+      "value": "first_name",
+      "maxlength": 80,
+      "required": true
+    },
+    {
+      "type": "text",
+      "name": "lead_last_name",
+      "text": "Last name",
+      "value": "last_name",
+      "maxlength": 80,
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "lead_email",
+      "text": "Email",
+      "value": "email",
+      "maxlength": 80,
+      "required": false
+    },
+    {
+      "type": "text",
+      "name": "lead_mobile",
+      "text": "Mobile",
+      "value": "mobile",
+      "maxlength": 20,
+      "required": true
+    },
+    {
+      "type": "select",
+      "name": "lead_messenger",
+      "text": "Messenger",
+      "value": "messenger",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/openmessenger/",
+      "resource": "messenger",
+      "required": true,
+      "hide_edit": true,
+      "non_pageable": true
+    },
+    {
+      "type": "actions",
+      "fields": [
+        {
+          "type": "button",
+          "name": "lead_button",
+          "text": "Submit",
+          "action": "leadsave",
+          "color": "success"
+        }
+      ]
+    }
+  ]
+}

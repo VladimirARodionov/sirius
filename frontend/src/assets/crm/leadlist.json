@@ -1,10 +1,11 @@
 {
-  "program": "zdravniza",
-  "resource": "appointment",
-  "api": "/api/appointmentdetail/",
+  "program": "crm",
+  "resource": "lead",
+  "api": "/api/lead/",
   "type": "list",
-  "title": "List of appointments",
-  "name": "appointment",
+  "title": "List of leads",
+  "name": "lead",
+  "style": "",
   "fields": [
     {
       "type": "group",
@@ -12,7 +13,7 @@
       [
         {
           "type": "button",
-          "name": "appointment_add_button",
+          "name": "add_button1",
           "text": "Add",
           "action": "add",
           "color": "success",
@@ -23,7 +24,7 @@
         },
         {
           "type": "button",
-          "name": "appointment_edit_button",
+          "name": "edit_button1",
           "text": "Edit",
           "action": "edit",
           "color": "info",
@@ -34,7 +35,7 @@
         },
         {
           "type": "button",
-          "name": "appointment_delete_button",
+          "name": "delete_button1",
           "text": "Delete",
           "action": "delete",
           "color": "error",
@@ -45,7 +46,7 @@
         },
         {
           "type": "search",
-          "name": "appointment_search",
+          "name": "search1",
           "text": "Search",
           "action": "search"
         }
@@ -53,7 +54,7 @@
     },
     {
       "type": "table",
-      "name": "appointment_table",
+      "name": "table1",
       "headers": [
         {
           "text": "#",
@@ -61,19 +62,27 @@
         },
         {
           "text": "Date",
-          "value": "date"
+          "value": "time"
         },
         {
-          "text": "Time",
-          "value": "time"
+          "text": "First name",
+          "value": "first_name"
+        },
+        {
+          "text": "Last name",
+          "value": "last_name"
+        },
+        {
+          "text": "Email",
+          "value": "email"
+        },
+        {
+          "text": "Mobile",
+          "value": "mobile"
         },
         {
           "text": "Status",
           "value": "status"
-        },
-        {
-          "text": "Contact",
-          "value": "contact"
         },
         {
           "text": "Consultant",
@@ -85,23 +94,29 @@
           "name": "id"
         },
         {
-          "name": "date"
-        },
-        {
           "name": "time"
         },
         {
-          "name": "status_value.name"
+          "name": "first_name"
         },
         {
-          "name": "contact_value.email"
+          "name": "last_name"
+        },
+        {
+          "name": "email"
+        },
+        {
+          "name": "mobile"
+        },
+        {
+          "name": "status_value.name"
         },
         {
           "name": "consultant_value.full_name"
         }
       ],
       "pagination": true,
-      "api": "/api/appointmentdetail/"
+      "api": "/api/lead/"
     }
   ]
 }

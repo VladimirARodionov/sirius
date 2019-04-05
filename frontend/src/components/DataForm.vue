@@ -78,6 +78,7 @@ export default {
     this.$bus.on('changeObject', this.onChangeObject)
     this.$bus.on('saveObject', this.onSave)
     this.$bus.on('saveAppointment', this.onSaveAppointment)
+    this.$bus.on('saveLead', this.onSaveLead)
     this.$bus.on('deleteObject', this.onDelete)
     this.$bus.on('selectObject', this.onSelect)
     this.$bus.on('error', this.onError)
@@ -91,6 +92,7 @@ export default {
     this.$bus.off('changeObject', this.onChangeObject)
     this.$bus.off('saveObject', this.onSave)
     this.$bus.off('saveAppointment', this.onSaveAppointment)
+    this.$bus.off('saveLead', this.onSaveLead)
     this.$bus.off('deleteObject', this.onDelete)
     this.$bus.off('selectObject', this.onSelect)
     this.$bus.off('error', this.onError)
@@ -117,6 +119,9 @@ export default {
     },
     onSaveAppointment () {
       this.addAppointment()
+    },
+    onSaveLead () {
+      this.addLead()
     },
     onDelete () {
       if (this.data.currentObject.id) {
@@ -164,6 +169,13 @@ export default {
     },
     addAppointment: function () {
       let self = this
+      onPostSingle(this.json.api, this.data, null).then(resp => {
+        self.successMessage = self.json.successMessage
+      })
+    },
+    addLead: function () {
+      let self = this
+      this.data.currentObject.status = 1
       onPostSingle(this.json.api, this.data, null).then(resp => {
         self.successMessage = self.json.successMessage
       })

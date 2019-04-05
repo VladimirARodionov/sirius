@@ -6,13 +6,19 @@ from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, cl
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment, \
-    AppointmentStatus, Comment, ContactComment
+    AppointmentStatus, ZdravnizaComment, ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger
 
 
 class UserSerializer(ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'categories')
+        fields = ('id', 'first_name', 'last_name', 'email', 'categories', 'full_name')
+
+    def get_full_name(self, obj):
+        full_name = '%s %s' % (obj.first_name, obj.last_name)
+        return full_name.strip()
 
 
 class OrganizationSerializer(ModelSerializer):
@@ -241,11 +247,11 @@ class UserFacultySerializer(ModelSerializer):
         fields = ('id', 'user', 'faculty', 'faculty_value')
 
 
-class CommentSerializer(ModelSerializer):
+class ZdravnizaCommentSerializer(ModelSerializer):
     user_value = UserSerializer(source='user', read_only=True)
 
     class Meta:
-        model = Comment
+        model = ZdravnizaComment
         fields = ('id', 'user', 'time', 'comment', 'user_value')
 
 
@@ -257,7 +263,7 @@ class ContactCommentSerializer(ModelSerializer):
 
 
 class ContactSerializer(ModelSerializer):
-    comment_value = CommentSerializer(source='comments', read_only=True, many=True)
+    comment_value = ZdravnizaCommentSerializer(source='comments', read_only=True, many=True)
 
     class Meta:
         model = Contact
@@ -292,3 +298,42 @@ class AppointmentSerializer(ModelSerializer):
         model = Appointment
         fields = ('id', 'date', 'time', 'status', 'contact', 'consultant', 'comment', 'status_value', 'contact_value', 'consultant_value')
 
+
+class CrmCommentSerializer(ModelSerializer):
+    user_value = UserSerializer(source='user', read_only=True)
+
+    class Meta:
+        model = CrmComment
+        fields = ('id', 'user', 'time', 'comment', 'user_value')
+
+
+class LeadStatusSerializer(ModelSerializer):
+
+    class Meta:
+        model = LeadStatus
+        fields = ('id', 'number', 'name')
+
+
+class LeadSerializer(ModelSerializer):
+    comment_value = CrmCommentSerializer(source='comments', read_only=True, many=True)
+    consultant_value = UserSerializer(source='consultant', read_only=True)
+    status_value = LeadStatusSerializer(source='status', read_only=True)
+
+    class Meta:
+        model = Lead
+        fields = ('id', 'time', 'first_name', 'last_name','middle_name', 'email', 'mobile',
+                  'messenger', 'consultant', 'status', 'comments', 'comment_value', 'consultant_value', 'status_value')
+
+
+class LeadCommentSerializer(ModelSerializer):
+
+    class Meta:
+        model = LeadComment
+        fields = ('id', 'lead', 'comment')
+
+
+class MessengerSerializer(ModelSerializer):
+
+    class Meta:
+        model = Messenger
+        fields = ('id', 'name')

@@ -29,7 +29,8 @@ router.register('api/user', viewsets.UserViewSet, basename='user')
 router.register('api/employee', viewsets.EmployeeViewSet, basename='employee')
 router.register('api/disciple', viewsets.DiscipleViewSet, basename='disciple')
 router.register('api/zdravniza', viewsets.ZdravnizaViewSet, basename='zdravniza')
-router.register('api/zdravnizaconsultant', viewsets.ConsultantViewSet, basename='zdravnizaconsultant')
+router.register('api/zdravnizaconsultant', viewsets.ZdravnizaConsultantViewSet, basename='zdravnizaconsultant')
+router.register('api/crmconsultant', viewsets.CrmConsultantViewSet, basename='crmconsultant')
 router.register('api/contact', viewsets.ContactViewSet, basename='contact')
 router.register('api/userdetail', viewsets.UserDetailViewSet, basename='userdetail')
 router.register('api/organization', viewsets.OrganizationViewSet, basename='organization')
@@ -47,7 +48,12 @@ router.register('api/userposition', viewsets.UserPositionViewSet, basename='user
 router.register('api/faculty', viewsets.FacultyViewSet, basename='faculty')
 router.register('api/appointmentdetail', viewsets.AppointmentViewSet, basename='appointmentdetail')
 router.register('api/appointmentstatus', viewsets.AppointmentStatusViewSet, basename='appointmentstatus')
-router.register('api/comment', viewsets.CommentViewSet, basename='comment')
+router.register('api/zdravnizacomment', viewsets.ZdravnizaCommentViewSet, basename='zdravnizacomment')
+router.register('api/crmcomment', viewsets.CrmCommentViewSet, basename='crmcomment')
+router.register('api/messenger', viewsets.MessengerViewSet, basename='messenger')
+router.register('api/leadstatus', viewsets.LeadStatusViewSet, basename='leadstatus')
+router.register('api/lead', viewsets.LeadViewSet, basename='lead')
+router.register('api/leadcreated', viewsets.LeadCreatedViewSet, basename='leadcreated')
 
 
 schema_view = get_schema_view(
@@ -73,6 +79,8 @@ urlpatterns = [
     path('api/people/<int:number>/password_change', views.PasswordChangeView.as_view(), name='peoplePasswordChange'),
     path('api/role/', views.UserRolesView.as_view(), name='role'),
     path('api/appointment/', views.AppointmentView.as_view(), name='appointment'),
+    path('api/addlead/', views.LeadView.as_view(), name='addlead'),
+    path('api/openmessenger/', views.MessengerView.as_view(), name='openmessenger'),
     path('api/zdravniza/calendar/', views.CalendarView.as_view(), name='zdravniza-calendar'),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

@@ -33,10 +33,11 @@ from schedule.views import _api_occurrences
 
 from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Comment
+from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger
 from SiriusCRM.resources import UserResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
-from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer
+from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer, \
+    LeadSerializer
 from SiriusCRM.tasks import send_telegram_notification, send_email_notification
 
 
@@ -429,3 +430,55 @@ class CalendarView(HasRoleMixin, APIView):
             return HttpResponseBadRequest(e)
         return JsonResponse(response_data, safe=False)
 
+
+class MessengerView(APIView):
+
+    def get(self, request):
+        result = [{'id': entry.id, 'name': entry.name} for entry in Messenger.objects.all()]
+        return JsonResponse(result, safe=False)
+
+
+class LeadView(APIView):
+    def post(self, request):
+        context = {}
+        lead_serializer = LeadSerializer(data=request.data)
+        lead_serializer.is_valid(raise_exception=True)
+
+        try:
+            lead = lead_serializer.save()
+            consultant = self.select_consultant()
+            if consultant:
+                lead.consultant = consultant
+                lead.save()
+            LeadView.send_notification(lead, consultant)
+            context['result'] = {'success': True}
+            return JsonResponse(context)
+        except Exception as e:
+            context['result'] = {'success': False, 'error': str(e)}
+            return HttpResponseBadRequest(JsonResponse(context))
+
+    def select_consultant(self):
+        cons = User.objects.filter(categories__in=[Category.EMPLOYEE],
+                                          positions__in=[Position.CRM_CONSULTANT])
+        if len(cons):
+            return cons[random.randint(0, len(cons) - 1)]
+        else:
+            return None
+
+    @staticmethod
+    def send_notification(lead, consultant):
+        message = _(
+            'New lead has been made.\nDate: %(date)s\nName: %(lead_name)s\nEmail: %(lead_email)s\nMobile: %(lead_mobile)s\nMessenger: %(messenger)s') % {
+                      'date': str(lead.time),
+                      'lead_name': str(lead.first_name) + " " + str(lead.last_name),
+                      'lead_email': str(lead.email),
+                      'lead_mobile': str(lead.mobile),
+                      'messenger': str(lead.messenger)}
+        if consultant and consultant.telegram:
+            send_telegram_notification.delay(consultant.get_telegram_username(), message)
+        if consultant and consultant.email:
+            send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru',
+                                          _('[CRM] New lead (%(date)s)') % {'date': str(lead.time)}, message)
+        if lead.email:
+            send_email_notification.delay(lead.email, 'no-reply@server.raevskyschool.ru',
+                                      _('You are successfully contacted Raevsky School'), message)

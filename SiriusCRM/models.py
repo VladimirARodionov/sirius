@@ -79,6 +79,7 @@ class Position(models.Model):
     ZDRAVNIZA_CONSULTANT = 1
     ZDRAVNIZA_HEALER = 2
     ZDRAVNIZA_ADMIN = 3
+    CRM_CONSULTANT = 4
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=80, unique=True, blank=False)
@@ -162,9 +163,33 @@ class Currency(models.Model):
         ordering = ['id']
 
 
-# Таблица статусов обращений
+# Справочник мессенжеров
+class Messenger(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=80, unique=True, blank=False)
+
+    class Meta:
+        ordering = ['id']
+
+
+# Таблица статусов обращений в Здравницу
 class AppointmentStatus(models.Model):
     CREATED = 1
+
+    id = models.AutoField(primary_key=True)
+    number = models.IntegerField(unique=True, null=False, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
+
+
+# Таблица статусов лидов в CRM
+class LeadStatus(models.Model):
+    CREATED = 1
+    CONTACTED = 2
+    WAITING = 3
+    ON_BASE_COURSE = 4
+    BASE_COURSE_PASSED = 5
+    DISCIPLE = 6
+    DECLINED = 7
 
     id = models.AutoField(primary_key=True)
     number = models.IntegerField(unique=True, null=False, blank=False)
@@ -245,14 +270,44 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 # Таблица комментариев контакта
-class Comment(models.Model):
+class ZdravnizaComment(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_value")
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="zdravniza_user_value")
     time = models.DateTimeField(auto_now_add=True)
     comment = models.TextField(blank=False)
 
 
-# Список контактов, лидов
+# Таблица комментариев лида
+class CrmComment(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="crm_user_value")
+    time = models.DateTimeField(auto_now_add=True)
+    comment = models.TextField(blank=False)
+
+
+# Список лидов в CRM
+class Lead(models.Model):
+    id = models.AutoField(primary_key=True)
+    time = models.DateTimeField(auto_now_add=True)
+    email = models.EmailField(_('Email'), null=True, blank=True)
+    mobile = models.CharField(_('Mobile'), max_length=20, blank=False)
+    first_name = models.CharField(_('First name'), max_length=80, blank=False)
+    last_name = models.CharField(_('Last name'), max_length=80, blank=True)
+    middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
+    messenger = models.ForeignKey(Messenger, null=False, on_delete=models.PROTECT, related_name="lead_messenger")
+    consultant = models.ForeignKey(User, null=True, on_delete=models.PROTECT, related_name="lead_consultant")
+    status = models.ForeignKey(LeadStatus, null=False,
+                               on_delete=models.PROTECT, related_name="lead_status")
+    comments = models.ManyToManyField(CrmComment, through='LeadComment')
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return '%s %s (%s) [%s]' % (self.first_name, self.last_name, self.email, self.mobile)
+
+
+# Список контактов, лидов в здравницу
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.EmailField(_('Email'), unique=True, blank=False)
@@ -260,7 +315,7 @@ class Contact(models.Model):
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
     last_name = models.CharField(_('Last name'), max_length=80, blank=True)
     middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
-    comments = models.ManyToManyField(Comment, through='ContactComment')
+    comments = models.ManyToManyField(ZdravnizaComment, through='ContactComment')
 
     class Meta:
         ordering = ['id']
@@ -377,7 +432,7 @@ class ContactSocial(models.Model):
     social = models.ForeignKey(Social, on_delete=models.PROTECT, related_name="contact_social_value")
 
 
-# Таблица связей пользователя и подразделениz
+# Таблица связей пользователя и подразделения
 class UserUnit(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_unit")
@@ -391,10 +446,16 @@ class UserFaculty(models.Model):
     faculty = models.ForeignKey(Faculty, on_delete=models.PROTECT, related_name="faculty_value")
 
 
-# Таблица комментариев контакта
+# Таблица связей комментариев контакта
 class ContactComment(models.Model):
     id = models.AutoField(primary_key=True)
     contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="contact_value")
-    comment = models.ForeignKey(Comment, on_delete=models.PROTECT, related_name="comment_value")
+    comment = models.ForeignKey(ZdravnizaComment, on_delete=models.PROTECT, related_name="comment_value")
 
+
+# Таблица связей комментариев лида
+class LeadComment(models.Model):
+    id = models.AutoField(primary_key=True)
+    lead = models.ForeignKey(Lead, on_delete=models.PROTECT, related_name="lead_value")
+    comment = models.ForeignKey(CrmComment, on_delete=models.PROTECT, related_name="comment_value")
 

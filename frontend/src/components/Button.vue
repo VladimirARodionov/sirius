@@ -53,6 +53,8 @@ export default {
         this.$router.push('/' + this.$route.params.program + '/' + this.$route.params.resource + '/detail/' + this.selectedId)
       } else if (action === 'appointmentsave') {
         this.$bus.emit('saveAppointment')
+      } else if (action === 'leadsave') {
+        this.$bus.emit('saveLead')
       }
     },
     onSelect (data) {

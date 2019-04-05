@@ -5,6 +5,8 @@
           <InfoBox icon="people_outline" :title="$t('Total employees')" :value="data.employees"/>
           <InfoBox icon="chat" :title="$t('Total disciples')" :value="data.disciples"/>
           <InfoBox icon="people" :title="$t('Total users')" :value="data.users"/>
+          <InfoBox icon="people_outline" :title="$t('Total consultants')" :value="data.consultants"/>
+          <InfoBox icon="person_add" :title="$t('Total leads')" :value="data.leads"/>
       </v-layout>
       <v-layout row wrap>
           <TreeInfo :title="$t('Employees')" :items="data.unit"/>
@@ -28,6 +30,8 @@ export default {
         employees: 0,
         disciples: 0,
         users: 0,
+        consultants: 0,
+        leads: 0,
         faculty: [],
         unit: [],
         loading: false
@@ -38,6 +42,8 @@ export default {
     this.getEmployeeCount()
     this.getDiscipleCount()
     this.getUserCount()
+    this.getConsultantCount()
+    this.getLeadCount()
     this.getUnitTreeCount()
     this.getFacultyTreeCount()
   },
@@ -50,6 +56,12 @@ export default {
     },
     getUserCount: function () {
       onGetCount('/api/user/count/', 'users', this.data)
+    },
+    getConsultantCount: function () {
+      onGetCount('/api/crmconsultant/count/', 'consultants', this.data)
+    },
+    getLeadCount: function () {
+      onGetCount('/api/lead/count/', 'leads', this.data)
     },
     getUnitTreeCount: function () {
       onGetAll('/api/unit/', 'unit', this.data)

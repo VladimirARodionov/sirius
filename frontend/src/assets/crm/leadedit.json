@@ -1,14 +1,26 @@
 {
-  "program": "zdravniza",
-  "resource": "client",
-  "api": "/api/contact/",
+  "program": "crm",
+  "resource": "lead",
+  "api": "/api/lead/",
   "type": "edit",
-  "title": "Edit contact",
+  "title": "Edit lead",
   "style": "max-width: 768px;",
   "fields": [
     {
+      "type": "select",
+      "name": "lead_edit_status",
+      "text": "Status",
+      "value": "status",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/leadstatus/",
+      "resource": "leadstatus",
+      "required": true,
+      "hide_edit": false
+    },
+    {
       "type": "text",
-      "name": "edit_text1",
+      "name": "lead_edit_first_name",
       "text": "First name",
       "value": "first_name",
       "maxlength": 80,
@@ -16,7 +28,7 @@
     },
     {
       "type": "text",
-      "name": "edit_text2",
+      "name": "lead_edit_last_name",
       "text": "Last name",
       "value": "last_name",
       "maxlength": 80,
@@ -24,7 +36,7 @@
     },
     {
       "type": "text",
-      "name": "edit_text3",
+      "name": "lead_edit_middle_name",
       "text": "Middle name",
       "value": "middle_name",
       "maxlength": 80,
@@ -32,7 +44,7 @@
     },
     {
       "type": "text",
-      "name": "edit_text4",
+      "name": "lead_edit_email",
       "text": "Email",
       "value": "email",
       "maxlength": 80,
@@ -40,20 +52,42 @@
     },
     {
       "type": "text",
-      "name": "edit_text5",
+      "name": "lead_edit_mobile",
       "text": "Mobile",
       "value": "mobile",
       "maxlength": 20,
       "required": true
     },
     {
+      "type": "select",
+      "name": "lead_edit_messenger",
+      "text": "Messenger",
+      "value": "messenger",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/messenger/",
+      "resource": "messenger",
+      "required": true
+    },
+    {
+      "type": "select",
+      "name": "lead_edit_consultant",
+      "text": "Consultant",
+      "value": "consultant",
+      "item_text": "full_name",
+      "item_value": "id",
+      "api": "/api/crmconsultant/",
+      "resource": "consultant",
+      "required": false
+    },
+    {
       "type": "comments",
-      "name": "edit_comment",
+      "name": "lead_edit_comment",
       "text": "Comment",
       "value": "comments",
       "comment": "comment_value",
-      "api": "/api/zdravnizacomment/",
-      "contact_api": "/api/contact/",
+      "api": "/api/crmcomment/",
+      "contact_api": "/api/lead/",
       "required": false
     },
     {
