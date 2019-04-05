@@ -11,6 +11,10 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
+python manage.py loaddata defaults.json
+python manage.py loaddata cities_light_country.json
+python manage.py loaddata cities_light_region.json
+python manage.py loaddata cities_light_city.json
 python manage.py runserver 127.0.0.1:8000
 
 cd frontend
@@ -32,6 +36,10 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
+python manage.py loaddata defaults.json
+python manage.py loaddata cities_light_country.json
+python manage.py loaddata cities_light_region.json
+python manage.py loaddata cities_light_city.json
 
 cd frontend
 npm install

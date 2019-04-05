@@ -170,6 +170,25 @@
   "Add appointment status": "Добавление статуса записи на консультацию",
   "Edit appointment status": "Изменение статуса записи на консультацию",
   "Delete appointmentstatus": "Удалить статус записи на консультацию",
-  "Number": "Номер"
-
+  "Number": "Номер",
+  "Raevsky School": "Школа Раевского",
+  "Messenger": "Мессенджер",
+  "You are successfully contacted Raevsky School": "Вы успешно создали контакт в Школе Раевского",
+  "Leads": "Лиды",
+  "List of leads": "Список лидов",
+  "Add lead": "Добавление лида",
+  "Edit lead": "Изменение лида",
+  "Delete lead": "Удалить лид",
+  "Lead statuses": "Статусы лидов",
+  "Add lead status": "Добавление статуса лидов",
+  "Edit lead status": "Изменение статуса лидов",
+  "Delete leadstatus": "Удалить статус лидов",
+  "Messengers": "Мессенджеры",
+  "Add messenger": "Добавление мессенджера",
+  "Edit messenger": "Изменение мессенджера",
+  "Delete messenger": "Удалить мессенджер",
+  "Consultants": "Консультанты",
+  "Add consultant": "Добавление консультанта",
+  "Edit consultant": "Изменение консультанта",
+  "Delete consultant": "Удалить консультанта"
 }

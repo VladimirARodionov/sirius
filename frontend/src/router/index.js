@@ -16,6 +16,7 @@ import ResourceAdd from '../views/ResourceAdd'
 import ResourceEdit from '../views/ResourceEdit'
 import ResourceDetail from '../views/ResourceDetail'
 import Appointment from '../views/Appointment'
+import Lead from '../views/Lead'
 
 Vue.use(Router)
 
@@ -122,6 +123,14 @@ let router = new Router({
       path: '/open/zdravniza/appointment',
       name: 'appointment',
       component: Appointment,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: '/open/crm/lead',
+      name: 'lead',
+      component: Lead,
       meta: {
         requiresAuth: false
       }

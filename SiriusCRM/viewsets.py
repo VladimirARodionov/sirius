@@ -15,15 +15,17 @@ from schedule.models import Event, Calendar, EventRelation
 from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
-    Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus, Comment, \
-    ContactComment
+    Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus, ZdravnizaComment, \
+    ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
     CompetencySerializer, CourseSerializer, PaymentSerializer, AddressSerializer, UserPositionSerializer, \
-    FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer, CommentSerializer, \
-    ContactCommentSerializer
-from SiriusCRM.views import AppointmentView
+    FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer, \
+    ZdravnizaCommentSerializer, \
+    ContactCommentSerializer, LeadSerializer, LeadCommentSerializer, CrmCommentSerializer, LeadStatusSerializer, \
+    MessengerSerializer
+from SiriusCRM.views import AppointmentView, LeadView
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -136,7 +138,7 @@ class ZdravnizaViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
         UserCategory.objects.create(user=serializer.save(), category=get_object_or_404(Category, pk=Category.ZDRAVNIZA))
 
 
-class ConsultantViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
+class ZdravnizaConsultantViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     allowed_get_roles = ['admin_role', 'user_role', 'user_list_role']
     allowed_post_roles = ['admin_role', 'edit_role']
@@ -153,6 +155,25 @@ class ConsultantViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
         user = serializer.save()
         UserCategory.objects.create(user=user, category=get_object_or_404(Category, pk=Category.ZDRAVNIZA))
         UserPosition.objects.create(user=user, position=get_object_or_404(Position, pk=Position.ZDRAVNIZA_CONSULTANT))
+
+
+class CrmConsultantViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = User.objects.filter(categories__in=[Category.EMPLOYEE], positions__in=[Position.CRM_CONSULTANT])
+    serializer_class = UserSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('first_name', 'last_name', 'email')
+    ordering_fields = ('id', 'first_name', 'last_name', 'email')
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        UserCategory.objects.create(user=user, category=get_object_or_404(Category, pk=Category.EMPLOYEE))
+        UserPosition.objects.create(user=user, position=get_object_or_404(Position, pk=Position.CRM_CONSULTANT))
 
 
 class UserDetailViewSet(HasRoleMixin, viewsets.ModelViewSet):
@@ -483,19 +504,19 @@ class AppointmentStatusViewSet(HasRoleMixin, viewsets.ModelViewSet):
     ordering_fields = ('id', 'number', 'name')
 
 
-class CommentViewSet(HasRoleMixin, viewsets.ModelViewSet):
+class ZdravnizaCommentViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     allowed_get_roles = ['admin_role', 'user_role']
     allowed_post_roles = ['admin_role', 'edit_role']
     allowed_put_roles = ['admin_role', 'edit_role']
     allowed_delete_roles = ['admin_role', 'edit_role']
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+    queryset = ZdravnizaComment.objects.all()
+    serializer_class = ZdravnizaCommentSerializer
 
     def perform_create(self, serializer):
         user = get_object_or_404(User, pk=self.request.user.id)
         contact = get_object_or_404(Contact, pk=self.request.data['contact'])
-        comment = Comment.objects.create(user=user, comment=serializer.data['comment'])
+        comment = ZdravnizaComment.objects.create(user=user, comment=serializer.data['comment'])
         ContactComment.objects.create(contact=contact, comment=comment)
 
 
@@ -507,4 +528,97 @@ class ContactCommentViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_delete_roles = ['admin_role','edit_role']
     serializer_class = ContactCommentSerializer
     queryset = ContactComment.objects.all()
+
+
+class LeadViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role', 'user_list_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = Lead.objects.all()
+    serializer_class = LeadSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status')
+    ordering_fields = ('id', 'time', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status')
+
+    def perform_create(self, serializer):
+        lead = serializer.save()
+        if lead.consultant:
+            consultant =  get_object_or_404(User, pk=lead.consultant)
+        else:
+            consultant = None
+        LeadView.send_notification(lead, consultant)
+
+    def perform_update(self, serializer):
+        user = get_object_or_404(User, pk=self.request.user.id)
+        prev_instance = Lead.objects.get(pk=self.request.data.get('id'))
+        instance = serializer.save()
+        if not prev_instance.status_id == instance.status_id:
+            comment = prev_instance.status.name + ' -> ' + instance.status.name
+            crmComment = CrmComment(user=user, comment=comment)
+            crmComment.save()
+            leadComment = LeadComment(lead=instance, comment=crmComment)
+            leadComment.save()
+        # TODO send notification
+
+
+class LeadCreatedViewSet(LeadViewSet):
+    queryset = Lead.objects.filter(status__in=[LeadStatus.CREATED])
+
+
+class LeadCommentViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role','edit_role']
+    serializer_class = LeadCommentSerializer
+    queryset = LeadComment.objects.all()
+
+
+class CrmCommentViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = CrmComment.objects.all()
+    serializer_class = CrmCommentSerializer
+
+    def perform_create(self, serializer):
+        user = get_object_or_404(User, pk=self.request.user.id)
+        lead = get_object_or_404(Lead, pk=self.request.data['contact'])
+        comment = CrmComment.objects.create(user=user, comment=serializer.data['comment'])
+        LeadComment.objects.create(lead=lead, comment=comment)
+
+
+class LeadStatusViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = LeadStatus.objects.all()
+    serializer_class = LeadStatusSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('number', 'name')
+    ordering_fields = ('id', 'number', 'name')
+
+
+class MessengerViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role','edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = Messenger.objects.all()
+    serializer_class = MessengerSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name',)
+    ordering_fields = ('id', 'name')
+
 

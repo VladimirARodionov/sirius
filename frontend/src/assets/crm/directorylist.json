@@ -13,6 +13,12 @@
     },
     {
       "type": "menulist",
+      "name": "menulist_consultant",
+      "text": "Consultants",
+      "value": "/crm/consultant/list"
+    },
+    {
+      "type": "menulist",
       "name": "menulist_position",
       "text": "Positions",
       "value": "/crm/position/list"
@@ -52,6 +58,18 @@
       "name": "menulist_country",
       "text": "Countries",
       "value": "/crm/country/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_leadstatus",
+      "text": "Lead statuses",
+      "value": "/crm/leadstatus/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_messenger",
+      "text": "Messengers",
+      "value": "/crm/messenger/list"
     }
   ]
 }

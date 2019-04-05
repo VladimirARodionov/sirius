@@ -22,6 +22,12 @@
         },
         {
             "type": "menuitem",
+            "name": "menuitem_leads",
+            "text": "Leads",
+            "value": "/crm/lead/list"
+        },
+        {
+            "type": "menuitem",
             "name": "menuitem_reports",
             "text": "Reports",
             "value": "/crm/report/list"

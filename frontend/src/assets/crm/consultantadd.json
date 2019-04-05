@@ -1,9 +1,9 @@
 {
-  "program": "zdravniza",
-  "resource": "client",
-  "api": "/api/contact/",
+  "program": "crm",
+  "resource": "consultant",
+  "api": "/api/crmconsultant/",
   "type": "add",
-  "title": "Add contact",
+  "title": "Add consultant",
   "style": "max-width: 768px;",
   "fields": [
     {
@@ -20,31 +20,15 @@
       "text": "Last name",
       "value": "last_name",
       "maxlength": 80,
-      "required": false
+      "required": true
     },
     {
       "type": "text",
       "name": "add_text3",
-      "text": "Middle name",
-      "value": "middle_name",
-      "maxlength": 80,
-      "required": false
-    },
-    {
-      "type": "text",
-      "name": "add_text4",
       "text": "Email",
       "value": "email",
       "maxlength": 80,
-      "required": true
-    },
-    {
-      "type": "text",
-      "name": "add_text5",
-      "text": "Mobile",
-      "value": "mobile",
-      "maxlength": 20,
-      "required": true
+      "required": false
     },
     {
       "type": "actions",
@@ -52,7 +36,7 @@
       [
         {
           "type": "button",
-          "name": "back_add_button",
+          "name": "back_button1",
           "text": "Close",
           "action": "back",
           "color": "",
@@ -63,7 +47,7 @@
         },
         {
           "type": "button",
-          "name": "save_add_button",
+          "name": "add_button1",
           "text": "Save",
           "action": "save",
           "color": "success",
