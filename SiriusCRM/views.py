@@ -469,16 +469,16 @@ class LeadView(APIView):
     def send_notification(lead, consultant):
         message = _(
             'New lead has been made.\nDate: %(date)s\nName: %(lead_name)s\nEmail: %(lead_email)s\nMobile: %(lead_mobile)s\nMessenger: %(messenger)s') % {
-                      'date': str(lead.time),
+                      'date': datetime.strftime(lead.time, '%Y-%m-%d %H:%M:%S'),
                       'lead_name': str(lead.first_name) + " " + str(lead.last_name),
                       'lead_email': str(lead.email),
                       'lead_mobile': str(lead.mobile),
-                      'messenger': str(lead.messenger)}
+                      'messenger': str(lead.messenger.name)}
         if consultant and consultant.telegram:
             send_telegram_notification.delay(consultant.get_telegram_username(), message)
         if consultant and consultant.email:
             send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru',
-                                          _('[CRM] New lead (%(date)s)') % {'date': str(lead.time)}, message)
+                                          _('[CRM] New lead (%(date)s)') % {'date': datetime.strftime(lead.time, '%Y-%m-%d %H:%M:%S')}, message)
         if lead.email:
             send_email_notification.delay(lead.email, 'no-reply@server.raevskyschool.ru',
                                       _('You are successfully contacted Raevsky School'), message)
