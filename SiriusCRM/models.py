@@ -290,7 +290,7 @@ class Lead(models.Model):
     id = models.AutoField(primary_key=True)
     time = models.DateTimeField(auto_now_add=True)
     email = models.EmailField(_('Email'), null=True, blank=True)
-    mobile = models.CharField(_('Mobile'), max_length=20, blank=False)
+    mobile = models.CharField(_('Mobile'), unique=True, max_length=20, blank=False)
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
     last_name = models.CharField(_('Last name'), max_length=80, blank=True)
     middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)

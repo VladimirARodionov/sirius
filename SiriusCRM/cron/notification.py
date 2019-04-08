@@ -24,12 +24,13 @@ class NotificationJob(CronJobBase):
                 self.send_notification(appointment)
 
     def send_notification(self, appointment):
-        message = _(
-            'You have an appointment.\nDate: %(date)s\nTime: %(time)s\nContact name: %(contact_name)s\nContact email: %(contact_email)s\nContact mobile: %(contact_mobile)s\nDiagnos: %(diagnos)s') % {
-                      'date': str(appointment.date), 'time': str(appointment.time),
-                      'contact_name': str(appointment.contact.first_name) + " " + str(appointment.contact.last_name),
-                      'contact_email': str(appointment.contact.email),
-                      'contact_mobile': str(appointment.contact.mobile), 'diagnos': str(appointment.comment)}
+        message = _('You have an appointment.') + '\n' + \
+        _('Date: %(date)s') % {'date': str(appointment.date)} + '\n' + \
+        _('Time: %(time)s') % {'time': str(appointment.time)} + '\n' + \
+        _('Contact name: %(contact_name)s') % {'contact_name': str(appointment.contact.first_name) + " " + str(appointment.contact.last_name)} + '\n' + \
+        _('Contact email: %(contact_email)s') % {'contact_email': str(appointment.contact.email)} + '\n' + \
+        _('Contact mobile: %(contact_mobile)s') % {'contact_mobile': str(appointment.contact.mobile)} + '\n' + \
+        _('Diagnos: %(diagnos)s') % {'diagnos': str(appointment.comment)}
         if appointment.consultant.telegram:
             send_telegram_notification.delay(appointment.consultant.get_telegram_username(), message)
         if appointment.consultant.email:
