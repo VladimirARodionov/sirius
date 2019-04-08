@@ -540,13 +540,13 @@ class LeadViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
     serializer_class = LeadSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status')
-    ordering_fields = ('id', 'time', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status')
+    search_fields = ('first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status', 'consultant')
+    ordering_fields = ('id', 'time', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status', 'consultant')
 
     def perform_create(self, serializer):
         lead = serializer.save()
         if lead.consultant:
-            consultant =  get_object_or_404(User, pk=lead.consultant)
+            consultant =  lead.consultant
         else:
             consultant = None
         LeadView.send_notification(lead, consultant)

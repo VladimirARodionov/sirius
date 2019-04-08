@@ -337,12 +337,13 @@ class AppointmentView(APIView):
 
     @staticmethod
     def send_notification(appointment, consultant, contact):
-        message = _(
-            'New appointment has been made.\nDate: %(date)s\nTime: %(time)s\nContact name: %(contact_name)s\nContact email: %(contact_email)s\nContact mobile: %(contact_mobile)s\nDiagnos: %(diagnos)s') % {
-                      'date': str(appointment.date), 'time': str(appointment.time),
-                      'contact_name': str(appointment.contact.first_name) + " " + str(appointment.contact.last_name),
-                      'contact_email': str(appointment.contact.email),
-                      'contact_mobile': str(appointment.contact.mobile), 'diagnos': str(appointment.comment)}
+        message = _('New appointment has been made.') + '\n' + \
+        _('Date: %(date)s') % {'date': str(appointment.date)} + '\n' + \
+        _('Time: %(time)s') % {'time': str(appointment.time)} + '\n' + \
+        _('Contact name: %(contact_name)s') % {'contact_name': str(appointment.contact.first_name) + " " + str(appointment.contact.last_name)} + '\n' + \
+        _('Contact email: %(contact_email)s') % {'contact_email': str(appointment.contact.email)} + '\n' + \
+        _('Contact mobile: %(contact_mobile)s') % {'contact_mobile': str(appointment.contact.mobile)} + '\n' + \
+        _('Diagnos: %(diagnos)s') % {'diagnos': str(appointment.comment)}
         if consultant.telegram:
             send_telegram_notification.delay(consultant.get_telegram_username(), message)
         if consultant.email:
@@ -468,13 +469,12 @@ class LeadView(APIView):
 
     @staticmethod
     def send_notification(lead, consultant):
-        message = _(
-            'New lead has been made.\nDate: %(date)s\nName: %(lead_name)s\nEmail: %(lead_email)s\nMobile: %(lead_mobile)s\nMessenger: %(messenger)s') % {
-                      'date': timezone.localtime(lead.time).strftime('%Y-%m-%d %H:%M:%S'),
-                      'lead_name': str(lead.first_name) + " " + str(lead.last_name),
-                      'lead_email': str(lead.email),
-                      'lead_mobile': str(lead.mobile),
-                      'messenger': str(lead.messenger.name)}
+        message = _('New lead has been made.') + '\n' + \
+                  _('Date: %(date)s') % {'date': timezone.localtime(lead.time).strftime('%Y-%m-%d %H:%M:%S')} + '\n' + \
+                  _('Name: %(lead_name)s') % {'lead_name': str(lead.first_name) + " " + str(lead.last_name)} + '\n' + \
+                  _('Email: %(lead_email)s') % {'lead_email': str(lead.email)} + '\n' + \
+                  _('Mobile: %(lead_mobile)s') % {'lead_mobile': str(lead.mobile)} + '\n' + \
+                  _('Messenger: %(messenger)s') % {'messenger': str(lead.messenger.name)}
         if consultant and consultant.telegram:
             send_telegram_notification.delay(consultant.get_telegram_username(), message)
         if consultant and consultant.email:

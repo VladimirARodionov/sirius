@@ -7,6 +7,17 @@
   "style": "max-width: 768px;",
   "fields": [
     {
+      "type": "select",
+      "name": "lead_add_status",
+      "text": "Status",
+      "value": "status",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/leadstatus/",
+      "resource": "leadstatus",
+      "required": true
+    },
+    {
       "type": "text",
       "name": "lead_add_first_name",
       "text": "First name",
@@ -45,6 +56,28 @@
       "value": "mobile",
       "maxlength": 20,
       "required": true
+    },
+    {
+      "type": "select",
+      "name": "lead_add_messenger",
+      "text": "Messenger",
+      "value": "messenger",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/messenger/",
+      "resource": "messenger",
+      "required": true
+    },
+    {
+      "type": "select",
+      "name": "lead_add_consultant",
+      "text": "Consultant",
+      "value": "consultant",
+      "item_text": "full_name",
+      "item_value": "id",
+      "api": "/api/crmconsultant/",
+      "resource": "consultant",
+      "required": false
     },
     {
       "type": "actions",

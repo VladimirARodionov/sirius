@@ -15,8 +15,7 @@
       "item_value": "id",
       "api": "/api/leadstatus/",
       "resource": "leadstatus",
-      "required": true,
-      "hide_edit": false
+      "required": true
     },
     {
       "type": "text",
@@ -48,7 +47,7 @@
       "text": "Email",
       "value": "email",
       "maxlength": 80,
-      "required": true
+      "required": false
     },
     {
       "type": "text",

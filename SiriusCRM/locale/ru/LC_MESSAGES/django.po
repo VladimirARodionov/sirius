@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-05 14:15+0300\n"
+"POT-Creation-Date: 2019-04-08 10:18+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,34 +20,43 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\cron\notification.py:28
-#, fuzzy, python-format
-#| msgid ""
-#| "New appointment has been made.\n"
-#| "Date: %(date)s\n"
-#| "Time: %(time)s\n"
-#| "Contact name: %(contact_name)s\n"
-#| "Contact email: %(contact_email)s\n"
-#| "Contact mobile: %(contact_mobile)s\n"
-#| "Diagnos: %(diagnos)s"
-msgid ""
-"You have an appointment.\n"
-"Date: %(date)s\n"
-"Time: %(time)s\n"
-"Contact name: %(contact_name)s\n"
-"Contact email: %(contact_email)s\n"
-"Contact mobile: %(contact_mobile)s\n"
-"Diagnos: %(diagnos)s"
-msgstr ""
-"У вас есть запись на бесплатную консультацию в Здравницу.\n"
-"Дата: %(date)s\n"
-"Время: %(time)s\n"
-"Имя: %(contact_name)s\n"
-"Email: %(contact_email)s\n"
-"Телефон: %(contact_mobile)s\n"
-"Диагноз: %(diagnos)s"
+#: .\cron\notification.py:27
+#, fuzzy
+#| msgid "New Zdravniza appointment"
+msgid "You have an appointment."
+msgstr "У вас есть запись на бесплатную консультацию в Здравницу."
 
-#: .\cron\notification.py:37 .\cron\notification.py:39
+#: .\cron\notification.py:28 .\views.py:341 .\views.py:473
+#, python-format
+msgid "Date: %(date)s"
+msgstr "Дата: %(date)s"
+
+#: .\cron\notification.py:29 .\views.py:342
+#, python-format
+msgid "Time: %(time)s"
+msgstr "Время: %(time)s"
+
+#: .\cron\notification.py:30 .\views.py:343
+#, python-format
+msgid "Contact name: %(contact_name)s"
+msgstr "Имя: %(contact_name)s"
+
+#: .\cron\notification.py:31 .\views.py:344
+#, python-format
+msgid "Contact email: %(contact_email)s"
+msgstr "Email: %(contact_email)s"
+
+#: .\cron\notification.py:32 .\views.py:345
+#, python-format
+msgid "Contact mobile: %(contact_mobile)s"
+msgstr "Телефон: %(contact_mobile)s"
+
+#: .\cron\notification.py:33 .\views.py:346
+#, python-format
+msgid "Diagnos: %(diagnos)s"
+msgstr "Диагноз: %(diagnos)s"
+
+#: .\cron\notification.py:38 .\cron\notification.py:40
 #, fuzzy, python-format
 #| msgid "New Zdravniza appointment"
 msgid "[Zdravniza] appointment notification (%(date)s %(time)s)"
@@ -107,7 +116,7 @@ msgstr "Сотовый"
 
 #: .\models.py:338
 msgid "Comment"
-msgstr ""
+msgstr "Комментарий"
 
 #: .\schedule\periods.py:42
 #, python-format
@@ -119,89 +128,137 @@ msgstr ""
 msgid "HalfHour: %(start)s-%(end)s"
 msgstr ""
 
-#: .\views.py:169
+#: .\views.py:170
 msgid "Password reset"
 msgstr "Сброс пароля"
 
-#: .\views.py:206
+#: .\views.py:207
 #, fuzzy
 #| msgid "New password"
 msgid "Enter new password"
 msgstr "Новый пароль"
 
-#: .\views.py:274
+#: .\views.py:275
 msgid "Password reset unsuccessful"
 msgstr "Не удалось сбросить пароль"
 
 #: .\views.py:340
-#, python-format
-msgid ""
-"New appointment has been made.\n"
-"Date: %(date)s\n"
-"Time: %(time)s\n"
-"Contact name: %(contact_name)s\n"
-"Contact email: %(contact_email)s\n"
-"Contact mobile: %(contact_mobile)s\n"
-"Diagnos: %(diagnos)s"
-msgstr ""
-"Новая запись на бесплатную консультацию в Здравницу.\n"
-"Дата: %(date)s\n"
-"Время: %(time)s\n"
-"Имя: %(contact_name)s\n"
-"Email: %(contact_email)s\n"
-"Телефон: %(contact_mobile)s\n"
-"Диагноз: %(diagnos)s"
+msgid "New appointment has been made."
+msgstr "Новая запись на бесплатную консультацию в Здравницу."
 
-#: .\views.py:349
+#: .\views.py:351
 #, fuzzy, python-format
 #| msgid "New Zdravniza appointment"
 msgid "[Zdravniza] New appointment (%(date)s %(time)s)"
 msgstr "[Здравница] Запись на бесплатную консультацию (%(date)s %(time)s)"
 
-#: .\views.py:351
+#: .\views.py:353
 msgid "You are successfully made new Zdravniza appointment"
 msgstr "Вы успешно записались на бесплатную консультацию в Здравницу"
 
-#: .\views.py:379
+#: .\views.py:381
 msgid "No free consultants at this time"
 msgstr "Нет свободных консультантов на это время"
 
-#: .\views.py:471
-#, fuzzy, python-format
-#| msgid ""
-#| "New appointment has been made.\n"
-#| "Date: %(date)s\n"
-#| "Time: %(time)s\n"
-#| "Contact name: %(contact_name)s\n"
-#| "Contact email: %(contact_email)s\n"
-#| "Contact mobile: %(contact_mobile)s\n"
-#| "Diagnos: %(diagnos)s"
-msgid ""
-"New lead has been made.\n"
-"Date: %(date)s\n"
-"Name: %(lead_name)s\n"
-"Email: %(lead_email)s\n"
-"Mobile: %(lead_mobile)s\n"
-"Messenger: %(messenger)s"
-msgstr ""
-"Новая запись в Школу Раевского.\n"
-"Дата: %(date)s\n"
-"Имя: %(contact_name)s\n"
-"Email: %(contact_email)s\n"
-"Телефон: %(contact_mobile)s\n"
-"Мессенджер: %(messenger)s"
+#: .\views.py:472
+msgid "New lead has been made."
+msgstr "Новая запись в Школу Раевского."
 
-#: .\views.py:481
+#: .\views.py:474
+#, python-format
+msgid "Name: %(lead_name)s"
+msgstr "Имя: %(lead_name)s"
+
+#: .\views.py:475
+#, python-format
+msgid "Email: %(lead_email)s"
+msgstr "Email: %(lead_email)s"
+
+#: .\views.py:476
+#, python-format
+msgid "Mobile: %(lead_mobile)s"
+msgstr "Телефон: %(lead_mobile)s"
+
+#: .\views.py:477
+#, python-format
+msgid "Messenger: %(messenger)s"
+msgstr "Мессенджер: %(messenger)s"
+
+#: .\views.py:482
 #, python-format
 msgid "[CRM] New lead (%(date)s)"
 msgstr "[CRM] Новый лид (%(date)s)"
 
-#: .\views.py:484
+#: .\views.py:485
 msgid "You are successfully contacted Raevsky School"
 msgstr "Вы успешно оставили заявку в Школу Раевского"
 
-#~ msgid "New Zdravniza appointment"
-#~ msgstr "Новая запись на бесплатную консультацию в Здравницу"
+#, fuzzy
+#~| msgid ""
+#~| "New appointment has been made.\n"
+#~| "Date: %(date)s\n"
+#~| "Time: %(time)s\n"
+#~| "Contact name: %(contact_name)s\n"
+#~| "Contact email: %(contact_email)s\n"
+#~| "Contact mobile: %(contact_mobile)s\n"
+#~| "Diagnos: %(diagnos)s"
+#~ msgid ""
+#~ "You have an appointment.\n"
+#~ "Date: %(date)s\n"
+#~ "Time: %(time)s\n"
+#~ "Contact name: %(contact_name)s\n"
+#~ "Contact email: %(contact_email)s\n"
+#~ "Contact mobile: %(contact_mobile)s\n"
+#~ "Diagnos: %(diagnos)s"
+#~ msgstr ""
+#~ "У вас есть запись на бесплатную консультацию в Здравницу.\n"
+#~ "Дата: %(date)s\n"
+#~ "Время: %(time)s\n"
+#~ "Имя: %(contact_name)s\n"
+#~ "Email: %(contact_email)s\n"
+#~ "Телефон: %(contact_mobile)s\n"
+#~ "Диагноз: %(diagnos)s"
+
+#~ msgid ""
+#~ "New appointment has been made.\n"
+#~ "Date: %(date)s\n"
+#~ "Time: %(time)s\n"
+#~ "Contact name: %(contact_name)s\n"
+#~ "Contact email: %(contact_email)s\n"
+#~ "Contact mobile: %(contact_mobile)s\n"
+#~ "Diagnos: %(diagnos)s"
+#~ msgstr ""
+#~ "Новая запись на бесплатную консультацию в Здравницу.\n"
+#~ "Дата: %(date)s\n"
+#~ "Время: %(time)s\n"
+#~ "Имя: %(contact_name)s\n"
+#~ "Email: %(contact_email)s\n"
+#~ "Телефон: %(contact_mobile)s\n"
+#~ "Диагноз: %(diagnos)s"
+
+#, fuzzy
+#~| msgid ""
+#~| "New appointment has been made.\n"
+#~| "Date: %(date)s\n"
+#~| "Time: %(time)s\n"
+#~| "Contact name: %(contact_name)s\n"
+#~| "Contact email: %(contact_email)s\n"
+#~| "Contact mobile: %(contact_mobile)s\n"
+#~| "Diagnos: %(diagnos)s"
+#~ msgid ""
+#~ "New lead has been made.\n"
+#~ "Date: %(date)s\n"
+#~ "Name: %(lead_name)s\n"
+#~ "Email: %(lead_email)s\n"
+#~ "Mobile: %(lead_mobile)s\n"
+#~ "Messenger: %(messenger)s"
+#~ msgstr ""
+#~ "Новая запись в Школу Раевского.\n"
+#~ "Дата: %(date)s\n"
+#~ "Имя: %(contact_name)s\n"
+#~ "Email: %(contact_email)s\n"
+#~ "Телефон: %(contact_mobile)s\n"
+#~ "Мессенджер: %(messenger)s"
 
 #~ msgid "Russian"
 #~ msgstr "Русский"
