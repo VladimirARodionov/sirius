@@ -16,7 +16,7 @@ from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus, ZdravnizaComment, \
-    ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger
+    ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, LeadSource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
@@ -24,7 +24,7 @@ from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, Organiza
     FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer, \
     ZdravnizaCommentSerializer, \
     ContactCommentSerializer, LeadSerializer, LeadCommentSerializer, CrmCommentSerializer, LeadStatusSerializer, \
-    MessengerSerializer
+    MessengerSerializer, LeadSourceSerializer
 from SiriusCRM.views import AppointmentView, LeadView
 
 
@@ -540,8 +540,8 @@ class LeadViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
     serializer_class = LeadSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status', 'consultant')
-    ordering_fields = ('id', 'time', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status', 'consultant')
+    search_fields = ('first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status', 'source', 'consultant')
+    ordering_fields = ('id', 'time', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status', 'source', 'consultant')
 
     def perform_create(self, serializer):
         lead = serializer.save()
@@ -606,6 +606,20 @@ class LeadStatusViewSet(HasRoleMixin, viewsets.ModelViewSet):
     pagination_class = StandardResultsSetPagination
     search_fields = ('number', 'name')
     ordering_fields = ('id', 'number', 'name')
+
+
+class LeadSourceViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = LeadSource.objects.all()
+    serializer_class = LeadSourceSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name')
+    ordering_fields = ('id', 'name')
 
 
 class MessengerViewSet(HasRoleMixin, viewsets.ModelViewSet):

@@ -192,5 +192,10 @@
   "Edit consultant": "Изменение консультанта",
   "Delete consultant": "Удалить консультанта",
   "Total consultants": "Всего консультантов",
-  "Total leads": "Всего лидов"
+  "Total leads": "Всего лидов",
+  "Source": "Источник",
+  "Lead sources": "Источники лидов",
+  "Add lead source": "Добавление источника лидов",
+  "Edit lead source": "Изменение источника лидов",
+  "Delete leadsource": "Удалить источник лидов"
 }

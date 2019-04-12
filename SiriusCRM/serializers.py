@@ -314,15 +314,23 @@ class LeadStatusSerializer(ModelSerializer):
         fields = ('id', 'number', 'name')
 
 
+class LeadSourceSerializer(ModelSerializer):
+
+    class Meta:
+        model = LeadStatus
+        fields = ('id', 'name')
+
+
 class LeadSerializer(ModelSerializer):
     comment_value = CrmCommentSerializer(source='comments', read_only=True, many=True)
     consultant_value = UserSerializer(source='consultant', read_only=True)
     status_value = LeadStatusSerializer(source='status', read_only=True)
+    source_value = LeadSourceSerializer(source='source', read_only=True)
 
     class Meta:
         model = Lead
         fields = ('id', 'time', 'first_name', 'last_name','middle_name', 'email', 'mobile',
-                  'messenger', 'consultant', 'status', 'comments', 'comment_value', 'consultant_value', 'status_value')
+                  'messenger', 'consultant', 'status', 'source', 'comments', 'comment_value', 'consultant_value', 'status_value', 'source_value')
 
 
 class LeadCommentSerializer(ModelSerializer):
