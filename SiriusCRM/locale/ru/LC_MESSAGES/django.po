@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-08 10:18+0300\n"
+"POT-Creation-Date: 2019-04-12 16:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,59 +62,59 @@ msgstr "Диагноз: %(diagnos)s"
 msgid "[Zdravniza] appointment notification (%(date)s %(time)s)"
 msgstr "[Здравница] Запись на бесплатную консультацию (%(date)s %(time)s)"
 
-#: .\models.py:201 .\models.py:292 .\models.py:313 .\resources.py:12
+#: .\models.py:202 .\models.py:293 .\models.py:316 .\resources.py:12
 msgid "Email"
 msgstr "Email"
 
-#: .\models.py:202 .\models.py:294 .\models.py:315 .\resources.py:10
+#: .\models.py:203 .\models.py:295 .\models.py:318 .\resources.py:10
 msgid "First name"
 msgstr "Имя"
 
-#: .\models.py:203 .\models.py:295 .\models.py:316 .\resources.py:9
+#: .\models.py:204 .\models.py:296 .\models.py:319 .\resources.py:9
 msgid "Last name"
 msgstr "Фамилия"
 
-#: .\models.py:204 .\models.py:296 .\models.py:317 .\resources.py:11
+#: .\models.py:205 .\models.py:297 .\models.py:320 .\resources.py:11
 msgid "Middle name"
 msgstr "Отчество"
 
-#: .\models.py:205
+#: .\models.py:206
 msgid "Date joined"
 msgstr ""
 
-#: .\models.py:206
+#: .\models.py:207
 msgid "Date left"
 msgstr ""
 
-#: .\models.py:207
+#: .\models.py:208
 msgid "Active"
 msgstr ""
 
-#: .\models.py:211
+#: .\models.py:212
 msgid "Staff status"
 msgstr ""
 
-#: .\models.py:213
+#: .\models.py:214
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: .\models.py:215 .\resources.py:14
+#: .\models.py:216 .\resources.py:14
 msgid "Birthday"
 msgstr "День рождения"
 
-#: .\models.py:239
+#: .\models.py:240
 msgid "user"
 msgstr ""
 
-#: .\models.py:240
+#: .\models.py:241
 msgid "users"
 msgstr ""
 
-#: .\models.py:293 .\models.py:314 .\resources.py:13
+#: .\models.py:294 .\models.py:317 .\resources.py:13
 msgid "Mobile"
 msgstr "Сотовый"
 
-#: .\models.py:338
+#: .\models.py:341
 msgid "Comment"
 msgstr "Комментарий"
 
@@ -184,12 +184,17 @@ msgstr "Телефон: %(lead_mobile)s"
 msgid "Messenger: %(messenger)s"
 msgstr "Мессенджер: %(messenger)s"
 
-#: .\views.py:482
+#: .\views.py:478
+#, python-format
+msgid "Source: %(source)s"
+msgstr "Источник: %(source)s"
+
+#: .\views.py:484
 #, python-format
 msgid "[CRM] New lead (%(date)s)"
 msgstr "[CRM] Новый лид (%(date)s)"
 
-#: .\views.py:485
+#: .\views.py:487
 msgid "You are successfully contacted Raevsky School"
 msgstr "Вы успешно оставили заявку в Школу Раевского"
 

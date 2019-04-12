@@ -80,6 +80,17 @@
       "required": false
     },
     {
+      "type": "select",
+      "name": "lead_add_source",
+      "text": "Source",
+      "value": "source",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/leadsource/",
+      "resource": "leadsource",
+      "required": true
+    },
+    {
       "type": "actions",
       "fields":
       [

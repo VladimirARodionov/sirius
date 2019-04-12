@@ -67,6 +67,12 @@
     },
     {
       "type": "menulist",
+      "name": "menulist_leadsource",
+      "text": "Lead sources",
+      "value": "/crm/leadsource/list"
+    },
+    {
+      "type": "menulist",
       "name": "menulist_messenger",
       "text": "Messengers",
       "value": "/crm/messenger/list"

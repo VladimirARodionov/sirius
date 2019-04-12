@@ -176,6 +176,7 @@ export default {
     addLead: function () {
       let self = this
       this.data.currentObject.status = 1
+      this.data.currentObject.source = 1
       onPostSingle(this.json.api, this.data, null).then(resp => {
         self.successMessage = self.json.successMessage
       })

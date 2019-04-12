@@ -474,7 +474,9 @@ class LeadView(APIView):
                   _('Name: %(lead_name)s') % {'lead_name': str(lead.first_name) + " " + str(lead.last_name)} + '\n' + \
                   _('Email: %(lead_email)s') % {'lead_email': str(lead.email)} + '\n' + \
                   _('Mobile: %(lead_mobile)s') % {'lead_mobile': str(lead.mobile)} + '\n' + \
-                  _('Messenger: %(messenger)s') % {'messenger': str(lead.messenger.name)}
+                  _('Messenger: %(messenger)s') % {'messenger': str(lead.messenger.name)} + '\n' + \
+                  _('Source: %(source)s') % {'source': str(lead.source.name)}
+
         if consultant and consultant.telegram:
             send_telegram_notification.delay(consultant.get_telegram_username(), message)
         if consultant and consultant.email:

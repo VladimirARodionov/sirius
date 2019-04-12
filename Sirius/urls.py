@@ -52,6 +52,7 @@ router.register('api/zdravnizacomment', viewsets.ZdravnizaCommentViewSet, basena
 router.register('api/crmcomment', viewsets.CrmCommentViewSet, basename='crmcomment')
 router.register('api/messenger', viewsets.MessengerViewSet, basename='messenger')
 router.register('api/leadstatus', viewsets.LeadStatusViewSet, basename='leadstatus')
+router.register('api/leadsource', viewsets.LeadSourceViewSet, basename='leadsource')
 router.register('api/lead', viewsets.LeadViewSet, basename='lead')
 router.register('api/leadcreated', viewsets.LeadCreatedViewSet, basename='leadcreated')
 

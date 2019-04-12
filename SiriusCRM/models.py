@@ -184,15 +184,16 @@ class AppointmentStatus(models.Model):
 # Таблица статусов лидов в CRM
 class LeadStatus(models.Model):
     CREATED = 1
-    CONTACTED = 2
-    WAITING = 3
-    ON_BASE_COURSE = 4
-    BASE_COURSE_PASSED = 5
-    DISCIPLE = 6
-    DECLINED = 7
+    DISCIPLE = 10
 
     id = models.AutoField(primary_key=True)
     number = models.IntegerField(unique=True, null=False, blank=False)
+    name = models.CharField(max_length=80, unique=True, blank=False)
+
+
+# Таблица источников лидов в CRM
+class LeadSource(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=80, unique=True, blank=False)
 
 
@@ -298,6 +299,8 @@ class Lead(models.Model):
     consultant = models.ForeignKey(User, null=True, on_delete=models.PROTECT, related_name="lead_consultant")
     status = models.ForeignKey(LeadStatus, null=False,
                                on_delete=models.PROTECT, related_name="lead_status")
+    source = models.ForeignKey(LeadSource, null=False,
+                               on_delete=models.PROTECT, related_name="lead_source")
     comments = models.ManyToManyField(CrmComment, through='LeadComment')
 
     class Meta:
