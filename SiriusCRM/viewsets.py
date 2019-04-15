@@ -568,6 +568,32 @@ class LeadCreatedViewSet(LeadViewSet):
     queryset = Lead.objects.filter(status__in=[LeadStatus.CREATED])
 
 
+class InfoLeadCreatedViewSet(LeadViewSet):
+    pagination_class = None
+
+    def get_queryset(self):
+        user = get_object_or_404(User, pk=self.request.user.id)
+        if user.positions in [Position.CRM_ADMIN]:
+            return Lead.objects.filter(status__in=[LeadStatus.CREATED])
+        elif user.positions in [Position.CRM_CONSULTANT]:
+            return Lead.objects.filter(status__in=[LeadStatus.CREATED], consultant=user)
+        else:
+            return None
+
+
+class InfoLeadActionViewSet(LeadViewSet):
+    pagination_class = None
+    
+    def get_queryset(self):
+        user = get_object_or_404(User, pk=self.request.user.id)
+        if user.positions in [Position.CRM_ADMIN]:
+            return Lead.objects.filter(action_date=datetime.today().date())
+        elif user.positions in [Position.CRM_CONSULTANT]:
+            return Lead.objects.filter(action_date=datetime.today().date(), consultant=user).exclude(action=null).exclude(action='')
+        else:
+            return None
+
+
 class LeadCommentViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     allowed_get_roles = ['admin_role', 'user_role']

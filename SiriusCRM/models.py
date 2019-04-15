@@ -80,6 +80,7 @@ class Position(models.Model):
     ZDRAVNIZA_HEALER = 2
     ZDRAVNIZA_ADMIN = 3
     CRM_CONSULTANT = 4
+    CRM_ADMIN = 5
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=80, unique=True, blank=False)

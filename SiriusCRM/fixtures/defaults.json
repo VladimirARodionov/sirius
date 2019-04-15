@@ -49,6 +49,13 @@
     }
   },
   {
+    "model": "SiriusCRM.Position",
+    "pk": 5,
+    "fields": {
+      "name": "Админ CRM"
+    }
+  },
+  {
     "model": "SiriusCRM.AppointmentStatus",
     "pk": 1,
     "fields": {
