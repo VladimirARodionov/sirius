@@ -302,6 +302,9 @@ class Lead(models.Model):
     source = models.ForeignKey(LeadSource, null=False,
                                on_delete=models.PROTECT, related_name="lead_source")
     comments = models.ManyToManyField(CrmComment, through='LeadComment')
+    action_date = models.DateField(null=True, blank=True)
+    action_time = models.TimeField(null=True, blank=True)
+    action = models.CharField(max_length=160, null=True, blank=True)
 
     class Meta:
         ordering = ['id']

@@ -81,6 +81,7 @@ export default {
     this.$bus.on('saveLead', this.onSaveLead)
     this.$bus.on('deleteObject', this.onDelete)
     this.$bus.on('selectObject', this.onSelect)
+    this.$bus.on('clearAction', this.onClearAction)
     this.$bus.on('error', this.onError)
   },
   mounted () {
@@ -95,6 +96,7 @@ export default {
     this.$bus.off('saveLead', this.onSaveLead)
     this.$bus.off('deleteObject', this.onDelete)
     this.$bus.off('selectObject', this.onSelect)
+    this.$bus.off('clearAction', this.onClearAction)
     this.$bus.off('error', this.onError)
   },
   methods: {
@@ -134,6 +136,10 @@ export default {
       } else {
         this.data.currentObject = {}
       }
+    },
+    onClearAction () {
+      this.data.currentObject.action_date = null
+      this.data.currentObject.action_time = null
     },
     onError (data) {
       this.data.errorMessage = data

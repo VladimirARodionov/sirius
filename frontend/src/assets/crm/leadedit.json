@@ -91,6 +91,40 @@
       "required": true
     },
     {
+      "type": "text",
+      "name": "lead_edit_action",
+      "text": "Action",
+      "value": "action",
+      "maxlength": 160,
+      "required": false
+    },
+    {
+      "type": "group",
+      "fields": [
+        {
+          "type": "appointmentdate",
+          "name": "lead_edit_action_date",
+          "text": "Action date",
+          "value": "action_date",
+          "required": false
+        },
+        {
+          "type": "text",
+          "name": "lead_edit_action_time",
+          "text": "Action time",
+          "value": "action_time",
+          "required": false
+        },
+        {
+          "type": "button",
+          "name": "clear_edit_action",
+          "text": "Clear",
+          "action": "clear_action",
+          "color": ""
+        }
+      ]
+    },
+    {
       "type": "comments",
       "name": "lead_edit_comment",
       "text": "Comment",
