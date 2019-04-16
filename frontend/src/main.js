@@ -30,8 +30,6 @@ if (token) {
   Vue.prototype.$http.defaults.headers.common['Authorization'] = 'JWT ' + token
   const roles = localStorage.getItem('roles')
   Vue.prototype.$vrm.setRoles(roles)
-  const permissions = localStorage.getItem('permissions')
-  Vue.prototype.$vrm.setPermissions(permissions)
 }
 
 Vue.config.productionTip = false

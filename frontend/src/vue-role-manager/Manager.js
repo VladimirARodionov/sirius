@@ -32,13 +32,6 @@ export default class Manager {
     return this.vm.userRoles
   }
 
-  getPermissions () {
-    if (!this.vm.userPermissions) {
-      throw new Error('Attempt to access user permissions before being set')
-    }
-    return this.vm.userPermissions
-  }
-
   setRoles (roles) {
     this.vm.userRoles = roles
     if (this.to && this.router) {
@@ -52,10 +45,6 @@ export default class Manager {
         })
       }
     }
-  }
-
-  setPermissions (permissions) {
-    this.vm.userPermissions = [permissions]
   }
 
   hasAccess (_configs) {
@@ -89,8 +78,6 @@ export default class Manager {
       console.log(
         '[VRM] roles:',
         this.vm.userRoles,
-        'permissions:',
-        this.vm.userPermissions,
         'route:',
         to,
         `=> ${!access ? 'DENY, redirect to  "' + redirect + '"' : 'ALLOW'} `
@@ -258,15 +245,6 @@ export default class Manager {
     }
 
     return Array.isArray(roles) ? roles : [roles]
-  }
-
-  _wrapUserPermissions () {
-    const permissions = this.vm.userPermissions
-    if (!permissions) {
-      return []
-    }
-
-    return Array.isArray(permissions) ? permissions : [permissions]
   }
 
   _routesFilter (routes, isFilter) {
