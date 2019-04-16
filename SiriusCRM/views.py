@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 
 import pytz
-from casl_django.casl.casl import django_permissions_to_casl_rules
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth import password_validation
@@ -53,7 +52,7 @@ def jwt_response_payload_handler(token, user=None, request=None):
             perms = Permission.objects.all()
         else:
             perms = user.user_permissions.all() | Permission.objects.filter(group__user=user)
-        permissions = django_permissions_to_casl_rules(perms)
+        permissions = perms
     return {
         'token': token,
         'roles': user_roles,
