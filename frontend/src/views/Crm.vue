@@ -1,6 +1,10 @@
 <template>
   <Menu program="crm">
-    <v-container grid-list-xl fluid>
+    <v-container grid-list-xl fluid p-0>
+      <v-layout row wrap>
+          <HotList :field="data.created_hotlist"/>
+          <HotList :field="data.action_hotlist"/>
+      </v-layout>
       <v-layout row wrap>
           <InfoBox icon="people_outline" :title="$t('Total employees')" :value="data.employees"/>
           <InfoBox icon="chat" :title="$t('Total disciples')" :value="data.disciples"/>
@@ -20,6 +24,7 @@
 import Menu from '../layouts/Menu'
 import InfoBox from '../components/InfoBox'
 import TreeInfo from '../components/TreeInfo'
+import HotList from '../components/HotList'
 import { onGetCount, onGetAll } from '../api/requests'
 
 export default {
@@ -34,7 +39,33 @@ export default {
         leads: 0,
         faculty: [],
         unit: [],
-        loading: false
+        loading: false,
+        created_hotlist: {
+          program: 'crm',
+          resource: 'lead',
+          api: '/api/info/lead/created/',
+          icon: 'help_outline',
+          title: 'Leads with status Created',
+          show_id: true,
+          show_name: true,
+          show_date: false,
+          show_time: false,
+          show_action: false,
+          show_consultant: true
+        },
+        action_hotlist: {
+          program: 'crm',
+          resource: 'lead',
+          api: '/api/info/lead/action/',
+          icon: 'done',
+          title: 'Leads with action',
+          show_id: true,
+          show_name: true,
+          show_date: true,
+          show_time: true,
+          show_action: true,
+          show_consultant: true
+        }
       }
     }
   },
@@ -73,7 +104,8 @@ export default {
   components: {
     Menu,
     InfoBox,
-    TreeInfo
+    TreeInfo,
+    HotList
   }
 
 }

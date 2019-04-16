@@ -3,6 +3,7 @@ from datetime import datetime
 
 from cities_light.models import Country, Region, City
 from django.core.paginator import InvalidPage
+from django.db.models import Q
 from django.utils import six
 from rest_framework import viewsets, filters
 from rest_framework.exceptions import NotFound
@@ -573,10 +574,12 @@ class InfoLeadCreatedViewSet(LeadViewSet):
 
     def get_queryset(self):
         user = get_object_or_404(User, pk=self.request.user.id)
-        if user.positions in [Position.CRM_ADMIN]:
+        admin = get_object_or_404(Position, pk=Position.CRM_ADMIN)
+        consultant = get_object_or_404(Position, pk=Position.CRM_CONSULTANT)
+        if admin in user.positions.all():
             return Lead.objects.filter(status__in=[LeadStatus.CREATED])
-        elif user.positions in [Position.CRM_CONSULTANT]:
-            return Lead.objects.filter(status__in=[LeadStatus.CREATED], consultant=user)
+        elif consultant in user.positions.all():
+            return Lead.objects.filter(status__in=[LeadStatus.CREATED], consultant_id=user.id)
         else:
             return None
 
@@ -586,10 +589,12 @@ class InfoLeadActionViewSet(LeadViewSet):
     
     def get_queryset(self):
         user = get_object_or_404(User, pk=self.request.user.id)
-        if user.positions in [Position.CRM_ADMIN]:
-            return Lead.objects.filter(action_date=datetime.today().date())
-        elif user.positions in [Position.CRM_CONSULTANT]:
-            return Lead.objects.filter(action_date=datetime.today().date(), consultant=user).exclude(action=null).exclude(action='')
+        admin = get_object_or_404(Position, pk=Position.CRM_ADMIN)
+        consultant = get_object_or_404(Position, pk=Position.CRM_CONSULTANT)
+        if admin in user.positions.all():
+            return Lead.objects.filter(Q(action_date=datetime.today().date()) | (Q(action__isnull=False) & Q(action__gt='')))
+        elif consultant in user.positions.all():
+            return Lead.objects.filter(Q(action_date=datetime.today().date()) | (Q(action__isnull=False) & Q(action__gt='')), consultant_id=user.id)
         else:
             return None
 

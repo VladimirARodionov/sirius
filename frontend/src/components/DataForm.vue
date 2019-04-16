@@ -1,6 +1,6 @@
 <template>
   <Menu :program="program">
-    <v-container grid-list-xl fluid>
+    <v-container grid-list-xl fluid p-0>
       <v-card :style="json.style">
         <v-card-title class="headline grey lighten-2" primary-title> {{json.title | translate}} </v-card-title>
         <div v-if="successMessage">
@@ -201,7 +201,7 @@ export default {
       })
     },
     getDeleteMessage: function () {
-      return this.$t('Delete ' + (this.json.name ? this.json.name : '')) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.email + ' ?'
+      return this.$t('Delete ' + (this.json.name ? this.json.name : '')) + ' #' + this.data.currentObject.id + ' ?'
     },
     fillChildren () {
       let children = []
