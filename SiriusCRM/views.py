@@ -34,7 +34,7 @@ from schedule.views import _api_occurrences
 from Sirius import settings
 from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger
+from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger, LeadSource, LeadStatus
 from SiriusCRM.resources import UserResource, LeadResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer, \
@@ -496,3 +496,33 @@ class LeadView(APIView):
         if lead.email:
             send_email_notification.delay(lead.email, 'no-reply@server.raevskyschool.ru',
                                       _('You are successfully contacted Raevsky School'), message)
+
+
+class LeadSourceChartView(HasRoleMixin, APIView):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'reports_role']
+
+    def get(self, request):
+        label = []
+        data = []
+        for lead_source in LeadSource.objects.all():
+            leads_count = Lead.objects.filter(source_id=lead_source.id).count()
+            label.append(lead_source.name)
+            data.append(leads_count)
+        result = {'label': label, 'data': data}
+        return JsonResponse(result, safe=False)
+
+
+class LeadStatusChartView(HasRoleMixin, APIView):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'reports_role']
+
+    def get(self, request):
+        label = []
+        data = []
+        for lead_status in LeadStatus.objects.all():
+            leads_count = Lead.objects.filter(status_id=lead_status.id).count()
+            label.append(lead_status.name)
+            data.append(leads_count)
+        result = {'label': label, 'data': data}
+        return JsonResponse(result, safe=False)
