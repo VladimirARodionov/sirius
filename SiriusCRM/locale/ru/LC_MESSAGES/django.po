@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-12 16:34+0300\n"
+"POT-Creation-Date: 2019-04-16 12:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,32 +26,32 @@ msgstr ""
 msgid "You have an appointment."
 msgstr "У вас есть запись на бесплатную консультацию в Здравницу."
 
-#: .\cron\notification.py:28 .\views.py:341 .\views.py:473
+#: .\cron\notification.py:28 .\views.py:356 .\views.py:488
 #, python-format
 msgid "Date: %(date)s"
 msgstr "Дата: %(date)s"
 
-#: .\cron\notification.py:29 .\views.py:342
+#: .\cron\notification.py:29 .\views.py:357
 #, python-format
 msgid "Time: %(time)s"
 msgstr "Время: %(time)s"
 
-#: .\cron\notification.py:30 .\views.py:343
+#: .\cron\notification.py:30 .\views.py:358
 #, python-format
 msgid "Contact name: %(contact_name)s"
 msgstr "Имя: %(contact_name)s"
 
-#: .\cron\notification.py:31 .\views.py:344
+#: .\cron\notification.py:31 .\views.py:359
 #, python-format
 msgid "Contact email: %(contact_email)s"
 msgstr "Email: %(contact_email)s"
 
-#: .\cron\notification.py:32 .\views.py:345
+#: .\cron\notification.py:32 .\views.py:360
 #, python-format
 msgid "Contact mobile: %(contact_mobile)s"
 msgstr "Телефон: %(contact_mobile)s"
 
-#: .\cron\notification.py:33 .\views.py:346
+#: .\cron\notification.py:33 .\views.py:361
 #, python-format
 msgid "Diagnos: %(diagnos)s"
 msgstr "Диагноз: %(diagnos)s"
@@ -62,61 +62,113 @@ msgstr "Диагноз: %(diagnos)s"
 msgid "[Zdravniza] appointment notification (%(date)s %(time)s)"
 msgstr "[Здравница] Запись на бесплатную консультацию (%(date)s %(time)s)"
 
-#: .\models.py:202 .\models.py:293 .\models.py:316 .\resources.py:12
+#: .\models.py:203 .\models.py:294 .\models.py:320 .\resources.py:13
+#: .\resources.py:28
 msgid "Email"
 msgstr "Email"
 
-#: .\models.py:203 .\models.py:295 .\models.py:318 .\resources.py:10
+#: .\models.py:204 .\models.py:296 .\models.py:322 .\resources.py:11
+#: .\resources.py:25
 msgid "First name"
 msgstr "Имя"
 
-#: .\models.py:204 .\models.py:296 .\models.py:319 .\resources.py:9
+#: .\models.py:205 .\models.py:297 .\models.py:323 .\resources.py:10
+#: .\resources.py:26
 msgid "Last name"
 msgstr "Фамилия"
 
-#: .\models.py:205 .\models.py:297 .\models.py:320 .\resources.py:11
+#: .\models.py:206 .\models.py:298 .\models.py:324 .\resources.py:12
+#: .\resources.py:27
 msgid "Middle name"
 msgstr "Отчество"
 
-#: .\models.py:206
+#: .\models.py:207
 msgid "Date joined"
 msgstr ""
 
-#: .\models.py:207
+#: .\models.py:208
 msgid "Date left"
 msgstr ""
 
-#: .\models.py:208
+#: .\models.py:209
 msgid "Active"
 msgstr ""
 
-#: .\models.py:212
+#: .\models.py:213
 msgid "Staff status"
 msgstr ""
 
-#: .\models.py:214
+#: .\models.py:215
 msgid "Designates whether the user can log into this admin site."
 msgstr ""
 
-#: .\models.py:216 .\resources.py:14
+#: .\models.py:217 .\resources.py:15
 msgid "Birthday"
 msgstr "День рождения"
 
-#: .\models.py:240
+#: .\models.py:241
 msgid "user"
 msgstr ""
 
-#: .\models.py:241
+#: .\models.py:242
 msgid "users"
 msgstr ""
 
-#: .\models.py:294 .\models.py:317 .\resources.py:13
+#: .\models.py:295 .\models.py:321 .\resources.py:14 .\resources.py:29
 msgid "Mobile"
 msgstr "Сотовый"
 
-#: .\models.py:341
+#: .\models.py:345
 msgid "Comment"
 msgstr "Комментарий"
+
+#: .\resources.py:30
+msgid "Time"
+msgstr "Время"
+
+#: .\resources.py:31
+msgid "Messenger"
+msgstr "Мессенджер"
+
+#: .\resources.py:32
+msgid "Status"
+msgstr "Статус"
+
+#: .\resources.py:33
+msgid "Source"
+msgstr "Источник"
+
+#: .\resources.py:34
+msgid "Consultant name"
+msgstr "Имя консультанта"
+
+#: .\resources.py:35
+msgid "Consultant surname"
+msgstr "Фамилия консультанта"
+
+#: .\resources.py:36
+#, fuzzy
+#| msgid "Actions"
+msgid "Action"
+msgstr "Действие"
+
+#: .\resources.py:37
+#, fuzzy
+#| msgid "Actions"
+msgid "Action date"
+msgstr "Дата действия"
+
+#: .\resources.py:38
+#, fuzzy
+#| msgid "Actions"
+msgid "Action time"
+msgstr "Время действия"
+
+#: .\resources.py:39
+#, fuzzy
+#| msgid "Comment"
+msgid "Comments"
+msgstr "Комментарии"
 
 #: .\schedule\periods.py:42
 #, python-format
@@ -128,73 +180,73 @@ msgstr ""
 msgid "HalfHour: %(start)s-%(end)s"
 msgstr ""
 
-#: .\views.py:170
+#: .\views.py:185
 msgid "Password reset"
 msgstr "Сброс пароля"
 
-#: .\views.py:207
+#: .\views.py:222
 #, fuzzy
 #| msgid "New password"
 msgid "Enter new password"
 msgstr "Новый пароль"
 
-#: .\views.py:275
+#: .\views.py:290
 msgid "Password reset unsuccessful"
 msgstr "Не удалось сбросить пароль"
 
-#: .\views.py:340
+#: .\views.py:355
 msgid "New appointment has been made."
 msgstr "Новая запись на бесплатную консультацию в Здравницу."
 
-#: .\views.py:351
+#: .\views.py:366
 #, fuzzy, python-format
 #| msgid "New Zdravniza appointment"
 msgid "[Zdravniza] New appointment (%(date)s %(time)s)"
 msgstr "[Здравница] Запись на бесплатную консультацию (%(date)s %(time)s)"
 
-#: .\views.py:353
+#: .\views.py:368
 msgid "You are successfully made new Zdravniza appointment"
 msgstr "Вы успешно записались на бесплатную консультацию в Здравницу"
 
-#: .\views.py:381
+#: .\views.py:396
 msgid "No free consultants at this time"
 msgstr "Нет свободных консультантов на это время"
 
-#: .\views.py:472
+#: .\views.py:487
 msgid "New lead has been made."
 msgstr "Новая запись в Школу Раевского."
 
-#: .\views.py:474
+#: .\views.py:489
 #, python-format
 msgid "Name: %(lead_name)s"
 msgstr "Имя: %(lead_name)s"
 
-#: .\views.py:475
+#: .\views.py:490
 #, python-format
 msgid "Email: %(lead_email)s"
 msgstr "Email: %(lead_email)s"
 
-#: .\views.py:476
+#: .\views.py:491
 #, python-format
 msgid "Mobile: %(lead_mobile)s"
 msgstr "Телефон: %(lead_mobile)s"
 
-#: .\views.py:477
+#: .\views.py:492
 #, python-format
 msgid "Messenger: %(messenger)s"
 msgstr "Мессенджер: %(messenger)s"
 
-#: .\views.py:478
+#: .\views.py:493
 #, python-format
 msgid "Source: %(source)s"
 msgstr "Источник: %(source)s"
 
-#: .\views.py:484
+#: .\views.py:499
 #, python-format
 msgid "[CRM] New lead (%(date)s)"
 msgstr "[CRM] Новый лид (%(date)s)"
 
-#: .\views.py:487
+#: .\views.py:502
 msgid "You are successfully contacted Raevsky School"
 msgstr "Вы успешно оставили заявку в Школу Раевского"
 
@@ -276,9 +328,6 @@ msgstr "Вы успешно оставили заявку в Школу Раев
 
 #~ msgid "Reports"
 #~ msgstr "Отчеты"
-
-#~ msgid "Actions"
-#~ msgstr "Действия"
 
 #~ msgid "Directories"
 #~ msgstr "Справочники"

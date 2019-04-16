@@ -11,6 +11,7 @@ import ImportUsers from '../views/ImportUsers.vue'
 import ResetPasswordEmail from '../views/ResetPasswordEmail'
 import ResetPasswordConfirm from '../views/ResetPasswordConfirm'
 import ExportUsers from '../views/ExportUsers'
+import ExportLeads from '../views/ExportLeads'
 import ResourceList from '../views/ResourceList'
 import ResourceAdd from '../views/ResourceAdd'
 import ResourceEdit from '../views/ResourceEdit'
@@ -147,6 +148,14 @@ let router = new Router({
       path: '/crm/export/user',
       name: 'exportUsers',
       component: ExportUsers,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/crm/export/lead',
+      name: 'exportLeads',
+      component: ExportLeads,
       meta: {
         requiresAuth: true
       }

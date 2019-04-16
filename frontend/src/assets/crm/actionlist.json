@@ -16,6 +16,12 @@
       "name": "menulist_export",
       "text": "Export users",
       "value": "/crm/export/user"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_lead_export",
+      "text": "Export leads",
+      "value": "/crm/export/lead"
     }
   ]
 }

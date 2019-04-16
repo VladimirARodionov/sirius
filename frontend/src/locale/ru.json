@@ -204,5 +204,6 @@
   "Clear": "Очистить дату и время действия",
   "Leads with status Created": "Лиды со статусом Добавлен",
   "Leads with action": "Лиды со следующим действием",
-  "Not assigned": "Не назначен"
+  "Not assigned": "Не назначен",
+  "Export leads": "Экспорт лидов"
 }
