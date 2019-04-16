@@ -48,15 +48,9 @@ def jwt_response_payload_handler(token, user=None, request=None):
     if (user):
         roles = get_user_roles(user)
         user_roles = [role.get_name() for role in roles]
-        if (user.is_superuser):
-            perms = Permission.objects.all()
-        else:
-            perms = user.user_permissions.all() | Permission.objects.filter(group__user=user)
-        permissions = perms
     return {
         'token': token,
         'roles': user_roles,
-        'permissions': permissions,
         'user_id': user.id
     }
 
