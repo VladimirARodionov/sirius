@@ -3,6 +3,7 @@ from datetime import datetime
 
 from cities_light.models import Country, Region, City
 from django.core.paginator import InvalidPage
+from django.db.models import Q
 from django.utils import six
 from rest_framework import viewsets, filters
 from rest_framework.exceptions import NotFound
@@ -566,6 +567,36 @@ class LeadViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
 
 class LeadCreatedViewSet(LeadViewSet):
     queryset = Lead.objects.filter(status__in=[LeadStatus.CREATED])
+
+
+class InfoLeadCreatedViewSet(LeadViewSet):
+    pagination_class = None
+
+    def get_queryset(self):
+        user = get_object_or_404(User, pk=self.request.user.id)
+        admin = get_object_or_404(Position, pk=Position.CRM_ADMIN)
+        consultant = get_object_or_404(Position, pk=Position.CRM_CONSULTANT)
+        if admin in user.positions.all():
+            return Lead.objects.filter(status__in=[LeadStatus.CREATED])
+        elif consultant in user.positions.all():
+            return Lead.objects.filter(status__in=[LeadStatus.CREATED], consultant_id=user.id)
+        else:
+            return None
+
+
+class InfoLeadActionViewSet(LeadViewSet):
+    pagination_class = None
+    
+    def get_queryset(self):
+        user = get_object_or_404(User, pk=self.request.user.id)
+        admin = get_object_or_404(Position, pk=Position.CRM_ADMIN)
+        consultant = get_object_or_404(Position, pk=Position.CRM_CONSULTANT)
+        if admin in user.positions.all():
+            return Lead.objects.filter(Q(action_date=datetime.today().date()) | (Q(action__isnull=False) & Q(action__gt='')))
+        elif consultant in user.positions.all():
+            return Lead.objects.filter(Q(action_date=datetime.today().date()) | (Q(action__isnull=False) & Q(action__gt='')), consultant_id=user.id)
+        else:
+            return None
 
 
 class LeadCommentViewSet(HasRoleMixin, viewsets.ModelViewSet):

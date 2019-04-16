@@ -330,7 +330,8 @@ class LeadSerializer(ModelSerializer):
     class Meta:
         model = Lead
         fields = ('id', 'time', 'first_name', 'last_name','middle_name', 'email', 'mobile',
-                  'messenger', 'consultant', 'status', 'source', 'comments', 'comment_value', 'consultant_value', 'status_value', 'source_value')
+                  'messenger', 'consultant', 'status', 'source', 'comments', 'comment_value', 'consultant_value',
+                  'status_value', 'source_value', 'action', 'action_date', 'action_time')
 
 
 class LeadCommentSerializer(ModelSerializer):

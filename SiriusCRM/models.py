@@ -80,6 +80,7 @@ class Position(models.Model):
     ZDRAVNIZA_HEALER = 2
     ZDRAVNIZA_ADMIN = 3
     CRM_CONSULTANT = 4
+    CRM_ADMIN = 5
 
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=80, unique=True, blank=False)
@@ -302,6 +303,9 @@ class Lead(models.Model):
     source = models.ForeignKey(LeadSource, null=False,
                                on_delete=models.PROTECT, related_name="lead_source")
     comments = models.ManyToManyField(CrmComment, through='LeadComment')
+    action_date = models.DateField(null=True, blank=True)
+    action_time = models.TimeField(null=True, blank=True)
+    action = models.CharField(max_length=160, null=True, blank=True)
 
     class Meta:
         ordering = ['id']

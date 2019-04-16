@@ -197,5 +197,12 @@
   "Lead sources": "Источники лидов",
   "Add lead source": "Добавление источника лидов",
   "Edit lead source": "Изменение источника лидов",
-  "Delete leadsource": "Удалить источник лидов"
+  "Delete leadsource": "Удалить источник лидов",
+  "Action": "Следующее действие",
+  "Action date": "Дата действия",
+  "Action time": "Время действия",
+  "Clear": "Очистить дату и время действия",
+  "Leads with status Created": "Лиды со статусом Добавлен",
+  "Leads with action": "Лиды со следующим действием",
+  "Not assigned": "Не назначен"
 }

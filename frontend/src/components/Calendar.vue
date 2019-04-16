@@ -156,7 +156,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+  .v-calendar-daily_head-day-label {
+    font-size: 20px !important;
+  }
   .my-event {
     overflow: hidden;
     text-overflow: ellipsis;

@@ -55,6 +55,8 @@ export default {
         this.$bus.emit('saveAppointment')
       } else if (action === 'leadsave') {
         this.$bus.emit('saveLead')
+      } else if (action === 'clear_action') {
+        this.$bus.emit('clearAction')
       }
     },
     onSelect (data) {

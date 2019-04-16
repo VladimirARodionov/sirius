@@ -55,6 +55,8 @@ router.register('api/leadstatus', viewsets.LeadStatusViewSet, basename='leadstat
 router.register('api/leadsource', viewsets.LeadSourceViewSet, basename='leadsource')
 router.register('api/lead', viewsets.LeadViewSet, basename='lead')
 router.register('api/leadcreated', viewsets.LeadCreatedViewSet, basename='leadcreated')
+router.register('api/info/lead/created', viewsets.InfoLeadCreatedViewSet, basename='infoleadcreated')
+router.register('api/info/lead/action', viewsets.InfoLeadActionViewSet, basename='infoleadaction')
 
 
 schema_view = get_schema_view(

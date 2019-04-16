@@ -1,6 +1,6 @@
 <template>
   <Menu :program="program">
-    <v-container grid-list-xl fluid>
+    <v-container grid-list-xl fluid p-0>
       <v-card :style="json.style">
         <v-card-title class="headline grey lighten-2" primary-title> {{json.title | translate}} </v-card-title>
         <div v-if="successMessage">
@@ -81,6 +81,7 @@ export default {
     this.$bus.on('saveLead', this.onSaveLead)
     this.$bus.on('deleteObject', this.onDelete)
     this.$bus.on('selectObject', this.onSelect)
+    this.$bus.on('clearAction', this.onClearAction)
     this.$bus.on('error', this.onError)
   },
   mounted () {
@@ -95,6 +96,7 @@ export default {
     this.$bus.off('saveLead', this.onSaveLead)
     this.$bus.off('deleteObject', this.onDelete)
     this.$bus.off('selectObject', this.onSelect)
+    this.$bus.off('clearAction', this.onClearAction)
     this.$bus.off('error', this.onError)
   },
   methods: {
@@ -134,6 +136,10 @@ export default {
       } else {
         this.data.currentObject = {}
       }
+    },
+    onClearAction () {
+      this.data.currentObject.action_date = null
+      this.data.currentObject.action_time = null
     },
     onError (data) {
       this.data.errorMessage = data
@@ -195,7 +201,7 @@ export default {
       })
     },
     getDeleteMessage: function () {
-      return this.$t('Delete ' + (this.json.name ? this.json.name : '')) + ' #' + this.data.currentObject.id + ' ' + this.data.currentObject.email + ' ?'
+      return this.$t('Delete ' + (this.json.name ? this.json.name : '')) + ' #' + this.data.currentObject.id + ' ?'
     },
     fillChildren () {
       let children = []
