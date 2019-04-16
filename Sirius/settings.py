@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'rolepermissions',
-    'casl_django',
+    #'casl_django',
     'import_export',
     'drf_yasg',
     'schedule',
