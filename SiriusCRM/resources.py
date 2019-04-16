@@ -36,7 +36,7 @@ class LeadResource(resources.ModelResource):
     action = fields.Field(attribute='action', column_name=_('Action'))
     action_date = fields.Field(attribute='action_date', column_name=_('Action date'))
     action_time = fields.Field(attribute='action_time', column_name=_('Action time'))
-    comments = fields.Field(attribute='comments', column_name=_('Comments'), widget=ManyToManyWidget(CrmComment, separator=',', field='comment'))
+    comments = fields.Field(attribute='comments', column_name=_('Comments'), widget=ManyToManyWidget(CrmComment, separator=';', field='comment'))
 
     class Meta:
         model = Lead

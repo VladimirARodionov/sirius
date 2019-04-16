@@ -21,18 +21,35 @@ cd frontend
 npm install
 npm run dev
 ```
+ - Optionally:
+```
+install RabbitMQ
+config email backend in settings as console
+pip install gevent
+celery -A SiriusCRM worker -l info -P gevent
+```
+ 
+
 
 Setup production on Ubuntu or Debian
 ---
  - Install python, pip, npm
  - Clone the project
+ - create file /etc/sirius.cnf with following content:
+ ```
+database = db_name
+user = db_user
+password = db_password
+default-character-set = utf8
+```
+ - Execute following commands:
  ```
 apt-get install python3-venv
 apt-get install libapache2-mod-wsgi-py3
 python3 -m venv sirius
 source sirius/bin/activate
 cd sirius
-pip install -r requirements.txt 
+pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser

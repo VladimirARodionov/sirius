@@ -98,8 +98,10 @@ WSGI_APPLICATION = 'Sirius.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': '/etc/sirius.cnf',
+        },
     }
 }
 
@@ -172,4 +174,6 @@ FIRST_DAY_OF_WEEK = 1
 WORKING_HOUR_BEGIN = 9
 WORKING_HOUR_END = 19
 CITIES_LIGHT_TRANSLATION_LANGUAGES = ['ru']
+LEAD_LINK = 'https://server.raevskyschool.ru/sirius/crm/lead/edit/%(id)s'
+APPOINTMENT_LINK = 'https://server.raevskyschool.ru/sirius/zdravniza/appointment/edit/%(id)s'
 

@@ -33,6 +33,7 @@ from schedule.periods import Day
 from schedule.views import _api_occurrences
 
 from Sirius import settings
+from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
 from SiriusCRM.mixins import HasRoleMixin
 from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger
 from SiriusCRM.resources import UserResource, LeadResource
@@ -358,7 +359,8 @@ class AppointmentView(APIView):
         _('Contact name: %(contact_name)s') % {'contact_name': str(appointment.contact.first_name) + " " + str(appointment.contact.last_name)} + '\n' + \
         _('Contact email: %(contact_email)s') % {'contact_email': str(appointment.contact.email)} + '\n' + \
         _('Contact mobile: %(contact_mobile)s') % {'contact_mobile': str(appointment.contact.mobile)} + '\n' + \
-        _('Diagnos: %(diagnos)s') % {'diagnos': str(appointment.comment)}
+        _('Diagnos: %(diagnos)s') % {'diagnos': str(appointment.comment)} + '\n' + \
+        _('Link: %(link)s') % {'link': APPOINTMENT_LINK % {'id': appointment.id}}
         if consultant.telegram:
             send_telegram_notification.delay(consultant.get_telegram_username(), message)
         if consultant.email:
@@ -490,7 +492,8 @@ class LeadView(APIView):
                   _('Email: %(lead_email)s') % {'lead_email': str(lead.email)} + '\n' + \
                   _('Mobile: %(lead_mobile)s') % {'lead_mobile': str(lead.mobile)} + '\n' + \
                   _('Messenger: %(messenger)s') % {'messenger': str(lead.messenger.name)} + '\n' + \
-                  _('Source: %(source)s') % {'source': str(lead.source.name)}
+                  _('Source: %(source)s') % {'source': str(lead.source.name)} + '\n' + \
+                  _('Link: %(link)s') % {'link': LEAD_LINK % {'id': lead.id}}
 
         if consultant and consultant.telegram:
             send_telegram_notification.delay(consultant.get_telegram_username(), message)
