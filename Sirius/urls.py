@@ -75,6 +75,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('api/import/user/', views.PeopleImportView.as_view(), name='import_user'),
     path('api/export/user/', views.UserExportView.as_view(), name='export_user'),
+    path('api/export/lead/', views.LeadExportView.as_view(), name='export_lead'),
     path('admin/', admin.site.urls),
     path('api/accounts/password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
     re_path('api/accounts/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

@@ -35,7 +35,7 @@ from schedule.views import _api_occurrences
 from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin
 from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger
-from SiriusCRM.resources import UserResource
+from SiriusCRM.resources import UserResource, LeadResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer, \
     LeadSerializer
@@ -126,6 +126,21 @@ class UserExportView(HasRoleMixin, APIView):
         dataset = person_resource.export()
         response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename="users.xls"'
+        return response
+
+    def get(self, request):
+        return self.export(request)
+
+
+class LeadExportView(HasRoleMixin, APIView):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role',]
+
+    def export(self, request):
+        lead_resource = LeadResource()
+        dataset = lead_resource.export()
+        response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename="leads.xls"'
         return response
 
     def get(self, request):
