@@ -205,5 +205,7 @@
   "Leads with status Created": "Лиды со статусом Добавлен",
   "Leads with action": "Лиды со следующим действием",
   "Not assigned": "Не назначен",
-  "Export leads": "Экспорт лидов"
+  "Export leads": "Экспорт лидов",
+  "Lead source chart": "График лидов по источнику",
+  "Lead status chart": "График лидов по статусу"
 }

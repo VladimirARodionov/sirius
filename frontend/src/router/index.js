@@ -7,6 +7,7 @@ import Zdravniza from '../views/Zdravniza.vue'
 import SelectProgram from '../views/SelectProgram.vue'
 import ActionList from '../views/ActionList.vue'
 import ReportList from '../views/ReportList.vue'
+import Report from '../views/Report.vue'
 import ImportUsers from '../views/ImportUsers.vue'
 import ResetPasswordEmail from '../views/ResetPasswordEmail'
 import ResetPasswordConfirm from '../views/ResetPasswordConfirm'
@@ -68,6 +69,14 @@ let router = new Router({
       path: '/:program/report/list',
       name: 'reportlist',
       component: ReportList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/:program/:resource/report',
+      name: 'report',
+      component: Report,
       meta: {
         requiresAuth: true
       }
