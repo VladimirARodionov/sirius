@@ -57,6 +57,10 @@ export default {
         this.$bus.emit('saveLead')
       } else if (action === 'clear_action') {
         this.$bus.emit('clearAction')
+      } else if (action === 'begin_end_clear_action') {
+        this.$bus.emit('beginEndClearAction')
+      } else if (action === 'generate_action') {
+        this.$bus.emit('generateAction')
       }
     },
     onSelect (data) {

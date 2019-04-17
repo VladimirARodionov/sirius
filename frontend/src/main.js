@@ -52,6 +52,12 @@ Vue.use(VueApexCharts)
 
 Vue.component('apexchart', VueApexCharts)
 
+var apexRu = require('apexcharts/src/locales/ru.json')
+VueApexCharts.chart = {
+  locales: [apexRu],
+  defaultLocale: 'ru'
+}
+
 new Vue({
   router,
   store,
