@@ -1,0 +1,16 @@
+{
+  "program": "crm",
+  "resource": "leadstatus",
+  "type": "chart",
+  "title": "Lead status chart",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "chart",
+      "name": "leadstatus_chart_name",
+      "chart_type": "bar",
+      "series_name": "Status",
+      "api": "/api/chart/lead/status/"
+    }
+  ]
+}

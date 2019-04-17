@@ -1,0 +1,16 @@
+{
+  "program": "crm",
+  "resource": "leadsource",
+  "type": "chart",
+  "title": "Lead source chart",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "chart",
+      "name": "leadsource_chart_name",
+      "chart_type": "bar",
+      "series_name": "Source",
+      "api": "/api/chart/lead/source/"
+    }
+  ]
+}

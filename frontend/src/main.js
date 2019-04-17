@@ -12,6 +12,7 @@ import VRM from './vue-role-manager'
 import 'bootstrap/dist/css/bootstrap.css'
 import VueBus from 'vue-bus'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import VueApexCharts from 'vue-apexcharts'
 
 Vue.use(VueBus)
 Vue.use(VRM, { router: router, debug: true })
@@ -46,6 +47,10 @@ Vue.use(vuexI18n.plugin, store,
 Vue.i18n.add('ru', require('./locale/ru.json'))
 
 Vue.i18n.set('ru')
+
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
 
 new Vue({
   router,

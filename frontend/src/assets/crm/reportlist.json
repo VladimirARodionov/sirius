@@ -3,5 +3,19 @@
   "resource": "report",
   "type": "list",
   "title": "Reports",
-  "style": "max-width: 768px;"
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "menulist",
+      "name": "reportlist_lead_source_chart",
+      "text": "Lead source chart",
+      "value": "/crm/leadsourcechart/report"
+    },
+    {
+      "type": "menulist",
+      "name": "reportlist_lead_status_chart",
+      "text": "Lead status chart",
+      "value": "/crm/leadstatuschart/report"
+    }
+  ]
 }
