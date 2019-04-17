@@ -207,5 +207,10 @@
   "Not assigned": "Не назначен",
   "Export leads": "Экспорт лидов",
   "Lead source chart": "График лидов по источнику",
-  "Lead status chart": "График лидов по статусу"
+  "Lead status chart": "График лидов по статусу",
+  "Clear begin and end dates": "Очистить даты начала и конца",
+  "Begin date": "Дата начала",
+  "End date": "Дата конца",
+  "Generate": "Сгенерировать",
+  "Total": "Всего"
 }

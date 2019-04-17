@@ -1,7 +1,7 @@
 from cities_light.models import Country, Region, City
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer
 from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, clear_roles
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
@@ -346,3 +346,12 @@ class MessengerSerializer(ModelSerializer):
     class Meta:
         model = Messenger
         fields = ('id', 'name')
+
+
+class BeginEndDateOptionSerializer(Serializer):
+    begin = serializers.DateField(required=False, allow_null=True)
+    end = serializers.DateField(required=False, allow_null=True)
+    option = serializers.IntegerField(required=False, allow_null=True, default=0)
+
+    class Meta:
+        fields = ('begin', 'end', 'option')

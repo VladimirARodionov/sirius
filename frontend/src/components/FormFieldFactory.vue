@@ -46,6 +46,14 @@
        v-else-if="field.type === 'appointmentdate'"
        :field="field"
        v-model="value"/>
+     <BeginDateField
+       v-else-if="field.type === 'begindate'"
+       :field="field"
+       v-model="value"/>
+     <EndDateField
+       v-else-if="field.type === 'enddate'"
+       :field="field"
+       v-model="value"/>
      <SelectField
        v-else-if="field.type === 'select'"
        :field="field"
@@ -116,6 +124,8 @@ import TextField from './TextField'
 import TextAreaField from './TextAreaField'
 import BirthdayField from './BirthdayField'
 import AppointmentDateField from './AppointmentDateField'
+import BeginDateField from './BeginDateField'
+import EndDateField from './EndDateField'
 import SelectField from './SelectField'
 import AppointmentSelectField from './AppointmentSelectField'
 import MultiSelectField from './MultiSelectField'
@@ -153,7 +163,9 @@ export default {
     MenuSelectField,
     Stepper,
     Calendar,
-    HotList
+    HotList,
+    BeginDateField,
+    EndDateField
   },
   data () {
     return {

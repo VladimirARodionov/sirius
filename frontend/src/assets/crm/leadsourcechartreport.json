@@ -6,10 +6,51 @@
   "style": "max-width: 768px;",
   "fields": [
     {
+      "type": "begindate",
+      "name": "leadsource_chart_begindate",
+      "text": "Begin date",
+      "value": "begin_date",
+      "required": false
+    },
+    {
+      "type": "enddate",
+      "name": "leadsource_chart_enddate",
+      "text": "End date",
+      "value": "end_date",
+      "required": false
+    },
+    {
+      "type": "button",
+      "name": "leadsource_chart_clear_action",
+      "text": "Clear begin and end dates",
+      "action": "begin_end_clear_action",
+      "color": ""
+    },
+    {
+      "type": "select",
+      "name": "leadsource_chart_status",
+      "text": "Status",
+      "value": "status",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/leadstatus/",
+      "resource": "leadstatus",
+      "required": false,
+      "hide_edit": true
+    },
+    {
+      "type": "button",
+      "name": "leadsource_chart_generate_action",
+      "text": "Generate",
+      "action": "generate_action",
+      "color": "success"
+    },
+    {
       "type": "chart",
       "name": "leadsource_chart_name",
       "chart_type": "bar",
       "series_name": "Source",
+      "option_name": "status",
       "api": "/api/chart/lead/source/"
     }
   ]

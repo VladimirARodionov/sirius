@@ -38,7 +38,7 @@ from SiriusCRM.models import User, Position, Category, Contact, Appointment, App
 from SiriusCRM.resources import UserResource, LeadResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer, \
-    LeadSerializer
+    LeadSerializer, BeginEndDateOptionSerializer
 from SiriusCRM.tasks import send_telegram_notification, send_email_notification
 
 
@@ -503,10 +503,24 @@ class LeadSourceChartView(HasRoleMixin, APIView):
     allowed_get_roles = ['admin_role', 'reports_role']
 
     def get(self, request):
+        serializer = BeginEndDateOptionSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        begin_date = serializer.data['begin']
+        end_date = serializer.data['end']
+        option = serializer.data['option']
+        args = {}
+        if begin_date:
+            args['time__gte'] = begin_date
+        if end_date:
+            args['time__lte'] = end_date
+        if option:
+            args['status_id'] = option
         label = []
         data = []
         for lead_source in LeadSource.objects.all():
-            leads_count = Lead.objects.filter(source_id=lead_source.id).count()
+            filter_args = args
+            filter_args['source_id'] = lead_source.id
+            leads_count = Lead.objects.filter(**filter_args).count()
             label.append(lead_source.name)
             data.append(leads_count)
         result = {'label': label, 'data': data}
@@ -518,10 +532,24 @@ class LeadStatusChartView(HasRoleMixin, APIView):
     allowed_get_roles = ['admin_role', 'reports_role']
 
     def get(self, request):
+        serializer = BeginEndDateOptionSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+        begin_date = serializer.data['begin']
+        end_date = serializer.data['end']
+        option = serializer.data['option']
+        args = {}
+        if begin_date:
+            args['time__gte'] = begin_date
+        if end_date:
+            args['time__lte'] = end_date
+        if option:
+            args['source_id'] = option
         label = []
         data = []
         for lead_status in LeadStatus.objects.all():
-            leads_count = Lead.objects.filter(status_id=lead_status.id).count()
+            filter_args = args
+            filter_args['status_id'] = lead_status.id
+            leads_count = Lead.objects.filter(**filter_args).count()
             label.append(lead_status.name)
             data.append(leads_count)
         result = {'label': label, 'data': data}
