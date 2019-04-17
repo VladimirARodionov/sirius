@@ -6,7 +6,7 @@ from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, cl
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment, \
-    AppointmentStatus, ZdravnizaComment, ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger
+    AppointmentStatus, ZdravnizaComment, ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, LeadCourse
 
 
 class UserSerializer(ModelSerializer):
@@ -321,17 +321,25 @@ class LeadSourceSerializer(ModelSerializer):
         fields = ('id', 'name')
 
 
+class LeadCourseSerializer(ModelSerializer):
+
+    class Meta:
+        model = LeadCourse
+        fields = ('id', 'name')
+
+
 class LeadSerializer(ModelSerializer):
     comment_value = CrmCommentSerializer(source='comments', read_only=True, many=True)
     consultant_value = UserSerializer(source='consultant', read_only=True)
     status_value = LeadStatusSerializer(source='status', read_only=True)
     source_value = LeadSourceSerializer(source='source', read_only=True)
+    course_value = LeadCourseSerializer(source='course', read_only=True)
 
     class Meta:
         model = Lead
         fields = ('id', 'time', 'first_name', 'last_name','middle_name', 'email', 'mobile',
                   'messenger', 'consultant', 'status', 'source', 'comments', 'comment_value', 'consultant_value',
-                  'status_value', 'source_value', 'action', 'action_date', 'action_time')
+                  'status_value', 'source_value', 'action', 'action_date', 'action_time', 'course', 'course_value')
 
 
 class LeadCommentSerializer(ModelSerializer):
@@ -352,6 +360,7 @@ class BeginEndDateOptionSerializer(Serializer):
     begin = serializers.DateField(required=False, allow_null=True)
     end = serializers.DateField(required=False, allow_null=True)
     option = serializers.IntegerField(required=False, allow_null=True, default=0)
+    course = serializers.IntegerField(required=False, allow_null=True, default=0)
 
     class Meta:
-        fields = ('begin', 'end', 'option')
+        fields = ('begin', 'end', 'option', 'course')

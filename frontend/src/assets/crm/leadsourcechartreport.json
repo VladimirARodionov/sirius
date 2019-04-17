@@ -39,6 +39,18 @@
       "hide_edit": true
     },
     {
+      "type": "select",
+      "name": "leadsource_chart_course",
+      "text": "Course",
+      "value": "course",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/leadcourse/",
+      "resource": "leadcourse",
+      "required": false,
+      "hide_edit": true
+    },
+    {
       "type": "button",
       "name": "leadsource_chart_generate_action",
       "text": "Generate",

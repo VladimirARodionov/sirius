@@ -53,6 +53,19 @@
       "non_pageable": true
     },
     {
+      "type": "select",
+      "name": "lead_course",
+      "text": "Course",
+      "value": "course",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/openleadcourse/",
+      "resource": "course",
+      "required": true,
+      "hide_edit": true,
+      "non_pageable": true
+    },
+    {
       "type": "actions",
       "fields": [
         {

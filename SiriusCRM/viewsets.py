@@ -17,7 +17,7 @@ from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus, ZdravnizaComment, \
-    ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, LeadSource
+    ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, LeadSource, LeadCourse
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
@@ -25,7 +25,7 @@ from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, Organiza
     FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer, \
     ZdravnizaCommentSerializer, \
     ContactCommentSerializer, LeadSerializer, LeadCommentSerializer, CrmCommentSerializer, LeadStatusSerializer, \
-    MessengerSerializer, LeadSourceSerializer
+    MessengerSerializer, LeadSourceSerializer, LeadCourseSerializer
 from SiriusCRM.views import AppointmentView, LeadView
 
 
@@ -569,6 +569,32 @@ class LeadCreatedViewSet(LeadViewSet):
     queryset = Lead.objects.filter(status__in=[LeadStatus.CREATED])
 
 
+class LeadResourceViewSet(LeadViewSet):
+    queryset = Lead.objects.filter(course__in=[LeadCourse.RESOURCE])
+
+    def perform_create(self, serializer):
+        lead = serializer.save(course=get_object_or_404(
+            LeadCourse, pk=LeadCourse.RESOURCE))
+        if lead.consultant:
+            consultant = lead.consultant
+        else:
+            consultant = None
+        LeadView.send_notification(lead, consultant)
+
+
+class LeadHealthViewSet(LeadViewSet):
+    queryset = Lead.objects.filter(course__in=[LeadCourse.HEALTH])
+
+    def perform_create(self, serializer):
+        lead = serializer.save(course=get_object_or_404(
+            LeadCourse, pk=LeadCourse.HEALTH))
+        if lead.consultant:
+            consultant = lead.consultant
+        else:
+            consultant = None
+        LeadView.send_notification(lead, consultant)
+
+
 class InfoLeadCreatedViewSet(LeadViewSet):
     pagination_class = None
 
@@ -647,6 +673,20 @@ class LeadSourceViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_delete_roles = ['admin_role', 'edit_role']
     queryset = LeadSource.objects.all()
     serializer_class = LeadSourceSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name')
+    ordering_fields = ('id', 'name')
+
+
+class LeadCourseViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = LeadCourse.objects.all()
+    serializer_class = LeadCourseSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
     search_fields = ('name')

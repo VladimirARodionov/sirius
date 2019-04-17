@@ -24,7 +24,7 @@
             "type": "menuitem",
             "name": "menuitem_leads",
             "text": "Leads",
-            "value": "/crm/lead/list"
+            "value": "/crm/leadtype/list"
         },
         {
             "type": "menuitem",

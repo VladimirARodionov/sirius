@@ -73,6 +73,12 @@
     },
     {
       "type": "menulist",
+      "name": "menulist_leadcourse",
+      "text": "Lead courses",
+      "value": "/crm/leadcourse/list"
+    },
+    {
+      "type": "menulist",
       "name": "menulist_messenger",
       "text": "Messengers",
       "value": "/crm/messenger/list"

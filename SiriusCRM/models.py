@@ -197,6 +197,13 @@ class LeadSource(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=80, unique=True, blank=False)
 
+# Таблица курсов лидов в CRM
+class LeadCourse(models.Model):
+    RESOURCE = 1
+    HEALTH = 2
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=80, unique=True, blank=False)
+
 
 # Список пользователей
 class User(AbstractBaseUser, PermissionsMixin):
@@ -302,6 +309,8 @@ class Lead(models.Model):
                                on_delete=models.PROTECT, related_name="lead_status")
     source = models.ForeignKey(LeadSource, null=False,
                                on_delete=models.PROTECT, related_name="lead_source")
+    course = models.ForeignKey(LeadCourse, null=False,
+                               on_delete=models.PROTECT, related_name="lead_course")
     comments = models.ManyToManyField(CrmComment, through='LeadComment')
     action_date = models.DateField(null=True, blank=True)
     action_time = models.TimeField(null=True, blank=True)

@@ -21,7 +21,8 @@ export default {
       },
       begin_date: null,
       end_date: null,
-      option: null,
+      option: 0,
+      course: 0,
       total: 0,
       options: {
         chart: {
@@ -82,9 +83,13 @@ export default {
     },
     onChangeObject (data) {
       this.option = data[this.field.option_name] || 0
+      this.course = data.course || 0
     },
     onGenerateAction () {
       let urlParameters = '?option=' + (this.option || 0)
+      if (this.course) {
+        urlParameters = urlParameters + '&course=' + this.course
+      }
       if (this.begin_date) {
         urlParameters = urlParameters + '&begin=' + this.begin_date
       }

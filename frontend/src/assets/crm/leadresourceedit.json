@@ -1,9 +1,9 @@
 {
   "program": "crm",
-  "resource": "lead",
-  "api": "/api/lead/",
+  "resource": "leadresource",
+  "api": "/api/leadresource/",
   "type": "edit",
-  "title": "Edit lead",
+  "title": "Edit resource lead",
   "style": "max-width: 768px;",
   "fields": [
     {
@@ -88,17 +88,6 @@
       "item_value": "id",
       "api": "/api/leadsource/",
       "resource": "leadsource",
-      "required": true
-    },
-    {
-      "type": "select",
-      "name": "lead_edit_course",
-      "text": "Course",
-      "value": "course",
-      "item_text": "name",
-      "item_value": "id",
-      "api": "/api/leadcourse/",
-      "resource": "leadcourse",
       "required": true
     },
     {

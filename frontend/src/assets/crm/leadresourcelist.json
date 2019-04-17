@@ -1,10 +1,10 @@
 {
   "program": "crm",
-  "resource": "lead",
-  "api": "/api/lead/",
+  "resource": "leadresource",
+  "api": "/api/leadresource/",
   "type": "list",
-  "title": "List of leads",
-  "name": "lead",
+  "title": "List of resource leads",
+  "name": "leadresource",
   "style": "",
   "fields": [
     {
@@ -89,10 +89,6 @@
           "value": "source"
         },
         {
-          "text": "Course",
-          "value": "course"
-        },
-        {
           "text": "Consultant",
           "value": "consultant"
         }
@@ -123,14 +119,11 @@
           "name": "source_value.name"
         },
         {
-          "name": "course_value.name"
-        },
-        {
           "name": "consultant_value.full_name"
         }
       ],
       "pagination": true,
-      "api": "/api/lead/"
+      "api": "/api/leadresource/"
     }
   ]
 }

@@ -1,11 +1,11 @@
 {
   "program": "crm",
-  "resource": "lead",
-  "api": "/api/lead/",
+  "resource": "leadcourse",
+  "api": "/api/leadcourse/",
   "type": "list",
-  "title": "List of leads",
-  "name": "lead",
-  "style": "",
+  "title": "Lead courses",
+  "name": "leadcourse",
+  "style": "max-width: 768px;",
   "fields": [
     {
       "type": "group",
@@ -61,40 +61,8 @@
           "value": "id"
         },
         {
-          "text": "Date",
-          "value": "time"
-        },
-        {
-          "text": "First name",
-          "value": "first_name"
-        },
-        {
-          "text": "Last name",
-          "value": "last_name"
-        },
-        {
-          "text": "Email",
-          "value": "email"
-        },
-        {
-          "text": "Mobile",
-          "value": "mobile"
-        },
-        {
-          "text": "Status",
-          "value": "status"
-        },
-        {
-          "text": "Source",
-          "value": "source"
-        },
-        {
-          "text": "Course",
-          "value": "course"
-        },
-        {
-          "text": "Consultant",
-          "value": "consultant"
+          "text": "Name",
+          "value": "name"
         }
       ],
       "names": [
@@ -102,35 +70,11 @@
           "name": "id"
         },
         {
-          "name": "time"
-        },
-        {
-          "name": "first_name"
-        },
-        {
-          "name": "last_name"
-        },
-        {
-          "name": "email"
-        },
-        {
-          "name": "mobile"
-        },
-        {
-          "name": "status_value.name"
-        },
-        {
-          "name": "source_value.name"
-        },
-        {
-          "name": "course_value.name"
-        },
-        {
-          "name": "consultant_value.full_name"
+          "name": "name"
         }
       ],
       "pagination": true,
-      "api": "/api/lead/"
+      "api": "/api/leadcourse/"
     }
   ]
 }
