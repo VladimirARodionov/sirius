@@ -2,7 +2,7 @@ from django_cron import CronJobBase, Schedule
 
 from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
 from SiriusCRM.models import Appointment, Lead
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils.translation import gettext_lazy as _
 from SiriusCRM.tasks import send_telegram_notification, send_email_notification
 
@@ -23,7 +23,7 @@ class NotificationJob(CronJobBase):
             hours = (delta.total_seconds() % 3600)
             if 30 > minutes > 0 and hours == 0:
                 self.send_notification(appointment)
-        leads = Lead.objects.filter(action_date=date, action_time__isnull=False)
+        leads = Lead.objects.filter(action_date__lt=(date + timedelta(days=1)), action_time__isnull=False)
         for lead in leads:
             lead_date = datetime.combine(lead.action_date, lead.action_time)
             delta = lead_date - date

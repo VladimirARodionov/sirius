@@ -339,7 +339,17 @@ class LeadSerializer(ModelSerializer):
         model = Lead
         fields = ('id', 'time', 'first_name', 'last_name','middle_name', 'email', 'mobile',
                   'messenger', 'consultant', 'status', 'source', 'comments', 'comment_value', 'consultant_value',
-                  'status_value', 'source_value', 'action', 'action_date', 'action_time', 'course', 'course_value')
+                  'status_value', 'source_value', 'action', 'action_date', 'action_time', 'course', 'course_value', 'course_id')
+
+
+class LeadResourceSerializer(LeadSerializer):
+    course = serializers.PrimaryKeyRelatedField(read_only=True, default=get_object_or_404(LeadCourse, pk=LeadCourse.RESOURCE))
+    course_id = serializers.IntegerField(default=LeadCourse.RESOURCE)
+
+
+class LeadHealthSerializer(LeadSerializer):
+    course = serializers.PrimaryKeyRelatedField(read_only=True, default=get_object_or_404(LeadCourse, pk=LeadCourse.RESOURCE))
+    course_id = serializers.IntegerField(default=LeadCourse.HEALTH)
 
 
 class LeadCommentSerializer(ModelSerializer):

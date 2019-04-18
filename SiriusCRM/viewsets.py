@@ -1,5 +1,5 @@
 import pytz
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from cities_light.models import Country, Region, City
 from django.core.paginator import InvalidPage
@@ -25,7 +25,7 @@ from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, Organiza
     FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer, \
     ZdravnizaCommentSerializer, \
     ContactCommentSerializer, LeadSerializer, LeadCommentSerializer, CrmCommentSerializer, LeadStatusSerializer, \
-    MessengerSerializer, LeadSourceSerializer, LeadCourseSerializer
+    MessengerSerializer, LeadSourceSerializer, LeadCourseSerializer, LeadResourceSerializer, LeadHealthSerializer
 from SiriusCRM.views import AppointmentView, LeadView
 
 
@@ -570,29 +570,13 @@ class LeadCreatedViewSet(LeadViewSet):
 
 
 class LeadResourceViewSet(LeadViewSet):
+    serializer_class = LeadResourceSerializer
     queryset = Lead.objects.filter(course__in=[LeadCourse.RESOURCE])
-
-    def perform_create(self, serializer):
-        lead = serializer.save(course=get_object_or_404(
-            LeadCourse, pk=LeadCourse.RESOURCE))
-        if lead.consultant:
-            consultant = lead.consultant
-        else:
-            consultant = None
-        LeadView.send_notification(lead, consultant)
 
 
 class LeadHealthViewSet(LeadViewSet):
+    serializer_class = LeadHealthSerializer
     queryset = Lead.objects.filter(course__in=[LeadCourse.HEALTH])
-
-    def perform_create(self, serializer):
-        lead = serializer.save(course=get_object_or_404(
-            LeadCourse, pk=LeadCourse.HEALTH))
-        if lead.consultant:
-            consultant = lead.consultant
-        else:
-            consultant = None
-        LeadView.send_notification(lead, consultant)
 
 
 class InfoLeadCreatedViewSet(LeadViewSet):
@@ -617,10 +601,11 @@ class InfoLeadActionViewSet(LeadViewSet):
         user = get_object_or_404(User, pk=self.request.user.id)
         admin = get_object_or_404(Position, pk=Position.CRM_ADMIN)
         consultant = get_object_or_404(Position, pk=Position.CRM_CONSULTANT)
+        date = datetime.now()
         if admin in user.positions.all():
-            return Lead.objects.filter(Q(action_date=datetime.today().date()) | (Q(action__isnull=False) & Q(action__gt='')))
+            return Lead.objects.filter((Q(action_date__lt=(date + timedelta(days=1))) | (Q(action_time__isnull=False)) & Q(action__gt='')))
         elif consultant in user.positions.all():
-            return Lead.objects.filter(Q(action_date=datetime.today().date()) | (Q(action__isnull=False) & Q(action__gt='')), consultant_id=user.id)
+            return Lead.objects.filter((Q(action_date__lt=(date + timedelta(days=1))) | (Q(action_time__isnull=False)) & Q(action__gt='')), consultant_id=user.id)
         else:
             return None
 
