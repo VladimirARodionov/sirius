@@ -213,5 +213,19 @@
     "fields": {
       "name": "от наших"
     }
+  },
+  {
+    "model": "SiriusCRM.LeadCourse",
+    "pk": 1,
+    "fields": {
+      "name": "Ресурсность и предназначение"
+    }
+  },
+  {
+    "model": "SiriusCRM.LeadCourse",
+    "pk": 2,
+    "fields": {
+      "name": "Здоровье со смыслом"
+    }
   }
 ]

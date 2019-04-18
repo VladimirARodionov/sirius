@@ -212,5 +212,21 @@
   "Begin date": "Дата начала",
   "End date": "Дата конца",
   "Generate": "Сгенерировать",
-  "Total": "Всего"
+  "Total": "Всего",
+  "Lead courses": "Курсы лидов",
+  "Add lead course": "Добавление курса лидов",
+  "Edit lead course": "Изменение курса лидов",
+  "Delete leadcourse": "Удалить курс лидов",
+  "Course": "Курс",
+  "Add health lead": "Добавление лида на Здоровье",
+  "Edit health lead": "Изменение лида на Здоровье",
+  "Delete leadhealth": "Удалить лида на Здоровье",
+  "List of health leads": "Список лидов на Здоровье",
+  "Add resource lead": "Добавление лида на Ресурсность",
+  "Edit resource lead": "Изменение лида на Ресурсность",
+  "Delete leadresource": "Удалить лида на Ресурсность",
+  "List of resource leads": "Список лидов на Ресурсность",
+  "All leads": "Все лиды",
+  "Resource leads": "Лиды на Ресурсность",
+  "Health leads": "Лиды на Здоровье"
 }

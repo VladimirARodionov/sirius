@@ -91,6 +91,17 @@
       "required": true
     },
     {
+      "type": "select",
+      "name": "lead_add_course",
+      "text": "Course",
+      "value": "course",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/leadcourse/",
+      "resource": "leadcourse",
+      "required": true
+    },
+    {
       "type": "actions",
       "fields":
       [

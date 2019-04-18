@@ -34,7 +34,7 @@ from schedule.views import _api_occurrences
 from Sirius import settings
 from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger, LeadSource, LeadStatus
+from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger, LeadSource, LeadStatus, LeadCourse
 from SiriusCRM.resources import UserResource, LeadResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer, \
@@ -450,6 +450,13 @@ class MessengerView(APIView):
         return JsonResponse(result, safe=False)
 
 
+class LeadCourseView(APIView):
+
+    def get(self, request):
+        result = [{'id': entry.id, 'name': entry.name} for entry in LeadCourse.objects.all()]
+        return JsonResponse(result, safe=False)
+
+
 class LeadView(APIView):
     def post(self, request):
         context = {}
@@ -508,6 +515,7 @@ class LeadSourceChartView(HasRoleMixin, APIView):
         begin_date = serializer.data['begin']
         end_date = serializer.data['end']
         option = serializer.data['option']
+        course = serializer.data['course']
         args = {}
         if begin_date:
             args['time__gte'] = begin_date
@@ -515,6 +523,8 @@ class LeadSourceChartView(HasRoleMixin, APIView):
             args['time__lte'] = end_date
         if option:
             args['status_id'] = option
+        if course:
+            args['course_id'] = course
         label = []
         data = []
         for lead_source in LeadSource.objects.all():
@@ -537,6 +547,7 @@ class LeadStatusChartView(HasRoleMixin, APIView):
         begin_date = serializer.data['begin']
         end_date = serializer.data['end']
         option = serializer.data['option']
+        course = serializer.data['course']
         args = {}
         if begin_date:
             args['time__gte'] = begin_date
@@ -544,6 +555,8 @@ class LeadStatusChartView(HasRoleMixin, APIView):
             args['time__lte'] = end_date
         if option:
             args['source_id'] = option
+        if course:
+            args['course_id'] = course
         label = []
         data = []
         for lead_status in LeadStatus.objects.all():

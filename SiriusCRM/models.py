@@ -181,6 +181,8 @@ class AppointmentStatus(models.Model):
     number = models.IntegerField(unique=True, null=False, blank=False)
     name = models.CharField(max_length=80, unique=True, blank=False)
 
+    class Meta:
+        ordering = ['id']
 
 # Таблица статусов лидов в CRM
 class LeadStatus(models.Model):
@@ -191,12 +193,27 @@ class LeadStatus(models.Model):
     number = models.IntegerField(unique=True, null=False, blank=False)
     name = models.CharField(max_length=80, unique=True, blank=False)
 
+    class Meta:
+        ordering = ['id']
 
 # Таблица источников лидов в CRM
 class LeadSource(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=80, unique=True, blank=False)
 
+    class Meta:
+        ordering = ['id']
+
+
+# Таблица курсов лидов в CRM
+class LeadCourse(models.Model):
+    RESOURCE = 1
+    HEALTH = 2
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=80, unique=True, blank=False)
+
+    class Meta:
+        ordering = ['id']
 
 # Список пользователей
 class User(AbstractBaseUser, PermissionsMixin):
@@ -278,6 +295,9 @@ class ZdravnizaComment(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     comment = models.TextField(blank=False)
 
+    class Meta:
+        ordering = ['id']
+
 
 # Таблица комментариев лида
 class CrmComment(models.Model):
@@ -285,6 +305,9 @@ class CrmComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="crm_user_value")
     time = models.DateTimeField(auto_now_add=True)
     comment = models.TextField(blank=False)
+
+    class Meta:
+        ordering = ['id']
 
 
 # Список лидов в CRM
@@ -302,6 +325,8 @@ class Lead(models.Model):
                                on_delete=models.PROTECT, related_name="lead_status")
     source = models.ForeignKey(LeadSource, null=False,
                                on_delete=models.PROTECT, related_name="lead_source")
+    course = models.ForeignKey(LeadCourse, null=False,
+                               on_delete=models.PROTECT, related_name="lead_course")
     comments = models.ManyToManyField(CrmComment, through='LeadComment')
     action_date = models.DateField(null=True, blank=True)
     action_time = models.TimeField(null=True, blank=True)
@@ -344,6 +369,9 @@ class Appointment(models.Model):
         User, null=True, on_delete=models.PROTECT, related_name="appointment_consultant")
     comment = models.TextField(_('Comment'), blank=True)
 
+    class Meta:
+        ordering = ['id']
+
 
 # Таблица связей пользователя и его позиции
 class UserPosition(models.Model):
@@ -352,6 +380,9 @@ class UserPosition(models.Model):
     position = models.ForeignKey(Position, on_delete=models.PROTECT, related_name="position_value")
     date_joined = models.DateField(null=True, blank=True)
     invite_reason = models.CharField(max_length=160, null=True, blank=True)
+
+    class Meta:
+        ordering = ['id']
 
 
 # Таблица связей пользователя и его категории
@@ -362,6 +393,9 @@ class UserCategory(models.Model):
     date_joined = models.DateField(null=True, blank=True)
     invite_reason = models.CharField(max_length=160, null=True, blank=True)
 
+    class Meta:
+        ordering = ['id']
+
 
 # Таблица связей пользователя и курсов
 class UserCourse(models.Model):
@@ -370,6 +404,9 @@ class UserCourse(models.Model):
     course = models.ForeignKey(Course, on_delete=models.PROTECT, related_name="course_value")
     date_begin = models.DateField(null=True, blank=True)
     date_end = models.DateField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['id']
 
 
 # Таблица связей пользователя, курсов и его эссе
@@ -380,6 +417,8 @@ class UserCourseEssay(models.Model):
     essay = models.ForeignKey(Essay, on_delete=models.PROTECT, related_name="essay_value")
     date = models.DateField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['id']
 
 # Таблица связей курсов и их кураторов
 class CourseCurator(models.Model):
@@ -388,6 +427,8 @@ class CourseCurator(models.Model):
     course = models.ForeignKey(Position, on_delete=models.PROTECT, related_name="course_curator")
     is_primary = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['id']
 
 # Таблица связей пользователя и offline мероприятия, в котором он участвовал
 class UserOffline(models.Model):
@@ -395,12 +436,17 @@ class UserOffline(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_offline")
     offline = models.ForeignKey(Offline, on_delete=models.PROTECT, related_name="offline_value")
 
+    class Meta:
+        ordering = ['id']
 
 # Таблица связей пользователя и его компетенций
 class UserCompetency(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_competency")
     competency = models.ForeignKey(Competency, on_delete=models.PROTECT, related_name="competency_value")
+
+    class Meta:
+        ordering = ['id']
 
 
 # Таблица прихода денежных средств в организацию
@@ -413,6 +459,8 @@ class OrganizationIncome(models.Model):
     value = models.FloatField(null=False, blank=False)
     note = models.CharField(max_length=160, null=True, blank=True)
 
+    class Meta:
+        ordering = ['id']
 
 # Таблица расхода денежных средств из организации
 class OrganizationOutcome(models.Model):
@@ -424,12 +472,18 @@ class OrganizationOutcome(models.Model):
     value = models.FloatField(null=False, blank=False)
     note = models.CharField(max_length=160, null=True, blank=True)
 
+    class Meta:
+        ordering = ['id']
+
 
 # Таблица связей пользователя и его аккаунтов в социальных сетях
 class UserSocial(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_social")
     social = models.ForeignKey(Social, on_delete=models.PROTECT, related_name="social_value")
+
+    class Meta:
+        ordering = ['id']
 
 
 # Таблица связей контакта (лида) и его аккаунтов в социальных сетях
@@ -438,12 +492,18 @@ class ContactSocial(models.Model):
     contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="contact_social")
     social = models.ForeignKey(Social, on_delete=models.PROTECT, related_name="contact_social_value")
 
+    class Meta:
+        ordering = ['id']
+
 
 # Таблица связей пользователя и подразделения
 class UserUnit(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_unit")
     unit = models.ForeignKey(Unit, on_delete=models.PROTECT, related_name="unit_value")
+
+    class Meta:
+        ordering = ['id']
 
 
 # Таблица связей пользователя и факультета
@@ -452,12 +512,18 @@ class UserFaculty(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="user_faculty")
     faculty = models.ForeignKey(Faculty, on_delete=models.PROTECT, related_name="faculty_value")
 
+    class Meta:
+        ordering = ['id']
+
 
 # Таблица связей комментариев контакта
 class ContactComment(models.Model):
     id = models.AutoField(primary_key=True)
     contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="contact_value")
     comment = models.ForeignKey(ZdravnizaComment, on_delete=models.PROTECT, related_name="comment_value")
+
+    class Meta:
+        ordering = ['id']
 
 
 # Таблица связей комментариев лида
@@ -466,3 +532,5 @@ class LeadComment(models.Model):
     lead = models.ForeignKey(Lead, on_delete=models.PROTECT, related_name="lead_value")
     comment = models.ForeignKey(CrmComment, on_delete=models.PROTECT, related_name="comment_value")
 
+    class Meta:
+        ordering = ['id']

@@ -53,8 +53,12 @@ router.register('api/crmcomment', viewsets.CrmCommentViewSet, basename='crmcomme
 router.register('api/messenger', viewsets.MessengerViewSet, basename='messenger')
 router.register('api/leadstatus', viewsets.LeadStatusViewSet, basename='leadstatus')
 router.register('api/leadsource', viewsets.LeadSourceViewSet, basename='leadsource')
+router.register('api/leadcourse', viewsets.LeadCourseViewSet, basename='leadcourse')
 router.register('api/lead', viewsets.LeadViewSet, basename='lead')
-router.register('api/leadcreated', viewsets.LeadCreatedViewSet, basename='leadcreated')
+router.register('api/leadresource', viewsets.LeadResourceViewSet, basename='leadresource')
+router.register('api/leadhealth', viewsets.LeadHealthViewSet, basename='leadhealth')
+router.register('api/leadcreated', viewsets.LeadCreatedViewSet,
+                basename='leadcreated')
 router.register('api/info/lead/created', viewsets.InfoLeadCreatedViewSet, basename='infoleadcreated')
 router.register('api/info/lead/action', viewsets.InfoLeadActionViewSet, basename='infoleadaction')
 
@@ -85,6 +89,8 @@ urlpatterns = [
     path('api/appointment/', views.AppointmentView.as_view(), name='appointment'),
     path('api/addlead/', views.LeadView.as_view(), name='addlead'),
     path('api/openmessenger/', views.MessengerView.as_view(), name='openmessenger'),
+    path('api/openleadcourse/', views.LeadCourseView.as_view(),
+         name='openleadcourse'),
     path('api/zdravniza/calendar/', views.CalendarView.as_view(), name='zdravniza-calendar'),
     path('api/chart/lead/source/', views.LeadSourceChartView.as_view(), name='lead-source-chart'),
     path('api/chart/lead/status/', views.LeadStatusChartView.as_view(), name='lead-status-chart'),

@@ -28,13 +28,25 @@
     },
     {
       "type": "select",
-      "name": "leadstatus_chart_status",
+      "name": "leadstatus_chart_source",
       "text": "Source",
       "value": "source",
       "item_text": "name",
       "item_value": "id",
       "api": "/api/leadsource/",
       "resource": "leadsource",
+      "required": false,
+      "hide_edit": true
+    },
+    {
+      "type": "select",
+      "name": "leadstatus_chart_course",
+      "text": "Course",
+      "value": "course",
+      "item_text": "name",
+      "item_value": "id",
+      "api": "/api/leadcourse/",
+      "resource": "leadcourse",
       "required": false,
       "hide_edit": true
     },

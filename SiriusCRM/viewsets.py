@@ -1,5 +1,5 @@
 import pytz
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from cities_light.models import Country, Region, City
 from django.core.paginator import InvalidPage
@@ -17,7 +17,7 @@ from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus, ZdravnizaComment, \
-    ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, LeadSource
+    ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, LeadSource, LeadCourse
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
@@ -25,7 +25,7 @@ from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, Organiza
     FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer, \
     ZdravnizaCommentSerializer, \
     ContactCommentSerializer, LeadSerializer, LeadCommentSerializer, CrmCommentSerializer, LeadStatusSerializer, \
-    MessengerSerializer, LeadSourceSerializer
+    MessengerSerializer, LeadSourceSerializer, LeadCourseSerializer, LeadResourceSerializer, LeadHealthSerializer
 from SiriusCRM.views import AppointmentView, LeadView
 
 
@@ -569,6 +569,16 @@ class LeadCreatedViewSet(LeadViewSet):
     queryset = Lead.objects.filter(status__in=[LeadStatus.CREATED])
 
 
+class LeadResourceViewSet(LeadViewSet):
+    serializer_class = LeadResourceSerializer
+    queryset = Lead.objects.filter(course__in=[LeadCourse.RESOURCE])
+
+
+class LeadHealthViewSet(LeadViewSet):
+    serializer_class = LeadHealthSerializer
+    queryset = Lead.objects.filter(course__in=[LeadCourse.HEALTH])
+
+
 class InfoLeadCreatedViewSet(LeadViewSet):
     pagination_class = None
 
@@ -591,10 +601,11 @@ class InfoLeadActionViewSet(LeadViewSet):
         user = get_object_or_404(User, pk=self.request.user.id)
         admin = get_object_or_404(Position, pk=Position.CRM_ADMIN)
         consultant = get_object_or_404(Position, pk=Position.CRM_CONSULTANT)
+        date = datetime.now()
         if admin in user.positions.all():
-            return Lead.objects.filter(Q(action_date=datetime.today().date()) | (Q(action__isnull=False) & Q(action__gt='')))
+            return Lead.objects.filter((Q(action_date__lt=(date + timedelta(days=1))) | (Q(action_time__isnull=False)) & Q(action__gt='')))
         elif consultant in user.positions.all():
-            return Lead.objects.filter(Q(action_date=datetime.today().date()) | (Q(action__isnull=False) & Q(action__gt='')), consultant_id=user.id)
+            return Lead.objects.filter((Q(action_date__lt=(date + timedelta(days=1))) | (Q(action_time__isnull=False)) & Q(action__gt='')), consultant_id=user.id)
         else:
             return None
 
@@ -647,6 +658,20 @@ class LeadSourceViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_delete_roles = ['admin_role', 'edit_role']
     queryset = LeadSource.objects.all()
     serializer_class = LeadSourceSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = ('name')
+    ordering_fields = ('id', 'name')
+
+
+class LeadCourseViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = LeadCourse.objects.all()
+    serializer_class = LeadCourseSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
     search_fields = ('name')

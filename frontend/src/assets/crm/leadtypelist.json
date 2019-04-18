@@ -1,0 +1,27 @@
+{
+  "program": "crm",
+  "resource": "leadtype",
+  "type": "list",
+  "title": "Leads",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "menulist",
+      "name": "menulist_import",
+      "text": "All leads",
+      "value": "/crm/lead/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_export",
+      "text": "Resource leads",
+      "value": "/crm/leadresource/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_lead_export",
+      "text": "Health leads",
+      "value": "/crm/leadhealth/list"
+    }
+  ]
+}
