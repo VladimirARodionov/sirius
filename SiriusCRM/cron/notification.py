@@ -1,13 +1,10 @@
 from django_cron import CronJobBase, Schedule
 
-#from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
+from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
 from SiriusCRM.models import Appointment, Lead
 from datetime import datetime, timedelta
 from django.utils.translation import gettext_lazy as _
 from SiriusCRM.tasks import send_telegram_notification, send_email_notification
-
-LEAD_LINK = 'https://server.raevskyschool.ru/sirius/crm/lead/edit/%(id)s'
-APPOINTMENT_LINK = 'https://server.raevskyschool.ru/sirius/zdravniza/appointment/edit/%(id)s'
 
 
 class NotificationJob(CronJobBase):
@@ -23,16 +20,16 @@ class NotificationJob(CronJobBase):
             appointment_date = datetime.combine(appointment.date, appointment.time)
             delta = appointment_date - date
             minutes = (delta.total_seconds() % 3600) // 60
-            hours = (delta.total_seconds() % 3600)
-            if 30 > minutes > 0 and hours == 0:
+            hours = (delta.total_seconds() / 3600)
+            if 30 > minutes > 0 and int(hours) == 0:
                 self.send_notification(appointment)
         leads = Lead.objects.filter(action_date__lt=(date + timedelta(days=1)), action_time__isnull=False)
         for lead in leads:
             lead_date = datetime.combine(lead.action_date, lead.action_time)
             delta = lead_date - date
             minutes = (delta.total_seconds() % 3600) // 60
-            hours = (delta.total_seconds() % 3600)
-            if 30 > minutes > 0 and hours == 0:
+            hours = (delta.total_seconds() / 3600)
+            if 30 > minutes > 0 and int(hours) == 0:
                 self.send_lead_notification(lead)
 
 
