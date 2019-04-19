@@ -21,7 +21,7 @@ class NotificationJob(CronJobBase):
             delta = appointment_date - date
             minutes = (delta.total_seconds() % 3600) // 60
             hours = (delta.total_seconds() / 3600)
-            if 30 > minutes > 0 and int(hours) == 0:
+            if 30 > minutes >= 0 and int(hours) == 0:
                 self.send_notification(appointment)
         leads = Lead.objects.filter(action_date__lt=(date + timedelta(days=1)), action_time__isnull=False)
         for lead in leads:
@@ -29,7 +29,7 @@ class NotificationJob(CronJobBase):
             delta = lead_date - date
             minutes = (delta.total_seconds() % 3600) // 60
             hours = (delta.total_seconds() / 3600)
-            if 30 > minutes > 0 and int(hours) == 0:
+            if 30 > minutes >= 0 and int(hours) == 0:
                 self.send_lead_notification(lead)
 
 
