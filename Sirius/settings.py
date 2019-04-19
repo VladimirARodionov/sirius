@@ -69,6 +69,7 @@ MIDDLEWARE = [
 
 CRON_CLASSES = [
     'SiriusCRM.cron.notification.NotificationJob',
+    'django_cron.cron.FailedRunsNotificationCronJob',
 ]
 
 ROOT_URLCONF = 'Sirius.urls'
@@ -101,6 +102,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
             'read_default_file': '/etc/sirius.cnf',
+            'init_command': 'SET foreign_key_checks = 0;',
         },
     }
 }
