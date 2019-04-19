@@ -1,17 +1,20 @@
 from django_cron import CronJobBase, Schedule
 
-from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
+#from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
 from SiriusCRM.models import Appointment, Lead
 from datetime import datetime, timedelta
 from django.utils.translation import gettext_lazy as _
 from SiriusCRM.tasks import send_telegram_notification, send_email_notification
+
+LEAD_LINK = 'https://server.raevskyschool.ru/sirius/crm/lead/edit/%(id)s'
+APPOINTMENT_LINK = 'https://server.raevskyschool.ru/sirius/zdravniza/appointment/edit/%(id)s'
 
 
 class NotificationJob(CronJobBase):
     RUN_EVERY_MINS = 30 # every 30 mins
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINS)
-    code = 'SiriusCRM.notification_job'    # a unique code
+    code = 'SiriusCRM.cron.notification.NotificationJob'    # a unique code
 
     def do(self):
         date = datetime.now()
