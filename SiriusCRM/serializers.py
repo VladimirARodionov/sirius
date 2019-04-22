@@ -6,7 +6,8 @@ from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, cl
 
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment, \
-    AppointmentStatus, ZdravnizaComment, ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, LeadCourse
+    AppointmentStatus, ZdravnizaComment, ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, \
+    LeadCourse, LeadSource
 
 
 class UserSerializer(ModelSerializer):
@@ -317,7 +318,7 @@ class LeadStatusSerializer(ModelSerializer):
 class LeadSourceSerializer(ModelSerializer):
 
     class Meta:
-        model = LeadStatus
+        model = LeadSource
         fields = ('id', 'name')
 
 

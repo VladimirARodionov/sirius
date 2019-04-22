@@ -169,6 +169,14 @@
     "pk": 10,
     "fields": {
       "number": 10,
+      "name": "приглашать на марафоны"
+    }
+  },
+  {
+    "model": "SiriusCRM.LeadStatus",
+    "pk": 11,
+    "fields": {
+      "number": 11,
       "name": "ученик школы"
     }
   },
@@ -212,6 +220,13 @@
     "pk": 6,
     "fields": {
       "name": "от наших"
+    }
+  },
+  {
+    "model": "SiriusCRM.LeadSource",
+    "pk": 7,
+    "fields": {
+      "name": "от Раевского Д."
     }
   },
   {
