@@ -541,7 +541,7 @@ class LeadViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
     serializer_class = LeadSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('id', 'date_added', 'first_name', 'last_name',
+    search_fields = ('id', 'first_name', 'last_name',
                      'middle_name', 'email', 'mobile', 'status__name', 'source__name', 'course__name')
     ordering_fields = ('id', 'date_added', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status', 'source', 'course', 'consultant')
 
