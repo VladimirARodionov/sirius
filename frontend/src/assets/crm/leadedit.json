@@ -18,6 +18,13 @@
       "required": true
     },
     {
+      "type": "begindate",
+      "name": "lead_edit_datetime",
+      "text": "Date",
+      "value": "date_added",
+      "required": true
+    },
+    {
       "type": "text",
       "name": "lead_edit_first_name",
       "text": "First name",

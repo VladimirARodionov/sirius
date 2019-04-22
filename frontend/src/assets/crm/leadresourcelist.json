@@ -62,7 +62,7 @@
         },
         {
           "text": "Date",
-          "value": "time"
+          "value": "date_added"
         },
         {
           "text": "First name",
@@ -98,7 +98,7 @@
           "name": "id"
         },
         {
-          "name": "time"
+          "name": "date_added"
         },
         {
           "name": "first_name"

@@ -27,7 +27,7 @@ class LeadResource(resources.ModelResource):
     middle_name = fields.Field(attribute='middle_name', column_name=_('Middle name'))
     email = fields.Field(attribute='email', column_name=_('Email'))
     mobile = fields.Field(attribute='mobile', column_name=_('Mobile'))
-    time = fields.Field(attribute='time', column_name=_('Time'))
+    date_added = fields.Field(attribute='date_added', column_name=_('Date added'))
     messenger = fields.Field(attribute='messenger', column_name=_('Messenger'), widget=ForeignKeyWidget(Messenger, 'name'))
     status = fields.Field(attribute='status', column_name=_('Status'), widget=ForeignKeyWidget(LeadStatus, 'name'))
     source = fields.Field(attribute='source', column_name=_('Source'), widget=ForeignKeyWidget(LeadSource, 'name'))
@@ -41,5 +41,5 @@ class LeadResource(resources.ModelResource):
     class Meta:
         model = Lead
         fields = ('id', 'first_name', 'middle_name', 'last_name', 'email', 'mobile', 'time')
-        export_order = ('id', 'time', 'last_name', 'first_name', 'middle_name', 'email', 'mobile', 'messenger', 'status',
+        export_order = ('id', 'date_added', 'last_name', 'first_name', 'middle_name', 'email', 'mobile', 'messenger', 'status',
                         'source', 'consultant_name', 'consultant_surname', 'action', 'action_date', 'action_time', 'comments')

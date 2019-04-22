@@ -102,6 +102,11 @@
        :field="field"
        v-model="value">
      </ApexChart>
+     <DateTimeField
+       v-else-if="field.type === 'datetime'"
+       :field="field"
+       v-model="value">
+     </DateTimeField>
       <v-card-actions
        v-else-if="field.type === 'actions'">
         <v-spacer></v-spacer>
@@ -137,6 +142,7 @@ import Calendar from './Calendar'
 import CommentsField from './CommentsField'
 import HotList from './HotList'
 import ApexChart from './ApexChart'
+import DateTimeField from './DateTimeField'
 
 export default {
   name: 'FormFieldFactory',
@@ -165,7 +171,8 @@ export default {
     Calendar,
     HotList,
     BeginDateField,
-    EndDateField
+    EndDateField,
+    DateTimeField
   },
   data () {
     return {
