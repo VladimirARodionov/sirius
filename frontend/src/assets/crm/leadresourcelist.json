@@ -73,10 +73,6 @@
           "value": "last_name"
         },
         {
-          "text": "Email",
-          "value": "email"
-        },
-        {
           "text": "Mobile",
           "value": "mobile"
         },
@@ -105,9 +101,6 @@
         },
         {
           "name": "last_name"
-        },
-        {
-          "name": "email"
         },
         {
           "name": "mobile"
