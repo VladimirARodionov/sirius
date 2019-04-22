@@ -197,6 +197,10 @@ class LeadStatus(models.Model):
     class Meta:
         ordering = ['id']
 
+    def __str__(self):
+        return self.name
+
+
 # Таблица источников лидов в CRM
 class LeadSource(models.Model):
     id = models.AutoField(primary_key=True)
@@ -204,6 +208,9 @@ class LeadSource(models.Model):
 
     class Meta:
         ordering = ['id']
+
+    def __str__(self):
+        return self.name
 
 
 # Таблица курсов лидов в CRM
@@ -215,6 +222,10 @@ class LeadCourse(models.Model):
 
     class Meta:
         ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
 
 # Список пользователей
 class User(AbstractBaseUser, PermissionsMixin):
@@ -288,6 +299,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
+    def __str__(self):
+        return '%s %s (%s) [%s]' % (self.first_name, self.last_name, self.email, self.mobile)
+
 
 # Таблица комментариев контакта
 class ZdravnizaComment(models.Model):
@@ -335,7 +349,7 @@ class Lead(models.Model):
     action = models.CharField(max_length=160, null=True, blank=True)
 
     class Meta:
-        ordering = ['id']
+        ordering = ['date_added', 'id']
 
     def __str__(self):
         return '%s %s (%s) [%s]' % (self.first_name, self.last_name, self.email, self.mobile)
