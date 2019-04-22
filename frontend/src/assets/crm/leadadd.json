@@ -18,11 +18,11 @@
       "required": true
     },
     {
-      "type": "datetime",
-      "name": "lead_add_datetime",
+      "type": "begindate",
+      "name": "lead_add_date",
       "text": "Date",
-      "value": "time",
-      "required": false
+      "value": "date_added",
+      "required": true
     },
     {
       "type": "text",

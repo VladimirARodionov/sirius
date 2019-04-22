@@ -487,7 +487,7 @@ class LeadView(APIView):
     @staticmethod
     def send_notification(lead, consultant):
         message = _('New lead has been made.') + '\n' + \
-                  _('Date: %(date)s') % {'date': timezone.localtime(lead.time).strftime('%Y-%m-%d %H:%M:%S')} + '\n' + \
+                  _('Date: %(date)s') % {'date': datetime.strftime(lead.date_added, '%Y-%m-%d')} + '\n' + \
                   _('Name: %(lead_name)s') % {'lead_name': str(lead.first_name) + " " + str(lead.last_name)} + '\n' + \
                   _('Email: %(lead_email)s') % {'lead_email': str(lead.email)} + '\n' + \
                   _('Mobile: %(lead_mobile)s') % {'lead_mobile': str(lead.mobile)} + '\n' + \
@@ -499,7 +499,7 @@ class LeadView(APIView):
             send_telegram_notification.delay(consultant.get_telegram_username(), message)
         if consultant and consultant.email:
             send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru',
-                                          _('[CRM] New lead (%(date)s)') % {'date': timezone.localtime(lead.time).strftime('%Y-%m-%d %H:%M:%S')}, message)
+                                          _('[CRM] New lead (%(date)s)') % {'date': datetime.strftime(lead.date_added, '%Y-%m-%d')}, message)
         if lead.email:
             send_email_notification.delay(lead.email, 'no-reply@server.raevskyschool.ru',
                                       _('You are successfully contacted Raevsky School'), message)
@@ -518,9 +518,9 @@ class LeadSourceChartView(HasRoleMixin, APIView):
         course = serializer.data['course']
         args = {}
         if begin_date:
-            args['time__gte'] = begin_date
+            args['date_added__gte'] = begin_date
         if end_date:
-            args['time__lte'] = end_date
+            args['date_added__lte'] = end_date
         if option:
             args['status_id'] = option
         if course:
@@ -550,9 +550,9 @@ class LeadStatusChartView(HasRoleMixin, APIView):
         course = serializer.data['course']
         args = {}
         if begin_date:
-            args['time__gte'] = begin_date
+            args['date_added__gte'] = begin_date
         if end_date:
-            args['time__lte'] = end_date
+            args['date_added__lte'] = end_date
         if option:
             args['source_id'] = option
         if course:

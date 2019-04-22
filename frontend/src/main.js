@@ -13,8 +13,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import VueBus from 'vue-bus'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import VueApexCharts from 'vue-apexcharts'
-import DatetimePicker from 'vuetify-datetime-picker'
-// import 'vuetify-datetime-picker/src/stylus/main.styl'
 
 Vue.use(VueBus)
 Vue.use(VRM, { router: router, debug: true })
@@ -49,8 +47,6 @@ Vue.use(vuexI18n.plugin, store,
 Vue.i18n.add('ru', require('./locale/ru.json'))
 
 Vue.i18n.set('ru')
-
-Vue.use(DatetimePicker)
 
 Vue.use(VueApexCharts)
 

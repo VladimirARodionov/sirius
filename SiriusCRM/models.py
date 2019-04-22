@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from SiriusCRM.managers.UserManager import UserManager
@@ -314,6 +315,7 @@ class CrmComment(models.Model):
 class Lead(models.Model):
     id = models.AutoField(primary_key=True)
     time = models.DateTimeField(auto_now_add=True)
+    date_added = models.DateField(default=timezone.now, null=False, blank=False)
     email = models.EmailField(_('Email'), null=True, blank=True)
     mobile = models.CharField(_('Mobile'), unique=True, max_length=20, blank=False)
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
