@@ -353,12 +353,12 @@ class LeadSerializer(ModelSerializer):
 
 
 class LeadResourceSerializer(LeadSerializer):
-    course = serializers.PrimaryKeyRelatedField(read_only=True, default=LeadCourse.objects.get(pk=LeadCourse.RESOURCE))
+    course = serializers.PrimaryKeyRelatedField(read_only=True, default=LeadCourse.objects.filter(pk=LeadCourse.RESOURCE))
     course_id = serializers.IntegerField(default=LeadCourse.RESOURCE)
 
 
 class LeadHealthSerializer(LeadSerializer):
-    course = serializers.PrimaryKeyRelatedField(read_only=True, default=LeadCourse.objects.get(pk=LeadCourse.HEALTH))
+    course = serializers.PrimaryKeyRelatedField(read_only=True, default=LeadCourse.objects.filter(pk=LeadCourse.HEALTH))
     course_id = serializers.IntegerField(default=LeadCourse.HEALTH)
 
 
