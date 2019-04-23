@@ -47,7 +47,8 @@ class NotificationJob(CronJobBase):
         if appointment.consultant.email:
             send_email_notification.delay(appointment.consultant.email, 'no-reply@server.raevskyschool.ru',
                                           _('[Zdravniza] appointment notification (%(date)s %(time)s)') % {'date': str(appointment.date), 'time': str(appointment.time)}, message)
-        send_email_notification.delay(appointment.contact.email, 'no-reply@server.raevskyschool.ru',
+        if appointment.contact.email:
+            send_email_notification.delay(appointment.contact.email, 'no-reply@server.raevskyschool.ru',
                                       _('[Zdravniza] appointment notification (%(date)s %(time)s)') % {'date': str(appointment.date), 'time': str(appointment.time)}, message)
 
     def send_lead_notification(self, lead):

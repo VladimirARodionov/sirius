@@ -329,8 +329,16 @@ class LeadCourseSerializer(ModelSerializer):
         fields = ('id', 'name')
 
 
+class MessengerSerializer(ModelSerializer):
+
+    class Meta:
+        model = Messenger
+        fields = ('id', 'name')
+
+
 class LeadSerializer(ModelSerializer):
     comment_value = CrmCommentSerializer(source='comments', read_only=True, many=True)
+    messenger_value = MessengerSerializer(source='messengers', read_only=True, many=True)
     consultant_value = UserSerializer(source='consultant', read_only=True)
     status_value = LeadStatusSerializer(source='status', read_only=True)
     source_value = LeadSourceSerializer(source='source', read_only=True)
@@ -339,9 +347,9 @@ class LeadSerializer(ModelSerializer):
     class Meta:
         model = Lead
         fields = ('id', 'time', 'first_name', 'last_name','middle_name', 'email', 'mobile',
-                  'messenger', 'consultant', 'status', 'source', 'comments', 'comment_value', 'consultant_value',
-                  'status_value', 'source_value', 'action', 'action_date', 'action_time', 'course', 'course_value',
-                  'course_id', 'date_added')
+                  'messengers', 'messenger_value', 'consultant', 'status', 'source', 'comments', 'comment_value',
+                  'consultant_value', 'status_value', 'source_value', 'action', 'action_date', 'action_time',
+                  'course', 'course_value', 'course_id', 'date_added')
 
 
 class LeadResourceSerializer(LeadSerializer):
@@ -359,13 +367,6 @@ class LeadCommentSerializer(ModelSerializer):
     class Meta:
         model = LeadComment
         fields = ('id', 'lead', 'comment')
-
-
-class MessengerSerializer(ModelSerializer):
-
-    class Meta:
-        model = Messenger
-        fields = ('id', 'name')
 
 
 class BeginEndDateOptionSerializer(Serializer):

@@ -541,8 +541,8 @@ class LeadViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
     serializer_class = LeadSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('id', 'first_name', 'last_name',
-                     'middle_name', 'email', 'mobile', 'status__name', 'source__name', 'course__name', 'action')
+    search_fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status__name', 'source__name',
+                     'course__name', 'action')
     ordering_fields = ('id', 'date_added', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'status',
                        'source', 'course', 'consultant', 'action', 'action_date', 'action_time')
 
@@ -560,10 +560,10 @@ class LeadViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
         instance = serializer.save()
         if not prev_instance.status_id == instance.status_id:
             comment = prev_instance.status.name + ' -> ' + instance.status.name
-            crmComment = CrmComment(user=user, comment=comment)
-            crmComment.save()
-            leadComment = LeadComment(lead=instance, comment=crmComment)
-            leadComment.save()
+            crm_comment = CrmComment(user=user, comment=comment)
+            crm_comment.save()
+            lead_comment = LeadComment(lead=instance, comment=crm_comment)
+            lead_comment.save()
         # TODO send notification
 
 
@@ -662,7 +662,7 @@ class LeadSourceViewSet(HasRoleMixin, viewsets.ModelViewSet):
     serializer_class = LeadSourceSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('name')
+    search_fields = 'name'
     ordering_fields = ('id', 'name')
 
 
@@ -676,7 +676,7 @@ class LeadCourseViewSet(HasRoleMixin, viewsets.ModelViewSet):
     serializer_class = LeadCourseSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('name')
+    search_fields = 'name'
     ordering_fields = ('id', 'name')
 
 
@@ -690,7 +690,7 @@ class MessengerViewSet(HasRoleMixin, viewsets.ModelViewSet):
     serializer_class = MessengerSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
-    search_fields = ('name',)
+    search_fields = 'name'
     ordering_fields = ('id', 'name')
 
 

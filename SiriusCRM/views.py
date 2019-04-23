@@ -312,8 +312,8 @@ class AppointmentView(APIView):
             contact_serializer.is_valid(raise_exception=True)
         except ValidationError as e:
             codes = e.get_codes()
-            # Check if error due to email exists
-            if 'email' not in codes or codes['email'][0] != 'unique':
+            # Check if error due to mobile exists
+            if 'mobile' not in codes or codes['mobile'][0] != 'unique':
                 raise e
 
         try:
@@ -359,7 +359,8 @@ class AppointmentView(APIView):
         if consultant.email:
             send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru',
                                           _('[Zdravniza] New appointment (%(date)s %(time)s)') % {'date': str(appointment.date), 'time': str(appointment.time)}, message)
-        send_email_notification.delay(contact.email, 'no-reply@server.raevskyschool.ru',
+        if contact.email:
+            send_email_notification.delay(contact.email, 'no-reply@server.raevskyschool.ru',
                                       _('You are successfully made new Zdravniza appointment'), message)
 
     def get_free_consultants(self, date, time):
@@ -491,7 +492,7 @@ class LeadView(APIView):
                   _('Name: %(lead_name)s') % {'lead_name': str(lead.first_name) + " " + str(lead.last_name)} + '\n' + \
                   _('Email: %(lead_email)s') % {'lead_email': str(lead.email)} + '\n' + \
                   _('Mobile: %(lead_mobile)s') % {'lead_mobile': str(lead.mobile)} + '\n' + \
-                  _('Messenger: %(messenger)s') % {'messenger': str(lead.messenger.name)} + '\n' + \
+                  _('Messengers: %(messengers)s') % {'messengers': ','.join(str(Messenger.objects.get(m.id).name) for m in lead.messengers)} + '\n' + \
                   _('Source: %(source)s') % {'source': str(lead.source.name)} + '\n' + \
                   _('Link: %(link)s') % {'link': LEAD_LINK % {'id': lead.id}}
 

@@ -336,6 +336,7 @@ class Lead(models.Model):
     last_name = models.CharField(_('Last name'), max_length=80, blank=True)
     middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
     messenger = models.ForeignKey(Messenger, null=False, on_delete=models.PROTECT, related_name="lead_messenger")
+    messengers = models.ManyToManyField(Messenger, through='LeadMessenger')
     consultant = models.ForeignKey(User, null=True, on_delete=models.PROTECT, related_name="lead_consultant")
     status = models.ForeignKey(LeadStatus, null=False,
                                on_delete=models.PROTECT, related_name="lead_status")
@@ -358,12 +359,13 @@ class Lead(models.Model):
 # Список контактов, лидов в здравницу
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
-    email = models.EmailField(_('Email'), unique=True, blank=False)
-    mobile = models.CharField(_('Mobile'), max_length=20, blank=False)
+    email = models.EmailField(_('Email'), blank=True)
+    mobile = models.CharField(_('Mobile'), unique=True, max_length=20, blank=False)
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
     last_name = models.CharField(_('Last name'), max_length=80, blank=True)
     middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
     comments = models.ManyToManyField(ZdravnizaComment, through='ContactComment')
+    messengers = models.ManyToManyField(Messenger, through='ContactMessenger')
 
     class Meta:
         ordering = ['id']
@@ -547,6 +549,26 @@ class LeadComment(models.Model):
     id = models.AutoField(primary_key=True)
     lead = models.ForeignKey(Lead, on_delete=models.PROTECT, related_name="lead_value")
     comment = models.ForeignKey(CrmComment, on_delete=models.PROTECT, related_name="comment_value")
+
+    class Meta:
+        ordering = ['id']
+
+
+# Таблица связей мессенджеров лида
+class LeadMessenger(models.Model):
+    id = models.AutoField(primary_key=True)
+    lead = models.ForeignKey(Lead, on_delete=models.PROTECT, related_name="lead_messenger_value")
+    messenger = models.ForeignKey(Messenger, on_delete=models.PROTECT, related_name="lead_messenger_value")
+
+    class Meta:
+        ordering = ['id']
+
+
+# Таблица связей мессенджеров контакта
+class ContactMessenger(models.Model):
+    id = models.AutoField(primary_key=True)
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="contact_messenger_value")
+    messenger = models.ForeignKey(Messenger, on_delete=models.PROTECT, related_name="contact_messenger_value")
 
     class Meta:
         ordering = ['id']
