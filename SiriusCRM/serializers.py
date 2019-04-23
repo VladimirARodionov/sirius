@@ -7,7 +7,7 @@ from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, cl
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment, \
     AppointmentStatus, ZdravnizaComment, ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, \
-    LeadCourse, LeadSource
+    LeadCourse, LeadSource, LeadMessenger
 
 
 class UserSerializer(ModelSerializer):
@@ -350,6 +350,21 @@ class LeadSerializer(ModelSerializer):
                   'messengers', 'messenger_value', 'consultant', 'status', 'source', 'comments', 'comment_value',
                   'consultant_value', 'status_value', 'source_value', 'action', 'action_date', 'action_time',
                   'course', 'course_value', 'course_id', 'date_added')
+
+    def update(self, instance, validated_data):
+        messengers_data = self.context['request'].data['messengers']
+        lead_id = self.context['request'].data['id']
+        lead = get_object_or_404(Lead, pk=lead_id)
+        instance = super(LeadSerializer, self).update(instance, validated_data)
+        new_messengers = []
+        for row in messengers_data:
+            messenger = get_object_or_404(Messenger, pk=row)
+            new_messengers.append(messenger)
+        current_messengers = LeadMessenger.objects.filter(lead=lead_id)
+        current_messengers.delete() # TODO not delete already existing positions
+        for new_mes in new_messengers:
+            LeadMessenger.objects.create(lead=lead, messenger=new_mes)
+        return instance
 
 
 class LeadResourceSerializer(LeadSerializer):

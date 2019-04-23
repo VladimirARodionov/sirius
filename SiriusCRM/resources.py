@@ -41,5 +41,5 @@ class LeadResource(resources.ModelResource):
     class Meta:
         model = Lead
         fields = ('id', 'first_name', 'middle_name', 'last_name', 'email', 'mobile', 'time')
-        export_order = ('id', 'date_added', 'last_name', 'first_name', 'middle_name', 'email', 'mobile', 'messenger', 'status',
+        export_order = ('id', 'date_added', 'last_name', 'first_name', 'middle_name', 'email', 'mobile', 'messengers', 'status',
                         'source', 'consultant_name', 'consultant_surname', 'action', 'action_date', 'action_time', 'comments')
