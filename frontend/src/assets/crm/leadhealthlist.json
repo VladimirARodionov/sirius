@@ -85,6 +85,18 @@
           "value": "source"
         },
         {
+          "text": "Action date",
+          "value": "action_date"
+        },
+        {
+          "text": "Action time",
+          "value": "action_time"
+        },
+        {
+          "text": "Action",
+          "value": "action"
+        },
+        {
           "text": "Consultant",
           "value": "consultant"
         }
@@ -110,6 +122,15 @@
         },
         {
           "name": "source_value.name"
+        },
+        {
+          "name": "action_date"
+        },
+        {
+          "name": "action_time"
+        },
+        {
+          "name": "action"
         },
         {
           "name": "consultant_value.full_name"
