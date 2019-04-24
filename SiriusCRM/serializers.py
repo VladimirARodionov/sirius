@@ -270,6 +270,38 @@ class MessengerSerializer(ModelSerializer):
         fields = ('id', 'name')
 
 
+class ContactWithoutCommentsSerializer(ModelSerializer):
+    messengers = serializers.PrimaryKeyRelatedField(many=True, default=None, read_only=True)
+
+    class Meta:
+        model = Contact
+        fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'mobile',
+                  'messengers')
+
+    def create(self, validated_data):
+        instance = super(ContactWithoutCommentsSerializer, self).create(validated_data)
+        messengers_data = self.initial_data.get('messengers', [])
+        for row in messengers_data:
+            messenger = get_object_or_404(Messenger, pk=row)
+            ContactMessenger.objects.create(contact=instance, messenger=messenger)
+        return instance
+
+    def update(self, instance, validated_data):
+        messengers_data = self.context['request'].data['messengers']
+        contact_id = self.context['request'].data['id']
+        contact = get_object_or_404(Contact, pk=contact_id)
+        instance = super(ContactWithoutCommentsSerializer, self).update(instance, validated_data)
+        new_messengers = []
+        for row in messengers_data:
+            messenger = get_object_or_404(Messenger, pk=row)
+            new_messengers.append(messenger)
+        current_messengers = ContactMessenger.objects.filter(contact=contact_id)
+        current_messengers.delete() # TODO not delete already existing messengers
+        for new_mes in new_messengers:
+            ContactMessenger.objects.create(contact=contact, messenger=new_mes)
+        return instance
+
+
 class ContactSerializer(ModelSerializer):
     comment_value = ZdravnizaCommentSerializer(source='comments', read_only=True, many=True)
     messenger_value = MessengerSerializer(source='messengers', read_only=True, many=True)
