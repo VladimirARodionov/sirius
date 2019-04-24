@@ -34,7 +34,8 @@ from schedule.views import _api_occurrences
 from Sirius import settings
 from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger, LeadSource, LeadStatus, LeadCourse
+from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger, \
+    LeadSource, LeadStatus, LeadCourse, LeadMessenger, ContactMessenger
 from SiriusCRM.resources import UserResource, LeadResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer, \
@@ -324,7 +325,17 @@ class AppointmentView(APIView):
             comment = contact_serializer.data.get('comment', '')
             date = appointment_date_serializer.data.get('date')
             time = appointment_time_serializer.data.get('time')
-            contact, created = Contact.objects.update_or_create(defaults={'email': email, 'mobile': mobile, 'first_name': first_name, 'last_name': last_name}, email=email)
+            messengers = contact_serializer.data.get('messengers')
+            contact, created = Contact.objects.update_or_create(defaults={'email': email, 'mobile': mobile, 'first_name': first_name, 'last_name': last_name}, mobile=mobile)
+            new_messengers = []
+            for row in messengers:
+                messenger = get_object_or_404(Messenger, pk=row)
+                new_messengers.append(messenger)
+            current_messengers = ContactMessenger.objects.filter(contact=contact)
+            current_messengers.delete()  # TODO not delete already existing contacts
+            for new_mes in new_messengers:
+                ContactMessenger.objects.create(contact=contact, messenger=new_mes)
+
             appointment = Appointment.objects.create(contact=contact, date=date, time=time, comment=comment, status_id=AppointmentStatus.CREATED)
             consultant = self.select_consultant(appointment)
             appointment.consultant = consultant
@@ -470,6 +481,15 @@ class LeadView(APIView):
             if consultant:
                 lead.consultant = consultant
                 lead.save()
+            messengers = lead_serializer.data.get('messengers', [])
+            new_messengers = []
+            for row in messengers:
+                messenger = get_object_or_404(Messenger, pk=row)
+                new_messengers.append(messenger)
+            current_messengers = LeadMessenger.objects.filter(lead=lead)
+            current_messengers.delete()  # TODO not delete already existing leads
+            for new_mes in new_messengers:
+                LeadMessenger.objects.create(lead=lead, messenger=new_mes)
             LeadView.send_notification(lead, consultant)
             context['result'] = {'success': True}
             return JsonResponse(context)
@@ -492,7 +512,6 @@ class LeadView(APIView):
                   _('Name: %(lead_name)s') % {'lead_name': str(lead.first_name) + " " + str(lead.last_name)} + '\n' + \
                   _('Email: %(lead_email)s') % {'lead_email': str(lead.email)} + '\n' + \
                   _('Mobile: %(lead_mobile)s') % {'lead_mobile': str(lead.mobile)} + '\n' + \
-                  _('Messengers: %(messengers)s') % {'messengers': ','.join(str(Messenger.objects.get(m.id).name) for m in lead.messengers)} + '\n' + \
                   _('Source: %(source)s') % {'source': str(lead.source.name)} + '\n' + \
                   _('Link: %(link)s') % {'link': LEAD_LINK % {'id': lead.id}}
 

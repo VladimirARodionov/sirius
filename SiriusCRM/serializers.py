@@ -7,7 +7,7 @@ from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, cl
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment, \
     AppointmentStatus, ZdravnizaComment, ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, \
-    LeadCourse, LeadSource, LeadMessenger
+    LeadCourse, LeadSource, LeadMessenger, ContactMessenger
 
 
 class UserSerializer(ModelSerializer):
@@ -263,13 +263,44 @@ class ContactCommentSerializer(ModelSerializer):
         fields = ('id', 'contact', 'comment')
 
 
+class MessengerSerializer(ModelSerializer):
+
+    class Meta:
+        model = Messenger
+        fields = ('id', 'name')
+
+
 class ContactSerializer(ModelSerializer):
     comment_value = ZdravnizaCommentSerializer(source='comments', read_only=True, many=True)
+    messenger_value = MessengerSerializer(source='messengers', read_only=True, many=True)
 
     class Meta:
         model = Contact
-        fields = ('id', 'first_name', 'last_name',
-                  'middle_name', 'email', 'mobile', 'comments', 'comment_value')
+        fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'comments', 'comment_value',
+                  'messengers', 'messenger_value')
+
+    def create(self, validated_data):
+        instance = super(ContactSerializer, self).create(validated_data)
+        messengers_data = self.initial_data.get('messengers', [])
+        for row in messengers_data:
+            messenger = get_object_or_404(Messenger, pk=row)
+            ContactMessenger.objects.create(contact=instance, messenger=messenger)
+        return instance
+
+    def update(self, instance, validated_data):
+        messengers_data = self.context['request'].data['messengers']
+        contact_id = self.context['request'].data['id']
+        contact = get_object_or_404(Contact, pk=contact_id)
+        instance = super(ContactSerializer, self).update(instance, validated_data)
+        new_messengers = []
+        for row in messengers_data:
+            messenger = get_object_or_404(Messenger, pk=row)
+            new_messengers.append(messenger)
+        current_messengers = ContactMessenger.objects.filter(contact=contact_id)
+        current_messengers.delete() # TODO not delete already existing messengers
+        for new_mes in new_messengers:
+            ContactMessenger.objects.create(contact=contact, messenger=new_mes)
+        return instance
 
 
 class AppointmentDateSerializer(ModelSerializer):
@@ -329,13 +360,6 @@ class LeadCourseSerializer(ModelSerializer):
         fields = ('id', 'name')
 
 
-class MessengerSerializer(ModelSerializer):
-
-    class Meta:
-        model = Messenger
-        fields = ('id', 'name')
-
-
 class LeadSerializer(ModelSerializer):
     comment_value = CrmCommentSerializer(source='comments', read_only=True, many=True)
     messenger_value = MessengerSerializer(source='messengers', read_only=True, many=True)
@@ -350,6 +374,14 @@ class LeadSerializer(ModelSerializer):
                   'messengers', 'messenger_value', 'consultant', 'status', 'source', 'comments', 'comment_value',
                   'consultant_value', 'status_value', 'source_value', 'action', 'action_date', 'action_time',
                   'course', 'course_value', 'course_id', 'date_added')
+
+    def create(self, validated_data):
+        instance = super(LeadSerializer, self).create(validated_data)
+        messengers_data = self.initial_data.get('messengers', [])
+        for row in messengers_data:
+            messenger = get_object_or_404(Messenger, pk=row)
+            LeadMessenger.objects.create(lead=instance, messenger=messenger)
+        return instance
 
     def update(self, instance, validated_data):
         messengers_data = self.context['request'].data['messengers']
