@@ -305,11 +305,18 @@ class ContactWithoutCommentsSerializer(ModelSerializer):
 class ContactSerializer(ModelSerializer):
     comment_value = ZdravnizaCommentSerializer(source='comments', read_only=True, many=True)
     messenger_value = MessengerSerializer(source='messengers', read_only=True, many=True)
+    full_name_mobile = serializers.SerializerMethodField()
 
     class Meta:
         model = Contact
         fields = ('id', 'first_name', 'last_name', 'middle_name', 'email', 'mobile', 'comments', 'comment_value',
-                  'messengers', 'messenger_value')
+                  'messengers', 'messenger_value', 'full_name_mobile')
+
+    def get_full_name_mobile(self, obj):
+        full_name = '%s %s' % (obj.first_name, obj.last_name)
+        full_name = full_name.strip()
+        full_name_mobile = full_name + ' (%s)' % obj.mobile
+        return full_name_mobile
 
     def create(self, validated_data):
         instance = super(ContactSerializer, self).create(validated_data)
