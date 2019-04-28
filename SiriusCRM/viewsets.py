@@ -453,11 +453,12 @@ class AppointmentViewSet(HasRoleMixin, viewsets.ModelViewSet):
     ordering_fields = ('id', 'date', 'time', 'status', 'contact', 'consultant')
 
     def perform_create(self, serializer):
+        serializer.is_valid(raise_exception=True)
         appointment = serializer.save()
         date = appointment.date
         time = appointment.time
         contact = Contact.objects.get(pk=appointment.contact_id)
-        consultant = User.objects.get(pk=appointment.consultant_id)
+        consultant = User.objects.get(pk=appointment.consultant_id) # FIXME consultant may be null
         _datetime = datetime.combine(date, time)
         period = Hour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
         event = Event(start=period.start, end=period.end, title=str(contact), description=str(appointment.id),
@@ -470,6 +471,7 @@ class AppointmentViewSet(HasRoleMixin, viewsets.ModelViewSet):
         AppointmentView.send_notification(appointment, consultant, contact)
 
     def perform_update(self, serializer):
+        serializer.is_valid(raise_exception=True)
         instance = serializer.save()
         event = Event.objects.get(description=instance.id)
         date = instance.date
@@ -607,7 +609,7 @@ class InfoLeadActionViewSet(LeadViewSet):
         if admin in user.positions.all():
             return Lead.objects.filter((Q(action_date__lt=(date + timedelta(days=1))) | (Q(action_time__isnull=False)) & Q(action__gt='')))
         elif consultant in user.positions.all():
-            return Lead.objects.filter((Q(action_date__lt=(date + timedelta(days=1))) | (Q(action_time__isnull=False)) & Q(action__gt='')), consultant_id=user.id)
+            return Lead.objects.filter((Q(action_date__lt=(date + timedelta(days=1))) | (Q(action_time__isnull=False)) & Q(action__gt='')) & Q(consultant=user))
         else:
             return None
 

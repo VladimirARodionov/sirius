@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from cities_light.models import City
+from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import PermissionsMixin
@@ -373,6 +374,14 @@ class Contact(models.Model):
         return '%s %s (%s) [%s]' % (self.first_name, self.last_name, self.email, self.mobile)
 
 
+def get_zdravniza_consultant():
+    consultant = get_user_model().objects.filter(categories__in=[Category.ZDRAVNIZA], positions__in=[Position.ZDRAVNIZA_CONSULTANT]).first()
+    if consultant:
+        return consultant
+    else:
+        return get_user_model().objects.filter(id=1).first()
+
+
 # Таблица записей на прием
 class Appointment(models.Model):
     id = models.AutoField(primary_key=True)
@@ -383,7 +392,7 @@ class Appointment(models.Model):
     contact = models.ForeignKey(
         Contact, null=False, on_delete=models.CASCADE, related_name="appointment_contact")
     consultant = models.ForeignKey(
-        User, null=True, on_delete=models.PROTECT, related_name="appointment_consultant")
+        User, null=False, on_delete=models.SET(get_zdravniza_consultant), related_name="appointment_consultant")
     comment = models.TextField(_('Comment'), blank=True)
 
     class Meta:

@@ -100,13 +100,6 @@
     }
   },
   {
-    "model": "SiriusCRM.Messenger",
-    "pk": 5,
-    "fields": {
-      "name": "ВКонтакте"
-    }
-  },
-  {
     "model": "SiriusCRM.LeadStatus",
     "pk": 1,
     "fields": {
