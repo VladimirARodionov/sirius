@@ -216,7 +216,7 @@ export default {
   computed: {
     errorMessageText: function () {
       const errors = this.data.errorMessage
-      if (errors instanceof String) {
+      if (typeof errors === 'string' || errors instanceof String) {
         return errors
       }
       let result = []

@@ -23,8 +23,7 @@
       :first-day-of-week="1"
       v-model="object[field.value]"
       @change="save"
-      locale="ru"
-      :max="new Date().toISOString().substr(0, 10)"/>
+      locale="ru"/>
   </v-menu>
 </template>
 

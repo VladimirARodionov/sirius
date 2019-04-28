@@ -48,19 +48,24 @@
     },
     {
       "type": "text",
-      "name": "appointment_email",
-      "text": "Email",
-      "value": "email",
-      "maxlength": 80,
-      "required": true
-    },
-    {
-      "type": "text",
       "name": "appointment_mobile",
       "text": "Mobile",
       "value": "mobile",
       "maxlength": 20,
       "required": true
+    },
+    {
+      "type": "multi-select",
+      "name": "appointment_messengers",
+      "text": "Messengers",
+      "value": "messengers",
+      "item_text": "name",
+      "item_value": "messenger_value.id",
+      "api": "/api/openmessenger/",
+      "resource": "messenger",
+      "required": false,
+      "hide_edit": true,
+      "non_pageable": true
     },
     {
       "type": "actions",

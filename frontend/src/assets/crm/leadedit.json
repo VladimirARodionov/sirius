@@ -65,15 +65,15 @@
       "required": true
     },
     {
-      "type": "select",
-      "name": "lead_edit_messenger",
-      "text": "Messenger",
-      "value": "messenger",
+      "type": "multi-select",
+      "name": "lead_edit_messengers",
+      "text": "Messengers",
+      "value": "messengers",
       "item_text": "name",
-      "item_value": "id",
+      "item_value": "messenger_value.id",
       "api": "/api/messenger/",
       "resource": "messenger",
-      "required": true
+      "required": false
     },
     {
       "type": "select",

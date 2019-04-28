@@ -94,7 +94,7 @@
           "name": "status_value.name"
         },
         {
-          "name": "contact_value.email"
+          "name": "contact_value.full_name_mobile"
         },
         {
           "name": "consultant_value.full_name"

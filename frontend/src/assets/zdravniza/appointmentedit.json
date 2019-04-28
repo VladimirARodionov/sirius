@@ -37,7 +37,7 @@
       "name": "contact_edit_select",
       "text": "Contact",
       "value": "contact",
-      "item_text": "email",
+      "item_text": "full_name_mobile",
       "item_value": "id",
       "api": "/api/contact/",
       "resource": "client",

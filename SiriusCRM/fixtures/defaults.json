@@ -93,6 +93,13 @@
     }
   },
   {
+    "model": "SiriusCRM.Messenger",
+    "pk": 4,
+    "fields": {
+      "name": "Телефон"
+    }
+  },
+  {
     "model": "SiriusCRM.LeadStatus",
     "pk": 1,
     "fields": {

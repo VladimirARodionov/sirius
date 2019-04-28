@@ -40,15 +40,15 @@
       "required": true
     },
     {
-      "type": "select",
-      "name": "lead_messenger",
-      "text": "Messenger",
-      "value": "messenger",
+      "type": "multi-select",
+      "name": "lead_edit_messengers",
+      "text": "Messengers",
+      "value": "messengers",
       "item_text": "name",
-      "item_value": "id",
+      "item_value": "messenger_value.id",
       "api": "/api/openmessenger/",
-      "resource": "messenger",
-      "required": true,
+      "resource": "messengers",
+      "required": false,
       "hide_edit": true,
       "non_pageable": true
     },

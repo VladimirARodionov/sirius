@@ -16,8 +16,8 @@
         },
         {
             "type": "menuitem",
-            "name": "menuitem_clients",
-            "text": "Clients",
+            "name": "menuitem_contacts",
+            "text": "Contacts",
             "value": "/zdravniza/client/list"
         },
         {

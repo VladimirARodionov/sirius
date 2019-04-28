@@ -34,11 +34,12 @@ from schedule.views import _api_occurrences
 from Sirius import settings
 from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
 from SiriusCRM.mixins import HasRoleMixin
-from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger, LeadSource, LeadStatus, LeadCourse
+from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger, \
+    LeadSource, LeadStatus, LeadCourse, LeadMessenger, ContactMessenger
 from SiriusCRM.resources import UserResource, LeadResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer, \
-    LeadSerializer, BeginEndDateOptionSerializer
+    LeadSerializer, BeginEndDateOptionSerializer, ContactWithoutCommentsSerializer
 from SiriusCRM.tasks import send_telegram_notification, send_email_notification
 
 
@@ -307,29 +308,39 @@ class AppointmentView(APIView):
         appointment_date_serializer.is_valid(raise_exception=True)
         appointment_time_serializer = AppointmentTimeSerializer(data=request.data)
         appointment_time_serializer.is_valid(raise_exception=True)
-        contact_serializer = ContactSerializer(data=request.data)
+        contact_serializer = ContactWithoutCommentsSerializer(data=request.data)
         try:
             contact_serializer.is_valid(raise_exception=True)
         except ValidationError as e:
             codes = e.get_codes()
-            # Check if error due to email exists
-            if 'email' not in codes or codes['email'][0] != 'unique':
+            # Check if error due to mobile exists
+            if 'mobile' not in codes or codes['mobile'][0] != 'unique':
                 raise e
 
         try:
-            first_name = contact_serializer.data.get('first_name')
-            last_name = contact_serializer.data.get('last_name', '')
-            email = contact_serializer.data.get('email')
-            mobile = contact_serializer.data.get('mobile')
-            comment = contact_serializer.data.get('comment', '')
-            date = appointment_date_serializer.data.get('date')
-            time = appointment_time_serializer.data.get('time')
-            contact, created = Contact.objects.update_or_create(defaults={'email': email, 'mobile': mobile, 'first_name': first_name, 'last_name': last_name}, email=email)
+            first_name = contact_serializer.initial_data.get('first_name')
+            last_name = contact_serializer.initial_data.get('last_name', '')
+            email = contact_serializer.initial_data.get('email')
+            mobile = contact_serializer.initial_data.get('mobile')
+            comment = contact_serializer.initial_data.get('comment', '')
+            date = appointment_date_serializer.initial_data.get('date')
+            time = appointment_time_serializer.initial_data.get('time')
+            messengers = contact_serializer.initial_data.get('messengers', [])
+            contact, created = Contact.objects.update_or_create(defaults={'email': email, 'mobile': mobile, 'first_name': first_name, 'last_name': last_name}, mobile=mobile)
+            new_messengers = []
+            for row in messengers:
+                messenger = get_object_or_404(Messenger, pk=row)
+                new_messengers.append(messenger)
+            current_messengers = ContactMessenger.objects.filter(contact=contact)
+            current_messengers.delete()  # TODO not delete already existing contacts
+            for new_mes in new_messengers:
+                ContactMessenger.objects.create(contact=contact, messenger=new_mes)
+
             appointment = Appointment.objects.create(contact=contact, date=date, time=time, comment=comment, status_id=AppointmentStatus.CREATED)
             consultant = self.select_consultant(appointment)
             appointment.consultant = consultant
             appointment.save()
-            _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M:%S').time())
+            _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M').time())
             period = Hour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
             event = Event(start=period.start, end=period.end, title=str(contact), description=str(appointment.id), calendar=Calendar.objects.get(pk=1), creator=consultant)
             event.save()
@@ -359,13 +370,14 @@ class AppointmentView(APIView):
         if consultant.email:
             send_email_notification.delay(consultant.email, 'no-reply@server.raevskyschool.ru',
                                           _('[Zdravniza] New appointment (%(date)s %(time)s)') % {'date': str(appointment.date), 'time': str(appointment.time)}, message)
-        send_email_notification.delay(contact.email, 'no-reply@server.raevskyschool.ru',
+        if contact.email:
+            send_email_notification.delay(contact.email, 'no-reply@server.raevskyschool.ru',
                                       _('You are successfully made new Zdravniza appointment'), message)
 
     def get_free_consultants(self, date, time):
         consultants = User.objects.filter(categories__in=[Category.ZDRAVNIZA],
                                           positions__in=[Position.ZDRAVNIZA_CONSULTANT])
-        _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M:%S').time())
+        _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M').time())
         period = Hour(Event.objects.all(), _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
         occurrences = period.get_occurrences()
         free_consultants = []
@@ -398,7 +410,7 @@ class AppointmentView(APIView):
         begin, end = self.get_working_hours(_date)
         for p in period:
             if (p.start >= begin and p.end <= end):
-                if self.get_free_consultants(date, datetime.strftime(p.start, '%H:%M:%S')):
+                if self.get_free_consultants(date, datetime.strftime(p.start, '%H:%M')):
                     result.append(datetime.strftime(p.start, '%H:%M'))
         # return ['9:00', '9:30', '10:00', '10:30']
         return result
@@ -425,7 +437,7 @@ class CalendarView(HasRoleMixin, APIView):
     allowed_post_roles = ['admin_role', 'edit_role']
 
     def get(self, request):
-        user_email = request.user.email
+        user = str(request.user)
         start = request.query_params.get('start')
         end = request.query_params.get('end')
         # calendar_slug = Calendar.objects.get(pk=1).slug
@@ -435,7 +447,7 @@ class CalendarView(HasRoleMixin, APIView):
             occurrences = _api_occurrences(start, end, 'Zdravniza', timezone)
             response_data = []
             for record in occurrences:
-                if record['creator'] == user_email:
+                if record['creator'] == user:
                     record.update({'duration': (record['end'] - record['start']).total_seconds() / 60})
                     response_data.append(record)
         except (ValueError, Calendar.DoesNotExist) as e:
@@ -469,6 +481,15 @@ class LeadView(APIView):
             if consultant:
                 lead.consultant = consultant
                 lead.save()
+            messengers = lead_serializer.data.get('messengers', [])
+            new_messengers = []
+            for row in messengers:
+                messenger = get_object_or_404(Messenger, pk=row)
+                new_messengers.append(messenger)
+            current_messengers = LeadMessenger.objects.filter(lead=lead)
+            current_messengers.delete()  # TODO not delete already existing leads
+            for new_mes in new_messengers:
+                LeadMessenger.objects.create(lead=lead, messenger=new_mes)
             LeadView.send_notification(lead, consultant)
             context['result'] = {'success': True}
             return JsonResponse(context)
@@ -491,7 +512,6 @@ class LeadView(APIView):
                   _('Name: %(lead_name)s') % {'lead_name': str(lead.first_name) + " " + str(lead.last_name)} + '\n' + \
                   _('Email: %(lead_email)s') % {'lead_email': str(lead.email)} + '\n' + \
                   _('Mobile: %(lead_mobile)s') % {'lead_mobile': str(lead.mobile)} + '\n' + \
-                  _('Messenger: %(messenger)s') % {'messenger': str(lead.messenger.name)} + '\n' + \
                   _('Source: %(source)s') % {'source': str(lead.source.name)} + '\n' + \
                   _('Link: %(link)s') % {'link': LEAD_LINK % {'id': lead.id}}
 
