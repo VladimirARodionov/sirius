@@ -555,8 +555,8 @@ class ContactComment(models.Model):
 # Таблица связей комментариев лида
 class LeadComment(models.Model):
     id = models.AutoField(primary_key=True)
-    lead = models.ForeignKey(Lead, on_delete=models.PROTECT, related_name="lead_value")
-    comment = models.ForeignKey(CrmComment, on_delete=models.PROTECT, related_name="comment_value")
+    lead = models.ForeignKey(Lead, on_delete=models.CASCADE, related_name="lead_value")
+    comment = models.ForeignKey(CrmComment, on_delete=models.CASCADE, related_name="comment_value")
 
     class Meta:
         ordering = ['id']
