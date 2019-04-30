@@ -7,21 +7,27 @@
   "fields": [
     {
       "type": "menulist",
-      "name": "menulist_import",
+      "name": "menulist_lead_all",
       "text": "All leads",
       "value": "/crm/lead/list"
     },
     {
       "type": "menulist",
-      "name": "menulist_export",
+      "name": "menulist_lead_resource",
       "text": "Resource leads",
       "value": "/crm/leadresource/list"
     },
     {
       "type": "menulist",
-      "name": "menulist_lead_export",
+      "name": "menulist_lead_health",
       "text": "Health leads",
       "value": "/crm/leadhealth/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_lead_my",
+      "text": "My leads",
+      "value": "/crm/mylead/list"
     }
   ]
 }
