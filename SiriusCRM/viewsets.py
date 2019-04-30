@@ -614,6 +614,13 @@ class InfoLeadActionViewSet(LeadViewSet):
             return None
 
 
+class MyLeadViewSet(LeadViewSet):
+
+    def get_queryset(self):
+        user = get_object_or_404(User, pk=self.request.user.id)
+        return Lead.objects.filter(consultant=user)
+
+
 class LeadCommentViewSet(HasRoleMixin, viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     allowed_get_roles = ['admin_role', 'user_role']

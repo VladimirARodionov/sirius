@@ -55,6 +55,7 @@ router.register('api/leadstatus', viewsets.LeadStatusViewSet, basename='leadstat
 router.register('api/leadsource', viewsets.LeadSourceViewSet, basename='leadsource')
 router.register('api/leadcourse', viewsets.LeadCourseViewSet, basename='leadcourse')
 router.register('api/lead', viewsets.LeadViewSet, basename='lead')
+router.register('api/mylead', viewsets.MyLeadViewSet, basename='mylead')
 router.register('api/leadresource', viewsets.LeadResourceViewSet, basename='leadresource')
 router.register('api/leadhealth', viewsets.LeadHealthViewSet, basename='leadhealth')
 router.register('api/leadcreated', viewsets.LeadCreatedViewSet,

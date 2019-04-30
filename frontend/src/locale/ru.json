@@ -229,5 +229,8 @@
   "List of resource leads": "Список лидов на Ресурсность",
   "All leads": "Все лиды",
   "Resource leads": "Лиды на Ресурсность",
-  "Health leads": "Лиды на Здоровье"
+  "Health leads": "Лиды на Здоровье",
+  "My leads": "Мои лиды",
+  "List of my leads": "Список моих лидов",
+  "Delete mylead": "Удалить лида"
 }
