@@ -51,7 +51,8 @@ export default {
         totalObjects: 0,
         newObject: {},
         currentObject: {},
-        isSelected: false
+        isSelected: false,
+        current_id: 0
       },
       message: null,
       errorMessage: '',
@@ -78,7 +79,14 @@ export default {
   },
   methods: {
     getObjects: function () {
+      if (this.$store.getters.getTableIndex[this.$route.params.resource]) {
+        this.data.current_id = this.$store.getters.getTableIndex[this.$route.params.resource]['id']
+        this.$store.commit('clearTableIndex', this.$route.params.resource)
+      } else {
+        this.data.current_id = 0
+      }
       onGet(this.field.api, this.data, this.pagination, this.search_term).then(resp => {
+        // this.pagination.page = resp.data.page
         if (this.data.currentObject.id) {
           let visible = false
           for (const obj in this.data.objects) {
