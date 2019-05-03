@@ -2,7 +2,7 @@ from import_export import resources, fields
 from django.utils.translation import gettext_lazy as _
 from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
 
-from SiriusCRM.models import User, Lead, Messenger, LeadStatus, LeadSource, CrmComment, LeadMessenger
+from SiriusCRM.models import User, Lead, Messenger, LeadStatus, LeadSource, CrmComment, LeadMessenger, LeadCourse
 
 
 class UserResource(resources.ModelResource):
@@ -31,6 +31,7 @@ class LeadResource(resources.ModelResource):
     messengers = fields.Field(attribute='messengers', column_name=_('Messengers'), widget=ManyToManyWidget(LeadMessenger, separator=';', field='name'))
     status = fields.Field(attribute='status', column_name=_('Status'), widget=ForeignKeyWidget(LeadStatus, 'name'))
     source = fields.Field(attribute='source', column_name=_('Source'), widget=ForeignKeyWidget(LeadSource, 'name'))
+    course = fields.Field(attribute='course', column_name=_('Course'), widget=ForeignKeyWidget(LeadCourse, 'name'))
     consultant_name = fields.Field(attribute='consultant', column_name=_('Consultant name'), widget=ForeignKeyWidget(User, 'first_name'))
     consultant_surname = fields.Field(attribute='consultant', column_name=_('Consultant surname'), widget=ForeignKeyWidget(User, 'last_name'))
     action = fields.Field(attribute='action', column_name=_('Action'))
@@ -42,4 +43,4 @@ class LeadResource(resources.ModelResource):
         model = Lead
         fields = ('id', 'first_name', 'middle_name', 'last_name', 'email', 'mobile', 'time')
         export_order = ('id', 'date_added', 'last_name', 'first_name', 'middle_name', 'email', 'mobile', 'messengers', 'status',
-                        'source', 'consultant_name', 'consultant_surname', 'action', 'action_date', 'action_time', 'comments')
+                        'source', 'course', 'consultant_name', 'consultant_surname', 'action', 'action_date', 'action_time', 'comments')
