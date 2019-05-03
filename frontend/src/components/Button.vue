@@ -36,6 +36,11 @@ export default {
   methods: {
     getAction (action) {
       if (action === 'back') {
+        this.$store.commit('setTableIndex', {
+          resource: this.$route.params.resource,
+          id: this.$route.params.id
+        })
+
         this.$router.push('/' + this.$route.params.program + '/' + this.$route.params.resource + '/list')
       } else if (action === 'add') {
         let currentId = 0
@@ -74,6 +79,10 @@ export default {
     },
     onBack () {
       if (this.field.action === 'save') {
+        this.$store.commit('setTableIndex', {
+          resource: this.$route.params.resource,
+          id: this.$route.params.id
+        })
         this.$router.push('/' + this.$route.params.program + '/' + this.$route.params.resource + '/list')
       }
     }

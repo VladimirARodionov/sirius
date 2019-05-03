@@ -10,7 +10,9 @@ export default new Vuex.Store({
     token: localStorage.getItem('token') || '',
     user: {},
     selectedObject: {},
-    savedState: {}
+    savedState: {},
+    tableIndex: {},
+    tablePagination: {}
   },
   mutations: {
     auth_request (state) {
@@ -40,6 +42,17 @@ export default new Vuex.Store({
     setSavedState (state, obj) {
       state.savedState[obj.resource] = {}
       state.savedState[obj.resource][obj.id] = obj.obj
+    },
+    clearTableIndex (state, table) {
+      state.tableIndex[table] = null
+    },
+    setTableIndex (state, obj) {
+      state.tableIndex[obj.resource] = {}
+      state.tableIndex[obj.resource]['id'] = obj.id
+    },
+    setTablePagination (state, obj) {
+      state.tablePagination[obj.resource] = {}
+      state.tablePagination[obj.resource]['pagination'] = obj.pagination
     }
   },
   actions: {
@@ -107,12 +120,20 @@ export default new Vuex.Store({
     },
     setSavedState ({ commit }, obj) {
       commit('setSavedState', obj)
+    },
+    clearTableIndex ({ commit }, name) {
+      commit('clearTableIndex', name)
+    },
+    setTableIndex ({ commit }, obj) {
+      commit('setTableIndex', obj)
     }
   },
   getters: {
     isLoggedIn: state => !!state.token,
     authStatus: state => state.status,
     getSelectedObject: state => state.selectedObject,
-    getSavedState: state => state.savedState
+    getSavedState: state => state.savedState,
+    getTableIndex: state => state.tableIndex,
+    getTablePagination: state => state.tablePagination
   }
 })

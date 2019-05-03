@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 import pytz
 from datetime import datetime, timedelta
 
@@ -72,6 +74,15 @@ class StandardResultsSetPagination(PageNumberPagination):
 
         self.request = request
         return list(self.page)
+
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('count', self.page.paginator.count),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('page', self.page.number),
+            ('results', data)
+        ]))
 
 
 class UserViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):

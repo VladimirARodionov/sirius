@@ -51,7 +51,8 @@ export default {
         totalObjects: 0,
         newObject: {},
         currentObject: {},
-        isSelected: false
+        isSelected: false,
+        current_id: 0
       },
       message: null,
       errorMessage: '',
@@ -71,6 +72,10 @@ export default {
   created () {
     this.$bus.on('search', this.searchChange)
     this.$bus.on('updateList', this.getObjects)
+    if (this.$store.getters.getTablePagination[this.$route.params.resource]) {
+      let pag = this.$store.getters.getTablePagination[this.$route.params.resource]
+      this.pagination = pag.pagination
+    }
   },
   beforeDestroy () {
     this.$bus.off('search', this.searchChange)
@@ -78,6 +83,12 @@ export default {
   },
   methods: {
     getObjects: function () {
+      if (this.$store.getters.getTableIndex[this.$route.params.resource]) {
+        this.data.current_id = this.$store.getters.getTableIndex[this.$route.params.resource]['id']
+        this.$store.commit('clearTableIndex', this.$route.params.resource)
+      } else {
+        this.data.current_id = 0
+      }
       onGet(this.field.api, this.data, this.pagination, this.search_term).then(resp => {
         if (this.data.currentObject.id) {
           let visible = false
@@ -116,6 +127,10 @@ export default {
         this.pagination.sortBy = column
         this.pagination.descending = false
       }
+      this.$store.commit('setTablePagination', {
+        resource: this.$route.params.resource,
+        pagination: this.pagination
+      })
     },
     getTableValue: function (property, jsonField) {
       const arr = jsonField.name.split('.')
