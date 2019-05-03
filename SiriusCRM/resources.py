@@ -28,7 +28,7 @@ class LeadResource(resources.ModelResource):
     email = fields.Field(attribute='email', column_name=_('Email'))
     mobile = fields.Field(attribute='mobile', column_name=_('Mobile'))
     date_added = fields.Field(attribute='date_added', column_name=_('Date added'))
-    messengers = fields.Field(attribute='messengers', column_name=_('Messengers'), widget=ManyToManyWidget(LeadMessenger, separator=';', field='messenger'))
+    messengers = fields.Field(attribute='messengers', column_name=_('Messengers'), widget=ManyToManyWidget(LeadMessenger, separator=';', field='name'))
     status = fields.Field(attribute='status', column_name=_('Status'), widget=ForeignKeyWidget(LeadStatus, 'name'))
     source = fields.Field(attribute='source', column_name=_('Source'), widget=ForeignKeyWidget(LeadSource, 'name'))
     consultant_name = fields.Field(attribute='consultant', column_name=_('Consultant name'), widget=ForeignKeyWidget(User, 'first_name'))
