@@ -11,7 +11,8 @@ export default new Vuex.Store({
     user: {},
     selectedObject: {},
     savedState: {},
-    tableIndex: {}
+    tableIndex: {},
+    tablePagination: {}
   },
   mutations: {
     auth_request (state) {
@@ -48,6 +49,10 @@ export default new Vuex.Store({
     setTableIndex (state, obj) {
       state.tableIndex[obj.resource] = {}
       state.tableIndex[obj.resource]['id'] = obj.id
+    },
+    setTablePagination (state, obj) {
+      state.tablePagination[obj.resource] = {}
+      state.tablePagination[obj.resource]['pagination'] = obj.pagination
     }
   },
   actions: {
@@ -128,6 +133,7 @@ export default new Vuex.Store({
     authStatus: state => state.status,
     getSelectedObject: state => state.selectedObject,
     getSavedState: state => state.savedState,
-    getTableIndex: state => state.tableIndex
+    getTableIndex: state => state.tableIndex,
+    getTablePagination: state => state.tablePagination
   }
 })

@@ -72,6 +72,10 @@ export default {
   created () {
     this.$bus.on('search', this.searchChange)
     this.$bus.on('updateList', this.getObjects)
+    if (this.$store.getters.getTablePagination[this.$route.params.resource]) {
+      let pag = this.$store.getters.getTablePagination[this.$route.params.resource]
+      this.pagination = pag.pagination
+    }
   },
   beforeDestroy () {
     this.$bus.off('search', this.searchChange)
@@ -86,7 +90,6 @@ export default {
         this.data.current_id = 0
       }
       onGet(this.field.api, this.data, this.pagination, this.search_term).then(resp => {
-        // this.pagination.page = resp.data.page
         if (this.data.currentObject.id) {
           let visible = false
           for (const obj in this.data.objects) {
@@ -124,6 +127,10 @@ export default {
         this.pagination.sortBy = column
         this.pagination.descending = false
       }
+      this.$store.commit('setTablePagination', {
+        resource: this.$route.params.resource,
+        pagination: this.pagination
+      })
     },
     getTableValue: function (property, jsonField) {
       const arr = jsonField.name.split('.')

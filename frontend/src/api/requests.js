@@ -21,6 +21,7 @@ export function onGet (api, data, pagination, searchTerm) {
       data.totalObjects = resp.data.count
       // data.currentObject = {}
       // data.isSelected = false
+      pagination.page = resp.data.page
       data.loading = false
     })
     .catch(err => {
