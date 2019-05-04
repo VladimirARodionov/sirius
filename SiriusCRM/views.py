@@ -336,9 +336,8 @@ class AppointmentView(APIView):
             for new_mes in new_messengers:
                 ContactMessenger.objects.create(contact=contact, messenger=new_mes)
 
-            appointment = Appointment.objects.create(contact=contact, date=date, time=time, comment=comment, status_id=AppointmentStatus.CREATED)
-            consultant = self.select_consultant(appointment)
-            appointment.consultant = consultant
+            consultant = self.select_consultant(date, time)
+            appointment = Appointment.objects.create(contact=contact, date=date, time=time, consultant=consultant, comment=comment, status_id=AppointmentStatus.CREATED)
             appointment.save()
             _datetime = datetime.combine(datetime.strptime(date, '%Y-%m-%d'), datetime.strptime(time, '%H:%M').time())
             period = Hour([], _datetime, tzinfo=pytz.timezone(settings.TIME_ZONE))
@@ -395,8 +394,8 @@ class AppointmentView(APIView):
                 free_consultants.append(consultant)
             return free_consultants
 
-    def select_consultant(self, appointment):
-        cons = self.get_free_consultants(appointment.date, appointment.time)
+    def select_consultant(self, date, time):
+        cons = self.get_free_consultants(date, time)
         if len(cons):
             return cons[random.randint(0, len(cons) - 1)]
         else:
