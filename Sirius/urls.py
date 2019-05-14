@@ -28,6 +28,8 @@ router = SimpleRouter()
 router.register('api/user', viewsets.UserViewSet, basename='user')
 router.register('api/employee', viewsets.EmployeeViewSet, basename='employee')
 router.register('api/disciple', viewsets.DiscipleViewSet, basename='disciple')
+router.register('api/innerdisciple', viewsets.InnerDiscipleViewSet, basename='innerdisciple')
+router.register('api/outerdisciple', viewsets.OuterDiscipleViewSet, basename='outerdisciple')
 router.register('api/zdravniza', viewsets.ZdravnizaViewSet, basename='zdravniza')
 router.register('api/zdravnizaconsultant', viewsets.ZdravnizaConsultantViewSet, basename='zdravnizaconsultant')
 router.register('api/crmconsultant', viewsets.CrmConsultantViewSet, basename='crmconsultant')
@@ -62,6 +64,7 @@ router.register('api/leadcreated', viewsets.LeadCreatedViewSet,
                 basename='leadcreated')
 router.register('api/info/lead/created', viewsets.InfoLeadCreatedViewSet, basename='infoleadcreated')
 router.register('api/info/lead/action', viewsets.InfoLeadActionViewSet, basename='infoleadaction')
+router.register('api/schooltype', viewsets.SchoolTypeViewSet, basename='schooltype')
 
 
 schema_view = get_schema_view(

@@ -1,10 +1,10 @@
 {
   "program": "crm",
-  "resource": "disciple",
+  "resource": "outerdisciple",
   "api": "/api/userdetail/",
   "type": "detail",
-  "title": "Disciple details",
-  "name": "disciple",
+  "title": "Outer disciple details",
+  "name": "outerdisciple",
   "style": "max-width: 768px;",
   "fields": [
     {
@@ -121,18 +121,6 @@
           "required": false
         }
       ]
-    },
-    {
-      "type": "select",
-      "name": "detail_select_school_type",
-      "text": "School type",
-      "value": "school_type",
-      "item_text": "name",
-      "item_value": "id",
-      "api": "/api/schooltype/",
-      "resource": "schooltype",
-      "required": false,
-      "hide_edit": true
     },
     {
       "type": "multi-select-tree",

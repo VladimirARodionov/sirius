@@ -19,7 +19,7 @@ from Sirius import settings
 from SiriusCRM.mixins import HasRoleMixin, CountModelMixin
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserCategory, Faculty, Contact, Appointment, UserPosition, AppointmentStatus, ZdravnizaComment, \
-    ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, LeadSource, LeadCourse
+    ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, LeadSource, LeadCourse, SchoolType
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, OrganizationSerializer, UnitSerializer, \
     PositionSerializer, CategorySerializer, CountrySerializer, RegionSerializer, CitySerializer, \
@@ -27,7 +27,8 @@ from SiriusCRM.serializers import UserSerializer, UserDetailSerializer, Organiza
     FacultySerializer, ContactSerializer, AppointmentSerializer, AppointmentStatusSerializer, \
     ZdravnizaCommentSerializer, \
     ContactCommentSerializer, LeadSerializer, LeadCommentSerializer, CrmCommentSerializer, LeadStatusSerializer, \
-    MessengerSerializer, LeadSourceSerializer, LeadCourseSerializer, LeadResourceSerializer, LeadHealthSerializer
+    MessengerSerializer, LeadSourceSerializer, LeadCourseSerializer, LeadResourceSerializer, LeadHealthSerializer, \
+    SchoolTypeSerializer
 from SiriusCRM.views import AppointmentView, LeadView
 
 
@@ -131,6 +132,24 @@ class DiscipleViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         UserCategory.objects.create(user=serializer.save(), category=get_object_or_404(Category, pk=Category.DISCIPLE))
+
+
+class OuterDiscipleViewSet(DiscipleViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(categories__in=[Category.DISCIPLE], school_type__in=[SchoolType.OUTER])
+
+    def perform_create(self, serializer):
+        UserCategory.objects.create(user=serializer.save(), category=get_object_or_404(Category, pk=Category.DISCIPLE),
+                                    school_type=get_object_or_404(SchoolType, pk=SchoolType.OUTER))
+
+
+class InnerDiscipleViewSet(DiscipleViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(categories__in=[Category.DISCIPLE], school_type__in=[SchoolType.INNER])
+
+    def perform_create(self, serializer):
+        UserCategory.objects.create(user=serializer.save(), category=get_object_or_404(Category, pk=Category.DISCIPLE),
+                                    school_type=get_object_or_404(SchoolType, pk=SchoolType.INNER))
 
 
 class ZdravnizaViewSet(HasRoleMixin, CountModelMixin, viewsets.ModelViewSet):
@@ -708,6 +727,20 @@ class MessengerViewSet(HasRoleMixin, viewsets.ModelViewSet):
     allowed_delete_roles = ['admin_role', 'edit_role']
     queryset = Messenger.objects.all()
     serializer_class = MessengerSerializer
+    filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
+    pagination_class = StandardResultsSetPagination
+    search_fields = 'name'
+    ordering_fields = ('id', 'name')
+
+
+class SchoolTypeViewSet(HasRoleMixin, viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    allowed_get_roles = ['admin_role', 'user_role']
+    allowed_post_roles = ['admin_role', 'edit_role']
+    allowed_put_roles = ['admin_role', 'edit_role']
+    allowed_delete_roles = ['admin_role', 'edit_role']
+    queryset = SchoolType.objects.all()
+    serializer_class = SchoolTypeSerializer
     filter_backends = (filters.SearchFilter, filters.OrderingFilter,)
     pagination_class = StandardResultsSetPagination
     search_fields = 'name'

@@ -249,5 +249,19 @@
     "fields": {
       "name": "Здоровье со смыслом"
     }
+  },
+  {
+    "model": "SiriusCRM.SchoolType",
+    "pk": 1,
+    "fields": {
+      "name": "Внешняя школа"
+    }
+  },
+  {
+    "model": "SiriusCRM.SchoolType",
+    "pk": 2,
+    "fields": {
+      "name": "Внутренняя школа"
+    }
   }
 ]

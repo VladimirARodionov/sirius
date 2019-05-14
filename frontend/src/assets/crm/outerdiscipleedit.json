@@ -1,14 +1,14 @@
 {
   "program": "crm",
-  "resource": "disciple",
-  "api": "/api/disciple/",
-  "type": "add",
-  "title": "Add disciple",
+  "resource": "outerdisciple",
+  "api": "/api/outerdisciple/",
+  "type": "edit",
+  "title": "Edit outer disciple",
   "style": "max-width: 768px;",
   "fields": [
     {
       "type": "text",
-      "name": "add_text1",
+      "name": "edit_text1",
       "text": "First name",
       "value": "first_name",
       "maxlength": 80,
@@ -16,7 +16,7 @@
     },
     {
       "type": "text",
-      "name": "add_text2",
+      "name": "edit_text2",
       "text": "Last name",
       "value": "last_name",
       "maxlength": 80,
@@ -24,23 +24,11 @@
     },
     {
       "type": "text",
-      "name": "add_text3",
+      "name": "edit_text3",
       "text": "Email",
       "value": "email",
       "maxlength": 80,
       "required": false
-    },
-    {
-      "type": "select",
-      "name": "add_select_school_type",
-      "text": "School type",
-      "value": "school_type",
-      "item_text": "name",
-      "item_value": "id",
-      "api": "/api/schooltype/",
-      "resource": "schooltype",
-      "required": false,
-      "hide_edit": true
     },
     {
       "type": "actions",
@@ -59,7 +47,7 @@
         },
         {
           "type": "button",
-          "name": "add_button1",
+          "name": "edit_button1",
           "text": "Save",
           "action": "save",
           "color": "success",

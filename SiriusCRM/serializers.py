@@ -7,15 +7,23 @@ from rolepermissions.roles import get_user_roles, assign_role, retrieve_role, cl
 from SiriusCRM.models import User, Organization, Unit, Position, Category, Competency, Course, \
     Payment, Address, UserPosition, UserCategory, Faculty, UserUnit, UserFaculty, Contact, Appointment, \
     AppointmentStatus, ZdravnizaComment, ContactComment, Lead, LeadComment, CrmComment, LeadStatus, Messenger, \
-    LeadCourse, LeadSource, LeadMessenger, ContactMessenger
+    LeadCourse, LeadSource, LeadMessenger, ContactMessenger, SchoolType
+
+
+class SchoolTypeSerializer(ModelSerializer):
+
+    class Meta:
+        model = SchoolType
+        fields = ('id', 'name')
 
 
 class UserSerializer(ModelSerializer):
     full_name = serializers.SerializerMethodField()
+    school_type_value = SchoolTypeSerializer(source='school_type', read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'categories', 'full_name')
+        fields = ('id', 'first_name', 'last_name', 'email', 'categories', 'full_name', 'school_type', 'school_type_value')
 
     def get_full_name(self, obj):
         full_name = '%s %s' % (obj.first_name, obj.last_name)
@@ -142,12 +150,13 @@ class AddressSerializer(ModelSerializer):
 class UserDetailSerializer(ModelSerializer):
     user_city = CitySerializer(source='city', read_only=True)
     role = serializers.SerializerMethodField()
+    school_type_value = SchoolTypeSerializer(source='school_type', read_only=True)
 
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile',
+        fields = ('id', 'first_name', 'last_name', 'email', 'middle_name', 'birthday', 'mobile', 'date_joined',
                   'city', 'telegram', 'user_city', 'village', 'street', 'house', 'apartment',
-                  'units', 'faculties', 'positions', 'categories', 'role')
+                  'units', 'faculties', 'positions', 'categories', 'role', 'school_type', 'school_type_value')
 
     def get_role(self, obj):
         result=[entry.get_name() for entry in get_user_roles(obj)]

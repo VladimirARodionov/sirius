@@ -1,0 +1,27 @@
+{
+  "program": "crm",
+  "resource": "discipletype",
+  "type": "list",
+  "title": "Disciples",
+  "style": "max-width: 768px;",
+  "fields": [
+    {
+      "type": "menulist",
+      "name": "menulist_school_all",
+      "text": "All disciples",
+      "value": "/crm/disciple/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_school_inner",
+      "text": "Inner school disciples",
+      "value": "/crm/innerdisciple/list"
+    },
+    {
+      "type": "menulist",
+      "name": "menulist_school_outer",
+      "text": "Outer school disciples",
+      "value": "/crm/outerdisciple/list"
+    }
+  ]
+}

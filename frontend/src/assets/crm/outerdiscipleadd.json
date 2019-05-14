@@ -1,9 +1,9 @@
 {
   "program": "crm",
-  "resource": "disciple",
-  "api": "/api/disciple/",
+  "resource": "outerdisciple",
+  "api": "/api/outerdisciple/",
   "type": "add",
-  "title": "Add disciple",
+  "title": "Add outer disciple",
   "style": "max-width: 768px;",
   "fields": [
     {
@@ -29,18 +29,6 @@
       "value": "email",
       "maxlength": 80,
       "required": false
-    },
-    {
-      "type": "select",
-      "name": "add_select_school_type",
-      "text": "School type",
-      "value": "school_type",
-      "item_text": "name",
-      "item_value": "id",
-      "api": "/api/schooltype/",
-      "resource": "schooltype",
-      "required": false,
-      "hide_edit": true
     },
     {
       "type": "actions",
