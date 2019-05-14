@@ -18,6 +18,17 @@
       "required": true
     },
     {
+      "type": "button",
+      "name": "lead_to_disciple__button",
+      "text": "Move to disciple",
+      "action": "lead_to_disciple",
+      "color": "cyan",
+      "roles": [
+        "admin_role",
+        "edit_role"
+      ]
+    },
+    {
       "type": "begindate",
       "name": "lead_edit_date",
       "text": "Date",

@@ -189,7 +189,7 @@ class AppointmentStatus(models.Model):
 # Таблица статусов лидов в CRM
 class LeadStatus(models.Model):
     CREATED = 1
-    DISCIPLE = 10
+    DISCIPLE = 11
 
     id = models.AutoField(primary_key=True)
     number = models.IntegerField(unique=True, null=False, blank=False)
@@ -228,14 +228,27 @@ class LeadCourse(models.Model):
         return self.name
 
 
+class SchoolType(models.Model):
+    OUTER = 1
+    INNER = 2
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=80, unique=True, blank=False)
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
 # Список пользователей
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('Email'), unique=True, null=True)
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
     last_name = models.CharField(_('Last name'), max_length=80, blank=False)
     middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
-    date_joined = models.DateTimeField(_('Date joined'), auto_now_add=True)
-    date_left = models.DateTimeField(_('Date left'), null=True, blank=True)
+    date_joined = models.DateField(_('Date joined'), default=date.today)
+    date_left = models.DateField(_('Date left'), null=True, blank=True)
     is_active = models.BooleanField(_('Active'), default=True)
     is_superuser = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
@@ -255,6 +268,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     street = models.CharField(max_length=80, null=True, blank=True)
     house = models.CharField(max_length=30, null=True, blank=True)
     apartment = models.CharField(max_length=10, null=True, blank=True)
+    school_type = models.ForeignKey(SchoolType, null=True, on_delete=models.PROTECT, related_name="user_school_type")
     organization = models.ForeignKey(Organization, null=True, on_delete=models.PROTECT, related_name="user_organization")
     units = models.ManyToManyField(Unit, through='UserUnit')
     positions = models.ManyToManyField(Position, through='UserPosition')

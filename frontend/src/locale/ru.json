@@ -232,5 +232,22 @@
   "Health leads": "Лиды на Здоровье",
   "My leads": "Мои лиды",
   "List of my leads": "Список моих лидов",
-  "Delete mylead": "Удалить лида"
+  "Delete mylead": "Удалить лида",
+  "School type": "Тип школы",
+  "All disciples": "Все ученики",
+  "Inner school disciples": "Ученики внутренней школы",
+  "Outer school disciples": "Ученики внешней школы",
+  "Add inner disciple": "Добавление ученика внутренней школы",
+  "Inner disciple details": "Детали ученика внутренней школы",
+  "Edit inner disciple": "Изменение ученика внутренней школы",
+  "List of inner disciples": "Список учеников внутренней школы",
+  "Delete innerdisciple": "Удалить ученика внутренней школы",
+  "Add outer disciple": "Добавление ученика внешней школы",
+  "Outer disciple details": "Детали ученика внешней школы",
+  "Edit outer disciple": "Изменение ученика внешней школы",
+  "List of outer disciples": "Список учеников внешней школы",
+  "Delete outerdisciple": "Удалить ученика внешней школы",
+  "Date joined": "Дата вступления",
+  "Edit disciple": "Изменение ученика",
+  "Move to disciple": "Перевести в ученики"
 }

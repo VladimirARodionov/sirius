@@ -18,7 +18,7 @@
             "type": "menuitem",
             "name": "menuitem_disciples",
             "text": "Disciples",
-            "value": "/crm/disciple/list"
+            "value": "/crm/discipletype/list"
         },
         {
             "type": "menuitem",

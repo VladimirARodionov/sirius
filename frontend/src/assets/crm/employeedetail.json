@@ -37,6 +37,13 @@
       ]
     },
     {
+      "type": "begindate",
+      "name": "detail_date_joined",
+      "text": "Date joined",
+      "value": "date_joined",
+      "required": false
+    },
+    {
       "type": "text",
       "name": "detail_email",
       "text": "Email",
