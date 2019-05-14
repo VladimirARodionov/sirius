@@ -189,7 +189,7 @@ class AppointmentStatus(models.Model):
 # Таблица статусов лидов в CRM
 class LeadStatus(models.Model):
     CREATED = 1
-    DISCIPLE = 10
+    DISCIPLE = 11
 
     id = models.AutoField(primary_key=True)
     number = models.IntegerField(unique=True, null=False, blank=False)

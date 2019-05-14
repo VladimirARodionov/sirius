@@ -66,6 +66,8 @@ export default {
         this.$bus.emit('beginEndClearAction')
       } else if (action === 'generate_action') {
         this.$bus.emit('generateAction')
+      } else if (action === 'lead_to_disciple') {
+        this.$bus.emit('leadToDisciple', this.$route.params.id)
       }
     },
     onSelect (data) {

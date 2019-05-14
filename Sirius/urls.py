@@ -98,6 +98,7 @@ urlpatterns = [
     path('api/zdravniza/calendar/', views.CalendarView.as_view(), name='zdravniza-calendar'),
     path('api/chart/lead/source/', views.LeadSourceChartView.as_view(), name='lead-source-chart'),
     path('api/chart/lead/status/', views.LeadStatusChartView.as_view(), name='lead-status-chart'),
+    path('api/leadtodisciple/<int:number>/', views.LeadToDiscipleView.as_view(), name='leadtodisciple'),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

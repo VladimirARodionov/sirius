@@ -35,7 +35,7 @@ from Sirius import settings
 from Sirius.settings import LEAD_LINK, APPOINTMENT_LINK
 from SiriusCRM.mixins import HasRoleMixin
 from SiriusCRM.models import User, Position, Category, Contact, Appointment, AppointmentStatus, Lead, Messenger, \
-    LeadSource, LeadStatus, LeadCourse, LeadMessenger, ContactMessenger
+    LeadSource, LeadStatus, LeadCourse, LeadMessenger, ContactMessenger, SchoolType, UserCategory
 from SiriusCRM.resources import UserResource, LeadResource
 from SiriusCRM.schedule.periods import HalfHour, Hour
 from SiriusCRM.serializers import ContactSerializer, AppointmentDateSerializer, AppointmentTimeSerializer, \
@@ -586,3 +586,25 @@ class LeadStatusChartView(HasRoleMixin, APIView):
             data.append(leads_count)
         result = {'label': label, 'data': data}
         return JsonResponse(result, safe=False)
+
+
+class LeadToDiscipleView(HasRoleMixin, APIView):
+    permission_classes = (IsAuthenticated,)
+    allowed_put_roles = ['admin_role', 'edit_role']
+
+    def put(self, request, *args, **kwargs):
+        context = {}
+        lead_id = self.kwargs['number']
+        lead = get_object_or_404(Lead, pk=lead_id)
+        if User.objects.filter(mobile=lead.mobile):
+            return HttpResponseBadRequest(_('Lead with such mobile is already in disciple'))
+        user = User.objects.create(first_name=lead.first_name, last_name=lead.last_name, mobile=lead.mobile,
+                            school_type = get_object_or_404(SchoolType, pk=SchoolType.OUTER))
+        lead.status = get_object_or_404(LeadStatus, pk=LeadStatus.DISCIPLE)
+        lead.save()
+        user.save()
+        UserCategory.objects.create(user=user, category=get_object_or_404(Category, pk=Category.DISCIPLE), invite_reason="Из лида #" + str(lead_id))
+        context['result'] = {'success': True}
+        return JsonResponse(context)
+
+

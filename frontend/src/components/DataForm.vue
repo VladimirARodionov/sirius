@@ -83,6 +83,7 @@ export default {
     this.$bus.on('selectObject', this.onSelect)
     this.$bus.on('clearAction', this.onClearAction)
     this.$bus.on('error', this.onError)
+    this.$bus.on('leadToDisciple', this.onLeadToDisciple)
   },
   mounted () {
     if (this.json.type === 'edit' || this.json.type === 'edittree' || this.json.type === 'addtree' || this.json.type === 'detail') {
@@ -98,6 +99,7 @@ export default {
     this.$bus.off('selectObject', this.onSelect)
     this.$bus.off('clearAction', this.onClearAction)
     this.$bus.off('error', this.onError)
+    this.$bus.off('leadToDisciple', this.onLeadToDisciple)
   },
   methods: {
     fetchData () {
@@ -143,6 +145,12 @@ export default {
     },
     onError (data) {
       this.data.errorMessage = data
+    },
+    onLeadToDisciple (data) {
+      this.data.currentObject.id = data
+      onPutSingle('/api/leadtodisciple/', this.data, this.getObject).then(resp => {
+        this.$bus.emit('goBack', {})
+      })
     },
     getObject () {
       if (this.json.type === 'addtree') {
