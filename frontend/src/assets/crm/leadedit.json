@@ -76,6 +76,17 @@
       "required": true
     },
     {
+      "type": "select",
+      "name": "lead_edit_city",
+      "text": "City",
+      "value": "city",
+      "item_text": "human_name",
+      "item_value": "id",
+      "api": "/api/city/",
+      "resource": "city",
+      "required": false
+    },
+    {
       "type": "multi-select",
       "name": "lead_edit_messengers",
       "text": "Messengers",
