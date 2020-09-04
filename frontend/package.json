@@ -21,7 +21,7 @@
     "material-design-icons-iconfont": "^4.0.4",
     "moment-timezone": "^0.5.23",
     "node-gyp": "^3.8.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "popper.js": "^1.14.6",
     "sass-loader": "^7.1.0",
     "tar": "^4.4.8",
