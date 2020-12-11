@@ -1,3 +1,4 @@
+from cities_light.models import City
 from import_export import resources, fields
 from django.utils.translation import gettext_lazy as _
 from import_export.widgets import ForeignKeyWidget, ManyToManyWidget
@@ -28,6 +29,7 @@ class LeadResource(resources.ModelResource):
     email = fields.Field(attribute='email', column_name=_('Email'))
     mobile = fields.Field(attribute='mobile', column_name=_('Mobile'))
     date_added = fields.Field(attribute='date_added', column_name=_('Date added'))
+    city = fields.Field(attribute='city', column_name=_('City'), widget=ForeignKeyWidget(City, 'name'))
     messengers = fields.Field(attribute='messengers', column_name=_('Messengers'), widget=ManyToManyWidget(LeadMessenger, separator=';', field='name'))
     status = fields.Field(attribute='status', column_name=_('Status'), widget=ForeignKeyWidget(LeadStatus, 'name'))
     source = fields.Field(attribute='source', column_name=_('Source'), widget=ForeignKeyWidget(LeadSource, 'name'))

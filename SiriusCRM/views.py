@@ -599,7 +599,7 @@ class LeadToDiscipleView(HasRoleMixin, APIView):
         if User.objects.filter(mobile=lead.mobile):
             return HttpResponseBadRequest(_('Lead with such mobile is already in disciple'))
         user = User.objects.create(first_name=lead.first_name, last_name=lead.last_name, mobile=lead.mobile,
-                            school_type = get_object_or_404(SchoolType, pk=SchoolType.OUTER))
+                                   city=lead.city, school_type = get_object_or_404(SchoolType, pk=SchoolType.OUTER))
         lead.status = get_object_or_404(LeadStatus, pk=LeadStatus.DISCIPLE)
         lead.save()
         user.save()

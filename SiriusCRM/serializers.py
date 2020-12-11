@@ -111,14 +111,18 @@ class CitySerializer(ModelSerializer):
         fields = ('id', 'human_name', 'alternate_names', 'region', 'city_region')
 
     def get_human_name(self, obj):
+        result = obj.name
         if obj.alternate_names:
             human_name = obj.alternate_names.split(';')[0]
             if human_name:
-                return human_name
+                result = human_name
             else:
-                return obj.name
+                result = obj.name
         else:
-            return obj.name
+            result = obj.name
+        region = Region.objects.filter(pk=obj.region_id).first()
+        result = result + ' (' + region.name + ')'
+        return result
 
 
 class CompetencySerializer(ModelSerializer):
@@ -415,10 +419,11 @@ class LeadSerializer(ModelSerializer):
     status_value = LeadStatusSerializer(source='status', read_only=True)
     source_value = LeadSourceSerializer(source='source', read_only=True)
     course_value = LeadCourseSerializer(source='course', read_only=True)
+    city_value = CitySerializer(source='city', read_only=True)
 
     class Meta:
         model = Lead
-        fields = ('id', 'time', 'first_name', 'last_name','middle_name', 'email', 'mobile',
+        fields = ('id', 'time', 'first_name', 'last_name','middle_name', 'email', 'mobile', 'city', 'city_value',
                   'messengers', 'messenger_value', 'consultant', 'status', 'source', 'comments', 'comment_value',
                   'consultant_value', 'status_value', 'source_value', 'action', 'action_date', 'action_time',
                   'course', 'course_value', 'course_id', 'date_added')

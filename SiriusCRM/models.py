@@ -350,6 +350,7 @@ class Lead(models.Model):
     first_name = models.CharField(_('First name'), max_length=80, blank=False)
     last_name = models.CharField(_('Last name'), max_length=80, blank=True)
     middle_name = models.CharField(_('Middle name'), max_length=80, blank=True)
+    city = models.ForeignKey(City, null=True, on_delete=models.PROTECT, related_name="lead_city")
     messengers = models.ManyToManyField(Messenger, through='LeadMessenger')
     consultant = models.ForeignKey(User, null=True, on_delete=models.PROTECT, related_name="lead_consultant")
     status = models.ForeignKey(LeadStatus, null=False,
