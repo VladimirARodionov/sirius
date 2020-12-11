@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <form v-roles="['admin_role', 'user_role']" @submit.prevent="exportUsers()">
+    <form :v-roles="['admin_role', 'user_role']" @submit.prevent="exportUsers()">
       <div class="mt-3">
         <button type="submit" class="btn btn-primary">{{ 'Export' | translate}}</button>
       </div>
