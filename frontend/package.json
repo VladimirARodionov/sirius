@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.2.0",
-    "apexcharts": "^3.6.7",
+    "apexcharts": "^3.24.0",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
     "date-fns": "^1.30.1",
