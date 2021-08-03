@@ -24,7 +24,7 @@
     "node-sass": "^4.11.0",
     "popper.js": "^1.14.6",
     "sass-loader": "^7.1.0",
-    "tar": "^4.4.8",
+    "tar": "^4.4.15",
     "uglify-es-webpack-plugin": "^0.10.0",
     "vue": "^2.5.21",
     "vue-apexcharts": "^1.3.4",
