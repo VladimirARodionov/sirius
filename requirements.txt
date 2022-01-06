@@ -10,7 +10,7 @@ django-role-permissions==2.2.1
 six==1.12.0
 django-import-export==1.1.0
 drf-yasg==1.12.1
-celery==4.2.1
+celery==5.2.2
 pytg==0.4.10
 django-scheduler==0.8.8
 django-cron==0.5.1
